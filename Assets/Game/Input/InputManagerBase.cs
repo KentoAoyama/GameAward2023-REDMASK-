@@ -4,6 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// InputSystemをあまり知らない人でも利用しやすいようにすることを目的に作製したクラス。
+/// </summary>
+/// <typeparam name="TController"> Unity上で生成したInputActionsファイルのC#スクリプトの型を割り当てる </typeparam>
+/// <typeparam name="TEnum"> 入力の種類を表す列挙型 </typeparam>
 public abstract class InputManagerBase<TController, TEnum>
     where TController : IInputActionCollection2, new()
     where TEnum : Enum
