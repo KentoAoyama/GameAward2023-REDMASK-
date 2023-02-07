@@ -1,11 +1,13 @@
 using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 /// <summary>
 /// InputSystemをあまり知らない人でも利用しやすいようにすることを目的に作製したクラス。
+/// 利用例を InputManager, InputTestクラスに示す。
 /// </summary>
 /// <typeparam name="TController"> Unity上で生成したInputActionsファイルのC#スクリプトの型を割り当てる </typeparam>
 /// <typeparam name="TEnum"> 入力の種類を表す列挙型 </typeparam>
@@ -27,11 +29,11 @@ public abstract class InputManagerBase<TController, TEnum>
     private Dictionary<TEnum, object> _inputValues = new Dictionary<TEnum, object>();
 
     /// <summary> 特定のボタンを押下したときにtrueを返すディクショナリ </summary>
-    public Dictionary<TEnum, bool> IsPressed => _isPressed;
+    public ReadOnlyDictionary<TEnum, bool> IsPressed = null;
     /// <summary> 特定のボタンを押下中, trueを返すディクショナリ </summary>
-    public Dictionary<TEnum, bool> IsExist => _isExist;
+    public ReadOnlyDictionary<TEnum, bool> IsExist = null;
     /// <summary> 特定のボタンを開放したときにtrueを返すディクショナリ </summary>
-    public Dictionary<TEnum, bool> IsReleased => _isReleased;
+    public ReadOnlyDictionary<TEnum, bool> IsReleased = null;
 
     /// <summary> SetAction<>()を呼び出して,各アクションをセットしてください </summary>
     protected abstract void Setup();
@@ -43,6 +45,9 @@ public abstract class InputManagerBase<TController, TEnum>
         _inputActionCollection = new TController();
         _inputActionCollection.Enable();
         Setup();
+        IsPressed = new ReadOnlyDictionary<TEnum, bool>(_isPressed);
+        IsExist = new ReadOnlyDictionary<TEnum, bool>(_isExist);
+        IsReleased = new ReadOnlyDictionary<TEnum, bool>(_isReleased);
     }
 
     /// <summary> アクションのセットアップ処理 </summary>
