@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 /// <summary>
+/// 制作者(丸岡)がInputSystemを理解することと
 /// InputSystemをあまり知らない人でも利用しやすいようにすることを目的に作製したクラス。
 /// 利用例を InputManager, InputTestクラスに示す。
 /// </summary>
