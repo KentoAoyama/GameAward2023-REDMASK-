@@ -1,4 +1,3 @@
-// 日本語対応
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +9,8 @@ namespace Player
     {
         [SerializeField]
         private float _moveSpeed = 1f;
+        [SerializeField]
+        private float _jumpPower = 4f;
 
         private PlayerController _playerController;
 
@@ -25,6 +26,15 @@ namespace Player
                 new Vector2(
                     _playerController.InputManager.GetValue<float>(InputType.MoveHorizontal) * _moveSpeed,
                     _playerController.Rigidbody2D.velocity.y);
+
+            if (_playerController.GroungChecker.IsHit() &&
+                _playerController.InputManager.IsPressed[InputType.Jump])
+            {
+                _playerController.Rigidbody2D.velocity =
+                new Vector2(
+                    _playerController.Rigidbody2D.velocity.x,
+                    _jumpPower);
+            }
         }
     }
 }
