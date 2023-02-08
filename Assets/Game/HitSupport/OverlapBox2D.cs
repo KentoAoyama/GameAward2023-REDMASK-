@@ -14,41 +14,46 @@ namespace HitSupport
         [SerializeField]
         private LayerMask _targetLayer;
 
+
         private Transform _origin;
-        private Vector2 _previousPos;
-        private float _dir = 1f;
 
         public Vector2 Offset => _offset;
         public Vector2 Size => _size;
         public LayerMask TargetLayer => _targetLayer;
         public Transform Origin => _origin;
 
+        /// <summary>
+        /// 初期化処理、このクラスを使用するときは、
+        /// 最初にこの処理を実行する。
+        /// </summary>
+        /// <param name="origin"> 原点 </param>
         public void Init(Transform origin)
         {
             _origin = origin;
         }
 
-        public void Update()
+        /// <summary>
+        /// 範囲内にあるコライダーを取得する
+        /// </summary>
+        /// <returns> 移動方向 :正の値, 負の値 </returns>
+        public Collider2D[] GetCollider(float xDir)
         {
-            float diff = _previousPos.x - _origin.position.x;
-            if (Mathf.Abs(diff) > 0.01f)
-            {
-                _dir = diff < 0f ? 1f : -1f;
-            }
-            _previousPos = _origin.position;
-        }
+            if (xDir >= 0f) xDir = Constant.Right;
+            else xDir = Constant.Left;
 
-        public Collider2D[] GetCollider()
-        {
-            var posX = _origin.position.x + _offset.x * _dir;
+            var posX = _origin.position.x + _offset.x * xDir;
             var posY = _origin.position.y + _offset.y;
 
             return Physics2D.OverlapBoxAll(new Vector2(posX, posY), _size, 0.0f, _targetLayer);
         }
 
-        public bool IsHit()
+        /// <summary>
+        /// 範囲内にあるコライダーを取得する
+        /// </summary>
+        /// <returns> 移動方向 :正の値, 負の値 </returns>
+        public bool IsHit(float xDir)
         {
-            return GetCollider().Length > 0;
+            return GetCollider(xDir).Length > 0;
         }
 
         [SerializeField]
@@ -57,11 +62,18 @@ namespace HitSupport
         private Color _gizmoHitColor = Color.red;
         [SerializeField]
         private Color _gizmoNotHitColor = Color.blue;
-        public void OnDrawGizmos(Transform origin)
+        /// <summary>
+        /// Gizmoに範囲を描画する
+        /// </summary>
+        /// <param name="origin"> 当たり判定の中央を表すTransform </param>
+        public void OnDrawGizmos(Transform origin, float xDir)
         {
             if (_isDrawGizmo)
             {
-                Vector2 pos = new Vector2(origin.position.x + _offset.x * _dir, origin.position.y + _offset.y);
+                if (xDir >= 0f) xDir = Constant.Right;
+                else xDir = Constant.Left;
+
+                Vector2 pos = new Vector2(origin.position.x + _offset.x * xDir, origin.position.y + _offset.y);
                 if (Physics2D.OverlapBoxAll(pos, _size, 0.0f, _targetLayer).Length > 0)
                 {
                     Gizmos.color = _gizmoHitColor;
@@ -71,7 +83,7 @@ namespace HitSupport
                     Gizmos.color = _gizmoNotHitColor;
                 }
 
-                var posX = origin.position.x + _offset.x * _dir;
+                var posX = origin.position.x + _offset.x * xDir;
                 var posY = origin.position.y + _offset.y;
                 Gizmos.DrawCube(new Vector2(posX, posY), _size);
             }

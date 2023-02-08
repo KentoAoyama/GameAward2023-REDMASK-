@@ -19,7 +19,7 @@ namespace Player
             _playerController = playerController;
         }
 
-        public void Movement()
+        public void Update()
         {
             // 横の入力に応じて左右に移動する
             _playerController.Rigidbody2D.velocity =
@@ -27,7 +27,8 @@ namespace Player
                     _playerController.InputManager.GetValue<float>(InputType.MoveHorizontal) * _moveSpeed,
                     _playerController.Rigidbody2D.velocity.y);
 
-            if (_playerController.GroungChecker.IsHit() &&
+            // ジャンプ処理
+            if (_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX) &&
                 _playerController.InputManager.IsPressed[InputType.Jump])
             {
                 _playerController.Rigidbody2D.velocity =
