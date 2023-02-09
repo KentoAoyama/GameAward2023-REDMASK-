@@ -1,0 +1,11 @@
+// 日本語対応
+using System;
+using UnityEngine;
+
+/// <summary>
+/// 損傷可能を表すインターフェース
+/// </summary>
+public interface IDamageable
+{
+    public void Damage(float value);
+}
