@@ -162,17 +162,6 @@ public partial class @GameController : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""1fc88248-33a0-419d-87fd-2f61daadb6a4"",
-                    ""path"": ""<Mouse>/position"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""LookingAngle"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""aa9b8ecf-9735-490b-a762-cdd4d6a70e91"",
                     ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
