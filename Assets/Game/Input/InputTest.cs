@@ -21,5 +21,7 @@ public class InputTest : MonoBehaviour
             Debug.LogWarning("移動入力があるよ");
         if (_inputManager.IsReleased[InputType.MoveHorizontal])
             Debug.LogError("移動入力がなくなったよ");
+
+        _inputManager.AddInputEnter(InputType.MoveHorizontal, _ => Debug.Log("移動入力が発生したよ"));
     }
 }

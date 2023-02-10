@@ -32,20 +32,16 @@ namespace Player
             _rigidbody2D = GetComponent<Rigidbody2D>();
             InputManager.Init();
             _move.Init(this);
+            _shooting.Init(this);
             _groungChecker.Init(transform);
             _directionControler.Init(transform);
         }
         private void Update()
         {
-            DirectionControler.Update(); // 方向制御
-            _move.Update(); // 移動処理
-
-            if (InputManager.IsPressed[InputType.Fire1])
-            {
-                // マウス操作中の場合
-                var mouseWorldPos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-                _shooting.Shoot(mouseWorldPos - transform.position);
-            } // 攻撃処理
+            DirectionControler.Update();  // 方向制御
+            _move.Update();               // 移動処理
+            _shooting.Update();           // 射撃処理
+            _shooting.OnDrawAimingLine(); // 照準描画処理（カメラの更新タイミングと合わせる必要有り）
         }
         private void OnDrawGizmosSelected()
         {
