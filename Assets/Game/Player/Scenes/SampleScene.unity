@@ -123,6 +123,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!4 &730804905 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5942310713907764758, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+  m_PrefabInstance: {fileID: 1909928270}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &761313952
 GameObject:
   m_ObjectHideFlags: 0
@@ -403,30 +408,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1909928272, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
-      propertyPath: m_Positions.Array.data[0].y
-      value: 1.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1909928272, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
-      propertyPath: m_Positions.Array.data[1].x
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 1909928272, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
-      propertyPath: m_Positions.Array.data[1].y
-      value: 1.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1909928272, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
-      propertyPath: m_Positions.Array.data[1].z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1909928272, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
-      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].value
-      value: 0.09859085
-      objectReference: {fileID: 0}
-    - target: {fileID: 3085978711498233314, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4514520410212876857, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -476,25 +457,36 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 4514520410212876862, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
-      propertyPath: _move._moveSpeed
-      value: 4
-      objectReference: {fileID: 0}
+      propertyPath: _shooting._muzzle
+      value: 
+      objectReference: {fileID: 730804905}
     - target: {fileID: 4514520410212876862, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
-      propertyPath: _shooting._isGamePadMode
+      propertyPath: _shooting._bulletPrefab
+      value: 
+      objectReference: {fileID: 3005489627961657126, guid: 4ca302e4e1ce4ef4d8f6648a1bbaac35, type: 3}
+    - target: {fileID: 4514520410212876862, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+      propertyPath: _shooting._muzzleTransform
+      value: 
+      objectReference: {fileID: 730804905}
+    - target: {fileID: 5942310713907764758, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5942310713907764758, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+      propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4514520410212876862, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
-      propertyPath: _shooting._maxLineLength
-      value: 1.2
+    - target: {fileID: 5942310713907764758, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4514520410212876862, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
-      propertyPath: _shooting._aimingLineRenderer
+    - target: {fileID: 5942310713907764758, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6381167518968947383, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+      propertyPath: m_Icon
       value: 
-      objectReference: {fileID: 1909928272}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
---- !u!120 &1909928272 stripped
-LineRenderer:
-  m_CorrespondingSourceObject: {fileID: 1909928272, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
-  m_PrefabInstance: {fileID: 1909928270}
-  m_PrefabAsset: {fileID: 0}
