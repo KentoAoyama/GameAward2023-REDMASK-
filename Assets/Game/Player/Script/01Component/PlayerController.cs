@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Input;
 
 namespace Player
 {
@@ -26,6 +27,8 @@ namespace Player
         public Rigidbody2D Rigidbody2D => _rigidbody2D;
         public InputManager InputManager { get; private set; } = new InputManager();
         public DirectionControl DirectionControler => _directionControler;
+        public DeviceManager DeviceManager { get; private set; } = new DeviceManager();
+
 
         private void Start()
         {
@@ -38,6 +41,7 @@ namespace Player
         }
         private void Update()
         {
+            DeviceManager.Update();       // デバイス制御
             DirectionControler.Update();  // 方向制御
             _move.Update();               // 移動処理
             _shooting.Update();           // 射撃処理

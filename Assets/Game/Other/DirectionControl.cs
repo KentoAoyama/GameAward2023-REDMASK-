@@ -19,6 +19,7 @@ public class DirectionControl
     public void Init(Transform transform)
     {
         _origin = transform;
+        _previousPositionX = _origin.position.x;
     }
     public void Update()
     {
@@ -28,10 +29,18 @@ public class DirectionControl
             if (_previousPositionX > _origin.position.x)
             {
                 MovementDirectionX = Constant.Right;
+
+                var s = _origin.localScale;
+                s.x *= s.x > 0f ? -1f : 1f;
+                _origin.localScale = s;
             } // 右に移動している時の場合
             else
             {
                 MovementDirectionX = Constant.Left;
+
+                var s = _origin.localScale;
+                s.x *= s.x < 0f ? -1f : 1f;
+                _origin.localScale = s;
             } // 左に移動している時の場合
         }
         // 次フレーム用に値を保存する
