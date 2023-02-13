@@ -57,8 +57,6 @@ namespace Player
             if (_playerController.InputManager.GetValue<float>(InputType.Fire1) > 0.49f &&
                 _canFire)
             {
-                // マウス操作中の場合
-                // ゲームパッド操作の場合
                 Shoot();
 
             } // 攻撃処理
@@ -90,7 +88,8 @@ namespace Player
             // 開始位置を設定
             _aimingLineRenderer.SetPosition(0, _muzzleTransform.position);
             // 終了位置を取得/設定
-            var endPos = _aimingAngle.normalized * _maxLineLength + (Vector2)_muzzleTransform.position;
+            var endPos = _aimingAngle
+                .normalized * _maxLineLength + (Vector2)_muzzleTransform.position;
             _aimingLineRenderer.SetPosition(1, endPos);
         }
     }
