@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Input;
+using Bullet;
 
 namespace Player
 {
@@ -14,11 +15,12 @@ namespace Player
         [SerializeField]
         private Move _move = default;
         [SerializeField]
-        private Shooting _shooting = default;
-        [SerializeField]
         private OverlapCircle2D _groungChecker = default;
         [SerializeField, HideInInspector]
         private DirectionControl _directionControler = default;
+        [SerializeField]
+        private Revolver _revolver = default;
+
 
         private Rigidbody2D _rigidbody2D = null;
 
@@ -35,21 +37,37 @@ namespace Player
             _rigidbody2D = GetComponent<Rigidbody2D>();
             InputManager.Init();
             _move.Init(this);
-            _shooting.Init(this);
             _groungChecker.Init(transform);
             _directionControler.Init(transform);
+            _revolver.Init(this);
+            TestRevolverLoading(); // テスト
         }
         private void Update()
         {
             DeviceManager.Update();       // デバイス制御
             DirectionControler.Update();  // 方向制御
             _move.Update();               // 移動処理
-            _shooting.Update();           // 射撃処理
-            _shooting.OnDrawAimingLine(); // 照準描画処理（カメラの更新タイミングと合わせる必要有り）
+            //_shooting.Update();           // 射撃処理
+            //_shooting.OnDrawAimingLine(); // 照準描画処理（カメラの更新タイミングと合わせる必要有り）
+            _revolver.Update();           // リボルバーの更新処理
+            _revolver.OnDrawAimingLine(); // 照準描画処理（カメラの更新タイミングと合わせる必要有り）
         }
         private void OnDrawGizmosSelected()
         {
             _groungChecker.OnDrawGizmos(transform, DirectionControler.MovementDirectionX);
+        }
+        [Header("リボルバーテスト用")]
+        [SerializeField]
+        private BulletBase _basicBullet = default;
+        /// <summary>
+        /// 全てのチェンバーに弾を装填する
+        /// </summary>
+        private void TestRevolverLoading()
+        {
+            for (int i = 0; i < _revolver.Cylinder.Length; i++)
+            {
+                _revolver.LoadBullet(_basicBullet, i);
+            }
         }
     }
 }
