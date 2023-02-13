@@ -124,14 +124,6 @@ MonoBehaviour:
   _move:
     _moveSpeed: 4
     _jumpPower: 4
-  _shooting:
-    _bulletPrefab: {fileID: 3005489627961657126, guid: 4ca302e4e1ce4ef4d8f6648a1bbaac35, type: 3}
-    _muzzleTransform: {fileID: 5942310713907764758}
-    _interval: 0.4
-    _nonCollisionTarget:
-    - {fileID: 4514520410212876858}
-    _aimingLineRenderer: {fileID: 1909928272}
-    _maxLineLength: 1.2
   _groungChecker:
     _offset: {x: 0, y: -0.75}
     _radius: 0.49
@@ -141,6 +133,15 @@ MonoBehaviour:
     _isDrawGizmo: 1
     _gizmoHitColor: {r: 1, g: 0, b: 0, a: 0.53333336}
     _gizmoNotHitColor: {r: 0, g: 0, b: 1, a: 0.5529412}
+  _revolver:
+    _shellCase: {fileID: 1549081298335962567, guid: bf319ad74bbd0744d9c1912c1077fec2, type: 3}
+    _muzzleTransform: {fileID: 5942310713907764758}
+    _interval: 0.4
+    _nonCollisionTarget:
+    - {fileID: 4514520410212876858}
+    _aimingLineRenderer: {fileID: 1909928272}
+    _maxLineLength: 1.2
+  _basicBullet: {fileID: 8861332033661332301, guid: 4ca302e4e1ce4ef4d8f6648a1bbaac35, type: 3}
 --- !u!70 &4514520410212876858
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -300,7 +301,7 @@ GameObject:
   m_Layer: 0
   m_Name: MuzzlePos
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1

@@ -6,7 +6,7 @@ namespace Bullet
     /// 弾の挙動を制御するクラス
     /// </summary>
     [RequireComponent(typeof(Rigidbody2D))]
-    public abstract class BulletControllerBase : MonoBehaviour
+    public abstract class BulletControllerBase : BulletBase, IBullet
     {
         [Tooltip("弾の生存時間"), SerializeField]
         private float _lifeTime = 1f;

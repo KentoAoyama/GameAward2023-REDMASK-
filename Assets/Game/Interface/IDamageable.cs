@@ -1,7 +1,3 @@
-// 日本語対応
-using System;
-using UnityEngine;
-
 /// <summary>
 /// 損傷可能を表すインターフェース
 /// </summary>
