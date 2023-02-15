@@ -39,6 +39,8 @@ namespace Player
 
         /// <summary> 現在のシリンダーの状態 </summary>
         public BulletBase[] Cylinder => _cylinder;
+        /// <summary> 発砲可能かどうかを表す値 </summary>
+        public bool CanFire => _canFire;
 
         public void Init(PlayerController playerController)
         {
@@ -63,12 +65,6 @@ namespace Player
                 }
             }
 
-            // 撃てる状態かつ、撃つ入力が発生したとき 銃を撃つ
-            if (_playerController.InputManager.GetValue<float>(InputType.Fire1) > 0.49f &&
-                _canFire)
-            {
-                Fire();
-            }
         }
 
         /// <summary> 弾を装填する </summary>
@@ -140,7 +136,7 @@ namespace Player
             return _cylinder;
         }
         /// <summary> 発砲する </summary>
-        private async void Fire()
+        public async void Fire()
         {
             // 弾であれば発射する。その後、殻薬莢が残る。
             if (_cylinder[_currentChamber] is IBullet)
