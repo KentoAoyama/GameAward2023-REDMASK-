@@ -7,8 +7,14 @@ namespace Bullet
     public enum BulletType
     {
         /// <summary> エラー値。未設定を表す </summary>
-        NotSet,
+        NotSet = -1,
         /// <summary> 標準的な弾 </summary>
         StandardBullet,
+        /// <summary> 貫通する弾 </summary>
+        PenetrateBullet,
+        /// <summary> 反射する弾 </summary>
+        ReflectBullet,
+        /// <summary> 終了値。この型の最大値を表す。 </summary>
+        End,
     }
 }

@@ -19,8 +19,11 @@ namespace Player
         [SerializeField, HideInInspector]
         private DirectionControl _directionControler = default;
         [SerializeField]
+        private RevolverOperator _revolverOperator = default;
+        [SerializeField]
         private Revolver _revolver = default;
-
+        [SerializeField]
+        private BulletsManager _bulletsManager = default;
 
         private Rigidbody2D _rigidbody2D = null;
 
@@ -30,6 +33,9 @@ namespace Player
         public InputManager InputManager { get; private set; } = new InputManager();
         public DirectionControl DirectionControler => _directionControler;
         public DeviceManager DeviceManager { get; private set; } = new DeviceManager();
+        public RevolverOperator RevolverOperator => _revolverOperator;
+        public Revolver Revolver => _revolver;
+        public BulletsManager BulletsManager => _bulletsManager;
 
 
         private void Start()
@@ -47,8 +53,6 @@ namespace Player
             DeviceManager.Update();       // デバイス制御
             DirectionControler.Update();  // 方向制御
             _move.Update();               // 移動処理
-            //_shooting.Update();           // 射撃処理
-            //_shooting.OnDrawAimingLine(); // 照準描画処理（カメラの更新タイミングと合わせる必要有り）
             _revolver.Update();           // リボルバーの更新処理
             _revolver.OnDrawAimingLine(); // 照準描画処理（カメラの更新タイミングと合わせる必要有り）
         }
@@ -56,6 +60,8 @@ namespace Player
         {
             _groungChecker.OnDrawGizmos(transform, DirectionControler.MovementDirectionX);
         }
+
+        #region Test
         [Header("リボルバーテスト用")]
         [SerializeField]
         private BulletBase _basicBullet = default;
@@ -69,5 +75,6 @@ namespace Player
                 _revolver.LoadBullet(_basicBullet, i);
             }
         }
+        #endregion
     }
 }

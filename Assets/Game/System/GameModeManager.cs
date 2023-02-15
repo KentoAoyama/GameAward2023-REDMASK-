@@ -26,11 +26,10 @@ namespace GameSystem
 
         private ReactiveProperty<GameMode> _currentgameMode = new ReactiveProperty<GameMode>();
 
-        public ReadOnlyReactiveProperty<GameMode> CurrentGameMode = null;
+        public IReadOnlyReactiveProperty<GameMode> CurrentGameMode => _currentgameMode;
 
         private void Setup()
         {
-            CurrentGameMode = new ReadOnlyReactiveProperty<GameMode>(_currentgameMode);
             _currentgameMode.Value = GameMode.NotSet;
         }
     }

@@ -80,6 +80,15 @@ public partial class @GameController : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cross Button Horizontal"",
+                    ""type"": ""Button"",
+                    ""id"": ""2b28d6f0-9c26-44de-b7b0-749193ecdea3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -278,6 +287,72 @@ public partial class @GameController : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Vertical"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""8957efd8-d0c6-4923-a095-57b99c29296a"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cross Button Horizontal"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""a8095dc7-ec70-41fb-907a-c71ae1203475"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Cross Button Horizontal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""f222e86e-c4e8-421b-a951-93ad30648df6"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Cross Button Horizontal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""bf81e866-8169-4772-a427-929252621348"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cross Button Horizontal"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""c8d29acb-6daa-41d2-8178-602b360f2ebe"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cross Button Horizontal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""aafed3bf-0e0e-4aab-a44a-586b87c55db2"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cross Button Horizontal"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
@@ -871,6 +946,7 @@ public partial class @GameController : IInputActionCollection2, IDisposable
         m_Player_Fire1 = m_Player.FindAction("Fire1", throwIfNotFound: true);
         m_Player_Fire2 = m_Player.FindAction("Fire2", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
+        m_Player_CrossButtonHorizontal = m_Player.FindAction("Cross Button Horizontal", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -948,6 +1024,7 @@ public partial class @GameController : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Fire1;
     private readonly InputAction m_Player_Fire2;
     private readonly InputAction m_Player_Jump;
+    private readonly InputAction m_Player_CrossButtonHorizontal;
     public struct PlayerActions
     {
         private @GameController m_Wrapper;
@@ -958,6 +1035,7 @@ public partial class @GameController : IInputActionCollection2, IDisposable
         public InputAction @Fire1 => m_Wrapper.m_Player_Fire1;
         public InputAction @Fire2 => m_Wrapper.m_Player_Fire2;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
+        public InputAction @CrossButtonHorizontal => m_Wrapper.m_Player_CrossButtonHorizontal;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -985,6 +1063,9 @@ public partial class @GameController : IInputActionCollection2, IDisposable
                 @Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                @CrossButtonHorizontal.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrossButtonHorizontal;
+                @CrossButtonHorizontal.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrossButtonHorizontal;
+                @CrossButtonHorizontal.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrossButtonHorizontal;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1007,6 +1088,9 @@ public partial class @GameController : IInputActionCollection2, IDisposable
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
+                @CrossButtonHorizontal.started += instance.OnCrossButtonHorizontal;
+                @CrossButtonHorizontal.performed += instance.OnCrossButtonHorizontal;
+                @CrossButtonHorizontal.canceled += instance.OnCrossButtonHorizontal;
             }
         }
     }
@@ -1169,6 +1253,7 @@ public partial class @GameController : IInputActionCollection2, IDisposable
         void OnFire1(InputAction.CallbackContext context);
         void OnFire2(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnCrossButtonHorizontal(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
