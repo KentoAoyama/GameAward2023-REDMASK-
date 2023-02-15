@@ -15,6 +15,7 @@ namespace Player
             SetAction<Vector2>(_inputActionCollection.Player.LookingAngle, InputType.LookingAngle);
             SetAction<float>(_inputActionCollection.Player.Fire1, InputType.Fire1);
             SetAction<float>(_inputActionCollection.Player.Fire2, InputType.Fire2);
+            SetAction<float>(_inputActionCollection.Player.CrossButtonHorizontal, InputType.HorizontalSelect);
         }
     }
     public enum InputType
@@ -31,5 +32,7 @@ namespace Player
         Fire1,
         /// <summary> 回避ボタン </summary>
         Fire2,
+        /// <summary> 選択用 横入力 </summary>
+        HorizontalSelect,
     }
 }
