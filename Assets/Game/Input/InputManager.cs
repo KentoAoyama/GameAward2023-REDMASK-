@@ -16,6 +16,7 @@ namespace Player
             SetAction<float>(_inputActionCollection.Player.Fire1, InputType.Fire1);
             SetAction<float>(_inputActionCollection.Player.Fire2, InputType.Fire2);
             SetAction<float>(_inputActionCollection.Player.CrossButtonHorizontal, InputType.HorizontalSelect);
+            SetAction<float>(_inputActionCollection.Player.LoadBullet, InputType.LoadBullet);
         }
     }
     public enum InputType
@@ -34,5 +35,7 @@ namespace Player
         Fire2,
         /// <summary> 選択用 横入力 </summary>
         HorizontalSelect,
+        /// <summary> リロード入力 </summary>
+        LoadBullet,
     }
 }

@@ -43,6 +43,8 @@ namespace UI
         /// <summary> 現在選択している弾の種類 </summary>
         private BulletType _currentSelectBulletType = BulletType.NotSet;
 
+        public BulletType CurrentSelectBulletType => _currentSelectBulletType;
+
         public void Init(InputManager inputManager, BulletsManager bulletsManager)
         {
             _currentSelectBulletType = BulletType.StandardBullet;
@@ -58,9 +60,9 @@ namespace UI
             _bulletCountTexts.Add(BulletType.PenetrateBullet, _penetrateBulletCountText);
             _bulletCountTexts.Add(BulletType.ReflectBullet, _reflectBulletCountText);
             // いろいろ変化したときに実行するメソッドをサブスクライブする。
-            //_bulletsManager.StandardBulletCount.Subscribe(num => _standardBulletCountText.text = $"標準の弾の数 :{num}");
-            //_bulletsManager.PenetrateBulletCount.Subscribe(num => _penetrateBulletCountText.text = $"貫通弾の弾の数 :{num}");
-            //_bulletsManager.ReflectBulletCount.Subscribe(num => _reflectBulletCountText.text = $"反射弾の弾の数 :{num}");
+            _bulletsManager.StandardBulletCount.Subscribe(num => _standardBulletCountText.text = $"標準弾の所持数 :{num.ToString("00")}");
+            _bulletsManager.PenetrateBulletCount.Subscribe(num => _penetrateBulletCountText.text = $"貫通弾の所持数 :{num.ToString("00")}");
+            _bulletsManager.ReflectBulletCount.Subscribe(num => _reflectBulletCountText.text = $"反射弾の所持数 :{num.ToString("00")}");
         }
         public void Update()
         {
@@ -79,7 +81,7 @@ namespace UI
             {
                 _currentSelectBulletType++;
                 // 加算後の値を範囲内に収める処理。（範囲外になった場合、BulletType.NotSetの次の値を代入する。）
-                _currentSelectBulletType = _currentSelectBulletType >= BulletType.End ? BulletType.NotSet + 1 : _currentSelectBulletType;
+                _currentSelectBulletType = _currentSelectBulletType >= BulletType.ShellCase ? BulletType.NotSet + 1 : _currentSelectBulletType;
                 return _currentSelectBulletType;
 
             }
@@ -87,7 +89,7 @@ namespace UI
             {
                 _currentSelectBulletType--;
                 // 減産後の値を範囲内に収める処理。（範囲外になった場合、BulletType.Endの一つ前の値を代入する。）
-                _currentSelectBulletType = _currentSelectBulletType > BulletType.NotSet ? _currentSelectBulletType : BulletType.End - 1;
+                _currentSelectBulletType = _currentSelectBulletType > BulletType.NotSet ? _currentSelectBulletType : BulletType.ShellCase - 1;
                 return _currentSelectBulletType;
             }
         }

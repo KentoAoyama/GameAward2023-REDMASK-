@@ -14,6 +14,12 @@ namespace Bullet
         PenetrateBullet,
         /// <summary> 反射する弾 </summary>
         ReflectBullet,
+
+
+        /// <summary> 殻薬莢を表現する値 </summary>
+        ShellCase,
+        /// <summary> 空を表現する値 </summary>
+        Empty,
         /// <summary> 終了値。この型の最大値を表す。 </summary>
         End,
     }

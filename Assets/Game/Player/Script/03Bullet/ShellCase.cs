@@ -7,6 +7,6 @@ namespace Bullet
     [System.Serializable]
     public class ShellCase : BulletBase, IShellCase
     {
-
+        public override BulletType Type => BulletType.ShellCase;
     }
 }

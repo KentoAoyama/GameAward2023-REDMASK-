@@ -23,7 +23,7 @@ namespace Bullet
         /// セットアップ処理
         /// </summary>
         /// <param name="shootAngle"> 射出角度 </param>
-        public void Setup(Vector2 shootAngle, Collider2D[] nonCollisionTarget)
+        public virtual void Setup(Vector2 shootAngle, Collider2D[] nonCollisionTarget)
         {
             _shootAngle = shootAngle;
             _nonCollisionTarget = nonCollisionTarget;

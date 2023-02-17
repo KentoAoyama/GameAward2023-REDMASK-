@@ -37,10 +37,15 @@ namespace Player
         /// <summary> 攻撃可能かどうかを表す値 </summary>
         private bool _canFire = true;
 
+        /// <summary> 現在のチェンバーの位置 </summary>
+        public int CurrentChamber => _currentChamber;
         /// <summary> 現在のシリンダーの状態 </summary>
         public BulletBase[] Cylinder => _cylinder;
         /// <summary> 発砲可能かどうかを表す値 </summary>
         public bool CanFire => _canFire;
+
+        public event Action<int> OnFire = default;
+        public Action<int, BulletType> OnChamberStateChanged = default;
 
         public void Init(PlayerController playerController)
         {
@@ -64,7 +69,6 @@ namespace Player
                     _aimingAngle = mouseWorldPos - _playerController.transform.position;
                 }
             }
-
         }
 
         /// <summary> 弾を装填する </summary>
@@ -79,10 +83,12 @@ namespace Player
                 if (_cylinder[chamberNumber] != null)
                 {
                     // 弾か殻薬莢が入っている時の処理
+                    Debug.LogWarning("そこには弾か殻薬莢が入っています");
                     return false;
                 }
                 else
                 {
+                    OnChamberStateChanged?.Invoke(chamberNumber, bullet.Type);
                     _cylinder[chamberNumber] = bullet;
                     return true;
                 }
@@ -98,11 +104,13 @@ namespace Player
         }
         /// <summary> 一つのチェンバーの 弾, 殻薬莢を排出する。 </summary>
         /// /// <param name="chamberNumber"> 排出するチェンバーの位置 </param>
+        /// <returns> 排出後のシリンダーの状態を返す。 </returns>
         public BulletBase[] EjectBulletsAndShells(int chamberNumber)
         {
             try
             {
                 _cylinder[chamberNumber] = null;
+                OnChamberStateChanged?.Invoke(chamberNumber, BulletType.Empty);
             }
             catch (IndexOutOfRangeException e)
             {
@@ -114,6 +122,7 @@ namespace Player
             return _cylinder;
         }
         /// <summary> 全ての殻薬莢を排出する。 </summary>
+        /// <returns> 排出後のシリンダーの状態を返す。 </returns>
         public BulletBase[] EjectShellsAll()
         {
             for (int i = 0; i < _cylinder.Length; i++)
@@ -121,6 +130,7 @@ namespace Player
                 if (_cylinder[i] is IShellCase)
                 {
                     _cylinder[i] = null;
+                    OnChamberStateChanged?.Invoke(i, BulletType.Empty);
                 }
             }
             return _cylinder;
@@ -132,6 +142,7 @@ namespace Player
             for (int i = 0; i < _cylinder.Length; i++)
             {
                 _cylinder[i] = null;
+                OnChamberStateChanged?.Invoke(i, BulletType.Empty);
             }
             return _cylinder;
         }
@@ -146,20 +157,25 @@ namespace Player
                     TryGetComponent(out BulletControllerBase bc))
                 {
                     bc.Setup(_aimingAngle, _nonCollisionTarget);
-                    _canFire = false;
-                    // トリガーが持ち上がるまで待機
-                    await UniTask.WaitUntil(() => _playerController.InputManager.GetValue<float>(InputType.Fire1) < 0.01f);
-                    // 設定したインターバルを待つ
-                    await UniTask.Delay((int)(_interval * 1000f));
-                    _canFire = true;
                 }
 
                 _cylinder[_currentChamber] = _shellCase; // 殻薬莢を残す
+                OnChamberStateChanged?.Invoke(_currentChamber, BulletType.ShellCase);
             }
 
             // チェンバーの位置が変わる（シリンダーが回転する。）
             _currentChamber++;
             _currentChamber %= _cylinder.Length;
+
+            OnFire?.Invoke(_currentChamber);
+
+            // インターバル系処理
+            _canFire = false;
+            // トリガーが持ち上がるまで待機
+            await UniTask.WaitUntil(() => _playerController.InputManager.GetValue<float>(InputType.Fire1) < 0.01f);
+            // 設定したインターバルを待つ
+            await UniTask.Delay((int)(_interval * 1000f));
+            _canFire = true;
         }
         /// <summary>
         /// 照準を描画する

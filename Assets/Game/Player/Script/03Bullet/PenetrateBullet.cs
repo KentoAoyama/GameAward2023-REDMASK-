@@ -2,10 +2,13 @@ using UnityEngine;
 
 namespace Bullet
 {
+    /// <summary>
+    /// 貫通弾クラス
+    /// </summary>
     [System.Serializable]
-    public class StandardBullet : BulletControllerBase
+    public class PenetrateBullet : BulletControllerBase
     {
-        public override BulletType Type => BulletType.StandardBullet;
+        public override BulletType Type => BulletType.PenetrateBullet;
         protected override void OnHit(Collider2D target)
         {
             // ダメージを加える

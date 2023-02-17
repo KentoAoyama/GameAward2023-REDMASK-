@@ -2,10 +2,13 @@ using UnityEngine;
 
 namespace Bullet
 {
+    /// <summary>
+    /// 反射弾クラス
+    /// </summary>
     [System.Serializable]
-    public class StandardBullet : BulletControllerBase
+    public class ReflectBullet : BulletControllerBase
     {
-        public override BulletType Type => BulletType.StandardBullet;
+        public override BulletType Type => BulletType.ReflectBullet;
         protected override void OnHit(Collider2D target)
         {
             // ダメージを加える
