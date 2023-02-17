@@ -46,6 +46,8 @@ namespace Player
             _groungChecker.Init(transform);
             _directionControler.Init(transform);
             _revolver.Init(this);
+            _bulletsManager.Setup();
+            _revolverOperator.Init(this);
             TestRevolverLoading(); // テスト
         }
         private void Update()
@@ -53,6 +55,7 @@ namespace Player
             DeviceManager.Update();       // デバイス制御
             DirectionControler.Update();  // 方向制御
             _move.Update();               // 移動処理
+            _revolverOperator.Update();   // リボルバー操作の更新
             _revolver.Update();           // リボルバーの更新処理
             _revolver.OnDrawAimingLine(); // 照準描画処理（カメラの更新タイミングと合わせる必要有り）
         }
