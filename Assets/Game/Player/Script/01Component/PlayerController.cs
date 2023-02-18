@@ -6,12 +6,15 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Input;
 using Bullet;
+using UI;
 
 namespace Player
 {
     [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerController : MonoBehaviour
     {
+        [SerializeField]
+        private UIController _uIController;
         [SerializeField]
         private Move _move = default;
         [SerializeField]
@@ -23,10 +26,15 @@ namespace Player
         [SerializeField]
         private Revolver _revolver = default;
         [SerializeField]
-        private BulletsManager _bulletsManager = default;
+        private BulletCountManager _bulletCountManager = default;
+        [SerializeField]
+        private BulletDataBase _bulletDataBase = default;
+        [SerializeField]
+        private LifeController _lifeController = default;
 
         private Rigidbody2D _rigidbody2D = null;
 
+        public UIController UIController => _uIController;
         public Move Move => _move;
         public OverlapCircle2D GroungChecker => _groungChecker;
         public Rigidbody2D Rigidbody2D => _rigidbody2D;
@@ -35,7 +43,9 @@ namespace Player
         public DeviceManager DeviceManager { get; private set; } = new DeviceManager();
         public RevolverOperator RevolverOperator => _revolverOperator;
         public Revolver Revolver => _revolver;
-        public BulletsManager BulletsManager => _bulletsManager;
+        public BulletCountManager BulletCountManager => _bulletCountManager;
+        public BulletDataBase BulletDataBase => _bulletDataBase;
+        public LifeController LifeController => _lifeController;
 
 
         private void Start()
@@ -46,8 +56,9 @@ namespace Player
             _groungChecker.Init(transform);
             _directionControler.Init(transform);
             _revolver.Init(this);
-            _bulletsManager.Setup();
+            _bulletCountManager.Setup();
             _revolverOperator.Init(this);
+            _bulletDataBase.Init();
             TestRevolverLoading(); // テスト
         }
         private void Update()
