@@ -20,7 +20,7 @@ namespace UI
 
         private void Start()
         {
-            _bulletSelectUIPresenter.Init(_playerController.InputManager, _playerController.BulletsManager);
+            _bulletSelectUIPresenter.Init(_playerController.InputManager, _playerController.BulletCountManager);
             _revolverUIPresenter.Init(_playerController);
         }
         private void Update()
@@ -41,9 +41,9 @@ namespace UI
         /// </summary>
         public void AssignInputFieldValues()
         {
-            _playerController.BulletsManager.SetBullet(BulletType.StandardBullet, StringToInt(_standardBulletCountInputField.text));
-            _playerController.BulletsManager.SetBullet(BulletType.PenetrateBullet, StringToInt(_penetrateBulletCountInputField.text));
-            _playerController.BulletsManager.SetBullet(BulletType.ReflectBullet, StringToInt(_reflectBulletCountInputField.text));
+            _playerController.BulletCountManager.SetBullet(BulletType.StandardBullet, StringToInt(_standardBulletCountInputField.text));
+            _playerController.BulletCountManager.SetBullet(BulletType.PenetrateBullet, StringToInt(_penetrateBulletCountInputField.text));
+            _playerController.BulletCountManager.SetBullet(BulletType.ReflectBullet, StringToInt(_reflectBulletCountInputField.text));
         }
         public int StringToInt(string str) { return string.IsNullOrEmpty(str) ? 0 : int.Parse(str); }
     }

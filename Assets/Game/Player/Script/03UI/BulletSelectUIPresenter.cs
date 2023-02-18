@@ -35,7 +35,7 @@ namespace UI
         /// <summary> 入力管理クラス </summary>
         private InputManager _inputManager = null;
         /// <summary> 弾数を管理するクラス </summary>
-        private BulletsManager _bulletsManager = null;
+        private BulletCountManager _bulletsManager = null;
         /// <summary> イメージのディクショナリ </summary>
         private Dictionary<BulletType, Image> _bulletIcons = new Dictionary<BulletType, Image>();
         /// <summary> テキストのディクショナリ </summary>
@@ -45,7 +45,7 @@ namespace UI
 
         public BulletType CurrentSelectBulletType => _currentSelectBulletType;
 
-        public void Init(InputManager inputManager, BulletsManager bulletsManager)
+        public void Init(InputManager inputManager, BulletCountManager bulletsManager)
         {
             _currentSelectBulletType = BulletType.StandardBullet;
             _inputManager = inputManager;

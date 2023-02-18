@@ -18,27 +18,10 @@ namespace UI
         [SerializeField]
         private Image[] _chamber = default;
 
-        [Header("各弾の色")]
-        [SerializeField]
-        private Color _standardBulletImage = default;
-        [SerializeField]
-        private Color _penetrateBulletImage = default;
-        [SerializeField]
-        private Color _reflectBulletImage = default;
-        [SerializeField]
-        private Color _shellCaseImage = default;
-
         private PlayerController _playerController = null;
-        private Dictionary<BulletType, Color> _bulletColors = new Dictionary<BulletType, Color>();
 
         public void Init(PlayerController playerController)
         {
-            _bulletColors.Add(BulletType.StandardBullet, _standardBulletImage);
-            _bulletColors.Add(BulletType.PenetrateBullet, _penetrateBulletImage);
-            _bulletColors.Add(BulletType.ReflectBullet, _reflectBulletImage);
-            _bulletColors.Add(BulletType.ShellCase, _shellCaseImage);
-            _bulletColors.Add(BulletType.Empty, Color.clear);
-
             _playerController = playerController;
 
             // 発砲時シリンダーをアニメーションさせる
@@ -60,13 +43,17 @@ namespace UI
         {
             try
             {
-                if (_bulletColors.TryGetValue(bulletType, out Color result))
+                if (bulletType == BulletType.ShellCase)
                 {
-                    _chamber[targetChamberNumber].color = result;
+                    _chamber[targetChamberNumber].color = Color.yellow;
+                }
+                else if (_playerController.BulletDataBase.Bullets.TryGetValue(bulletType, out BulletBase result))
+                {
+                    _chamber[targetChamberNumber].color = result.Color;
                 }
                 else
                 {
-                    Debug.LogWarning("ディクショナリから値の取得に失敗した、、、");
+                    _chamber[targetChamberNumber].color = Color.clear;
                 }
             }
             catch (IndexOutOfRangeException e)
