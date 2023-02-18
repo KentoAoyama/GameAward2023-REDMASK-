@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3005489627961657126
+--- !u!1 &8777320878252028836
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,40 +8,40 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3005489627961657124}
-  - component: {fileID: 3005489627961657127}
-  - component: {fileID: 1594042599712387288}
-  - component: {fileID: 8861332033661332301}
-  - component: {fileID: 5568706757169289739}
-  m_Layer: 0
-  m_Name: StandardBullet
+  - component: {fileID: 8777320878252028838}
+  - component: {fileID: 8777320878252028837}
+  - component: {fileID: 5072679897967625306}
+  - component: {fileID: 2104007290288270985}
+  - component: {fileID: 2641893296883569683}
+  m_Layer: 8
+  m_Name: Penetrate Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3005489627961657124
+--- !u!4 &8777320878252028838
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3005489627961657126}
+  m_GameObject: {fileID: 8777320878252028836}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.6289212, y: -1.1383219, z: 0}
+  m_LocalPosition: {x: 0.5250797, y: -7.1298523, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &3005489627961657127
+--- !u!212 &8777320878252028837
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3005489627961657126}
+  m_GameObject: {fileID: 8777320878252028836}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -87,19 +87,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!50 &1594042599712387288
+--- !u!50 &5072679897967625306
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3005489627961657126}
+  m_GameObject: {fileID: 8777320878252028836}
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 100000
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -108,38 +108,38 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &8861332033661332301
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3005489627961657126}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 054013a9e058fb54f9aa4fa26aefa78d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _lifeTime: 1
-  _shootSpeed: 8
-  _attackPower: 1
-  _gameSprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  _bulletSelectUISprite: {fileID: 21300000, guid: f9161c6c9e06dc445ada3ee16d991f90, type: 3}
-  _cylinderUISprite: {fileID: 21300000, guid: f142199a8a177414bb568cfa02bf929b, type: 3}
-  _color: {r: 1, g: 1, b: 1, a: 1}
---- !u!58 &5568706757169289739
+--- !u!58 &2104007290288270985
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3005489627961657126}
+  m_GameObject: {fileID: 8777320878252028836}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: c580ab70c0d418148b2c766012307118, type: 2}
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &2641893296883569683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8777320878252028836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d219fb21e11a1c479890ec14a85b2be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lifeTime: 1
+  _shootSpeed: 20
+  _attackPower: 1
+  _gameSprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  _bulletSelectUISprite: {fileID: 21300000, guid: f9161c6c9e06dc445ada3ee16d991f90, type: 3}
+  _cylinderUISprite: {fileID: 21300000, guid: f142199a8a177414bb568cfa02bf929b, type: 3}
+  _color: {r: 1, g: 0, b: 0, a: 1}
