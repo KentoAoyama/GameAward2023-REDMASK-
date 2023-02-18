@@ -14,7 +14,7 @@ namespace Player
             SetAction<float>(_inputActionCollection.Player.Jump, InputType.Jump);
             SetAction<Vector2>(_inputActionCollection.Player.LookingAngle, InputType.LookingAngle);
             SetAction<float>(_inputActionCollection.Player.Fire1, InputType.Fire1);
-            SetAction<float>(_inputActionCollection.Player.Fire2, InputType.Fire2);
+            SetAction<float>(_inputActionCollection.Player.Avoidance, InputType.Avoidance);
             SetAction<float>(_inputActionCollection.Player.CrossButtonHorizontal, InputType.HorizontalSelect);
             SetAction<float>(_inputActionCollection.Player.LoadBullet, InputType.LoadBullet);
         }
@@ -32,7 +32,7 @@ namespace Player
         /// <summary> 攻撃ボタン </summary>
         Fire1,
         /// <summary> 回避ボタン </summary>
-        Fire2,
+        Avoidance,
         /// <summary> 選択用 横入力 </summary>
         HorizontalSelect,
         /// <summary> リロード入力 </summary>
