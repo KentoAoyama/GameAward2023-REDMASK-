@@ -29,7 +29,7 @@ namespace Player
 
         private PlayerController _playerController = null;
         /// <summary> シリンダーを表現する値 </summary>
-        private BulletBase[] _cylinder = new BulletBase[6];
+        private IStoreableInChamber[] _cylinder = new IStoreableInChamber[6];
         /// <summary> トリガーを引いたときに発射するチェンバーの位置を表現する値 </summary>
         private int _currentChamber = 0;
         /// <summary> 撃つ方向 </summary>
@@ -40,7 +40,7 @@ namespace Player
         /// <summary> 現在のチェンバーの位置 </summary>
         public int CurrentChamber => _currentChamber;
         /// <summary> 現在のシリンダーの状態 </summary>
-        public BulletBase[] Cylinder => _cylinder;
+        public IStoreableInChamber[] Cylinder => _cylinder;
         /// <summary> 発砲可能かどうかを表す値 </summary>
         public bool CanFire => _canFire;
 
@@ -105,7 +105,7 @@ namespace Player
         /// <summary> 一つのチェンバーの 弾, 殻薬莢を排出する。 </summary>
         /// /// <param name="chamberNumber"> 排出するチェンバーの位置 </param>
         /// <returns> 排出後のシリンダーの状態を返す。 </returns>
-        public BulletBase[] EjectBulletsAndShells(int chamberNumber)
+        public IStoreableInChamber[] EjectBulletsAndShells(int chamberNumber)
         {
             try
             {
@@ -123,11 +123,11 @@ namespace Player
         }
         /// <summary> 全ての殻薬莢を排出する。 </summary>
         /// <returns> 排出後のシリンダーの状態を返す。 </returns>
-        public BulletBase[] EjectShellsAll()
+        public IStoreableInChamber[] EjectShellsAll()
         {
             for (int i = 0; i < _cylinder.Length; i++)
             {
-                if (_cylinder[i] is IShellCase)
+                if (_cylinder[i] is ShellCase)
                 {
                     _cylinder[i] = null;
                     OnChamberStateChanged?.Invoke(i, BulletType.Empty);
@@ -137,7 +137,7 @@ namespace Player
         }
         /// <summary> 全てのチェンバーの 弾, 殻薬莢を排出する。 </summary>
         /// <returns> 排出後のシリンダーの状態を返す。 </returns>
-        public BulletBase[] EjectBulletsAndShellsAll()
+        public IStoreableInChamber[] EjectBulletsAndShellsAll()
         {
             for (int i = 0; i < _cylinder.Length; i++)
             {
@@ -150,14 +150,12 @@ namespace Player
         public async void Fire()
         {
             // 弾であれば発射する。その後、殻薬莢が残る。
-            if (_cylinder[_currentChamber] is IBullet)
+            if (_cylinder[_currentChamber] is BulletBase)
             {
-                // 弾を生成し、弾のセットアップ処理を実行する
-                if (GameObject.Instantiate(_cylinder[_currentChamber].gameObject, _muzzleTransform.position, Quaternion.identity).
-                    TryGetComponent(out BulletControllerBase bc))
-                {
-                    bc.Setup(_aimingAngle, _nonCollisionTarget);
-                }
+                var bullet = _cylinder[_currentChamber] as BulletBase;
+                // 弾を複製し、弾のセットアップ処理を実行する
+                var bulletClone = GameObject.Instantiate(bullet.gameObject, _muzzleTransform.position, Quaternion.identity);
+                bulletClone.GetComponent<BulletBase>().Setup(_aimingAngle, _nonCollisionTarget);
 
                 _cylinder[_currentChamber] = _shellCase; // 殻薬莢を残す
                 OnChamberStateChanged?.Invoke(_currentChamber, BulletType.ShellCase);

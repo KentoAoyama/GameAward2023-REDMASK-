@@ -1,7 +1,5 @@
-// 日本語対応
+
 using Bullet;
-using System.Collections;
-using System.Collections.Generic;
 using UI;
 using UnityEngine;
 
@@ -13,9 +11,6 @@ namespace Player
     [System.Serializable]
     public class RevolverOperator
     {
-        [SerializeField]
-        private UIController _uiController = default;
-
         private PlayerController _playerController = null;
 
         public void Init(PlayerController playerController)
@@ -30,26 +25,40 @@ namespace Player
             {
                 _playerController.Revolver.Fire();
             }
+            // リロード処理
             if (_playerController.InputManager.IsPressed[InputType.LoadBullet])
             {
-                // 全ての殻薬莢を排出する
+                // 排莢する
                 var cylinder = _playerController.Revolver.EjectShellsAll();
-                // 空きのチャンバーに現在選択中の弾を装填する
+                // 空いているチャンバーを検索する。
                 var index = FindEmptyChamber();
-                if (index != -1)
+                if (index != -1) // 空いているチャンバーが見つかった場合の処理
                 {
-                    if (_playerController.BulletsManager.Bullets.TryGetValue(
-                        _uiController.BulletSelectUIPresenter.CurrentSelectBulletType, out BulletBase bullet))
+                    // UIで現在選択している弾を装填する
+                    if (_playerController.BulletDataBase.Bullets.TryGetValue(
+                            _playerController.UIController.BulletSelectUIPresenter.CurrentSelectBulletType,
+                            out BulletBase bullet))
                     {
-                        _playerController.Revolver.Cylinder[index] = bullet;
-                        _playerController.Revolver.OnChamberStateChanged(index, _uiController.BulletSelectUIPresenter.CurrentSelectBulletType);
+                        // 弾を減らす。弾を減らせなかった場合、処理しない。
+                        if (_playerController.BulletCountManager.ReduceOneBullet(_playerController.UIController.BulletSelectUIPresenter.CurrentSelectBulletType))
+                        {
+                            _playerController.Revolver.Cylinder[index] = bullet;
+                            _playerController.Revolver.OnChamberStateChanged
+                                (index, _playerController.UIController.BulletSelectUIPresenter.CurrentSelectBulletType);
+                        }
+                    }
+                    else // 弾の取得に失敗した場合の処理
+                    {
+                        Debug.LogError(
+                            $"装填に失敗しました。\n" +
+                            $"_playerController.BulletDataBase.Bulletsに" +
+                            $"{_playerController.UIController.BulletSelectUIPresenter.CurrentSelectBulletType}" +
+                            $"は登録されていません！修正してください！");
                     }
                 }
             }
         }
-        /// <summary>
-        /// 空のチャンバーを見つける
-        /// </summary>
+        /// <summary> 空のチャンバーを見つける </summary>
         /// <returns> 空のチャンバーの位置。無い場合 -1を返す。 </returns>
         private int FindEmptyChamber()
         {

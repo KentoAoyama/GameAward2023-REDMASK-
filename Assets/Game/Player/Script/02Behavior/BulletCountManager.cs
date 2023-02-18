@@ -10,15 +10,8 @@ namespace Player
     /// プレイヤーが所持する弾を管理するクラス。
     /// </summary>
     [System.Serializable]
-    public class BulletsManager
+    public class BulletCountManager
     {
-        [Tooltip("標準的な弾を割り当ててください"), SerializeField]
-        private StandardBullet _standardBullet = default;
-        [Tooltip("貫通弾を割り当ててください"), SerializeField]
-        private PenetrateBullet _penetrateBullet = default;
-        [Tooltip("反射弾を割り当ててください"), SerializeField]
-        private ReflectBullet _reflectBullet = default;
-
         /// <summary> 標準的な銃の弾の"所持数"を表現する値 </summary>
         private ReactiveProperty<int> _standardBulletCount = new ReactiveProperty<int>();
         /// <summary> 敵を貫通する弾の"所持数"を表現する値 </summary>
@@ -26,7 +19,7 @@ namespace Player
         /// <summary> 壁を反射する弾の"所持数"を表現する値 </summary>
         private ReactiveProperty<int> _reflectBulletCount = new ReactiveProperty<int>();
 
-        private Dictionary<BulletType, ReactiveProperty<int>> _bullets
+        private Dictionary<BulletType, ReactiveProperty<int>> _bulletCounts
             = new Dictionary<BulletType, ReactiveProperty<int>>();
 
         /// <summary> 標準的な銃の弾の"所持数"を表現する値 </summary>
@@ -35,48 +28,48 @@ namespace Player
         public IReadOnlyReactiveProperty<int> PenetrateBulletCount => _penetrateBulletCount;
         /// <summary> 壁を反射する弾の"所持数"を表現する値 </summary>
         public IReadOnlyReactiveProperty<int> ReflectBulletCount => _reflectBulletCount;
-        public Dictionary<BulletType, BulletBase> Bullets { get; private set; } = new Dictionary<BulletType, BulletBase>();
+        public Dictionary<BulletType, IReadOnlyReactiveProperty<int>> BulletCounts { get; private set; } = new Dictionary<BulletType, IReadOnlyReactiveProperty<int>>();
 
         /// <summary> このクラスの初期化処理 </summary>
         public void Setup()
         {
             // 各ReactivePropertyをディクショナリに登録する。
-            _bullets.Add(BulletType.StandardBullet, _standardBulletCount);
-            _bullets.Add(BulletType.PenetrateBullet, _penetrateBulletCount);
-            _bullets.Add(BulletType.ReflectBullet, _reflectBulletCount);
-            // 
-            Bullets.Add(BulletType.StandardBullet, _standardBullet);
-            Bullets.Add(BulletType.PenetrateBullet, _penetrateBullet);
-            Bullets.Add(BulletType.ReflectBullet, _reflectBullet);
+            _bulletCounts.Add(BulletType.StandardBullet, _standardBulletCount);
+            _bulletCounts.Add(BulletType.PenetrateBullet, _penetrateBulletCount);
+            _bulletCounts.Add(BulletType.ReflectBullet, _reflectBulletCount);
+
+            BulletCounts.Add(BulletType.StandardBullet, _standardBulletCount);
+            BulletCounts.Add(BulletType.PenetrateBullet, _penetrateBulletCount);
+            BulletCounts.Add(BulletType.ReflectBullet, _reflectBulletCount);
         }
         /// <summary> 弾数を設定する </summary>
         /// <param name="type"> 弾の種類 </param>
         /// <param name="setValue"> 設定する値 </param>
         public void SetBullet(BulletType type, int setValue)
         {
-            _bullets[type].Value = setValue;
+            _bulletCounts[type].Value = setValue;
         }
-        /// <summary> 弾を装填する </summary>
-        /// <param name="type"> 弾の種類 </param>
-        /// <returns> 装填する弾があるとき、弾を、そうでないときnullを返す。 </returns>
-        public BulletBase LoadBullet(BulletType type)
+        /// <summary>
+        /// 所持数から弾を減らす
+        /// </summary>
+        public bool ReduceOneBullet(BulletType type)
         {
-            // 弾の所持数を確認する。
-            if (_bullets[type].Value > 0)
+            if (_bulletCounts[type].Value > 0)
             {
-                _bullets[type].Value--; // 弾の所持数を減らす。
-                return _standardBullet; // 弾のインスタンスを返す。
-            } // 弾がある場合の処理。
+                _bulletCounts[type].Value--;
+                return true;
+            }
             else
             {
-                return null;
-            } // 弾が無ければ null を返す。
+                Debug.LogWarning($"{type} の所持数はゼロです。");
+                return false;
+            }
         }
         /// <summary> 弾を拾う処理（指定された種類の弾を一つだけ増やす） </summary>
         /// <param name="type"> 弾の種類 </param>
         public void GetBullet(BulletType type)
         {
-            _bullets[type].Value++;
+            _bulletCounts[type].Value++;
         }
     }
 }
