@@ -6,7 +6,7 @@ namespace Bullet
     /// 貫通弾クラス
     /// </summary>
     [System.Serializable]
-    public class PenetrateBullet : BulletControllerBase
+    public class PenetrateBullet : BulletBase
     {
         public override BulletType Type => BulletType.PenetrateBullet;
         protected override void OnHit(Collider2D target)
