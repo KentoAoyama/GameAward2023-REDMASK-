@@ -64,7 +64,7 @@ public partial class @GameController : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Fire2"",
+                    ""name"": ""Avoidance"",
                     ""type"": ""Button"",
                     ""id"": ""632c294e-5f12-4caa-a446-e1ff53733418"",
                     ""expectedControlType"": ""Button"",
@@ -185,7 +185,18 @@ public partial class @GameController : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Fire2"",
+                    ""action"": ""Avoidance"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3f359765-e68b-4752-a84f-120799c6677a"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Avoidance"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -975,7 +986,7 @@ public partial class @GameController : IInputActionCollection2, IDisposable
         m_Player_Vertical = m_Player.FindAction("Vertical", throwIfNotFound: true);
         m_Player_LookingAngle = m_Player.FindAction("LookingAngle", throwIfNotFound: true);
         m_Player_Fire1 = m_Player.FindAction("Fire1", throwIfNotFound: true);
-        m_Player_Fire2 = m_Player.FindAction("Fire2", throwIfNotFound: true);
+        m_Player_Avoidance = m_Player.FindAction("Avoidance", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_CrossButtonHorizontal = m_Player.FindAction("Cross Button Horizontal", throwIfNotFound: true);
         m_Player_LoadBullet = m_Player.FindAction("LoadBullet", throwIfNotFound: true);
@@ -1054,7 +1065,7 @@ public partial class @GameController : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Vertical;
     private readonly InputAction m_Player_LookingAngle;
     private readonly InputAction m_Player_Fire1;
-    private readonly InputAction m_Player_Fire2;
+    private readonly InputAction m_Player_Avoidance;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_CrossButtonHorizontal;
     private readonly InputAction m_Player_LoadBullet;
@@ -1066,7 +1077,7 @@ public partial class @GameController : IInputActionCollection2, IDisposable
         public InputAction @Vertical => m_Wrapper.m_Player_Vertical;
         public InputAction @LookingAngle => m_Wrapper.m_Player_LookingAngle;
         public InputAction @Fire1 => m_Wrapper.m_Player_Fire1;
-        public InputAction @Fire2 => m_Wrapper.m_Player_Fire2;
+        public InputAction @Avoidance => m_Wrapper.m_Player_Avoidance;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @CrossButtonHorizontal => m_Wrapper.m_Player_CrossButtonHorizontal;
         public InputAction @LoadBullet => m_Wrapper.m_Player_LoadBullet;
@@ -1091,9 +1102,9 @@ public partial class @GameController : IInputActionCollection2, IDisposable
                 @Fire1.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire1;
                 @Fire1.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire1;
                 @Fire1.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire1;
-                @Fire2.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire2;
-                @Fire2.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire2;
-                @Fire2.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire2;
+                @Avoidance.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAvoidance;
+                @Avoidance.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAvoidance;
+                @Avoidance.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAvoidance;
                 @Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
@@ -1119,9 +1130,9 @@ public partial class @GameController : IInputActionCollection2, IDisposable
                 @Fire1.started += instance.OnFire1;
                 @Fire1.performed += instance.OnFire1;
                 @Fire1.canceled += instance.OnFire1;
-                @Fire2.started += instance.OnFire2;
-                @Fire2.performed += instance.OnFire2;
-                @Fire2.canceled += instance.OnFire2;
+                @Avoidance.started += instance.OnAvoidance;
+                @Avoidance.performed += instance.OnAvoidance;
+                @Avoidance.canceled += instance.OnAvoidance;
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
@@ -1291,7 +1302,7 @@ public partial class @GameController : IInputActionCollection2, IDisposable
         void OnVertical(InputAction.CallbackContext context);
         void OnLookingAngle(InputAction.CallbackContext context);
         void OnFire1(InputAction.CallbackContext context);
-        void OnFire2(InputAction.CallbackContext context);
+        void OnAvoidance(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnCrossButtonHorizontal(InputAction.CallbackContext context);
         void OnLoadBullet(InputAction.CallbackContext context);

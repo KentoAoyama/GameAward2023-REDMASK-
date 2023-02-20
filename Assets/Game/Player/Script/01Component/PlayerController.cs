@@ -31,6 +31,8 @@ namespace Player
         private BulletDataBase _bulletDataBase = default;
         [SerializeField]
         private LifeController _lifeController = default;
+        [SerializeField]
+        private Avoidance _avoidance = default;
 
         private Rigidbody2D _rigidbody2D = null;
 
@@ -46,6 +48,7 @@ namespace Player
         public BulletCountManager BulletCountManager => _bulletCountManager;
         public BulletDataBase BulletDataBase => _bulletDataBase;
         public LifeController LifeController => _lifeController;
+        public Avoidance Avoidance => _avoidance;
 
 
         private void Start()
@@ -59,6 +62,7 @@ namespace Player
             _bulletCountManager.Setup();
             _revolverOperator.Init(this);
             _bulletDataBase.Init();
+            _avoidance.Init(this);
             TestRevolverLoading(); // テスト
         }
         private void Update()
@@ -69,6 +73,7 @@ namespace Player
             _revolverOperator.Update();   // リボルバー操作の更新
             _revolver.Update();           // リボルバーの更新処理
             _revolver.OnDrawAimingLine(); // 照準描画処理（カメラの更新タイミングと合わせる必要有り）
+            _avoidance.Update();          // 回避制御
         }
         private void OnDrawGizmosSelected()
         {

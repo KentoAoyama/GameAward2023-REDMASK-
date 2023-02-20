@@ -20,8 +20,6 @@ namespace Player
         private Transform _muzzleTransform = default;
         [Tooltip("弾の発射インターバル"), SerializeField]
         private float _interval = 0.4f;
-        [Tooltip("弾の非接触対象"), SerializeField]
-        private Collider2D[] _nonCollisionTarget = default;
         [Tooltip("照準描画用のラインレンダラーを割り当ててください"), SerializeField]
         private LineRenderer _aimingLineRenderer = null;
         [Tooltip("ラインの最大長さ"), SerializeField]
@@ -155,7 +153,7 @@ namespace Player
                 var bullet = _cylinder[_currentChamber] as BulletBase;
                 // 弾を複製し、弾のセットアップ処理を実行する
                 var bulletClone = GameObject.Instantiate(bullet.gameObject, _muzzleTransform.position, Quaternion.identity);
-                bulletClone.GetComponent<BulletBase>().Setup(_aimingAngle, _nonCollisionTarget);
+                bulletClone.GetComponent<BulletBase>().Setup(_aimingAngle);
 
                 _cylinder[_currentChamber] = _shellCase; // 殻薬莢を残す
                 OnChamberStateChanged?.Invoke(_currentChamber, BulletType.ShellCase);

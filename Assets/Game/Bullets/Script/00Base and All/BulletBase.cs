@@ -22,9 +22,8 @@ namespace Bullet
         [Tooltip("本物の弾のスプライトが届くまで、色で区別するためこの値を使用して区別･管理する。"), SerializeField]
         private Color _color = default;
 
-        private Rigidbody2D _rigidbody2D = null;
+        protected Rigidbody2D _rigidbody2D = null;
         private Vector2 _shootAngle = default;
-        private Collider2D[] _nonCollisionTarget = null;
 
         /// <summary> この弾の種類を表現するプロパティ </summary>
         public abstract BulletType Type { get; }
@@ -37,10 +36,9 @@ namespace Bullet
         /// <summary> 本物の弾のスプライトが届くまで、色で区別するためこの値を使用して区別･管理する。 </summary>
         public Color Color => _color;
 
-        public void Setup(Vector2 shootAngle, Collider2D[] nonCollisionTarget)
+        public void Setup(Vector2 shootAngle)
         {
             _shootAngle = shootAngle;
-            _nonCollisionTarget = nonCollisionTarget;
         }
         private void Start()
         {
@@ -52,19 +50,14 @@ namespace Bullet
         }
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            foreach (var e in _nonCollisionTarget)
-            {
-                if (e == collision) return;
-            } // 非接触対象は無視する
-
-            // 接触時処理
-            OnHit(collision);
+            OnHitTrigger(collision);
         }
-        /// <summary>
-        /// 接触時の処理<br/>
-        /// この関数内で、敵に当たった時の処理、壁に接触した時の処理、等を記述してください。
-        /// </summary>
-        /// <param name="target"> 接触相手 </param>
-        protected abstract void OnHit(Collider2D target);
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            OnHitCollision(collision);
+        }
+        protected abstract void OnHitTrigger(Collider2D target);
+        protected abstract void OnHitCollision(Collision2D target);
     }
 }

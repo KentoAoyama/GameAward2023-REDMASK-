@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3385030822982417470}
   - component: {fileID: 8479472840730187501}
   - component: {fileID: -7759632896529640271}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Reflect Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103,7 +103,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 42e97538bb9129046815ed540cb5914b, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
@@ -118,7 +118,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -143,3 +143,4 @@ MonoBehaviour:
   _bulletSelectUISprite: {fileID: 21300000, guid: f9161c6c9e06dc445ada3ee16d991f90, type: 3}
   _cylinderUISprite: {fileID: 21300000, guid: f142199a8a177414bb568cfa02bf929b, type: 3}
   _color: {r: 0, g: 1, b: 1, a: 1}
+  _wallTag: 

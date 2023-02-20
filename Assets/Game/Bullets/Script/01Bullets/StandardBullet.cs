@@ -6,7 +6,13 @@ namespace Bullet
     public class StandardBullet : BulletBase
     {
         public override BulletType Type => BulletType.StandardBullet;
-        protected override void OnHit(Collider2D target)
+
+        protected override void OnHitCollision(Collision2D target)
+        {
+
+        }
+
+        protected override void OnHitTrigger(Collider2D target)
         {
             // ダメージを加える
             if (target.TryGetComponent(out IDamageable hit))

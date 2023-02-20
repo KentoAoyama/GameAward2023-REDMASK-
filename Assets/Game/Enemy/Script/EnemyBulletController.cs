@@ -12,8 +12,6 @@ namespace Enemy
         private float _shootPower = 1f;
         [SerializeField]
         private float _attackPower = 1f;
-        [SerializeField]
-        private LayerMask _nonCollisionTarget = default;
 
         private Vector2 _shootAngle = default;
 
