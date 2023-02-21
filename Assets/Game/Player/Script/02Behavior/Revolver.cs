@@ -52,7 +52,7 @@ namespace Player
         public void Update()
         {
             // 撃つ方向を保存する
-            if (_playerController.DeviceManager.CurrentDevice == Input.Device.GamePad) // ゲームパッド操作の場合
+            if (_playerController.DeviceManager.CurrentDevice.Value == Input.Device.GamePad) // ゲームパッド操作の場合
             {
                 if ((_playerController.InputManager.GetValue<Vector2>(InputType.LookingAngle)).sqrMagnitude > 0.4f)
                 {
@@ -147,8 +147,15 @@ namespace Player
         /// <summary> 発砲する </summary>
         public async void Fire()
         {
+            if (_playerController.DeviceManager.CurrentDevice.Value == Input.Device.Switching)
+            {
+                _canFire = false;
+                await UniTask.WaitUntil(() => _playerController.InputManager.GetValue<float>(InputType.Fire1) < 0.01f);
+                _canFire = true;
+                return;
+            }
             // 弾であれば発射する。その後、殻薬莢が残る。
-            if (_cylinder[_currentChamber] is BulletBase)
+            else if (_cylinder[_currentChamber] is BulletBase)
             {
                 var bullet = _cylinder[_currentChamber] as BulletBase;
                 // 弾を複製し、弾のセットアップ処理を実行する
