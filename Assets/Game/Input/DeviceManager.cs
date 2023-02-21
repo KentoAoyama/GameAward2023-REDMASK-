@@ -1,6 +1,7 @@
-using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UniRx;
 
 namespace Input
 {
@@ -9,22 +10,34 @@ namespace Input
     /// </summary>
     public class DeviceManager
     {
-        private Device _currentDevice;
+        private ReactiveProperty<Device> _currentDevice = new ReactiveProperty<Device>(Device.KeyboardAndMouse);
 
-        public Device CurrentDevice => _currentDevice;
+        /// <summary>
+        /// 現在の使用デバイスを表現する値
+        /// </summary>
+        public IReadOnlyReactiveProperty<Device> CurrentDevice => _currentDevice;
 
-        public void Update()
+        public async void Update()
         {
-            // Debug.Log(_currentDevice); // どちらを使用しているか確認する用
+            // Debug.Log(_currentDevice); // 現在の使用デバイスを確認する用
             // クリックあるいはキーボードによっていずれかの入力が発生した時の処理
-            if (IsKeyboardAndMouseInput()) _currentDevice = Device.KeyboardAndMouse;
+            if (IsKeyboardAndMouseInput() && _currentDevice.Value == Device.GamePad)
+            {
+                _currentDevice.Value = Device.Switching;
+                await UniTask.DelayFrame(1);
+                _currentDevice.Value = Device.KeyboardAndMouse;
+            }
             // ゲームパッドによっていずれかの入力が発生した時の処理
-            else if (IsGamePadInput()) _currentDevice = Device.GamePad;
+            else if (IsGamePadInput() && _currentDevice.Value == Device.KeyboardAndMouse)
+            {
+                _currentDevice.Value = Device.Switching;
+                await UniTask.DelayFrame(1);
+                _currentDevice.Value = Device.GamePad;
+            }
         }
         /// <summary>
         /// キーボード、マウスのいずれかのボタンが押下されたときtrueを返す
         /// </summary>
-        /// <returns></returns>
         private bool IsKeyboardAndMouseInput()
         {
             return
@@ -62,15 +75,19 @@ namespace Input
                     Gamepad.current.dpad.up.wasPressedThisFrame ||
                     Gamepad.current.dpad.down.wasPressedThisFrame ||
 
-                    Gamepad.current.leftStick.ReadValue().sqrMagnitude > 0.8f ||
-                    Gamepad.current.rightStick.ReadValue().sqrMagnitude > 0.8f;
+                    Gamepad.current.leftStick.ReadValue().sqrMagnitude > 0.8f || // 接続した状態で実行すると1フレーム目で0.99999を返すのでGamePadスタートになる
+                    Gamepad.current.rightStick.ReadValue().sqrMagnitude > 0.8f;  // 同上
             }
             return false;
         }
     }
     public enum Device
     {
+        /// <summary> 切り替え中 </summary>
+        Switching,
+        /// <summary> キーボード, マウス </summary>
         KeyboardAndMouse,
+        /// <summary> ゲームパッド </summary>
         GamePad
     }
 }
