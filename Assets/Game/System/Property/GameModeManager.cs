@@ -23,6 +23,20 @@ public class GameModeManager
 /// </summary>
 public enum GameMode
 {
+    /// <summary> 未設定, エラー値を表現する値 </summary>
     NotSet,
+    /// <summary> タイトル </summary>
     Title,
+    /// <summary> ステージ選択 </summary>
+    StageSelect,
+    /// <summary> 準備画面（持っていく弾の選択や,ターゲット（ステージ）を選択する画面） </summary>
+    PlayerSetup,
+    /// <summary> ステージの開始演出 </summary>
+    StartPerformance,
+    /// <summary> ゲーム中を表現する値 </summary>
+    InGame,
+    /// <summary> リザルト </summary>
+    Result,
+    /// <summary> オプション（ボリューム調整, マップ確認やゲーム終了できる画面） </summary>
+    Option,
 }

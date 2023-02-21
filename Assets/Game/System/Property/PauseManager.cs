@@ -4,7 +4,6 @@ using UnityEngine;
 /// <summary>
 /// ポーズ, リジュームを管理するクラス
 /// </summary>
-[Serializable]
 public class PauseManager
 {
     /// <summary>
