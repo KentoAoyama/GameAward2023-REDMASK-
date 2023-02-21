@@ -26,10 +26,6 @@ namespace Enemy
         }
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.tag == this.tag)
-            {
-                return;
-            }
             if (collision.TryGetComponent(out PlayerController player))
             {
                 player.LifeController.Damage(_attackPower);

@@ -12,6 +12,14 @@ namespace Player
     [System.Serializable]
     public class BulletCountManager
     {
+        [Tooltip("標準弾の初期所持数"), SerializeField]
+        private int _standardBulletCountInitialValue = 50;
+        [Tooltip("貫通弾の初期所持数"), SerializeField]
+        private int _penetrateBulletCountInitialValue = 50;
+        [Tooltip("反射弾の初期所持数"), SerializeField]
+        private int _reflectBulletCountInitialValue = 50;
+
+
         /// <summary> 標準的な銃の弾の"所持数"を表現する値 </summary>
         private ReactiveProperty<int> _standardBulletCount = new ReactiveProperty<int>();
         /// <summary> 敵を貫通する弾の"所持数"を表現する値 </summary>
@@ -33,6 +41,10 @@ namespace Player
         /// <summary> このクラスの初期化処理 </summary>
         public void Setup()
         {
+            _standardBulletCount.Value = _standardBulletCountInitialValue;
+            _penetrateBulletCount.Value = _penetrateBulletCountInitialValue;
+            _reflectBulletCount.Value = _reflectBulletCountInitialValue;
+
             // 各ReactivePropertyをディクショナリに登録する。
             _bulletCounts.Add(BulletType.StandardBullet, _standardBulletCount);
             _bulletCounts.Add(BulletType.PenetrateBullet, _penetrateBulletCount);

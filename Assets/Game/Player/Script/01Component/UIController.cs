@@ -15,6 +15,8 @@ namespace UI
         private BulletSelectUIPresenter _bulletSelectUIPresenter = default;
         [SerializeField]
         private RevolverUIPresenter _revolverUIPresenter = default;
+        [SerializeField]
+        private HowToPlayUI _howToPlayUI = default;
 
         public BulletSelectUIPresenter BulletSelectUIPresenter => _bulletSelectUIPresenter;
 
@@ -22,6 +24,7 @@ namespace UI
         {
             _bulletSelectUIPresenter.Init(_playerController.InputManager, _playerController.BulletCountManager);
             _revolverUIPresenter.Init(_playerController);
+            _howToPlayUI.Setup(_playerController.DeviceManager);
         }
         private void Update()
         {

@@ -13,9 +13,15 @@ namespace Player
     {
         private PlayerController _playerController = null;
 
+        private int _myLayerIndex = default;
+        private int _ignoreLayerIndex = default;
+
         public void Init(PlayerController playerController)
         {
             _playerController = playerController;
+            // 自分と無視するレイヤーのインデックスを取得
+            _ignoreLayerIndex = LayerMask.NameToLayer("EnemyBullet"); // ここの文字列を消したい
+            _myLayerIndex = LayerMask.NameToLayer("Player"); // ここの文字列を消したい
         }
         private bool _isExecutionNow = false;
         public async void Update()
@@ -57,6 +63,7 @@ namespace Player
         {
             Debug.Log("その場回避始めええええ！！！");
             _playerController.LifeController.IsGodMode = true;
+            Physics2D.IgnoreLayerCollision(_ignoreLayerIndex, _myLayerIndex, true);
         }
         /// <summary>
         /// その場回避終了処理
@@ -65,6 +72,7 @@ namespace Player
         {
             Debug.Log("その場回避終了おおおおおおお！！！");
             _playerController.LifeController.IsGodMode = false;
+            Physics2D.IgnoreLayerCollision(_ignoreLayerIndex, _myLayerIndex, false);
         }
         /// <summary>
         /// ローリング回避開始処理

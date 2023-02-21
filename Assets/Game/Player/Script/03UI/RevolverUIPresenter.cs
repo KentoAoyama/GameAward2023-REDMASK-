@@ -33,7 +33,7 @@ namespace UI
         /// <param name="nextChamberNumber"> 次のチェンバーの位置 </param>
         private void StartCylinderAnimation(int nextChamberNumber)
         {
-            _cylinder.transform.DOLocalRotate(new Vector3(0f, 0f, (float)(nextChamberNumber * 60)), 0.2f);
+            _cylinder.transform.DOLocalRotate(new Vector3(0f, 0f, (float)(nextChamberNumber * -60)), 0.2f);
 
         }
         /// <summary> チェンバーの状態切り替え処理</summary>

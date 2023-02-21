@@ -163,7 +163,7 @@ namespace Input
         /// <typeparam name="T"> 受け取りたい型 </typeparam>
         /// <param name="type"> 入力の種類 </param>
         /// <returns></returns>
-        public T GetValue<T>(TEnum type)
+        public virtual T GetValue<T>(TEnum type)
         {
             try
             {
