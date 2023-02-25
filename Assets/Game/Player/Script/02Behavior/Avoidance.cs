@@ -11,6 +11,9 @@ namespace Player
     [System.Serializable]
     public class Avoidance
     {
+        [Tooltip("回避中の時間の速度"), SerializeField]
+        private float _timeScale = 0.7f;
+
         private PlayerController _playerController = null;
 
         private int _myLayerIndex = default;
@@ -61,25 +64,29 @@ namespace Player
         /// </summary>
         private void StartThereAvoidance()
         {
-            Debug.Log("その場回避始めええええ！！！");
+            Debug.Log("その場回避始め！");
             _playerController.LifeController.IsGodMode = true;
             Physics2D.IgnoreLayerCollision(_ignoreLayerIndex, _myLayerIndex, true);
+            // 時間の速度をゆっくりにする。
+            GameManager.Instance.TimeController.ChangeTimeSpeed(_timeScale);
         }
         /// <summary>
         /// その場回避終了処理
         /// </summary>
         private void EndThereAvoidance()
         {
-            Debug.Log("その場回避終了おおおおおおお！！！");
+            Debug.Log("その場回避終了！");
             _playerController.LifeController.IsGodMode = false;
             Physics2D.IgnoreLayerCollision(_ignoreLayerIndex, _myLayerIndex, false);
+            // 時間の速度をもとの状態に戻す。
+            GameManager.Instance.TimeController.ChangeTimeSpeed(1f);
         }
         /// <summary>
         /// ローリング回避開始処理
         /// </summary>
         private void StartRollingAvoidance()
         {
-            Debug.Log("ローリング回避始めええええ！！！");
+            Debug.Log("ローリング回避始め！");
             _playerController.LifeController.IsGodMode = true;
         }
         /// <summary>
@@ -87,7 +94,7 @@ namespace Player
         /// </summary>
         private void EndRollingAvoidance()
         {
-            Debug.Log("ローリング回避終了おおおおおおお！！！");
+            Debug.Log("ローリング回避終了！");
             _playerController.LifeController.IsGodMode = false;
         }
     }
