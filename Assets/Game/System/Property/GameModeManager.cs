@@ -19,8 +19,12 @@ public class GameModeManager
 }
 
 /// <summary>
-/// ゲームモードを表現する列挙型
+/// ゲームモードを表現する列挙型 <br/>
+/// なんでこの型を用意したか忘れた。<br/>
+/// 思い出したら必ずメモを残す。<br/>
+/// しばらく経って思い出せなかったら削除する。（2023/02/28 記載）
 /// </summary>
+[System.Serializable]
 public enum GameMode
 {
     /// <summary> 未設定, エラー値を表現する値 </summary>
