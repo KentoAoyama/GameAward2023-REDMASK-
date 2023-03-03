@@ -376,6 +376,7 @@ GameObject:
   - component: {fileID: 228279952}
   - component: {fileID: 228279951}
   - component: {fileID: 228279954}
+  - component: {fileID: 228279955}
   m_Layer: 5
   m_Name: Stage Select Button (1)
   m_TagString: Untagged
@@ -498,7 +499,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7f250ff34c88b547bb96a7595058bad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextSceneName: Stage_1
+  _nextSceneName: Prepare
+--- !u!114 &228279955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 228279949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ab2e0feb27180c4bb4fe82cfe292ceb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stageType: 2
 --- !u!1 &283423531
 GameObject:
   m_ObjectHideFlags: 0
@@ -592,6 +606,7 @@ GameObject:
   - component: {fileID: 414765634}
   - component: {fileID: 414765633}
   - component: {fileID: 414765636}
+  - component: {fileID: 414765637}
   m_Layer: 5
   m_Name: Stage Test Button
   m_TagString: Untagged
@@ -714,7 +729,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7f250ff34c88b547bb96a7595058bad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextSceneName: Stage_0_Test
+  _nextSceneName: Prepare
+--- !u!114 &414765637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 414765631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ab2e0feb27180c4bb4fe82cfe292ceb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stageType: 1
 --- !u!1 &440558522
 GameObject:
   m_ObjectHideFlags: 0
@@ -1152,6 +1180,7 @@ GameObject:
   - component: {fileID: 1424332626}
   - component: {fileID: 1424332625}
   - component: {fileID: 1424332628}
+  - component: {fileID: 1424332629}
   m_Layer: 5
   m_Name: Stage Select Button (2)
   m_TagString: Untagged
@@ -1274,7 +1303,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7f250ff34c88b547bb96a7595058bad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextSceneName: Stage_2
+  _nextSceneName: Prepare
+--- !u!114 &1424332629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1424332623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ab2e0feb27180c4bb4fe82cfe292ceb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stageType: 3
 --- !u!1 &1425437902
 GameObject:
   m_ObjectHideFlags: 0
@@ -1369,6 +1411,7 @@ GameObject:
   - component: {fileID: 1720675762}
   - component: {fileID: 1720675761}
   - component: {fileID: 1720675764}
+  - component: {fileID: 1720675765}
   m_Layer: 5
   m_Name: Stage Select Button (3)
   m_TagString: Untagged
@@ -1491,7 +1534,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7f250ff34c88b547bb96a7595058bad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextSceneName: Stage_3
+  _nextSceneName: Prepare
+--- !u!114 &1720675765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1720675759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ab2e0feb27180c4bb4fe82cfe292ceb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stageType: 4
 --- !u!1 &1999568066
 GameObject:
   m_ObjectHideFlags: 0
@@ -1505,6 +1561,7 @@ GameObject:
   - component: {fileID: 1999568069}
   - component: {fileID: 1999568068}
   - component: {fileID: 1999568071}
+  - component: {fileID: 1999568072}
   m_Layer: 5
   m_Name: Stage Select Button (4)
   m_TagString: Untagged
@@ -1627,4 +1684,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7f250ff34c88b547bb96a7595058bad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextSceneName: Stage_4
+  _nextSceneName: Prepare
+--- !u!114 &1999568072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1999568066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ab2e0feb27180c4bb4fe82cfe292ceb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stageType: 5
