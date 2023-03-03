@@ -1,3 +1,4 @@
+using System;
 using UniRx;
 
 public class GameModeManager
@@ -24,23 +25,18 @@ public class GameModeManager
 /// 思い出したら必ずメモを残す。<br/>
 /// しばらく経って思い出せなかったら削除する。（2023/02/28 記載）
 /// </summary>
-[System.Serializable]
+[Serializable]
 public enum GameMode
 {
     /// <summary> 未設定, エラー値を表現する値 </summary>
     NotSet,
-    /// <summary> タイトル </summary>
-    Title,
-    /// <summary> ステージ選択 </summary>
-    StageSelect,
-    /// <summary> 準備画面（持っていく弾の選択や,ターゲット（ステージ）を選択する画面） </summary>
-    PlayerSetup,
-    /// <summary> ステージの開始演出 </summary>
-    StartPerformance,
-    /// <summary> ゲーム中を表現する値 </summary>
-    InGame,
-    /// <summary> リザルト </summary>
-    Result,
-    /// <summary> オプション（ボリューム調整, マップ確認やゲーム終了できる画面） </summary>
-    Option,
+    /// <summary> ステージの開始演出中 </summary>
+    Start,
+    /// <summary> プレイヤーが遊ぶ
+    /// </summary>
+    PlayGame,
+    /// <summary> プレイヤー死亡 </summary>
+    PlayerDead,
+    /// <summary> ステージクリア </summary>
+    Complete,
 }

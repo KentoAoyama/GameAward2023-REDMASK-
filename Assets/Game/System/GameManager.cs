@@ -25,6 +25,7 @@ public class GameManager
     private GameModeManager _gameModeManager = new GameModeManager();
     private PauseManager _pauseManager = new PauseManager();
     private TimeController _timeController = new TimeController();
+    private StageSelectManager _stageSelectManager = new StageSelectManager();
 
     /// <summary>
     /// ゲームの状態を表現するクラス
@@ -38,4 +39,5 @@ public class GameManager
     /// 現在のゲーム内時間の速度を管理･提供するクラス
     /// </summary>
     public TimeController TimeController => _timeController;
+    public StageSelectManager StageSelectManager => _stageSelectManager;
 }
