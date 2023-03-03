@@ -30,6 +30,7 @@
 ・インスペクターに表示する変数には[Tooltip]、そうでないものにはsummaryを使用する<br>
 
 <h1> 導入済みアセット </h1>
+DOTween : https://assetstore.unity.com/packages/tools/animation/dotween-hotween-v2-27676 <br>
 <br>
 <h1> 制作人数 </h1>
 プログラマー 4名<br>
