@@ -4,7 +4,7 @@ using UnityEngine;
 /// 敵のステートマシンで使用する各ステートの基底クラス
 /// 各ステートは必ずこのクラスを継承する必要がある
 /// </summary>
-public abstract class EnemyStateBase
+public abstract class StateTypeBase
 {
     private enum Stage
     {
@@ -14,30 +14,27 @@ public abstract class EnemyStateBase
     }
 
     private Stage _stage;
-    private EnemyStateBase _nextState;
+    private StateTypeBase _nextState;
     private EnemyStateMachine _stateMachine;
 
-    public EnemyStateBase(EnemyStateMachine stateMachine)
+    public StateTypeBase(EnemyStateMachine stateMachine)
     {
         _stateMachine = stateMachine;
     }
 
-    /// <summary>
-    /// ステートの遷移処理を呼ぶと、次のEnemyStateMachineのUpdate()のタイミングから
-    /// 次のステートに切り替わる
-    /// </summary>
-    public EnemyStateBase Update()
+    /// <summary>1度の呼び出しでEnter()/Stay()/Exit()のどれか1つが実行される</summary>
+    public StateTypeBase Execute()
     {
         if (_stage == Stage.Enter)
         {
             Enter();
             _stage = Stage.Stay;
         }
-        if (_stage == Stage.Stay)
+        else if (_stage == Stage.Stay)
         {
             Stay();
         }
-        if (_stage == Stage.Exit)
+        else if (_stage == Stage.Exit)
         {
             Exit();
             _stage = Stage.Enter;
@@ -55,26 +52,28 @@ public abstract class EnemyStateBase
     public virtual void Pause() { }
     public virtual void Resume() { }
 
-    private void ChangeState(EnemyStateType type)
-    {
-        _stage = Stage.Exit;
-    }
-
     /// <summary>
-    /// 任意のステートに遷移する処理だが
+    /// EnemyStateMachineからどのステートに遷移するかが渡される
+    /// EnemyStateMachineの次のUpdate()でExit()が呼ばれた後、ステートが切り替わる
+    /// Enter()が呼ばれる前にステートを切り替える事は出来ない
     /// 既に遷移処理が呼ばれていた場合はこの遷移処理をキャンセルする
     /// </summary>
-    protected bool TryChangeState(EnemyStateType type)
+    public bool TryChangeState(StateTypeBase state)
     {
-        if (_stage == Stage.Stay)
+        if (_stage == Stage.Enter)
         {
-            ChangeState(type);
-            return true;
-        }
-        else
-        {
-            Debug.LogWarning("既に別のステートに遷移する処理が呼ばれています: " + type);
+            Debug.LogWarning("Enter()が呼ばれる前にステートを遷移することは不可能: " + state);
             return false;
         }
+        else if (_stage == Stage.Exit)
+        {
+            Debug.LogWarning("既に別のステートに遷移する処理が呼ばれています: " + state);
+            return false;
+        }
+
+        _stage = Stage.Exit;
+        _nextState = state;
+
+        return true;
     }
 }

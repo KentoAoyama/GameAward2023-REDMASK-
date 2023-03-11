@@ -2,13 +2,16 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyStateMachineStateRegister
+/// <summary>
+/// 敵のステートマシンで使用する各ステートを登録しておくクラス
+/// </summary>
+public class EnemyStateRegister
 {
     private EnemyStateMachine _stateMachine;
     private EnemyStateMachineHelper _stateMachineHelper;
-    private Dictionary<EnemyStateType, EnemyStateBase> _stateDic = new();
+    private Dictionary<EnemyStateType, StateTypeBase> _stateDic = new();
 
-    public EnemyStateMachineStateRegister(EnemyStateMachine stateMachine, EnemyStateMachineHelper helper)
+    public EnemyStateRegister(EnemyStateMachine stateMachine, EnemyStateMachineHelper helper)
     {
         _stateMachine = stateMachine;
         _stateMachineHelper = helper;
@@ -20,22 +23,22 @@ public class EnemyStateMachineStateRegister
     /// </summary>
     public void Register(EnemyStateType type)
     {
-        EnemyStateBase state = CreateInstance(type);
+        StateTypeBase state = CreateInstance(type);
         _stateDic.Add(type, state);
     }
 
-    private EnemyStateBase CreateInstance(EnemyStateType type)
+    private StateTypeBase CreateInstance(EnemyStateType type)
     {
         Type stateClass = _stateMachineHelper.GetStateClassTypeWithEnum(type);
         object[] args = { _stateMachine };
-        EnemyStateBase instance = (EnemyStateBase)Activator.CreateInstance(stateClass, args);
+        StateTypeBase instance = (StateTypeBase)Activator.CreateInstance(stateClass, args);
 
         return instance;
     }
 
-    public EnemyStateBase GetState(EnemyStateType type)
+    public StateTypeBase GetState(EnemyStateType type)
     {
-        if (_stateDic.TryGetValue(type, out EnemyStateBase state))
+        if (_stateDic.TryGetValue(type, out StateTypeBase state))
         {
             return state;
         }

@@ -2,22 +2,6 @@ using System;
 using UnityEngine;
 
 /// <summary>
-/// 敵のステートマシンで取りうるステートの種類
-/// 各ステートは必ずこの列挙型のうちのどれかに対応していなければならない
-/// </summary>
-public enum EnemyStateType
-{
-    Base, // 各ステートの基底クラス用
-    Idle,
-    Search,
-    Move,
-    Attack,
-    Damage,
-    Death,
-    Reflection,
-}
-
-/// <summary>
 /// 汎用的な処理をまとめたクラス
 /// </summary>
 public class EnemyStateMachineHelper
@@ -30,8 +14,8 @@ public class EnemyStateMachineHelper
     {
         switch (type)
         {
-            case EnemyStateType.Idle: return typeof(EnemyStateIdle);
-            case EnemyStateType.Search: return typeof(EnemyStateSearch);
+            case EnemyStateType.Idle: return typeof(StateTypeIdle);
+            case EnemyStateType.Search: return typeof(StateTypeSearch);
             default:
                 Debug.LogError("対応するステートが紐づけられていません: " + type);
                 return null;
