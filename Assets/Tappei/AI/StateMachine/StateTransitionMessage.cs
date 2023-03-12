@@ -1,6 +1,6 @@
 /// <summary>
 /// この構造体のメッセージを送受信することでステートの遷移を行う
-/// StateTransitionMessageSender/Receiverクラスで送信/受信をする
+/// StateTransitionMessengerクラスから送信され、ステートマシンが受信する
 /// </summary>
 public struct StateTransitionMessage
 {

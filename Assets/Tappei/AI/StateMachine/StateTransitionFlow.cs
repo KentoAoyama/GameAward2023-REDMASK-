@@ -2,8 +2,15 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 各ステートの遷移を登録するクラス
+/// ステートマシンはこのクラスを用いてどのステートに遷移すれば良いのかを知る
+/// </summary>
 public class StateTransitionFlow : MonoBehaviour
 {
+    /// <summary>
+    /// インスペクター上で各ステートの遷移を割り当てるための構造体
+    /// </summary>
     [Serializable]
     private struct TransitionFlow
     {
@@ -23,6 +30,11 @@ public class StateTransitionFlow : MonoBehaviour
 
     private void Awake()
     {
+        InitCreateDic();
+    }
+
+    private void InitCreateDic()
+    {
         _transitionDic = new(_transitionFlow.Length);
         foreach (TransitionFlow flow in _transitionFlow)
         {
@@ -30,15 +42,19 @@ public class StateTransitionFlow : MonoBehaviour
         }
     }
 
-    public StateType GetNextState(StateType currentState, StateTransitionTrigger trigger)
+    /// <summary>
+    /// ステートと遷移条件に対応した遷移先のStateTypeを取得する
+    /// StateTypeであってステートを取得しているわけではないので注意
+    /// </summary>
+    public StateType GetNextStateType(StateType current, StateTransitionTrigger trigger)
     {
-        if (_transitionDic.TryGetValue((currentState, trigger), out StateType nextState))
+        if (_transitionDic.TryGetValue((current, trigger), out StateType next))
         {
-            return nextState;
+            return next;
         }
         else
         {
-            Debug.LogError("遷移先が登録されていません: " + currentState + " " + trigger);
+            Debug.LogError("遷移先が登録されていません: " + current + " " + trigger);
             return StateType.Idle;
         }
     }

@@ -23,9 +23,12 @@ public abstract class StateTypeBase
         _stateMachine = stateMachine;
     }
 
-    public StateType StateType;
+    public StateType StateType { get; }
 
-    /// <summary>1度の呼び出しでEnter()/Stay()/Exit()のどれか1つが実行される</summary>
+    /// <summary>
+    /// 1度の呼び出しでステートの状態に応じて
+    /// 遷移した際の処理、そのステート中の処理、抜ける際の処理のうちどれか1つが実行される
+    /// </summary>
     public StateTypeBase Execute()
     {
         if (_stage == Stage.Enter)
@@ -56,10 +59,8 @@ public abstract class StateTypeBase
     public virtual void Resume() { }
 
     /// <summary>
-    /// EnemyStateMachineからどのステートに遷移するかが渡される
-    /// EnemyStateMachineの次のUpdate()でExit()が呼ばれた後、ステートが切り替わる
-    /// Enter()が呼ばれる前にステートを切り替える事は出来ない
-    /// 既に遷移処理が呼ばれていた場合はこの遷移処理をキャンセルする
+    /// このメソッドを呼んだ場合、ステートマシンで次に現在のステートのExecute()を呼んだ際
+    /// Exit()が実行された後、ステートが切り替わる
     /// </summary>
     public bool TryChangeState(StateTypeBase state)
     {

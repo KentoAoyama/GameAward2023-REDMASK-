@@ -1,7 +1,7 @@
 using UnityEngine;
 
 /// <summary>
-/// プレイヤーを探すために移動する状態のクラス
+/// プレイヤーを探すために移動するステートのクラス
 /// </summary>
 public class StateTypeSearch : StateTypeBase
 {

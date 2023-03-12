@@ -1,9 +1,7 @@
 using UnityEngine;
-using UniRx;
-using System;
 
 /// <summary>
-/// 立ち止まっている状態のクラス
+/// 立ち止まっているステートのクラス
 /// </summary>
 public class StateTypeIdle : StateTypeBase
 {

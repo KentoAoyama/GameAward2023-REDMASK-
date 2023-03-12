@@ -2,9 +2,9 @@ using System;
 using UnityEngine;
 
 /// <summary>
-/// 汎用的な処理をまとめたクラス
+/// ステートマシンで使用する汎用的な処理をまとめたヘルパークラス
 /// </summary>
-public class EnemyStateMachineHelper
+public class StateMachineHelper
 {
     /// <summary>
     /// 列挙型に対応したステートのクラスの型を返すので

@@ -1,7 +1,7 @@
 using UniRx;
 
 /// <summary>
-/// ステート遷移のメッセージの送信を行うクラス
+/// 各機能はこのクラスを用いてステート遷移のメッセージの送信を行う
 /// メッセージの受信はステートマシンが行う
 /// </summary>
 public class StateTransitionMessenger

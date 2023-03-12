@@ -4,14 +4,21 @@ using UnityEngine;
 
 /// <summary>
 /// 敵のステートマシンで使用する各ステートを登録しておくクラス
+/// ステートマシンが自身の初期化時にこのクラスを用いて使用するステートの生成と登録を行う
 /// </summary>
-public class EnemyStateRegister
+public class StateRegister
 {
-    private EnemyStateMachine _stateMachine;
-    private EnemyStateMachineHelper _stateMachineHelper;
-    private Dictionary<StateType, StateTypeBase> _stateDic = new();
+    /// <summary>
+    /// StateTypeに1:1で対応したステートを検索するので
+    /// ステートの数だけ初期容量を確保しておく
+    /// </summary>
+    private static readonly int StateDicCap = Enum.GetValues(typeof(StateType)).Length;
 
-    public EnemyStateRegister(EnemyStateMachine stateMachine, EnemyStateMachineHelper helper)
+    private EnemyStateMachine _stateMachine;
+    private StateMachineHelper _stateMachineHelper;
+    private Dictionary<StateType, StateTypeBase> _stateDic = new(StateDicCap);
+
+    public StateRegister(EnemyStateMachine stateMachine, StateMachineHelper helper)
     {
         _stateMachine = stateMachine;
         _stateMachineHelper = helper;
@@ -23,6 +30,12 @@ public class EnemyStateRegister
     /// </summary>
     public void Register(StateType type)
     {
+        if (_stateDic.ContainsKey(type))
+        {
+            Debug.LogWarning("ステートが既に登録されています: " + type);
+            return;
+        }
+
         StateTypeBase state = CreateInstance(type);
         _stateDic.Add(type, state);
     }
@@ -30,6 +43,13 @@ public class EnemyStateRegister
     private StateTypeBase CreateInstance(StateType type)
     {
         Type stateClass = _stateMachineHelper.GetStateClassTypeWithEnum(type);
+
+        if (stateClass == null)
+        {
+            Debug.LogError("StateTypeにステートが紐づけられていません: " + type);;
+            return null;
+        }
+
         object[] args = { _stateMachine, type };
         StateTypeBase instance = (StateTypeBase)Activator.CreateInstance(stateClass, args);
 
@@ -44,7 +64,7 @@ public class EnemyStateRegister
         }
         else
         {
-            Debug.LogWarning("対応するステートが登録されていません: " + type);
+            Debug.LogError("対応するステートが登録されていません: " + type);
             return null;
         }
     }

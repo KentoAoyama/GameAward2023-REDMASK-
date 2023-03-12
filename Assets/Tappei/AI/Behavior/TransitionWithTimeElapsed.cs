@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// このクラスを用いて時間経過によるステートの遷移を行う
 /// </summary>
-public class EnemyTransitionTimer : MonoBehaviour
+public class TransitionWithTimeElapsed : MonoBehaviour
 {
     [Header("ステートの遷移までの遅延時間")]
     [SerializeField] private float _minDelay;
@@ -19,6 +19,7 @@ public class EnemyTransitionTimer : MonoBehaviour
 
     /// <summary>
     /// 一定時間後に時間経過で遷移をさせるためのメッセージを送信する
+    /// 時間経過で遷移するステートに遷移した際に呼ばれる
     /// </summary>
     public void DelayedSendTransitionMessage(StateTransitionMessenger messageSender)
     {

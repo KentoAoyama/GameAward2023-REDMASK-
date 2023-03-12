@@ -5,7 +5,7 @@ using UnityEngine;
 /// </summary>
 public class EnemyBehavior : MonoBehaviour
 {
-    [SerializeField] EnemyTransitionTimer _enemyTransitionTimer;
+    [SerializeField] TransitionWithTimeElapsed _transitionWithTimeElapsed;
 
     private StateTransitionMessenger _stateTransitionMessageSender;
 
@@ -16,7 +16,7 @@ public class EnemyBehavior : MonoBehaviour
 
     private void Start()
     {
-        _enemyTransitionTimer.DelayedSendTransitionMessage(_stateTransitionMessageSender);
+        _transitionWithTimeElapsed.DelayedSendTransitionMessage(_stateTransitionMessageSender);
     }
 
     void Update()
