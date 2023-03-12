@@ -20,7 +20,7 @@ public class EnemyTransitionTimer : MonoBehaviour
     /// <summary>
     /// 一定時間後に時間経過で遷移をさせるためのメッセージを送信する
     /// </summary>
-    public void DelayedSendTransitionMessage(StateTransitionMessageSender messageSender)
+    public void DelayedSendTransitionMessage(StateTransitionMessenger messageSender)
     {
         if (_tween != null)
         {

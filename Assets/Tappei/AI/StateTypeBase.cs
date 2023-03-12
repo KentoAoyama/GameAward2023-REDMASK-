@@ -17,10 +17,13 @@ public abstract class StateTypeBase
     private StateTypeBase _nextState;
     private EnemyStateMachine _stateMachine;
 
-    public StateTypeBase(EnemyStateMachine stateMachine)
+    public StateTypeBase(EnemyStateMachine stateMachine, StateType stateType)
     {
+        StateType = stateType;
         _stateMachine = stateMachine;
     }
+
+    public StateType StateType;
 
     /// <summary>1“x‚ÌŒÄ‚Ño‚µ‚ÅEnter()/Stay()/Exit()‚Ì‚Ç‚ê‚©1‚Â‚ªÀs‚³‚ê‚é</summary>
     public StateTypeBase Execute()

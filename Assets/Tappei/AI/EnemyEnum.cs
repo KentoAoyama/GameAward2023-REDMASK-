@@ -2,7 +2,7 @@
 /// 敵のステートマシンで取りうるステートの種類
 /// 各ステートは必ずこの列挙型のうちのどれかに対応していなければならない
 /// </summary>
-public enum EnemyStateType
+public enum StateType
 {
     Base, // 各ステートの基底クラス用
     Idle,

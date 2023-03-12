@@ -4,25 +4,33 @@ using UnityEngine;
 /// <summary>
 /// 敵のステートマシン
 /// </summary>
-[RequireComponent(typeof(StateTransitionMessageReceiver))]
+[RequireComponent(typeof(StateTransitionFlow))]
 public class EnemyStateMachine : MonoBehaviour, IPausable
 {
-    [SerializeField] private StateTransitionMessageReceiver _messageReceiver;
+    [SerializeField] StateTransitionFlow _stateTransitionFlow;
 
     private ReactiveProperty<StateTypeBase> _currentState = new();
     private EnemyStateRegister _stateRegister;
 
     public IReadOnlyReactiveProperty<StateTypeBase> CurrentState;
 
+    private int _instanceID;
+
     private void Awake()
     {
+        _instanceID = gameObject.GetInstanceID();
+
+        MessageBroker.Default.Receive<StateTransitionMessage>()
+            .Where(message => message.ID == _instanceID)
+            .Subscribe(message => Receive(message.Trigger)).AddTo(this);
+
         EnemyStateMachineHelper helper = new();
         // TODO:ステートマシンも渡しているが、ステート側で不要なら渡さなくてよい
         _stateRegister = new(this, helper);
-        _stateRegister.Register(EnemyStateType.Idle);
-        _stateRegister.Register(EnemyStateType.Search);
+        _stateRegister.Register(StateType.Idle);
+        _stateRegister.Register(StateType.Search);
 
-        _currentState.Value = _stateRegister.GetState(EnemyStateType.Idle);
+        _currentState.Value = _stateRegister.GetState(StateType.Idle);
     }
 
     void Start()
@@ -59,11 +67,18 @@ public class EnemyStateMachine : MonoBehaviour, IPausable
     void Update()
     {
         _currentState.Value = _currentState.Value.Execute();
+    }
 
-        // 遷移処理をこっちで行う
-        // ステートの処理が終わったら遷移の判定をしている
-        //StateTypeBase nextState = _stateRegister.GetState(EnemyStateType.Search);
-        //_currentState.Value.TryChangeState(nextState);
+    /// <summary>
+    /// メッセージを受信したら遷移処理を行う
+    /// </summary>
+    void Receive(StateTransitionTrigger trigger)
+    {
+        StateType type = _currentState.Value.StateType;
+
+        StateType next = _stateTransitionFlow.GetNextState(type, trigger);
+        StateTypeBase nextState = _stateRegister.GetState(next);
+        _currentState.Value.TryChangeState(nextState);
     }
 
     public void Pause() => _currentState.Value.Pause();

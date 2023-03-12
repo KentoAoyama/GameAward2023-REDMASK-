@@ -9,7 +9,7 @@ public class EnemyStateRegister
 {
     private EnemyStateMachine _stateMachine;
     private EnemyStateMachineHelper _stateMachineHelper;
-    private Dictionary<EnemyStateType, StateTypeBase> _stateDic = new();
+    private Dictionary<StateType, StateTypeBase> _stateDic = new();
 
     public EnemyStateRegister(EnemyStateMachine stateMachine, EnemyStateMachineHelper helper)
     {
@@ -21,22 +21,22 @@ public class EnemyStateRegister
     /// 取りうるステートの種類を指定して生成＆辞書型に登録する
     /// 登録したステートはGetState()によって取得可能
     /// </summary>
-    public void Register(EnemyStateType type)
+    public void Register(StateType type)
     {
         StateTypeBase state = CreateInstance(type);
         _stateDic.Add(type, state);
     }
 
-    private StateTypeBase CreateInstance(EnemyStateType type)
+    private StateTypeBase CreateInstance(StateType type)
     {
         Type stateClass = _stateMachineHelper.GetStateClassTypeWithEnum(type);
-        object[] args = { _stateMachine };
+        object[] args = { _stateMachine, type };
         StateTypeBase instance = (StateTypeBase)Activator.CreateInstance(stateClass, args);
 
         return instance;
     }
 
-    public StateTypeBase GetState(EnemyStateType type)
+    public StateTypeBase GetState(StateType type)
     {
         if (_stateDic.TryGetValue(type, out StateTypeBase state))
         {

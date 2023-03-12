@@ -5,9 +5,8 @@ using UnityEngine;
 /// </summary>
 public class StateTypeSearch : StateTypeBase
 {
-    public StateTypeSearch(EnemyStateMachine stateMachine) : base(stateMachine)
-    {
-    }
+    public StateTypeSearch(EnemyStateMachine stateMachine, StateType stateType)
+        : base(stateMachine, stateType) { }
 
     protected override void Enter()
     {

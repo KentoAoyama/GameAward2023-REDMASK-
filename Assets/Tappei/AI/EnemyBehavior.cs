@@ -7,11 +7,11 @@ public class EnemyBehavior : MonoBehaviour
 {
     [SerializeField] EnemyTransitionTimer _enemyTransitionTimer;
 
-    private StateTransitionMessageSender _stateTransitionMessageSender;
+    private StateTransitionMessenger _stateTransitionMessageSender;
 
     private void Awake()
     {
-        _stateTransitionMessageSender = new StateTransitionMessageSender(gameObject.GetInstanceID());
+        _stateTransitionMessageSender = new StateTransitionMessenger(gameObject.GetInstanceID());
     }
 
     private void Start()
