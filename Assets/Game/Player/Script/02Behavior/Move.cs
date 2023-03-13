@@ -62,7 +62,8 @@ namespace Player
             {
                 // 横の入力に応じて左右に移動する
                 _playerController.Rigidbody2D.velocity =
-                        new Vector2(_moveHorizontalDir * _currentSpeed,
+                        new Vector2(
+                            _moveHorizontalDir * _currentSpeed,
                             _playerController.Rigidbody2D.velocity.y);
             }
 
