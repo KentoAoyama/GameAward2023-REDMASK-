@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1247640245355776960}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5250797, y: -7.1298523, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -118,7 +118,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -143,3 +143,8 @@ MonoBehaviour:
   _bulletSelectUISprite: {fileID: 21300000, guid: f9161c6c9e06dc445ada3ee16d991f90, type: 3}
   _cylinderUISprite: {fileID: 21300000, guid: f142199a8a177414bb568cfa02bf929b, type: 3}
   _color: {r: 0, g: 1, b: 1, a: 1}
+  _maxWallCollisionCount: 3
+  _wallTag: Wall
+  _wallLayer:
+    serializedVersion: 2
+    m_Bits: 128
