@@ -73,7 +73,7 @@ MonoBehaviour:
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 83
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -169,7 +169,7 @@ MonoBehaviour:
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 83
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -354,7 +354,7 @@ MonoBehaviour:
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 83
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -450,7 +450,7 @@ MonoBehaviour:
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 83
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -546,7 +546,7 @@ MonoBehaviour:
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 83
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -747,7 +747,7 @@ MonoBehaviour:
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 83
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -843,7 +843,7 @@ MonoBehaviour:
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 83
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -1095,8 +1095,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 335550142993283820}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.402018, y: -1.0958123, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1408,7 +1408,7 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
@@ -1454,7 +1454,9 @@ MonoBehaviour:
   _lifeController:
     _life: 2
     _isGodMode: 0
-  _basicBullet: {fileID: 2641893296883569683, guid: 1dfcba0bc3571e34f980edb7376ef389, type: 3}
+  _avoidance:
+    _timeScale: 0.1
+  _basicBullet: {fileID: -7759632896529640271, guid: 2cb5c65ac0b91c44986ce83a123f3d0c, type: 3}
 --- !u!70 &4514520410212876858
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -2101,9 +2103,21 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 5707932457845917095, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
+      propertyPath: m_FontData.m_MaxSize
+      value: 49
+      objectReference: {fileID: 0}
     - target: {fileID: 5707932458148434650, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5707932458148434652, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
+      propertyPath: m_FontData.m_MaxSize
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 5707932458217987344, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
+      propertyPath: m_FontData.m_MaxSize
+      value: 42
       objectReference: {fileID: 0}
     - target: {fileID: 5707932458217987358, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
       propertyPath: m_Layer
@@ -2113,6 +2127,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 5707932458308860100, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
+      propertyPath: m_FontData.m_MaxSize
+      value: 49
+      objectReference: {fileID: 0}
+    - target: {fileID: 5707932458747021073, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
+      propertyPath: m_FontData.m_MaxSize
+      value: 42
+      objectReference: {fileID: 0}
     - target: {fileID: 5707932458747021087, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
       propertyPath: m_Layer
       value: 3
@@ -2121,9 +2143,17 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 5707932459058112749, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
+      propertyPath: m_FontData.m_MaxSize
+      value: 49
+      objectReference: {fileID: 0}
     - target: {fileID: 5707932459136878229, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5707932459136878231, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
+      propertyPath: m_FontData.m_MaxSize
+      value: 42
       objectReference: {fileID: 0}
     - target: {fileID: 5707932459443440829, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
       propertyPath: m_Layer
@@ -2203,6 +2233,10 @@ PrefabInstance:
     - target: {fileID: 41216497051602518, guid: 9a4f8c7ae6f584849a030c506ddcf9d2, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 41216497112572823, guid: 9a4f8c7ae6f584849a030c506ddcf9d2, type: 3}
+      propertyPath: m_FontData.m_MaxSize
+      value: 43
       objectReference: {fileID: 0}
     - target: {fileID: 41216497112572825, guid: 9a4f8c7ae6f584849a030c506ddcf9d2, type: 3}
       propertyPath: m_Layer
@@ -2312,6 +2346,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 41216498107161847, guid: 9a4f8c7ae6f584849a030c506ddcf9d2, type: 3}
+      propertyPath: m_FontData.m_MaxSize
+      value: 43
+      objectReference: {fileID: 0}
     - target: {fileID: 41216498107161849, guid: 9a4f8c7ae6f584849a030c506ddcf9d2, type: 3}
       propertyPath: m_Layer
       value: 3
@@ -2327,6 +2365,10 @@ PrefabInstance:
     - target: {fileID: 41216498849304071, guid: 9a4f8c7ae6f584849a030c506ddcf9d2, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 41216499007061008, guid: 9a4f8c7ae6f584849a030c506ddcf9d2, type: 3}
+      propertyPath: m_FontData.m_MaxSize
+      value: 43
       objectReference: {fileID: 0}
     - target: {fileID: 41216499007061010, guid: 9a4f8c7ae6f584849a030c506ddcf9d2, type: 3}
       propertyPath: m_Layer
