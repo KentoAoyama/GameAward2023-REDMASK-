@@ -1426,7 +1426,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _uIController: {fileID: 231753012}
   _move:
-    _moveSpeed: 4
+    _acceleration: 12
+    _deceleration: 12
+    _maxSpeed: 6
     _jumpPower: 4
   _groungChecker:
     _offset: {x: 0, y: -0.75}
