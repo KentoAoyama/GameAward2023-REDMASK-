@@ -39,5 +39,8 @@ public class GameManager
     /// 現在のゲーム内時間の速度を管理･提供するクラス
     /// </summary>
     public TimeController TimeController => _timeController;
+    /// <summary>
+    /// ステージ選択状態をシーンを跨いで保存する用のクラス
+    /// </summary>
     public StageSelectManager StageSelectManager => _stageSelectManager;
 }

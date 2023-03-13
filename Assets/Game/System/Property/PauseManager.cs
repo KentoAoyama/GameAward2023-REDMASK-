@@ -6,26 +6,27 @@ using UnityEngine;
 /// </summary>
 public class PauseManager
 {
-    /// <summary>
-    /// 現在のポーズ, リジューム状態を表現する値
-    /// </summary>
-    private PauseState _currentState = PauseState.NotSet;
+    /// <summary> ポーズ命令が発行された回数をカウントする値 </summary>
+    public int PauseCounter { get; private set; } = 0;
 
     private event Action OnPause = default;
     private event Action OnResume = default;
 
     /// <summary>
-    /// 現在のポーズ, リジューム状態を表現する値
+    /// ポーズ回数のカウンターをリセットする
     /// </summary>
-    public PauseState CurrentState => _currentState;
-
+    public void ClearCount()
+    {
+        PauseCounter = 0;
+    }
     /// <summary>
     /// ポーズ, リジュームの登録処理
     /// </summary>
     /// <param name="pausable"> 登録するオブジェクト </param>
     public void Register(IPausable pausable)
     {
-        if (_currentState == PauseState.Pause)
+        // 現在ポーズ中であれば登録オブジェクトのポーズ処理を追加してから登録する。
+        if (PauseCounter > 0)
         {
             pausable.Pause();
         }
@@ -44,43 +45,50 @@ public class PauseManager
     /// <summary>
     /// ポーズの実行処理
     /// </summary>
-    public void ExecutePause()
+    public void ExecutePause(Action onPause)
     {
         // ポーズ中でなければ登録されているポーズ処理を実行する。
-        if (_currentState != PauseState.Pause)
+        if (PauseCounter == 0)
         {
-            _currentState = PauseState.Pause;
+            Debug.Log("ポーズします。");
             OnPause?.Invoke();
+            onPause?.Invoke();
         }
         else
         {
-            Debug.LogWarning("既にポーズ中です。ポーズ命令が重複して発行されました。");
+            //Debug.Log("既にポーズ中です。ポーズ命令が重複して発行されました。");
         }
+        // ポーズ回数カウンターを加算する。
+        PauseCounter++;
+
+        // Debug.Log(現在のポーズ命令が発行された回数 : {_pauseCounter});
     }
     /// <summary>
     /// リジュームの実行処理
     /// </summary>
-    public void ExecuteResume()
+    public void ExecuteResume(Action onResume)
     {
-        // リジューム中でなければ登録されているリジューム処理を実行する。
-        if (_currentState != PauseState.Resume)
+        // ポーズ回数カウンターを減算する。（カウンターは0より小さくならない）
+        if (PauseCounter >= 1)
         {
-            _currentState = PauseState.Resume;
-            OnResume?.Invoke();
+            PauseCounter--;
         }
         else
         {
-            Debug.LogWarning("既にリジューム中です。リジューム命令が重複して発行されました。");
+            //Debug.LogWarning("リジューム命令が過剰に発行されました！\n" +
+            //    "確認してください！");
         }
-    }
 
-    /// <summary>
-    /// ポーズの状態を表す列挙型
-    /// </summary>
-    public enum PauseState
-    {
-        NotSet,
-        Pause,
-        Resume,
+        // リジューム中でなければ登録されているリジューム処理を実行する。
+        if (PauseCounter == 0)
+        {
+            Debug.Log("リジュームします。");
+            OnResume?.Invoke();
+            onResume?.Invoke();
+        }
+        else
+        {
+            //Debug.Log("既にリジューム中です。リジューム命令が重複して発行されました。");
+        }
     }
 }

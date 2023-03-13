@@ -40,7 +40,7 @@ namespace Bullet
         {
             _shootAngle = shootAngle;
         }
-        private void Start()
+        protected virtual void Start()
         {
             // SpriteRendereの初期化処理
             var sr = GetComponent<SpriteRenderer>();
@@ -50,14 +50,16 @@ namespace Bullet
             _rigidbody2D = GetComponent<Rigidbody2D>();
             // 指定した方向、速度で弾を移動させる。
             _rigidbody2D.velocity = _shootAngle.normalized * _shootSpeed * GameManager.Instance.TimeController.CurrentTimeScale.Value;
-            // 指定した時間経過したら、自身を破棄する。
-            Destroy(this.gameObject, _lifeTime);
         }
 
         private void Update()
         {
             // 移動ベクトル       =  方向ベクトル                    *  速度       *  時間の大きさ
             _rigidbody2D.velocity = _rigidbody2D.velocity.normalized * _shootSpeed * GameManager.Instance.TimeController.CurrentTimeScale.Value;
+        }
+        private void OnBecameInvisible()
+        {
+            Destroy(this.gameObject);
         }
         private void OnTriggerEnter2D(Collider2D collision)
         {
