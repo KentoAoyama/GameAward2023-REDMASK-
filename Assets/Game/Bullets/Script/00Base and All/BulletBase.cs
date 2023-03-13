@@ -40,7 +40,7 @@ namespace Bullet
         {
             _shootAngle = shootAngle;
         }
-        private void Start()
+        protected virtual void Start()
         {
             // SpriteRendereの初期化処理
             var sr = GetComponent<SpriteRenderer>();
