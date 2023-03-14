@@ -1428,10 +1428,11 @@ MonoBehaviour:
   _move:
     _startSpeed: 0.66
     _toMoveTime: 0.18
-    _moveSpeed: 6
+    _moveSpeed: 4
     _midairMoveAcceleration: 8
     _maxMidairMoveSpeed: 6
-    _deceleration: 32
+    _landDeceleration: 20
+    _midairDeceleration: 6
     _currentSpeed: 0
     _jumpPower: 4
   _groungChecker:

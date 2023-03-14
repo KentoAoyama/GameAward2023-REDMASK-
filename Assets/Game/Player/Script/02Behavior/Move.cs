@@ -21,8 +21,10 @@ namespace Player
         [Tooltip("空中 : 移動最大速度"), SerializeField]
         private float _maxMidairMoveSpeed = 4f;
         [Header("減速値")]
-        [Tooltip("減速度"), SerializeField]
-        private float _deceleration = 1f;
+        [Tooltip("減速度（地上）"), SerializeField]
+        private float _landDeceleration = 20f;
+        [Tooltip("減速度（空中）"), SerializeField]
+        private float _midairDeceleration = 10f;
         [Header("現在の速度")]
         [Tooltip("現在の速度 : インスペクタで値を追跡する用"), SerializeField]
         private float _currentSpeed = 0f;
@@ -51,6 +53,10 @@ namespace Player
         public void Init(PlayerController playerController)
         {
             _playerController = playerController;
+        }
+        public void ClearHorizontalSpeed()
+        {
+            _currentSpeed = 0f;
         }
 
         public void Update()
@@ -97,7 +103,14 @@ namespace Player
             // 入力がないとき、現在速度を減算する。
             else
             {
-                _currentSpeed -= Time.deltaTime * _deceleration;
+                if (_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX))
+                {
+                    _currentSpeed -= Time.deltaTime * _landDeceleration;
+                }
+                else
+                {
+                    _currentSpeed -= Time.deltaTime * _midairDeceleration;
+                }
                 if (0f > _currentSpeed) _currentSpeed = 0f; // 0より小さくならない
 
                 if (_currentSpeed > 0.01f)
