@@ -7,8 +7,8 @@ using UnityEngine;
 public class TransitionWithTimeElapsed : MonoBehaviour
 {
     [Header("ステートの遷移までの遅延時間")]
-    [SerializeField] private float _minDelay;
-    [SerializeField] private float _maxDelay;
+    [SerializeField] private float _minDelay = 2.0f;
+    [SerializeField] private float _maxDelay = 3.0f;
 
     private Tween _tween;
 
