@@ -35,6 +35,7 @@ namespace Player
 
         private float _toMoveTimer = 0f;
         private HorizontalMoveMode _currentHorizontalMoveMode = HorizontalMoveMode.Stop;
+        private float _previousDir = 0f;
         private float _moveHorizontalDir = 0f;
 
         private PlayerController _playerController;
@@ -64,8 +65,16 @@ namespace Player
             // 入力が発生しているとき、現在速度を加算する。
             if (_playerController.InputManager.IsExist[InputType.MoveHorizontal] && CanMove)
             {
+                // 一つの入力方向を保存しておく
+                _previousDir = _moveHorizontalDir;
                 // 方向を表す値を更新する。（右に相当する値なら1, 左に相当する値なら-1。）
                 _moveHorizontalDir = _playerController.InputManager.GetValue<float>(InputType.MoveHorizontal) > 0f ? 1f : -1f;
+
+                if (Mathf.Abs(_previousDir - _moveHorizontalDir) > 0.1f)
+                {
+                    _toMoveTimer = 0f;
+                    _currentHorizontalMoveMode = HorizontalMoveMode.Start;
+                } // 方向転換したら再度低速移動から開始する。
 
                 // 接地しているとき
                 if (_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX))
