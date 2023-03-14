@@ -13,25 +13,25 @@ namespace Player
     [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerController : MonoBehaviour
     {
-        [SerializeField]
+        [Tooltip("プレイヤーのUIを管理するクラス"), SerializeField]
         private UIController _uIController;
-        [SerializeField]
+        [Tooltip("移動制御"), SerializeField]
         private Move _move = default;
-        [SerializeField]
+        [Tooltip("接地判定"), SerializeField]
         private OverlapCircle2D _groungChecker = default;
-        [SerializeField, HideInInspector]
+        [Tooltip("移動方向、"), SerializeField, HideInInspector]
         private DirectionControl _directionControler = default;
-        [SerializeField]
+        [Tooltip("リボルバー制御"), SerializeField]
         private RevolverOperator _revolverOperator = default;
-        [SerializeField]
+        [Tooltip("リボルバー"), SerializeField]
         private Revolver _revolver = default;
-        [SerializeField]
+        [Tooltip("弾の所持数制御"), SerializeField]
         private BulletCountManager _bulletCountManager = default;
-        [SerializeField]
+        [Tooltip("弾の情報を保持,提供するクラス"), SerializeField]
         private BulletDataBase _bulletDataBase = default;
-        [SerializeField]
+        [Tooltip("ライフ制御"), SerializeField]
         private LifeController _lifeController = default;
-        [SerializeField]
+        [Tooltip("回避制御"), SerializeField]
         private Avoidance _avoidance = default;
 
         private Rigidbody2D _rigidbody2D = null;
