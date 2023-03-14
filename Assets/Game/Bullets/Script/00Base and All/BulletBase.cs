@@ -7,8 +7,8 @@ namespace Bullet
     /// </summary>
     public abstract class BulletBase : MonoBehaviour, IStoreableInChamber
     {
-        [Tooltip("この弾の生存時間"), SerializeField]
-        protected float _lifeTime = 3f;
+        [Tooltip("何体の敵にヒットできるか"), SerializeField]
+        protected int _maxEnemyHitNumber = 1;
         [Tooltip("この弾の発射速度"), SerializeField]
         protected float _shootSpeed = 8f;
         [Tooltip("この弾の威力"), SerializeField]
@@ -22,6 +22,7 @@ namespace Bullet
         [Tooltip("本物の弾のスプライトが届くまで、色で区別するためこの値を使用して区別･管理する。"), SerializeField]
         private Color _color = default;
 
+        protected int _currentEnemyHitNumber = 0;
         protected Rigidbody2D _rigidbody2D = null;
         private Vector2 _shootAngle = default;
 

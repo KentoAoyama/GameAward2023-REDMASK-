@@ -1426,9 +1426,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _uIController: {fileID: 231753012}
   _move:
-    _acceleration: 12
-    _deceleration: 12
-    _maxSpeed: 6
+    _startSpeed: 0.66
+    _toMoveTime: 0.18
+    _moveSpeed: 6
+    _midairMoveAcceleration: 8
+    _maxMidairMoveSpeed: 6
+    _deceleration: 32
+    _currentSpeed: 0
     _jumpPower: 4
   _groungChecker:
     _offset: {x: 0, y: -0.75}
@@ -1458,7 +1462,7 @@ MonoBehaviour:
     _isGodMode: 0
   _avoidance:
     _timeScale: 0.1
-  _basicBullet: {fileID: -7759632896529640271, guid: 2cb5c65ac0b91c44986ce83a123f3d0c, type: 3}
+  _basicBullet: {fileID: 2641893296883569683, guid: 1dfcba0bc3571e34f980edb7376ef389, type: 3}
 --- !u!70 &4514520410212876858
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
