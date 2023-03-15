@@ -20,6 +20,7 @@ namespace Bullet
         private int _reflexCount = 0;
 
         public override BulletType Type => BulletType.ReflectBullet;
+        public int MaxWallCollisionCount => _maxWallCollisionCount;
 
         protected override void Start()
         {

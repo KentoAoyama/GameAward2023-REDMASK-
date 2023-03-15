@@ -21,6 +21,8 @@ namespace Bullet
         private Sprite _cylinderUISprite = default;
         [Tooltip("本物の弾のスプライトが届くまで、色で区別するためこの値を使用して区別･管理する。"), SerializeField]
         private Color _color = default;
+        [Tooltip("描画するガイドラインの長さ"), SerializeField]
+        private float _guidelineLength = 1f;
 
         protected int _currentEnemyHitNumber = 0;
         protected Rigidbody2D _rigidbody2D = null;
@@ -36,6 +38,8 @@ namespace Bullet
         public Sprite CylinderUISprite => _cylinderUISprite;
         /// <summary> 本物の弾のスプライトが届くまで、色で区別するためこの値を使用して区別･管理する。 </summary>
         public Color Color => _color;
+        /// <summary> 描画するガイドラインの長さ </summary>
+        public float GuidelineLength => _guidelineLength;
 
         public void Setup(Vector2 shootAngle)
         {
