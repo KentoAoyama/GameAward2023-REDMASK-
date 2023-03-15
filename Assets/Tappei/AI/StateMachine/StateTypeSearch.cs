@@ -1,25 +1,32 @@
-using UnityEngine;
-
 /// <summary>
 /// プレイヤーを探すために移動するステートのクラス
 /// </summary>
 public class StateTypeSearch : StateTypeBase
 {
-    public StateTypeSearch(EnemyStateMachine stateMachine, StateType stateType)
-        : base(stateMachine, stateType) { }
+    // TODO:うろうろの距離を広くしたり小さくしたりするとこの値が同じでもうろうろ間隔が変わってしまう
+    //      タイムスピードをかけるのでポーズ/スローモーションは気にしないでよい
+    private static readonly float Interval = 240.0f;
+
+    // TODO:仮のタイムスピード、この値を操作することでスローモーション/ポーズに対応させる
+    private float _timeSpeed = 1.0f;
+    private float _timer;
+
+    public StateTypeSearch(BehaviorMessenger messenger, StateType stateType)
+        : base(messenger, stateType) { }
 
     protected override void Enter()
     {
-        Debug.Log("探す状態のEnter()");
+        _timer = 0;
+        _messenger.SendMessage(BehaviorType.SearchMove);
     }
 
     protected override void Stay()
-    {
-        Debug.Log("探す状態のStay()");
-    }
-
-    protected override void Exit()
-    {
-        Debug.Log("探す状態のExit()");
+    {        
+        _timer += _timeSpeed;
+        if (_timer > Interval)
+        {
+            _timer = 0;
+            _messenger.SendMessage(BehaviorType.SearchMove);
+        }
     }
 }

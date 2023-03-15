@@ -15,12 +15,12 @@ public abstract class StateTypeBase
 
     private Stage _stage;
     private StateTypeBase _nextState;
-    private EnemyStateMachine _stateMachine;
+    protected BehaviorMessenger _messenger;
 
-    public StateTypeBase(EnemyStateMachine stateMachine, StateType stateType)
+    public StateTypeBase(BehaviorMessenger messenger, StateType stateType)
     {
         StateType = stateType;
-        _stateMachine = stateMachine;
+        _messenger = messenger;
     }
 
     public StateType StateType { get; }

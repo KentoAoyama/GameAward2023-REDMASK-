@@ -1,6 +1,7 @@
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System.Threading;
+using UniRx;
 
 /// <summary>
 /// 移動周りの処理を制御するクラス
@@ -28,20 +29,40 @@ public class MoveController : MonoBehaviour
     private void Awake()
     {
         _wanderingPositionHolder = GetComponent<WanderingPositionHolder>();
+        InitMessageReceive();
         InitRigidbodySettings();
-    }
-
-    // テスト用の呼び出し
-    public void TestMove()
-    {
-        CancelMoving();
-        Transform target = _wanderingPositionHolder.GetWanderingTarget();
-        StartRunToTarget(target);
     }
 
     private void OnDisable()
     {
         CancelMoving();
+    }
+
+    /// <summary>
+    /// 各ステートから
+    /// 送信されるメッセージを受信したらうろうろ移動を行う
+    /// </summary>
+    private void InitMessageReceive()
+    {
+        MessageBroker.Default.Receive<BehaviorMessage>()
+            .Where(message => message.ID == gameObject.GetInstanceID())
+            .Where(message => message.Type == BehaviorType.SearchMove)
+            .Subscribe(_ => 
+            {
+                // テスト用、うろうろ移動はメソッドに切り出す
+                // そもそもうろうろ移動の責務までこのクラスで持っていていいものか
+                CancelMoving();
+                Transform target = _wanderingPositionHolder.GetWanderingTarget();
+                StartWalkToTarget(target);
+            }).AddTo(this);
+
+        MessageBroker.Default.Receive<BehaviorMessage>()
+            .Where(message => message.ID == gameObject.GetInstanceID())
+            .Where(message => message.Type == BehaviorType.StopMove)
+            .Subscribe(_ => 
+            {
+                CancelMoving();
+            }).AddTo(this);
     }
 
     /// <summary>
@@ -94,7 +115,7 @@ public class MoveController : MonoBehaviour
     /// ターゲットへの移動を行う<br></br>
     /// 引数がTransformのためターゲットが動いていても追従する
     /// </summary>
-    private async UniTaskVoid MoveToTargetAsync(Transform target, float moveSpeed)
+    private async UniTask MoveToTargetAsync(Transform target, float moveSpeed)
     {
         _cts.Token.ThrowIfCancellationRequested();
 

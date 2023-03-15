@@ -9,14 +9,13 @@ public enum StateType
     Search,
     Move,
     Attack,
-    Damage,
-    Death,
+    Defeated,
     Reflection,
 }
 
 /// <summary>
-/// ステート遷移のトリガーとなるイベントの列挙型
-/// この列挙型を含むメッセージの送受信に使用する
+/// ステート遷移のトリガーとなるイベントの種類
+/// この列挙型を含むメッセージを受け取ったらステートが遷移する
 /// </summary>
 public enum StateTransitionTrigger
 {
@@ -25,4 +24,16 @@ public enum StateTransitionTrigger
     PlayerHide,
     PlayerInAttackRange,
     PlayerOutAttackRange,
+}
+
+/// <summary>
+/// 取りうる行動の種類
+/// 各ステートが対応した行動の処理を呼び出すのに使用する
+/// </summary>
+public enum BehaviorType
+{
+    Attack,
+    SearchMove,
+    StopMove,
+    Defeated,
 }

@@ -33,6 +33,7 @@ public class TransitionWithTimeElapsed : MonoBehaviour
         _tween = DOVirtual.DelayedCall(delayTime, () =>
         {
             messageSender.SendMessage(StateTransitionTrigger.TimeElapsed);
+            _tween = null;
         }, ignoreTimeScale: false);
     }
 

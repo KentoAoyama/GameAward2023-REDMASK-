@@ -1,18 +1,17 @@
 using UnityEngine;
+using UniRx;
 
 /// <summary>
-/// 攻撃
+/// 攻撃を行う際に使用するクラス
 /// </summary>
 public class AttackBehavior : MonoBehaviour
 {
-    void Start()
+    void Awake()
     {
-        
-    }
-
-    void Update()
-    {
-        
+        MessageBroker.Default.Receive<BehaviorMessage>()
+            .Where(message => message.ID == gameObject.GetInstanceID())
+            .Where(message => message.Type == BehaviorType.Attack)
+            .Subscribe(_ => Attack()).AddTo(this);
     }
 
     void Attack()

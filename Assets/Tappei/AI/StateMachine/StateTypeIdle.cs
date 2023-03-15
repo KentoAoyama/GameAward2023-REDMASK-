@@ -1,25 +1,13 @@
-using UnityEngine;
-
 /// <summary>
 /// 立ち止まっているステートのクラス
 /// </summary>
 public class StateTypeIdle : StateTypeBase
 {
-    public StateTypeIdle(EnemyStateMachine stateMachine, StateType stateType)
-        : base(stateMachine, stateType) { }
+    public StateTypeIdle(BehaviorMessenger messenger, StateType stateType)
+        : base(messenger, stateType) { }
 
     protected override void Enter()
     {
-        Debug.Log("アイドル状態のEnter()");
-    }
-
-    protected override void Stay()
-    {
-        Debug.Log("アイドル状態のStay()");
-    }
-
-    protected override void Exit()
-    {
-        Debug.Log("アイドル状態のExit()");
+        _messenger.SendMessage(BehaviorType.StopMove);
     }
 }

@@ -54,7 +54,7 @@ public class StateTransitionFlow : MonoBehaviour
         }
         else
         {
-            Debug.LogError("‘JˆÚæ‚ª“o˜^‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ: " + current + " " + trigger);
+            Debug.LogError($"‘JˆÚæ‚ª“o˜^‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ ‘JˆÚŒ³: {current} ‘JˆÚğŒ: {trigger}");
             return StateType.Idle;
         }
     }

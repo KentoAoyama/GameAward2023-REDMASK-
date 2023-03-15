@@ -19,7 +19,7 @@ public class EnemyStateMachine : MonoBehaviour, IPausable
         _stateTransitionFlow = GetComponent<StateTransitionFlow>();
         InitMessageReceive();
         InitState();
-        SetDefaultState(StateType.Idle);
+        SetDefaultState(StateType.Defeated);
     }
 
     private void Update()
@@ -40,11 +40,14 @@ public class EnemyStateMachine : MonoBehaviour, IPausable
 
     private void InitState()
     {
+        BehaviorMessenger messenger = new(gameObject.GetInstanceID());
         StateMachineHelper helper = new();
         // TODO:ステートマシンも渡しているが、ステート側で不要なら渡さなくてよい
-        _stateRegister = new(this, helper);
+        _stateRegister = new(messenger, helper);
         _stateRegister.Register(StateType.Idle);
         _stateRegister.Register(StateType.Search);
+        _stateRegister.Register(StateType.Attack);
+        _stateRegister.Register(StateType.Defeated);
     }
 
     private void SetDefaultState(StateType type) => _currentState.Value = _stateRegister.GetState(type);

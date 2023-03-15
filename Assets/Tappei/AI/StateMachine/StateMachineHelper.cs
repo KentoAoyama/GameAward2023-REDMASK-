@@ -16,6 +16,8 @@ public class StateMachineHelper
         {
             case StateType.Idle: return typeof(StateTypeIdle);
             case StateType.Search: return typeof(StateTypeSearch);
+            case StateType.Attack: return typeof(StateTypeAttack);
+            case StateType.Defeated: return typeof(StateTypeDefeated);
             default:
                 Debug.LogError("対応するステートが紐づけられていません: " + type);
                 return null;

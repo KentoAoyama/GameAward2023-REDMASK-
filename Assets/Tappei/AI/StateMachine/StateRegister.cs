@@ -14,13 +14,13 @@ public class StateRegister
     /// </summary>
     private static readonly int StateDicCap = Enum.GetValues(typeof(StateType)).Length;
 
-    private EnemyStateMachine _stateMachine;
+    private BehaviorMessenger _messenger;
     private StateMachineHelper _stateMachineHelper;
     private Dictionary<StateType, StateTypeBase> _stateDic = new(StateDicCap);
 
-    public StateRegister(EnemyStateMachine stateMachine, StateMachineHelper helper)
+    public StateRegister(BehaviorMessenger messenger, StateMachineHelper helper)
     {
-        _stateMachine = stateMachine;
+        _messenger = messenger;
         _stateMachineHelper = helper;
     }
 
@@ -50,7 +50,7 @@ public class StateRegister
             return null;
         }
 
-        object[] args = { _stateMachine, type };
+        object[] args = { _messenger, type };
         StateTypeBase instance = (StateTypeBase)Activator.CreateInstance(stateClass, args);
 
         return instance;
