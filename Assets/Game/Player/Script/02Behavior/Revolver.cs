@@ -23,8 +23,6 @@ namespace Player
         private float _interval = 0.4f;
         [Tooltip("照準描画用のラインレンダラーを割り当ててください"), SerializeField]
         private LineRenderer _aimingLineRenderer = null;
-        [Tooltip("ラインの最大長さ"), SerializeField]
-        private float _maxLineLength = 1f;
         [Tooltip("ガイドライン用レイヤーマスク"), SerializeField]
         private LayerMask _guidelineLayerMask = default;
 
@@ -210,7 +208,7 @@ namespace Player
                 case BulletType.StandardBullet: // 標準弾のガイドラインポジションをリストに追加
                     var hitStd = Physics2D.Raycast(_muzzleTransform.position, _aimingAngle, bullet.GuidelineLength, _guidelineLayerMask);
                     if (hitStd.collider != null) _potisions.Add(hitStd.point);
-                    else _potisions.Add(_muzzleTransform.position + (Vector3)_aimingAngle * bullet.GuidelineLength);
+                    else _potisions.Add(_muzzleTransform.position + (Vector3)_aimingAngle.normalized * bullet.GuidelineLength);
                     break;
                 case BulletType.PenetrateBullet: // 貫通弾のガイドラインポジションをリストに追加
                     var hitsPen = Physics2D.RaycastAll(_muzzleTransform.position, _aimingAngle, bullet.GuidelineLength, _guidelineLayerMask);
@@ -219,15 +217,37 @@ namespace Player
                     {
                         _potisions.Add(hitsPen[i].point);
                     }
+                    if (_potisions.Count == 1)
+                    {
+                        _potisions.Add(_muzzleTransform.position + (Vector3)_aimingAngle.normalized * bullet.GuidelineLength);
+                    }
                     break;
                 case BulletType.ReflectBullet: // 反射弾のガイドラインポジションをリストに追加
                     var reflect = bullet as ReflectBullet;
-                    List<RaycastHit2D> hitRef = new List<RaycastHit2D>();
+
+                    var length = reflect.GuidelineLength;
                     Vector2 pos = _muzzleTransform.position;
                     Vector2 dir = _aimingAngle;
+
+                    RaycastHit2D hit;
+
                     for (int i = 0; i < reflect.MaxWallCollisionCount; i++)
                     {
-                        //var hit = Physics2D.Raycast(pos,);
+                        // 位置の計算についてメモ(レイが対象に埋まるのでちょっとずらす)
+                        hit = Physics2D.Raycast(pos + dir * 0.1f, dir, length, _guidelineLayerMask);
+
+                        if (hit.collider != null)
+                        {
+                            _potisions.Add(hit.point);                         // 当たった位置をリストに追加
+                            length -= (pos - hit.point).magnitude;             // 長さを減算
+                            pos = hit.point;                                   // 位置を更新
+                            dir = Vector2.Reflect(dir, hit.normal.normalized); // 角度を反転
+                        }
+                        else
+                        {
+                            _potisions.Add(pos + dir.normalized * length);
+                            break;
+                        }
                     }
                     break;
                 default: return _potisions;

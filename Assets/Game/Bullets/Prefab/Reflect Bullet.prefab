@@ -104,7 +104,7 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 6200000, guid: 42e97538bb9129046815ed540cb5914b, type: 2}
-  m_Interpolate: 0
+  m_Interpolate: 2
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
@@ -123,7 +123,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.001
 --- !u!114 &-7759632896529640271
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,14 +136,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a16d581c78da5a438e5018087ea3884, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lifeTime: 1
+  _maxEnemyHitNumber: 1
   _shootSpeed: 12
   _attackPower: 1
   _gameSprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   _bulletSelectUISprite: {fileID: 21300000, guid: f9161c6c9e06dc445ada3ee16d991f90, type: 3}
   _cylinderUISprite: {fileID: 21300000, guid: f142199a8a177414bb568cfa02bf929b, type: 3}
   _color: {r: 0, g: 1, b: 1, a: 1}
-  _maxWallCollisionCount: 3
+  _guidelineLength: 500
+  _maxWallCollisionCount: 10
   _wallTag: Wall
   _wallLayer:
     serializedVersion: 2

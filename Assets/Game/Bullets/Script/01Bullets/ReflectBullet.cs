@@ -51,7 +51,7 @@ namespace Bullet
                 {
                     // 自分の位置に、自分より一回り大きいサークルキャストを発生させる。
                     var hit = Physics2D.CircleCast(this.transform.position,
-                        _circleCollider2D.radius * transform.localScale.x * 1.1f,
+                        _circleCollider2D.radius * transform.localScale.x ,
                         Vector2.zero, 0f, _wallLayer);
                     if (hit.collider == null)
                     {
