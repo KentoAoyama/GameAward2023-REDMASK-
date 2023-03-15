@@ -5,6 +5,9 @@ namespace Bullet
     [System.Serializable]
     public class StandardBullet : BulletBase
     {
+        [TagName, SerializeField]
+        private string _wallTag = default;
+
         public override BulletType Type => BulletType.StandardBullet;
 
         protected override void OnHitCollision(Collision2D target)
@@ -34,6 +37,10 @@ namespace Bullet
                         Destroy(this.gameObject);
                     }
                 } // _maxEnemyHitNumber が1以上であれば、弾はその数だけ敵を貫く。
+            }
+            if (target.tag == _wallTag)
+            {
+                Destroy(this.gameObject);
             }
         }
     }

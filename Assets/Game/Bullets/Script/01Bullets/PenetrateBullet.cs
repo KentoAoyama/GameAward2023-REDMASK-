@@ -15,6 +15,8 @@ namespace Bullet
 
         private int _wallHitCount = 0;
 
+        public int MaxWallHitNumber => _maxWallHitNumber;
+
         public override BulletType Type => BulletType.PenetrateBullet;
 
         protected override void OnHitCollision(Collision2D target)

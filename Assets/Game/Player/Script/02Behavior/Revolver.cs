@@ -1,6 +1,7 @@
 using Bullet;
 using Cysharp.Threading.Tasks;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -24,6 +25,8 @@ namespace Player
         private LineRenderer _aimingLineRenderer = null;
         [Tooltip("ラインの最大長さ"), SerializeField]
         private float _maxLineLength = 1f;
+        [Tooltip("ガイドライン用レイヤーマスク"), SerializeField]
+        private LayerMask _guidelineLayerMask = default;
 
         private PlayerController _playerController = null;
         /// <summary> シリンダーを表現する値 </summary>
@@ -185,12 +188,52 @@ namespace Player
         /// </summary>
         public void OnDrawAimingLine()
         {
-            // 開始位置を設定
-            _aimingLineRenderer.SetPosition(0, _muzzleTransform.position);
-            // 終了位置を取得/設定
-            var endPos = _aimingAngle
-                .normalized * _maxLineLength + (Vector2)_muzzleTransform.position;
-            _aimingLineRenderer.SetPosition(1, endPos);
+            var potisitons = GetPositions(_cylinder[_currentChamber] as BulletBase);
+            _aimingLineRenderer.positionCount = potisitons.Count;
+
+            for (int i = 0; i < potisitons.Count; i++)
+            {
+                _aimingLineRenderer.SetPosition(i, potisitons[i]);
+            }
+        }
+
+        private List<Vector2> _potisions = new List<Vector2>();
+        private List<Vector2> GetPositions(BulletBase bullet)
+        {
+            _potisions.Clear();
+            _potisions.Add(_muzzleTransform.position);
+
+            if (bullet == null) return _potisions;
+
+            switch (bullet.Type)
+            {
+                case BulletType.StandardBullet: // 標準弾のガイドラインポジションをリストに追加
+                    var hitStd = Physics2D.Raycast(_muzzleTransform.position, _aimingAngle, bullet.GuidelineLength, _guidelineLayerMask);
+                    if (hitStd.collider != null) _potisions.Add(hitStd.point);
+                    else _potisions.Add(_muzzleTransform.position + (Vector3)_aimingAngle * bullet.GuidelineLength);
+                    break;
+                case BulletType.PenetrateBullet: // 貫通弾のガイドラインポジションをリストに追加
+                    var hitsPen = Physics2D.RaycastAll(_muzzleTransform.position, _aimingAngle, bullet.GuidelineLength, _guidelineLayerMask);
+                    var penetrate = bullet as PenetrateBullet;
+                    for (int i = 0; i < hitsPen.Length && i < penetrate.MaxWallHitNumber + 1; i++)
+                    {
+                        _potisions.Add(hitsPen[i].point);
+                    }
+                    break;
+                case BulletType.ReflectBullet: // 反射弾のガイドラインポジションをリストに追加
+                    var reflect = bullet as ReflectBullet;
+                    List<RaycastHit2D> hitRef = new List<RaycastHit2D>();
+                    Vector2 pos = _muzzleTransform.position;
+                    Vector2 dir = _aimingAngle;
+                    for (int i = 0; i < reflect.MaxWallCollisionCount; i++)
+                    {
+                        //var hit = Physics2D.Raycast(pos,);
+                    }
+                    break;
+                default: return _potisions;
+            }
+
+            return _potisions;
         }
     }
 }
