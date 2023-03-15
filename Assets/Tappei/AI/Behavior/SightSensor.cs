@@ -7,7 +7,7 @@ using UnityEditor;
 /// このクラスを使用して視界内にプレイヤーがいるかどうかを検出する
 /// この機能はスローモーション中かどうかに影響されない
 /// </summary>
-public class EnemySightSensor : MonoBehaviour
+public class SightSensor : MonoBehaviour
 {
     static readonly int MaxDetected = 9;
 

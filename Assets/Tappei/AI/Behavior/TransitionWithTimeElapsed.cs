@@ -35,4 +35,18 @@ public class TransitionWithTimeElapsed : MonoBehaviour
             messageSender.SendMessage(StateTransitionTrigger.TimeElapsed);
         }, ignoreTimeScale: false);
     }
+
+    // 一度呼ばれたらスローモーションとポーズに対応していない
+    // スローになっている間は遷移までのカウントもおそくなる
+    // ポーズの場合はカウントが0になる
+    // UniRxでいける？
+    // メソッドが呼ばれる
+    // 毎フレーム既定の値を足しこんでいく
+    // スローモーションorポーズの場合はその値が変わる
+
+    int count = 0;
+    public void DelayedSend()
+    {
+        count += 1;
+    }
 }

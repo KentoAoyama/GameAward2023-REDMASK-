@@ -14,27 +14,21 @@ public class MoveController : MonoBehaviour
     /// </summary>
     private static readonly float ArrivalTolerance = 500.0f;
 
-    [SerializeField] private WanderingPositionHolder _wanderingPositionHolder;
     [SerializeField] private Rigidbody2D _rigidbody;
     [Header("移動速度の設定")]
     [SerializeField] private float _walkSpeed = 2.0f;
     [SerializeField] private float _runSpeed = 4.0f;
 
+    private WanderingPositionHolder _wanderingPositionHolder;
     private CancellationTokenSource _cts;
 
-    // デバッグ用の変数
-    [SerializeField] private Transform _debugWaypoint;
+    // TODO:デバッグ用の値なのできちんとした値に直す
     private float _debugTimeSpeed = 1;
 
     private void Awake()
     {
+        _wanderingPositionHolder = GetComponent<WanderingPositionHolder>();
         InitRigidbodySettings();
-    }
-
-    void Start()
-    {
-        // テスト用の呼び出し
-        _wanderingPositionHolder.SetWanderingCenterPos();
     }
 
     // テスト用の呼び出し
@@ -43,7 +37,6 @@ public class MoveController : MonoBehaviour
         CancelMoving();
         Transform target = _wanderingPositionHolder.GetWanderingTarget();
         StartRunToTarget(target);
-        //Invoke(nameof(Hoge), Time.deltaTime);
     }
 
     private void OnDisable()

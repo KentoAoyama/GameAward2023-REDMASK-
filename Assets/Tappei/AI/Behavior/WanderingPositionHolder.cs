@@ -27,7 +27,11 @@ public class WanderingPositionHolder : MonoBehaviour
         InitCreateWanderingTarget();
     }
 
-    private void InitCreateWanderingTarget() => _wanderingTarget = new GameObject("WanderingTarget");
+    private void InitCreateWanderingTarget()
+    {
+        _wanderingTarget = new GameObject("WanderingTarget");
+        SetWanderingCenterPos();
+    }
 
     /// <summary>
     /// ‘«Œ³‚ÉRay‚ğ”ò‚Î‚µ‚Ä“–‚½‚Á‚½ˆÊ’u‚ğ‚¤‚ë‚¤‚ë‚ÌŠî€‚Æ‚È‚éÀ•W‚Æ‚·‚é

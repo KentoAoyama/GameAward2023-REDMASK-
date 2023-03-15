@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// 敵の各機能の仲介を行うクラス
 /// </summary>
-public class EnemyBehavior : MonoBehaviour
+public class EnemyActor : MonoBehaviour
 {
     [SerializeField] TransitionWithTimeElapsed _transitionWithTimeElapsed;
 

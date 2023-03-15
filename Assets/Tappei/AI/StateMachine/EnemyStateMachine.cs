@@ -8,8 +8,7 @@ using UnityEngine;
 public class EnemyStateMachine : MonoBehaviour, IPausable
 {
     // TODO:SOにして管理するクラスに持たせた方が良い(FlyWeightパターン)
-    [SerializeField] private StateTransitionFlow _stateTransitionFlow;
-
+    private StateTransitionFlow _stateTransitionFlow;
     private ReactiveProperty<StateTypeBase> _currentState = new();
     private StateRegister _stateRegister;
 
@@ -17,6 +16,7 @@ public class EnemyStateMachine : MonoBehaviour, IPausable
 
     private void Awake()
     {
+        _stateTransitionFlow = GetComponent<StateTransitionFlow>();
         InitMessageReceive();
         InitState();
         SetDefaultState(StateType.Idle);
