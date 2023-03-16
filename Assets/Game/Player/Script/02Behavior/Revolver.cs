@@ -161,7 +161,12 @@ namespace Player
                 var bullet = _cylinder[_currentChamber] as BulletBase;
                 // 弾を複製し、弾のセットアップ処理を実行する
                 var bulletClone = GameObject.Instantiate(bullet.gameObject, _muzzleTransform.position, Quaternion.identity);
-                bulletClone.GetComponent<BulletBase>().Setup(_aimingAngle);
+                var b = bulletClone.GetComponent<BulletBase>();
+                b.Setup(_aimingAngle);
+                if (b is ReflectBullet)
+                {
+                    (b as ReflectBullet).ToStart(GetPositions(b).ToArray());
+                }
 
                 _cylinder[_currentChamber] = _shellCase; // 殻薬莢を残す
                 OnChamberStateChanged?.Invoke(_currentChamber, BulletType.ShellCase);
