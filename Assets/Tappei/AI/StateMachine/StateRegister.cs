@@ -32,7 +32,7 @@ public class StateRegister
     {
         if (_stateDic.ContainsKey(type))
         {
-            Debug.LogWarning("ステートが既に登録されています: " + type);
+            Debug.LogWarning("辞書にステートが既に登録されています: " + type);
             return;
         }
 
@@ -42,7 +42,7 @@ public class StateRegister
 
     private StateTypeBase CreateInstance(StateType type)
     {
-        Type stateClass = _stateMachineHelper.GetStateClassTypeWithEnum(type);
+        Type stateClass = _stateMachineHelper.GetStateClassType(type);
 
         if (stateClass == null)
         {
@@ -64,7 +64,7 @@ public class StateRegister
         }
         else
         {
-            Debug.LogError("対応するステートが登録されていません: " + type);
+            Debug.LogError("対応するステートが辞書に登録されていません: " + type);
             return null;
         }
     }

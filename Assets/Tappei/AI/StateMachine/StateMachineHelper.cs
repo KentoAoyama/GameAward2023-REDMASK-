@@ -10,7 +10,7 @@ public class StateMachineHelper
     /// 列挙型に対応したステートのクラスの型を返すので
     /// 新しくステートを作った際には、この処理の分岐に追加して列挙型とクラスを紐づける必要がある
     /// </summary>
-    public Type GetStateClassTypeWithEnum(StateType type)
+    public Type GetStateClassType(StateType type)
     {
         switch (type)
         {
@@ -18,6 +18,7 @@ public class StateMachineHelper
             case StateType.Search: return typeof(StateTypeSearch);
             case StateType.Attack: return typeof(StateTypeAttack);
             case StateType.Defeated: return typeof(StateTypeDefeated);
+            case StateType.Move: return typeof(StateTypeMove);
             default:
                 Debug.LogError("対応するステートが紐づけられていません: " + type);
                 return null;

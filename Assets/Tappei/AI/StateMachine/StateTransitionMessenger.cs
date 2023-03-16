@@ -14,7 +14,7 @@ public class StateTransitionMessenger
     }
 
     /// <summary>
-    /// 各機能のクラスはこのメソッドを呼ぶことでステートマシンに
+    /// このメソッドを呼ぶことでステートマシンに
     /// 遷移の条件を満たしたというメッセージを送信する
     /// </summary>
     public void SendMessage(StateTransitionTrigger trigger)

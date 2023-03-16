@@ -1,5 +1,5 @@
 /// <summary>
-/// 攻撃をするステートのクラス
+/// 一定間隔で攻撃をするステートのクラス
 /// </summary>
 public class StateTypeAttack : StateTypeBase
 {

@@ -4,7 +4,7 @@
 /// </summary>
 public enum StateType
 {
-    Base, // 各ステートの基底クラス用
+    Unknown,
     Idle,
     Search,
     Move,
@@ -33,6 +33,7 @@ public enum StateTransitionTrigger
 public enum BehaviorType
 {
     Attack,
+    MoveToPlayer,
     SearchMove,
     StopMove,
     Defeated,

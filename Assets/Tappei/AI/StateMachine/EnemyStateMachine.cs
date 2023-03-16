@@ -7,6 +7,9 @@ using UnityEngine;
 [RequireComponent(typeof(StateTransitionFlow))]
 public class EnemyStateMachine : MonoBehaviour, IPausable
 {
+    [Header("Searchをデフォルトのステートにするか")]
+    [SerializeField] bool _isSearchStateDefault;
+
     // TODO:SOにして管理するクラスに持たせた方が良い(FlyWeightパターン)
     private StateTransitionFlow _stateTransitionFlow;
     private ReactiveProperty<StateTypeBase> _currentState = new();
@@ -18,8 +21,8 @@ public class EnemyStateMachine : MonoBehaviour, IPausable
     {
         _stateTransitionFlow = GetComponent<StateTransitionFlow>();
         InitMessageReceive();
-        InitState();
-        SetDefaultState(StateType.Defeated);
+        InitStateRegister();
+        SetDefaultState();
     }
 
     private void Update()
@@ -38,21 +41,28 @@ public class EnemyStateMachine : MonoBehaviour, IPausable
             .Subscribe(message => StateTransition(message.Trigger)).AddTo(this);
     }
 
-    private void InitState()
+    private void InitStateRegister()
     {
         BehaviorMessenger messenger = new(gameObject.GetInstanceID());
         StateMachineHelper helper = new();
-        // TODO:ステートマシンも渡しているが、ステート側で不要なら渡さなくてよい
         _stateRegister = new(messenger, helper);
         _stateRegister.Register(StateType.Idle);
         _stateRegister.Register(StateType.Search);
+        _stateRegister.Register(StateType.Move);
         _stateRegister.Register(StateType.Attack);
         _stateRegister.Register(StateType.Defeated);
     }
 
-    private void SetDefaultState(StateType type) => _currentState.Value = _stateRegister.GetState(type);
+    private void SetDefaultState()
+    {
+        StateType state = _isSearchStateDefault ? StateType.Search : StateType.Idle;
+        _currentState.Value = _stateRegister.GetState(state);
+    }
 
-    private void UpdateCurrentState() => _currentState.Value = _currentState.Value.Execute();
+    private void UpdateCurrentState()
+    {
+        _currentState.Value = _currentState.Value.Execute();
+    }
 
     /// <summary>
     /// 各機能からメッセージを受信したら遷移を行うので
@@ -62,6 +72,8 @@ public class EnemyStateMachine : MonoBehaviour, IPausable
     {
         StateType current = _currentState.Value.StateType;
         StateType next = _stateTransitionFlow.GetNextStateType(current, trigger);
+
+        if (next == StateType.Unknown) return;
 
         StateTypeBase nextState = _stateRegister.GetState(next);
         _currentState.Value.TryChangeState(nextState);

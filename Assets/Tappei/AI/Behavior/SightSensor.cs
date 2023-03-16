@@ -9,20 +9,20 @@ using UnityEditor;
 /// </summary>
 public class SightSensor : MonoBehaviour
 {
-    static readonly int MaxDetected = 9;
+    private static readonly int MaxDetected = 9;
 
     [Header("検出範囲の基準となるTransform")]
     [Tooltip("視線上の障害物として検知してしまうので他のコライダーと被せないこと")]
-    [SerializeField] Transform _eyeTransform;
+    [SerializeField] private Transform _eyeTransform;
     [Header("検出範囲の設定")]
-    [SerializeField] float _radius;
-    [SerializeField] float _angle;
+    [SerializeField] private float _radius;
+    [SerializeField] private float _angle;
     [Header("検出するオブジェクトが属するレイヤー")]
-    [SerializeField] LayerMask _detectedLayerMask;
+    [SerializeField] private LayerMask _detectedLayerMask;
     [Header("間に障害物があった場合に無視をする")]
-    [SerializeField] bool _isIgnoreObstacle;
+    [SerializeField] private bool _isIgnoreObstacle;
 
-    Collider2D[] _detectedResults = new Collider2D[MaxDetected];
+    private Collider2D[] _detectedResults = new Collider2D[MaxDetected];
 
     /// <summary>プレイヤーが検出範囲内にいるかどうかを返す</summary>
     public bool IsDetected()
@@ -72,7 +72,7 @@ public class SightSensor : MonoBehaviour
         }
     }
 
-    void DrawSearchArea()
+    private void DrawSearchArea()
     {
         Handles.color = new Color32(0, 0, 255, 64);
         Vector3 dir = Quaternion.Euler(0, 0, -_angle / 2) * _eyeTransform.right;

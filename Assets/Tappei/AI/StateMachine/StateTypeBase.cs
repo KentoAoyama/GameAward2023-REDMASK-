@@ -66,7 +66,7 @@ public abstract class StateTypeBase
     {
         if (_stage == Stage.Enter)
         {
-            Debug.LogWarning("Enter()が呼ばれる前にステートを遷移することは不可能: " + state);
+            Debug.LogWarning("Enter()が呼ばれる前にステートを遷移することは不可能: 遷移先: " + state);
             return false;
         }
         else if (_stage == Stage.Exit)

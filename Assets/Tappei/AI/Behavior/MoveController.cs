@@ -29,7 +29,6 @@ public class MoveController : MonoBehaviour
     private void Awake()
     {
         _wanderingPositionHolder = GetComponent<WanderingPositionHolder>();
-        InitMessageReceive();
         InitRigidbodySettings();
     }
 
@@ -38,31 +37,18 @@ public class MoveController : MonoBehaviour
         CancelMoving();
     }
 
-    /// <summary>
-    /// 各ステートから
-    /// 送信されるメッセージを受信したらうろうろ移動を行う
-    /// </summary>
-    private void InitMessageReceive()
+    // α用
+    private void Update()
     {
-        MessageBroker.Default.Receive<BehaviorMessage>()
-            .Where(message => message.ID == gameObject.GetInstanceID())
-            .Where(message => message.Type == BehaviorType.SearchMove)
-            .Subscribe(_ => 
-            {
-                // テスト用、うろうろ移動はメソッドに切り出す
-                // そもそもうろうろ移動の責務までこのクラスで持っていていいものか
-                CancelMoving();
-                Transform target = _wanderingPositionHolder.GetWanderingTarget();
-                StartWalkToTarget(target);
-            }).AddTo(this);
+        _wanderingPositionHolder.SetWanderingCenterPos();
+    }
 
-        MessageBroker.Default.Receive<BehaviorMessage>()
-            .Where(message => message.ID == gameObject.GetInstanceID())
-            .Where(message => message.Type == BehaviorType.StopMove)
-            .Subscribe(_ => 
-            {
-                CancelMoving();
-            }).AddTo(this);
+    // α用
+    public void SearchMove()
+    {
+        CancelMoving();
+        Transform target = _wanderingPositionHolder.GetWanderingTarget();
+        StartRunToTarget(target);
     }
 
     /// <summary>

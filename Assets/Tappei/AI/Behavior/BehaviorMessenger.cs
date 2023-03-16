@@ -2,7 +2,7 @@ using UniRx;
 
 /// <summary>
 /// 各ステートはこのクラスを用いて行動の処理を呼び出すメッセージの送信を行う
-/// メッセージの受信は各機能が行う
+/// メッセージの受信はEnemyActorクラスが行う
 /// </summary>
 public class BehaviorMessenger
 {
@@ -14,8 +14,8 @@ public class BehaviorMessenger
     }
 
     /// <summary>
-    /// 各ステートはこのメソッドを呼ぶことで各機能を実行するメッセージを送信する
-    /// メッセージの受信は各機能が行う
+    /// 各ステートはこのメソッドでメッセージを送信することで各行動の処理を呼び出す
+    /// メッセージの受信はEnemyActorクラスが行う
     /// </summary>
     public void SendMessage(BehaviorType type)
     {
