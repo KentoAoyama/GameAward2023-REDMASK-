@@ -27,7 +27,7 @@ namespace Player
         private float _midairDeceleration = 10f;
         [Header("現在の速度")]
         [Tooltip("現在の速度 : インスペクタで値を追跡する用"), SerializeField]
-        private float _currentSpeed = 0f;
+        private float _currentHorizontalSpeed = 0f;
 
         [Header("垂直移動")]
         [Tooltip("ジャンプ力"), SerializeField]
@@ -36,7 +36,7 @@ namespace Player
         private float _toMoveTimer = 0f;
         private HorizontalMoveMode _currentHorizontalMoveMode = HorizontalMoveMode.Stop;
         private float _previousDir = 0f;
-        private float _moveHorizontalDir = 0f;
+        private float _moveHorizontalDir = 1f;
 
         private PlayerController _playerController;
 
@@ -57,25 +57,25 @@ namespace Player
         }
         public void ClearHorizontalSpeed()
         {
-            _currentSpeed = 0f;
+            _currentHorizontalSpeed = 0f;
         }
 
         public void Update()
         {
-            // 入力が発生しているとき、現在速度を加算する。
+            // 移動入力があるときの処理
             if (_playerController.InputManager.IsExist[InputType.MoveHorizontal] && CanMove)
             {
-                // 一つの入力方向を保存しておく
+                // 1フレーム前の水平移動方向（入力方向）を保存しておく
                 _previousDir = _moveHorizontalDir;
                 // 方向を表す値を更新する。（右に相当する値なら1, 左に相当する値なら-1。）
                 _moveHorizontalDir = _playerController.InputManager.GetValue<float>(InputType.MoveHorizontal) > 0f ? 1f : -1f;
 
+                // 入力方向が切り替わった時の処理
                 if (Mathf.Abs(_previousDir - _moveHorizontalDir) > 0.1f)
                 {
-                    _currentSpeed = 0f;
                     _toMoveTimer = 0f;
                     _currentHorizontalMoveMode = HorizontalMoveMode.Start;
-                } // 方向転換したら再度低速移動から開始する。
+                }
 
                 // 接地しているとき
                 if (_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX))
@@ -88,12 +88,12 @@ namespace Player
                             _currentHorizontalMoveMode = HorizontalMoveMode.Start;
                             break;
                         case HorizontalMoveMode.Start:
-                            _currentSpeed = _startSpeed;
+                            _currentHorizontalSpeed = _startSpeed * _moveHorizontalDir;
                             _toMoveTimer += Time.deltaTime;
                             if (_toMoveTimer > _toMoveTime) _currentHorizontalMoveMode = HorizontalMoveMode.Move;
                             break;
                         case HorizontalMoveMode.Move:
-                            _currentSpeed = _moveSpeed;
+                            _currentHorizontalSpeed = _moveSpeed * _moveHorizontalDir;
                             break;
                         case HorizontalMoveMode.Deceleration:
                             _toMoveTimer = 0f;
@@ -106,8 +106,8 @@ namespace Player
                 {
                     _currentHorizontalMoveMode = HorizontalMoveMode.Move;
 
-                    _currentSpeed += Time.deltaTime * _midairMoveAcceleration;
-                    if (_currentSpeed > _maxMidairMoveSpeed) _currentSpeed = _maxMidairMoveSpeed; // 最大速度を超えない
+                    _currentHorizontalSpeed += Time.deltaTime * _midairMoveAcceleration * _moveHorizontalDir;
+                    if (_currentHorizontalSpeed > _maxMidairMoveSpeed) _currentHorizontalSpeed = _maxMidairMoveSpeed; // 最大速度を超えない
                 }
             }
             // 入力がないとき、現在速度を減算する。
@@ -115,32 +115,35 @@ namespace Player
             {
                 if (_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX))
                 {
-                    _currentSpeed -= Time.deltaTime * _landDeceleration;
-                }
+                    _currentHorizontalSpeed -= Time.deltaTime * _landDeceleration * _moveHorizontalDir;
+                } // 地上移動中の減速処理
                 else
                 {
-                    _currentSpeed -= Time.deltaTime * _midairDeceleration;
-                }
-                if (0f > _currentSpeed) _currentSpeed = 0f; // 0より小さくならない
+                    _currentHorizontalSpeed -= Time.deltaTime * _midairDeceleration * _moveHorizontalDir;
+                } // 空中移動中の減速処理
 
-                if (_currentSpeed > 0.01f)
+                if (_moveHorizontalDir > 0f && _currentHorizontalSpeed < 0f ||
+                    _moveHorizontalDir < 0f && _currentHorizontalSpeed > 0f)
+                {
+                    _currentHorizontalSpeed = 0f;
+                } // 「右」に向いている状態で減速するときは0より小さくならない、
+                  // 「左」に向いている状態で減速するときは0より大きくならない。
+
+                // 状態を表す値の更新
+                if (Mathf.Abs(_currentHorizontalSpeed) > 0.01f)
                 {
                     _currentHorizontalMoveMode = HorizontalMoveMode.Deceleration;
-                }
+                } // 速度が僅かでもある場合 「減速中」。
                 else
                 {
                     _currentHorizontalMoveMode = HorizontalMoveMode.Stop;
-                }
+                } // 速度が限りなく0に近い時は 「停止」。
             }
 
-            if (Mathf.Abs(_currentSpeed) > 0.01f)
-            {
-                // 横の入力に応じて左右に移動する
-                _playerController.Rigidbody2D.velocity =
-                        new Vector2(
-                            _moveHorizontalDir * _currentSpeed,
-                            _playerController.Rigidbody2D.velocity.y);
-            }
+            // 速度を割り当てる。
+            _playerController.Rigidbody2D.velocity =
+                    new Vector2(_currentHorizontalSpeed,
+                    _playerController.Rigidbody2D.velocity.y);
 
             if (CanJump)
             {
