@@ -239,7 +239,7 @@ namespace Player
                     for (int i = 0; i < reflect.MaxWallCollisionCount; i++)
                     {
                         // 位置の計算についてメモ(レイが対象に埋まるのでちょっとずらす)
-                        hit = Physics2D.Raycast(pos + dir * 0.1f, dir, length, _guidelineLayerMask);
+                        hit = Physics2D.Raycast(pos + dir * 0.01f, dir, length, _guidelineLayerMask);
 
                         if (hit.collider != null)
                         {

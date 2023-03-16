@@ -40,7 +40,7 @@ namespace Bullet
                 {
                     _rigidbody2D.velocity = (Vector3)positions[index] - transform.position;
 
-                    await PositionCheck(transform, transform.position, positions[index]);
+                    await WaitMove(transform, transform.position, positions[index]);
                     index++;
                 }
                 catch (ArgumentOutOfRangeException e)
@@ -70,7 +70,7 @@ namespace Bullet
 
         }
 
-        private async UniTask PositionCheck(Transform origin, Vector2 startPos, Vector2 targetPos)
+        private async UniTask WaitMove(Transform origin, Vector2 startPos, Vector2 targetPos)
         {
             if (startPos.x < targetPos.x && // 右上
                 startPos.y < targetPos.y)
