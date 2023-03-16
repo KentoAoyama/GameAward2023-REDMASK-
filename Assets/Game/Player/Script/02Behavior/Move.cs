@@ -72,6 +72,7 @@ namespace Player
 
                 if (Mathf.Abs(_previousDir - _moveHorizontalDir) > 0.1f)
                 {
+                    _currentSpeed = 0f;
                     _toMoveTimer = 0f;
                     _currentHorizontalMoveMode = HorizontalMoveMode.Start;
                 } // 方向転換したら再度低速移動から開始する。

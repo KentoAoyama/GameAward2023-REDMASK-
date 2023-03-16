@@ -13,23 +13,10 @@ namespace Bullet
     {
         [Tooltip("最大何回壁を反射するか"), SerializeField]
         private int _maxWallCollisionCount = 0;
-        [TagName, SerializeField]
-        private string _wallTag = default;
-        [SerializeField]
-        private LayerMask _wallLayer = default;
-
-        private CircleCollider2D _circleCollider2D = null;
-        /// <summary> 現在の反射回数 </summary>
-        private int _reflexCount = 0;
 
         public override BulletType Type => BulletType.ReflectBullet;
         public int MaxWallCollisionCount => _maxWallCollisionCount;
 
-        protected override void Start()
-        {
-            base.Start();
-            _circleCollider2D = GetComponent<CircleCollider2D>();
-        }
         public async void ToStart(Vector2[] positions)
         {
             int index = 1;
