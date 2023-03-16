@@ -19,20 +19,27 @@ namespace Input
 
         public async void Update()
         {
-            // Debug.Log(_currentDevice); // 現在の使用デバイスを確認する用
-            // クリックあるいはキーボードによっていずれかの入力が発生した時の処理
-            if (IsKeyboardAndMouseInput() && _currentDevice.Value == Device.GamePad)
+            try
             {
-                _currentDevice.Value = Device.Switching;
-                await UniTask.DelayFrame(1);
-                _currentDevice.Value = Device.KeyboardAndMouse;
+                // Debug.Log(_currentDevice); // 現在の使用デバイスを確認する用
+                // クリックあるいはキーボードによっていずれかの入力が発生した時の処理
+                if (IsKeyboardAndMouseInput() && _currentDevice.Value == Device.GamePad)
+                {
+                    _currentDevice.Value = Device.Switching;
+                    await UniTask.DelayFrame(1);
+                    _currentDevice.Value = Device.KeyboardAndMouse;
+                }
+                // ゲームパッドによっていずれかの入力が発生した時の処理
+                else if (IsGamePadInput() && _currentDevice.Value == Device.KeyboardAndMouse)
+                {
+                    _currentDevice.Value = Device.Switching;
+                    await UniTask.DelayFrame(1);
+                    _currentDevice.Value = Device.GamePad;
+                }
             }
-            // ゲームパッドによっていずれかの入力が発生した時の処理
-            else if (IsGamePadInput() && _currentDevice.Value == Device.KeyboardAndMouse)
+            catch (MissingReferenceException)
             {
-                _currentDevice.Value = Device.Switching;
-                await UniTask.DelayFrame(1);
-                _currentDevice.Value = Device.GamePad;
+
             }
         }
         /// <summary>
