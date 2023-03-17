@@ -45,6 +45,7 @@ namespace Player
 
         public event Action<int> OnFire = default;
         public Action<int, BulletType> OnChamberStateChanged = default;
+        public bool IsPause { get; set; } = false;
 
         public void Init(PlayerController playerController)
         {
@@ -52,6 +53,7 @@ namespace Player
         }
         public void Update()
         {
+            if (IsPause) return;
             // 撃つ方向を保存する
             if (_playerController.DeviceManager.CurrentDevice.Value == Input.Device.GamePad) // ゲームパッド操作の場合
             {
@@ -62,7 +64,9 @@ namespace Player
             }
             else // マウス操作の場合
             {
-                var mouseWorldPos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+                // マウスの座標をワールド座標に変換する
+                var mouseWorldPos = Camera.main.ScreenToWorldPoint(
+                    _playerController.InputManager.GetValue<Vector2>(InputType.LookingAngle));
                 if (((Vector2)mouseWorldPos - (Vector2)_playerController.transform.position).sqrMagnitude > 0.5f)
                 {
                     _aimingAngle = mouseWorldPos - _playerController.transform.position;
