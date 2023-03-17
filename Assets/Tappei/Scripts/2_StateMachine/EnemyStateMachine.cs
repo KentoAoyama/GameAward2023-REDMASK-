@@ -1,5 +1,6 @@
 using UniRx;
 using UnityEngine;
+using System.Collections.Generic;
 
 /// <summary>
 /// 敵のステートマシン
@@ -73,6 +74,8 @@ public class EnemyStateMachine : MonoBehaviour, IPausable
         StateType current = _currentState.Value.StateType;
         StateType next = _stateTransitionFlow.GetNextStateType(current, trigger);
 
+        // 値がUnknownの場合は遷移先が登録されていないが、意図したものである場合が多い
+        // どのステートでもあらゆる遷移のメッセージを受信しているのでここで弾く必要がある
         if (next == StateType.Unknown) return;
 
         StateTypeBase nextState = _stateRegister.GetState(next);

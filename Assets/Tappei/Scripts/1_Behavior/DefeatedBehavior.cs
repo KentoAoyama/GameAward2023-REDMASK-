@@ -11,7 +11,7 @@ public class DefeatedBehavior : MonoBehaviour
 
     }
 
-    void Defeated()
+    public void Defeated()
     {
         Debug.Log("Œ‚”j‚³‚ê‚½");
     }

@@ -37,17 +37,20 @@ public class WanderingPositionHolder : MonoBehaviour
     /// 足元にRayを飛ばして当たった位置をうろうろの基準となる座標とする
     /// キャラクターが移動した際は基準の座標を変更する
     /// </summary>
-    public void SetWanderingCenterPos()
+    /// <returns>Ryaがヒットしたかどうか</returns>
+    public bool SetWanderingCenterPos()
     {
         Vector3 rayOrigin = transform.position + Vector3.up * RayOffset;
         RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector3.down, _rayDistance, _groundLayerMask);
         if (hit.collider)
         {
             _wanderingCenterPos = hit.point;
+            return true;
         }
         else
         {
-            Debug.LogError("Rayがヒットしなかったので座標がセットできませんでした");
+            Debug.LogWarning("Rayがヒットしなかったので座標がセットできませんでした");
+            return false;
         }
     }
 

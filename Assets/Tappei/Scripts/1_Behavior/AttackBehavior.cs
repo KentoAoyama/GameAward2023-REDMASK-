@@ -11,7 +11,7 @@ public class AttackBehavior : MonoBehaviour
 
     }
 
-    void Attack()
+    public void Attack()
     {
         Debug.Log("çUåÇÇµÇ‹ÇµÇΩ");
     }

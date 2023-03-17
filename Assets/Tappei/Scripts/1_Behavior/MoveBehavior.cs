@@ -1,25 +1,36 @@
-using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System.Threading;
+using UnityEngine;
 using UniRx;
+using UniRx.Triggers;
+using System;
 
 /// <summary>
-/// 移動周りの処理を制御するクラス
+/// 移動する際に使用するクラス
+/// 
 /// </summary>
 [RequireComponent(typeof(WanderingPositionHolder))]
-public class MoveController : MonoBehaviour
+public class MoveBehavior : MonoBehaviour
 {
     /// <summary>
     /// 移動先に到着した際にぷるぷるしないようにする為の値
     /// 値を大きくすればより正確に移動先にたどり着くが、速度次第ではぷるぷるしてしまう
     /// </summary>
     private static readonly float ArrivalTolerance = 500.0f;
+    /// <summary>
+    /// 毎フレームRayを飛ばさないように、うろうろ出来る移動範囲を更新する間隔を設定する<br></br>
+    /// 間隔を狭めればより正確なうろうろが出来る
+    /// </summary>
+    private static readonly float UpdateWanderingCenterPosInterval = 0.15f;
 
-    [SerializeField] private Rigidbody2D _rigidbody;
+    [Header("移動時にターゲットの方向に向けるもの")]
+    [SerializeField] private Transform _spriteTrans;
+    [SerializeField] private Transform _eyeTrans;
     [Header("移動速度の設定")]
     [SerializeField] private float _walkSpeed = 2.0f;
     [SerializeField] private float _runSpeed = 4.0f;
 
+    private Rigidbody2D _rigidbody;
     private WanderingPositionHolder _wanderingPositionHolder;
     private CancellationTokenSource _cts;
 
@@ -30,6 +41,7 @@ public class MoveController : MonoBehaviour
     {
         _wanderingPositionHolder = GetComponent<WanderingPositionHolder>();
         InitRigidbodySettings();
+        InitWanderingCenterPos();
     }
 
     private void OnDisable()
@@ -37,44 +49,45 @@ public class MoveController : MonoBehaviour
         CancelMoving();
     }
 
-    // α用
-    private void Update()
+    /// <summary>一定間隔でうろうろ出来る移動範囲を更新する</summary>
+    private void InitWanderingCenterPos()
     {
-        _wanderingPositionHolder.SetWanderingCenterPos();
+        this.UpdateAsObservable()
+            .ThrottleFirst(TimeSpan.FromSeconds(UpdateWanderingCenterPosInterval))
+            .Subscribe(_ => 
+            {
+                _wanderingPositionHolder.SetWanderingCenterPos();
+            })
+            .AddTo(this);
     }
 
-    // α用
-    public void SearchMove()
-    {
-        CancelMoving();
-        Transform target = _wanderingPositionHolder.GetWanderingTarget();
-        StartRunToTarget(target);
-    }
-
-    /// <summary>
-    /// デフォルトから変更した値を設定する
-    /// インスペクターでの変更忘れ防止
-    /// </summary>
+    /// <summary>デフォルトから変更した値を設定する</summary>
     private void InitRigidbodySettings()
     {
+        _rigidbody = GetComponent<Rigidbody2D>();
         _rigidbody.angularDrag = 0;
         _rigidbody.freezeRotation = true;
     }
 
     /// <summary>
-    /// 歩いて移動先に向かう際に外部から呼び出す
-    /// 別の移動先に向かう際はCancelMoving()を呼んで現在の移動をキャンセルすること
+    /// Searchステートに遷移した際に外部から呼び出す
+    /// うろうろ出来る移動範囲のうち、ランダムな箇所に移動する
     /// </summary>
+    public void StartWalkToWanderingTarget()
+    {
+        Transform target = _wanderingPositionHolder.GetWanderingTarget();
+        StartRunToTarget(target);
+    }
+
+    /// <summary>歩いて移動先に向かう際に外部から呼び出す</summary>
     public void StartWalkToTarget(Transform target) => StartMoveToTarget(target, _walkSpeed);
-    /// <summary>
-    /// 走って移動先に向かう際に外部から呼び出す
-    /// 別の移動先に向かう際はCancelMoving()を呼んで現在の移動をキャンセルすること
-    /// </summary>
+
+    /// <summary>走って移動先に向かう際に外部から呼び出す</summary>
     public void StartRunToTarget(Transform target) => StartMoveToTarget(target, _runSpeed);
 
     /// <summary>
     /// 現在の移動をキャンセルしてその場に留まる際に外部から呼び出す
-    /// 別の移動先に向かう際はこのメソッドを呼んで現在の移動をキャンセルすること
+    /// また、別の移動先に向かう際はこのメソッドを呼んで現在の移動をキャンセルすること
     /// </summary>
     public void CancelMoving()
     {
@@ -135,8 +148,24 @@ public class MoveController : MonoBehaviour
             velo = Vector3.Normalize(velo) * moveSpeed;
         }
 
-        velo.y = _rigidbody.velocity.y;
+        TurnToTarget(targetPos);
 
+        velo.y = _rigidbody.velocity.y;
         _rigidbody.velocity = velo * _debugTimeSpeed;
+    }
+
+    private void TurnToTarget(Vector3 targetPos)
+    {
+        float diff = targetPos.x - transform.position.x;
+        int dir = (int)Mathf.Sign(diff);
+
+        _spriteTrans.localScale = new Vector3(dir, 1, 1);
+        
+        Vector3 pos = _eyeTrans.localPosition;
+        pos.x = MathF.Abs(pos.x) * dir;
+        _eyeTrans.localPosition = pos;
+
+        int angle = dir == 1 ? 0 : 180;
+        _eyeTrans.eulerAngles = new Vector3(0, 0, angle);
     }
 }
