@@ -1,4 +1,5 @@
 // 日本語対応
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -9,7 +10,7 @@ public class SceneTransitionButton : MonoBehaviour
     [SceneName, SerializeField]
     private string _nextSceneName = default;
 
-    private void Start()
+    private void Awake()
     {
         GetComponent<Button>()?.onClick.AddListener(OnSceneChange);
     }
@@ -19,6 +20,7 @@ public class SceneTransitionButton : MonoBehaviour
     /// </summary>
     public void OnSceneChange()
     {
+        DOTween.KillAll();
         SceneManager.LoadScene(_nextSceneName);
     }
 }

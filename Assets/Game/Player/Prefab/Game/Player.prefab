@@ -1433,7 +1433,7 @@ MonoBehaviour:
     _maxMidairMoveSpeed: 6
     _landDeceleration: 20
     _midairDeceleration: 6
-    _currentSpeed: 0
+    _currentHorizontalSpeed: 0
     _jumpPower: 4
   _groungChecker:
     _offset: {x: 0, y: -0.75}
@@ -1449,7 +1449,9 @@ MonoBehaviour:
     _muzzleTransform: {fileID: 5942310713907764758}
     _interval: 0.4
     _aimingLineRenderer: {fileID: 1909928272}
-    _maxLineLength: 1.2
+    _guidelineLayerMask:
+      serializedVersion: 2
+      m_Bits: 128
   _bulletCountManager:
     _standardBulletCountInitialValue: 50
     _penetrateBulletCountInitialValue: 50
@@ -1990,10 +1992,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1414620988}
     m_Modifications:
-    - target: {fileID: 5707932457689406992, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 5707932457705713878, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2082,114 +2080,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bullet Count Assign UI (Test)
       objectReference: {fileID: 0}
-    - target: {fileID: 5707932457705713879, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5707932457781656999, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5707932457781657017, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
-      propertyPath: m_ContentType
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5707932457781657017, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
-      propertyPath: m_KeyboardType
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 5707932457781657017, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
-      propertyPath: m_CharacterLimit
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5707932457781657017, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
-      propertyPath: m_CharacterValidation
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5707932457845917093, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5707932457845917095, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
-      propertyPath: m_FontData.m_MaxSize
-      value: 49
-      objectReference: {fileID: 0}
-    - target: {fileID: 5707932458148434650, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5707932458148434652, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
-      propertyPath: m_FontData.m_MaxSize
-      value: 49
-      objectReference: {fileID: 0}
-    - target: {fileID: 5707932458217987344, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
-      propertyPath: m_FontData.m_MaxSize
-      value: 42
-      objectReference: {fileID: 0}
-    - target: {fileID: 5707932458217987358, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5707932458308860098, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5707932458308860100, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
-      propertyPath: m_FontData.m_MaxSize
-      value: 49
-      objectReference: {fileID: 0}
-    - target: {fileID: 5707932458747021073, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
-      propertyPath: m_FontData.m_MaxSize
-      value: 42
-      objectReference: {fileID: 0}
-    - target: {fileID: 5707932458747021087, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5707932459058112747, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5707932459058112749, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
-      propertyPath: m_FontData.m_MaxSize
-      value: 49
-      objectReference: {fileID: 0}
-    - target: {fileID: 5707932459136878229, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5707932459136878231, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
-      propertyPath: m_FontData.m_MaxSize
-      value: 42
-      objectReference: {fileID: 0}
-    - target: {fileID: 5707932459443440829, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 5707932459443440831, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 231753012}
-    - target: {fileID: 5707932459488111099, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
-      propertyPath: m_Layer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5707932459488111101, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
-      propertyPath: m_ContentType
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5707932459488111101, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
-      propertyPath: m_KeyboardType
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 5707932459488111101, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
-      propertyPath: m_CharacterLimit
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5707932459488111101, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
-      propertyPath: m_CharacterValidation
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 545f401b7e9f4994c9e0dfba952b5beb, type: 3}
 --- !u!114 &5707932457520814081 stripped

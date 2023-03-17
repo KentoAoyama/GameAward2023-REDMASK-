@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -50,6 +51,7 @@ namespace Player
         /// この値が trueであれば、ジャンプ入力が発生したときにジャンプ処理を実行する。
         /// </summary>
         public bool CanJump { get; set; } = true;
+        public bool IsPause { get; private set; } = false;
 
         public void Init(PlayerController playerController)
         {
@@ -60,8 +62,36 @@ namespace Player
             _currentHorizontalSpeed = 0f;
         }
 
+        private Vector2 _velocity;
+        private float _angularVelocity;
+        public async void Pause()
+        {
+            await UniTask.WaitUntil(() => _playerController != null);
+            // Updateを停止する
+            IsPause = true;
+            // Rigidbody2Dのポーズ処理
+            _velocity = _playerController.Rigidbody2D.velocity;
+            _angularVelocity = _playerController.Rigidbody2D.angularVelocity;
+            _playerController.Rigidbody2D.Sleep();
+            _playerController.Rigidbody2D.simulated = false;
+        }
+        public void Resume()
+        {
+            // Updateを再開する
+            IsPause = false;
+            // Rigidbody2Dのリジューム処理
+            _playerController.Rigidbody2D.simulated = true;
+            _playerController.Rigidbody2D.WakeUp();
+            _playerController.Rigidbody2D.angularVelocity = _angularVelocity;
+            _playerController.Rigidbody2D.velocity = _velocity;
+        }
         public void Update()
         {
+            if (IsPause)
+            {
+                return;
+            }
+
             // 移動入力があるときの処理
             if (_playerController.InputManager.IsExist[InputType.MoveHorizontal] && CanMove)
             {

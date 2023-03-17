@@ -7,11 +7,12 @@ using UnityEngine.InputSystem;
 using Input;
 using Bullet;
 using UI;
+using Cysharp.Threading.Tasks;
 
 namespace Player
 {
     [RequireComponent(typeof(Rigidbody2D))]
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : MonoBehaviour, IPausable
     {
         [Tooltip("プレイヤーのUIを管理するクラス"), SerializeField]
         private UIController _uIController;
@@ -93,6 +94,33 @@ namespace Player
             {
                 _revolver.LoadBullet(_basicBullet, i);
             }
+        }
+
+        private void OnEnable()
+        {
+            GameManager.Instance.PauseManager.Register(this);
+
+
+        }
+        private void OnDisable()
+        {
+            GameManager.Instance.PauseManager.Lift(this);
+        }
+
+        public async void Pause()
+        {
+            // 物理演算の停止、入力の停止、
+            _move.Pause();
+            await UniTask.WaitUntil(() => InputManager.InputActionCollection != null);
+            InputManager.InputActionCollection.Disable();
+            _revolver.IsPause = true;
+        }
+
+        public void Resume()
+        {
+            _move.Resume();
+            InputManager.InputActionCollection.Enable();
+            _revolver.IsPause = false;
         }
         #endregion
     }
