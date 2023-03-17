@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5707932457689406996}
   - component: {fileID: 5707932457689406997}
   - component: {fileID: 5707932457689406994}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Standard Bullet Count Input Field
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -156,15 +156,16 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5707932457705713878}
+  - component: {fileID: 1262798667}
   - component: {fileID: 5707932457705713960}
   - component: {fileID: 5707932457705713961}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Bullet Count Assign UI (Test)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5707932457705713878
 RectTransform:
   m_ObjectHideFlags: 0
@@ -172,7 +173,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5707932457705713879}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -189,6 +190,19 @@ RectTransform:
   m_AnchoredPosition: {x: 236.19998, y: 128.6}
   m_SizeDelta: {x: 472.39996, y: 257.2}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1262798667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5707932457705713879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f451b0d58323a3b4a9f55a1d4f3bb4e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _text: "\u5F3E\u306E\u6240\u6301\u6570\u3092\u66F8\u304D\u63DB\u3048\u308B\u30DC\u30BF\u30F3\u305F\u3061\u306E\u89AA\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8"
 --- !u!223 &5707932457705713960
 Canvas:
   m_ObjectHideFlags: 0
@@ -239,7 +253,7 @@ GameObject:
   - component: {fileID: 5707932457781657019}
   - component: {fileID: 5707932457781657016}
   - component: {fileID: 5707932457781657017}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Reflect Bullet Count Input Field
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -349,14 +363,14 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5707932457781657016}
   m_TextComponent: {fileID: 5707932458148434652}
   m_Placeholder: {fileID: 5707932459136878231}
-  m_ContentType: 0
+  m_ContentType: 2
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 4
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 0
-  m_CharacterLimit: 0
+  m_CharacterValidation: 1
+  m_CharacterLimit: 2
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
@@ -385,7 +399,7 @@ GameObject:
   - component: {fileID: 5707932457845917092}
   - component: {fileID: 5707932457845917094}
   - component: {fileID: 5707932457845917095}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Text (Legacy)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -446,7 +460,7 @@ MonoBehaviour:
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 49
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -467,7 +481,7 @@ GameObject:
   - component: {fileID: 5707932458148434653}
   - component: {fileID: 5707932458148434655}
   - component: {fileID: 5707932458148434652}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Text (Legacy)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -528,7 +542,7 @@ MonoBehaviour:
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 49
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 0
@@ -547,7 +561,7 @@ GameObject:
   - component: {fileID: 5707932458217987345}
   - component: {fileID: 5707932458217987347}
   - component: {fileID: 5707932458217987344}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Placeholder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -608,7 +622,7 @@ MonoBehaviour:
     m_FontStyle: 2
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 42
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -627,7 +641,7 @@ GameObject:
   - component: {fileID: 5707932458308860101}
   - component: {fileID: 5707932458308860103}
   - component: {fileID: 5707932458308860100}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Text (Legacy)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -688,7 +702,7 @@ MonoBehaviour:
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 49
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 0
@@ -707,7 +721,7 @@ GameObject:
   - component: {fileID: 5707932458747021086}
   - component: {fileID: 5707932458747021072}
   - component: {fileID: 5707932458747021073}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Placeholder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -768,7 +782,7 @@ MonoBehaviour:
     m_FontStyle: 2
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 42
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -787,7 +801,7 @@ GameObject:
   - component: {fileID: 5707932459058112746}
   - component: {fileID: 5707932459058112748}
   - component: {fileID: 5707932459058112749}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Text (Legacy)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -848,7 +862,7 @@ MonoBehaviour:
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 49
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 0
@@ -867,7 +881,7 @@ GameObject:
   - component: {fileID: 5707932459136878228}
   - component: {fileID: 5707932459136878230}
   - component: {fileID: 5707932459136878231}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Placeholder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -928,7 +942,7 @@ MonoBehaviour:
     m_FontStyle: 2
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 42
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -948,7 +962,7 @@ GameObject:
   - component: {fileID: 5707932459443440817}
   - component: {fileID: 5707932459443440830}
   - component: {fileID: 5707932459443440831}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Assign Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1082,7 +1096,7 @@ GameObject:
   - component: {fileID: 5707932459488111103}
   - component: {fileID: 5707932459488111100}
   - component: {fileID: 5707932459488111101}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Penetrate Bullet Count Input Field
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1192,14 +1206,14 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5707932459488111100}
   m_TextComponent: {fileID: 5707932459058112749}
   m_Placeholder: {fileID: 5707932458747021073}
-  m_ContentType: 0
+  m_ContentType: 2
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 4
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 0
-  m_CharacterLimit: 0
+  m_CharacterValidation: 1
+  m_CharacterLimit: 2
   m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
