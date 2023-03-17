@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
 /// ポーズ, リジュームを管理するクラス
@@ -11,6 +12,20 @@ public class PauseManager
 
     private event Action OnPause = default;
     private event Action OnResume = default;
+
+    private UnityEvent _unityEventPause = null;
+    private UnityEvent _unityEventResume = null;
+
+    public void RegisterInspectorPauseAndResume(UnityEvent onPause, UnityEvent onResume)
+    {
+        _unityEventPause = onPause;
+        _unityEventResume = onResume;
+    }
+    public void LiftInspectorPauseAndResume()
+    {
+        _unityEventPause = null;
+        _unityEventResume = null;
+    }
 
     /// <summary>
     /// ポーズ回数のカウンターをリセットする
@@ -45,12 +60,13 @@ public class PauseManager
     /// <summary>
     /// ポーズの実行処理
     /// </summary>
-    public void ExecutePause(Action onPause)
+    public void ExecutePause(Action onPause = null)
     {
         // ポーズ中でなければ登録されているポーズ処理を実行する。
         if (PauseCounter == 0)
         {
             Debug.Log("ポーズします。");
+            _unityEventPause?.Invoke();
             OnPause?.Invoke();
             onPause?.Invoke();
         }
@@ -66,7 +82,7 @@ public class PauseManager
     /// <summary>
     /// リジュームの実行処理
     /// </summary>
-    public void ExecuteResume(Action onResume)
+    public void ExecuteResume(Action onResume = null)
     {
         // ポーズ回数カウンターを減算する。（カウンターは0より小さくならない）
         if (PauseCounter >= 1)
@@ -83,6 +99,7 @@ public class PauseManager
         if (PauseCounter == 0)
         {
             Debug.Log("リジュームします。");
+            _unityEventResume?.Invoke();
             OnResume?.Invoke();
             onResume?.Invoke();
         }
