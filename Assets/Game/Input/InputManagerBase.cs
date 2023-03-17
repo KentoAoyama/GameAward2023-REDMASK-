@@ -37,6 +37,7 @@ namespace Input
         public ReadOnlyDictionary<TEnum, bool> IsExist = null;
         /// <summary> 特定のボタンを開放したときにtrueを返すディクショナリ </summary>
         public ReadOnlyDictionary<TEnum, bool> IsReleased = null;
+        public TController InputActionCollection => _inputActionCollection;
 
         /// <summary> SetAction<>()を呼び出して,各アクションをセットしてください </summary>
         protected abstract void Setup();
