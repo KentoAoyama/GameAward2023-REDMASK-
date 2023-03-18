@@ -15,6 +15,8 @@ public class EnemyActor : MonoBehaviour
     [SerializeField] private AttackBehavior _attackBehavior;
     [SerializeField] private DefeatedBehavior _defeatedBehavior;
 
+    [Header("攻撃範囲")]
+    [SerializeField] private float _attackRane = 3.0f;
     [Header("現在のステートを表示するためのデバッグ用UI")]
     [SerializeField] private Text _text;
     
@@ -47,15 +49,22 @@ public class EnemyActor : MonoBehaviour
 
     private void Update()
     {
+        float distance = _sightSensor.TryGetDistanceToPlayer();
+
         // TODO:毎フレームの呼び出しは負荷がかかるので呼び出し感覚を設定する
         //_isPlayerDetected.Value = _sightSensor.IsDetected();
-        if (_sightSensor.IsDetected())
-        {
-            _stateTransitionMessenger.SendMessage(StateTransitionTrigger.PlayerFind);
-        }
-        else
+
+        if (Mathf.Approximately(distance, -1))
         {
             _stateTransitionMessenger.SendMessage(StateTransitionTrigger.PlayerHide);
+        }
+        else if (distance <= _attackRane)
+        {
+            _stateTransitionMessenger.SendMessage(StateTransitionTrigger.PlayerInAttackRange);
+        }
+        else if (distance > _attackRane)
+        {
+            _stateTransitionMessenger.SendMessage(StateTransitionTrigger.PlayerFind);
         }
 
         // デバッグ用、UIに現在のステートを表示する
@@ -113,4 +122,12 @@ public class EnemyActor : MonoBehaviour
     //        }
     //    }).AddTo(this);
     //}
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("EditorOnly"))
+        {
+            _defeatedBehavior.Defeated();
+        }
+    }
 }

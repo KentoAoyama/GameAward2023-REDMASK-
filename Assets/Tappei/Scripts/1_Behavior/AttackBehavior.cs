@@ -1,18 +1,18 @@
 using UnityEngine;
-using UniRx;
 
 /// <summary>
 /// 攻撃を行う際に使用するクラス
 /// </summary>
 public class AttackBehavior : MonoBehaviour
 {
-    void Awake()
-    {
-
-    }
+    [Header("弾のプレハブ")]
+    [SerializeField] GameObject _bulletPreafb;
+    [Header("弾を発射する位置")]
+    [SerializeField] Transform _muzzle;
 
     public void Attack()
     {
-        Debug.Log("攻撃しました");
+        GameObject instance = Instantiate(_bulletPreafb, _muzzle.position, Quaternion.identity);
+        instance.GetComponent<EnemyTestBullet>().Init(_muzzle.localScale.x);
     }
 }

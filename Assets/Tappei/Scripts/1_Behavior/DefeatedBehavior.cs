@@ -1,18 +1,18 @@
 using UnityEngine;
-using UniRx;
 
 /// <summary>
 /// Œ‚”j‚³‚ê‚½
 /// </summary>
 public class DefeatedBehavior : MonoBehaviour
 {
-    void Awake()
-    {
-
-    }
+    [Header("Œ‚”j‚³‚ê‚½‚³‚¢‚ÌƒGƒtƒFƒNƒg")]
+    [SerializeField] GameObject _defeatedEffectPrefab;
 
     public void Defeated()
     {
-        Debug.Log("Œ‚”j‚³‚ê‚½");
+        Instantiate(_defeatedEffectPrefab, transform.position, Quaternion.identity);
+
+        gameObject.transform.position = new Vector3(100, 100, 100);
+        gameObject.SetActive(false);
     }
 }
