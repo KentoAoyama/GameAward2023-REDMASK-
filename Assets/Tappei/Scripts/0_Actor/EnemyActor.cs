@@ -105,24 +105,6 @@ public class EnemyActor : MonoBehaviour
         }).AddTo(this);
     }
 
-    /// <summary>
-    /// プレイヤーを視界に捉えた/視界から消えた際に、それをトリガーとした遷移のメッセージを送信する
-    /// </summary>
-    //private void SubscribePlayerDetected()
-    //{
-    //    _isPlayerDetected.Subscribe(isPlayerDetected =>
-    //    {
-    //        if (isPlayerDetected)
-    //        {
-    //            _stateTransitionMessenger.SendMessage(StateTransitionTrigger.PlayerFind);
-    //        }
-    //        else
-    //        {
-    //            _stateTransitionMessenger.SendMessage(StateTransitionTrigger.PlayerHide);
-    //        }
-    //    }).AddTo(this);
-    //}
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("EditorOnly"))
