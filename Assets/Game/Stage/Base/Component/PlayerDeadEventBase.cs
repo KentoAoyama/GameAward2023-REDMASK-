@@ -33,8 +33,6 @@ public abstract class PlayerDeadEventBase : MonoBehaviour
         await PlayerDeadPerformance();
         // 演出完了時処理を発行する
         _onPerformanceComplete?.Invoke();
-        // リジュームする
-        GameManager.Instance.PauseManager.ExecuteResume();
     }
     /// <summary>
     /// 継承先で独自のプレイヤー死亡時演出を実装してください
