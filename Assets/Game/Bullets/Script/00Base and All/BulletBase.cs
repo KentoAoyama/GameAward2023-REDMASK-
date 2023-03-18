@@ -5,7 +5,7 @@ namespace Bullet
     /// <summary>
     /// 弾の基底クラス
     /// </summary>
-    public abstract class BulletBase : MonoBehaviour, IStoreableInChamber
+    public abstract class BulletBase : MonoBehaviour, IStoreableInChamber, IPausable
     {
         [Tooltip("何体の敵にヒットできるか"), SerializeField]
         protected int _maxEnemyHitNumber = 1;
@@ -77,5 +77,32 @@ namespace Bullet
         }
         protected abstract void OnHitTrigger(Collider2D target);
         protected abstract void OnHitCollision(Collision2D target);
+
+        private void OnEnable()
+        {
+            GameManager.Instance.PauseManager.Register(this);
+        }
+        private void OnDisable()
+        {
+            GameManager.Instance.PauseManager.Lift(this);
+        }
+
+        private Vector2 _velocity;
+        private float _angularVelocity;
+        public void Pause()
+        {
+            _velocity = _rigidbody2D.velocity;
+            _angularVelocity = _rigidbody2D.angularVelocity;
+            _rigidbody2D.Sleep();
+            _rigidbody2D.simulated = false;
+        }
+
+        public void Resume()
+        {
+            _rigidbody2D.simulated = true;
+            _rigidbody2D.WakeUp();
+            _rigidbody2D.angularVelocity = _angularVelocity;
+            _rigidbody2D.velocity = _velocity;
+        }
     }
 }
