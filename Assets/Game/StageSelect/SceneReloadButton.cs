@@ -10,6 +10,7 @@ public class SceneReloadButton : MonoBehaviour
     {
         GetComponent<Button>().onClick.AddListener(() =>
         {
+            GameManager.Instance.PauseManager.ClearCount();
             DOTween.KillAll();
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         });

@@ -20,6 +20,7 @@ public class SceneTransitionButton : MonoBehaviour
     /// </summary>
     public void OnSceneChange()
     {
+        GameManager.Instance.PauseManager.ClearCount();
         DOTween.KillAll();
         SceneManager.LoadScene(_nextSceneName);
     }
