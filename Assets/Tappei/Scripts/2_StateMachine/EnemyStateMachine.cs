@@ -44,14 +44,14 @@ public class EnemyStateMachine : MonoBehaviour, IPausable
 
     private void InitStateRegister()
     {
-        BehaviorMessenger messenger = new(gameObject.GetInstanceID());
-        StateMachineHelper helper = new();
-        _stateRegister = new(messenger, helper);
-        _stateRegister.Register(StateType.Idle);
-        _stateRegister.Register(StateType.Search);
-        _stateRegister.Register(StateType.Move);
-        _stateRegister.Register(StateType.Attack);
-        _stateRegister.Register(StateType.Defeated);
+        //BehaviorMessenger messenger = new(gameObject.GetInstanceID());
+        //StateMachineHelper helper = new();
+        //_stateRegister = new(messenger, helper);
+        //_stateRegister.Register(StateType.Idle);
+        //_stateRegister.Register(StateType.Search);
+        //_stateRegister.Register(StateType.Move);
+        //_stateRegister.Register(StateType.Attack);
+        //_stateRegister.Register(StateType.Defeated);
     }
 
     private void SetDefaultState()
@@ -71,7 +71,7 @@ public class EnemyStateMachine : MonoBehaviour, IPausable
     /// </summary>
     private void StateTransition(StateTransitionTrigger trigger)
     {
-        StateType current = _currentState.Value.StateType;
+        StateType current = _currentState.Value.Type;
         StateType next = _stateTransitionFlow.GetNextStateType(current, trigger);
 
         // ’l‚ªUnknown‚Ìê‡‚Í‘JˆÚæ‚ª“o˜^‚³‚ê‚Ä‚¢‚È‚¢‚ªAˆÓ}‚µ‚½‚à‚Ì‚Å‚ ‚éê‡‚ª‘½‚¢

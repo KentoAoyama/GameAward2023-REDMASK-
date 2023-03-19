@@ -1,8 +1,9 @@
 using UnityEngine;
 
 /// <summary>
-/// 敵のステートマシンで使用する各ステートの基底クラス
 /// 各ステートは必ずこのクラスを継承する必要がある
+/// StateRegisterクラスから生成するので、継承したステートのコンストラクタは
+/// このステートと同じである必要がある
 /// </summary>
 public abstract class StateTypeBase
 {
@@ -15,15 +16,15 @@ public abstract class StateTypeBase
 
     private Stage _stage;
     private StateTypeBase _nextState;
-    protected BehaviorMessenger _messenger;
 
-    public StateTypeBase(BehaviorMessenger messenger, StateType stateType)
+    public StateTypeBase(BehaviorFacade facade, StateType type)
     {
-        StateType = stateType;
-        _messenger = messenger;
+        Facade = facade;
+        Type = type;
     }
 
-    public StateType StateType { get; }
+    protected BehaviorFacade Facade { get; }
+    public StateType Type { get; }
 
     /// <summary>
     /// 1度の呼び出しでステートの状態に応じて

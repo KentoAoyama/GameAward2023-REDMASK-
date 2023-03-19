@@ -9,7 +9,6 @@ using System;
 /// 移動する際に使用するクラス
 /// 
 /// </summary>
-[RequireComponent(typeof(WanderingPositionHolder))]
 public class MoveBehavior : MonoBehaviour
 {
     /// <summary>
@@ -23,7 +22,7 @@ public class MoveBehavior : MonoBehaviour
     /// </summary>
     private static readonly float UpdateWanderingCenterPosInterval = 0.15f;
 
-    [Header("移動時にターゲットの方向に向けるもの")]
+    [Header("移動方向に向けるオブジェクトの設定")]
     [SerializeField] private Transform _spriteTrans;
     [SerializeField] private Transform _eyeTrans;
     [Header("移動速度の設定")]
@@ -52,13 +51,13 @@ public class MoveBehavior : MonoBehaviour
     /// <summary>一定間隔でうろうろ出来る移動範囲を更新する</summary>
     private void InitWanderingCenterPos()
     {
-        this.UpdateAsObservable()
-            .ThrottleFirst(TimeSpan.FromSeconds(UpdateWanderingCenterPosInterval))
-            .Subscribe(_ => 
-            {
-                _wanderingPositionHolder.SetWanderingCenterPos();
-            })
-            .AddTo(this);
+        //this.UpdateAsObservable()
+        //    .ThrottleFirst(TimeSpan.FromSeconds(UpdateWanderingCenterPosInterval))
+        //    .Subscribe(_ => 
+        //    {
+        //        _wanderingPositionHolder.SetWanderingCenterPos();
+        //    })
+        //    .AddTo(this);
     }
 
     /// <summary>デフォルトから変更した値を設定する</summary>

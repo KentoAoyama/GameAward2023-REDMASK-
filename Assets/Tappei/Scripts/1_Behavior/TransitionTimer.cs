@@ -5,13 +5,13 @@ using UnityEngine.Events;
 
 /// <summary>
 /// このクラスを用いて時間経過によるステートの遷移を行う
-/// EnemyActorクラスが使用する
 /// </summary>
-public class TransitionTimer : MonoBehaviour
+public class TransitionTimer
 {
-    [Header("ステートの遷移までの遅延時間(秒)")]
-    [SerializeField] private float _minDelay = 2.0f;
-    [SerializeField] private float _maxDelay = 3.0f;
+
+    //[Header("ステートの遷移までの遅延時間(秒)")]
+    //[SerializeField] private float _minDelay = 2.0f;
+    //[SerializeField] private float _maxDelay = 3.0f;
 
     // TODO:仮のタイムスピードの値になっている
     private float _timeSpeed = 1;
@@ -32,8 +32,8 @@ public class TransitionTimer : MonoBehaviour
         ExecuteCancel();
         _cts = new();
 
-        float delayTime = Random.Range(_minDelay, _maxDelay);
-        TimerAsync(callback, delayTime).Forget();
+        //float delayTime = Random.Range(_minDelay, _maxDelay);
+        //TimerAsync(callback, delayTime).Forget();
     }
 
     /// <summary>

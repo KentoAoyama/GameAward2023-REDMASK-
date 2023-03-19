@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 敵のステートマシンで使用する各ステートを登録しておくクラス
-/// ステートマシンが自身の初期化時にこのクラスを用いて使用するステートの生成と登録を行う
+/// このクラスを用いて使用するステートの生成と登録を行う
 /// </summary>
 public class StateRegister
 {
@@ -14,21 +13,13 @@ public class StateRegister
     /// </summary>
     private static readonly int StateDicCap = Enum.GetValues(typeof(StateType)).Length;
 
-    private BehaviorMessenger _messenger;
-    private StateMachineHelper _stateMachineHelper;
     private Dictionary<StateType, StateTypeBase> _stateDic = new(StateDicCap);
-
-    public StateRegister(BehaviorMessenger messenger, StateMachineHelper helper)
-    {
-        _messenger = messenger;
-        _stateMachineHelper = helper;
-    }
 
     /// <summary>
     /// 取りうるステートの種類を指定して生成＆辞書型に登録する
     /// 登録したステートはGetState()によって取得可能
     /// </summary>
-    public void Register(StateType type)
+    public void Register(StateType type, object stateArg)
     {
         if (_stateDic.ContainsKey(type))
         {
@@ -36,13 +27,13 @@ public class StateRegister
             return;
         }
 
-        StateTypeBase state = CreateInstance(type);
+        StateTypeBase state = CreateInstance(type, stateArg);
         _stateDic.Add(type, state);
     }
 
-    private StateTypeBase CreateInstance(StateType type)
+    private StateTypeBase CreateInstance(StateType type, object stateArg)
     {
-        Type stateClass = _stateMachineHelper.GetStateClassType(type);
+        Type stateClass = GetStateClassType(type);
 
         if (stateClass == null)
         {
@@ -50,7 +41,8 @@ public class StateRegister
             return null;
         }
 
-        object[] args = { _messenger, type };
+        // ステートのコンストラクタの引数の順に並べている
+        object[] args = { stateArg, type };
         StateTypeBase instance = (StateTypeBase)Activator.CreateInstance(stateClass, args);
 
         return instance;
@@ -66,6 +58,25 @@ public class StateRegister
         {
             Debug.LogError("対応するステートが辞書に登録されていません: " + type);
             return null;
+        }
+    }
+
+    /// <summary>
+    /// 列挙型に対応したステートのクラスの型を返すので
+    /// 新しくステートを作った際には、この処理の分岐に追加して列挙型とクラスを紐づける必要がある
+    /// </summary>
+    private Type GetStateClassType(StateType type)
+    {
+        switch (type)
+        {
+            case StateType.Idle: return typeof(StateTypeIdle);
+            case StateType.Search: return typeof(StateTypeSearch);
+            case StateType.Attack: return typeof(StateTypeAttack);
+            case StateType.Defeated: return typeof(StateTypeDefeated);
+            case StateType.Move: return typeof(StateTypeMove);
+            default:
+                Debug.LogError("対応するステートが紐づけられていません: " + type);
+                return null;
         }
     }
 }
