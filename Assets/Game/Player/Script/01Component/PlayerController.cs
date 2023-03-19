@@ -14,6 +14,14 @@ namespace Player
     [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerController : MonoBehaviour, IPausable
     {
+        [Header("プレイヤーのオブジェクト")]
+        [Tooltip("プレイヤーのオブジェクト"), SerializeField]
+        private GameObject _player;
+
+        [Header("プレイヤーのアニメーター")]
+        [Tooltip("プレイヤーのアニメーター"), SerializeField]
+        private Animator _playerAnim;
+
         [Tooltip("プレイヤーのUIを管理するクラス"), SerializeField]
         private UIController _uIController;
         [Tooltip("移動制御"), SerializeField]
@@ -34,8 +42,13 @@ namespace Player
         private LifeController _lifeController = default;
         [Tooltip("回避制御"), SerializeField]
         private Avoidance _avoidance = default;
+        [Tooltip("アニメーター制御"), SerializeField]
+        private PlayerAnimationControl _playerAnimatorControl = default;
 
         private Rigidbody2D _rigidbody2D = null;
+
+
+        public GameObject Player => _player;
 
         public UIController UIController => _uIController;
         public Move Move => _move;
@@ -51,6 +64,9 @@ namespace Player
         public LifeController LifeController => _lifeController;
         public Avoidance Avoidance => _avoidance;
 
+        public PlayerAnimationControl PlayerAnimatorControl => _playerAnimatorControl;
+
+        public Animator PlayerAnim => _playerAnim;
 
         private void Start()
         {
@@ -65,6 +81,9 @@ namespace Player
             _bulletDataBase.Init();
             _avoidance.Init(this);
             TestRevolverLoading(); // テスト
+
+            _playerAnimatorControl.Init(this);
+
         }
         private void Update()
         {

@@ -24,6 +24,11 @@ namespace Player
                 return;
             } // ポーズ中は何もできない
 
+            if(_playerController.Avoidance.IsAvoiddanceNow)
+            {
+                return;
+            } //回避中はできない
+
             // 撃てる状態かつ、撃つ入力が発生したとき 銃を撃つ
             if (_playerController.InputManager.GetValue<float>(InputType.Fire1) > 0.49f &&
                 _playerController.Revolver.CanFire)

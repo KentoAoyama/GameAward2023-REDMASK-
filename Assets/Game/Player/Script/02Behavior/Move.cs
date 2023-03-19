@@ -39,6 +39,8 @@ namespace Player
         private float _previousDir = 0f;
         private float _moveHorizontalDir = 1f;
 
+        
+        
         private PlayerController _playerController;
 
         /// <summary>
@@ -52,6 +54,9 @@ namespace Player
         /// </summary>
         public bool CanJump { get; set; } = true;
         public bool IsPause { get; private set; } = false;
+
+        public float MoveHorizontalDir => _moveHorizontalDir;
+
 
         public void Init(PlayerController playerController)
         {
@@ -87,7 +92,8 @@ namespace Player
         }
         public void Update()
         {
-            if (IsPause)
+            //回避中は移動不可、の条件を追加した
+            if (IsPause || _playerController.Avoidance.IsAvoiddanceNow)
             {
                 return;
             }
@@ -103,6 +109,9 @@ namespace Player
                 // 入力方向が切り替わった時の処理
                 if (Mathf.Abs(_previousDir - _moveHorizontalDir) > 0.1f)
                 {
+                    //プレイヤーの向きを設定
+                    _playerController.PlayerAnimatorControl.SetPlayerDir(_moveHorizontalDir);
+
                     _toMoveTimer = 0f;
                     _currentHorizontalMoveMode = HorizontalMoveMode.Start;
                 }
@@ -188,6 +197,26 @@ namespace Player
                 }
             }
         }
+
+        public void EndAvoidanceInout(float inputValue)
+        {
+            if(inputValue!=0)
+            {
+                _currentHorizontalMoveMode = HorizontalMoveMode.Move;
+
+
+                // 方向を表す値を更新する。（右に相当する値なら1, 左に相当する値なら-1。）
+                _moveHorizontalDir = inputValue > 0f ? 1f : -1f;
+                // 1フレーム前の水平移動方向（入力方向）を保存しておく
+                _previousDir = _moveHorizontalDir;
+            }
+            else
+            {
+                _currentHorizontalMoveMode = HorizontalMoveMode.Stop;
+            }
+
+        }
+
         /// <summary>
         /// プレイヤーの水平方向移動状態を表現する値
         /// </summary>
