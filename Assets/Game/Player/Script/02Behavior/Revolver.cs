@@ -57,16 +57,16 @@ namespace Player
             // 撃つ方向を保存する
             if (_playerController.DeviceManager.CurrentDevice.Value == Input.Device.GamePad) // ゲームパッド操作の場合
             {
-                if ((_playerController.InputManager.GetValue<Vector2>(InputType.LookingAngle)).sqrMagnitude > 0.5f)
+                if ((_playerController.InputManager.GetValue<Vector2>(InputType.LookingAngleGamePad)).magnitude > 0.5f)
                 {
-                    _aimingAngle = _playerController.InputManager.GetValue<Vector2>(InputType.LookingAngle);
+                    _aimingAngle = _playerController.InputManager.GetValue<Vector2>(InputType.LookingAngleGamePad);
                 }
             }
             else // マウス操作の場合
             {
                 // マウスの座標をワールド座標に変換する
                 var mouseWorldPos = Camera.main.ScreenToWorldPoint(
-                    _playerController.InputManager.GetValue<Vector2>(InputType.LookingAngle));
+                    _playerController.InputManager.GetValue<Vector2>(InputType.LookingMausePos));
                 if (((Vector2)mouseWorldPos - (Vector2)_playerController.transform.position).sqrMagnitude > 0.5f)
                 {
                     _aimingAngle = mouseWorldPos - _playerController.transform.position;

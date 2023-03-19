@@ -11,7 +11,8 @@ namespace Player
             SetAction<float>(_inputActionCollection.Player.Horizontal, InputType.MoveHorizontal);
             SetAction<float>(_inputActionCollection.Player.Vertical, InputType.InputVertical);
             SetAction<float>(_inputActionCollection.Player.Jump, InputType.Jump);
-            SetAction<Vector2>(_inputActionCollection.Player.LookingAngle, InputType.LookingAngle);
+            SetAction<Vector2>(_inputActionCollection.Player.LookingAngleGamePad, InputType.LookingAngleGamePad);
+            SetAction<Vector2>(_inputActionCollection.Player.LookingAngleMouse, InputType.LookingMausePos);
             SetAction<float>(_inputActionCollection.Player.Fire1, InputType.Fire1);
             SetAction<float>(_inputActionCollection.Player.Avoidance, InputType.Avoidance);
             SetAction<float>(_inputActionCollection.Player.CrossButtonHorizontal, InputType.HorizontalSelect);
@@ -27,7 +28,9 @@ namespace Player
         /// <summary> ジャンプ入力 </summary>
         Jump,
         /// <summary> プレイヤーが向いているベクトルを表す </summary>
-        LookingAngle,
+        LookingAngleGamePad,
+        /// <summary> プレイヤーが向いているベクトルを表す </summary>
+        LookingMausePos,
         /// <summary> 攻撃ボタン </summary>
         Fire1,
         /// <summary> 回避ボタン </summary>
