@@ -91,6 +91,7 @@ namespace Bullet
                     origin.position.y < targetPos.y,
                     cancellationToken: gameObject.GetCancellationTokenOnDestroy());
             }
+            transform.position = targetPos;
         }
     }
 }
