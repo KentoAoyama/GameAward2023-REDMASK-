@@ -24,9 +24,18 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "LookingAngle",
+                    "name": "LookingAngleGamePad",
                     "type": "Value",
                     "id": "5c04c9a1-ef50-4b1b-a55c-54f45dc2613f",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "LookingAngleMouse",
+                    "type": "Value",
+                    "id": "9e2ac6de-b869-400b-9659-41ad393b4043",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
@@ -152,18 +161,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "LookingAngle",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "74d4aa29-d1d4-44f7-9473-c7c96853ce51",
-                    "path": "<Mouse>/position",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "LookingAngle",
+                    "action": "LookingAngleGamePad",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -384,6 +382,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "LoadBullet",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3f0f9466-a395-4e9e-b5b7-a839fdbe2556",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "LookingAngleMouse",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
