@@ -39,8 +39,8 @@ namespace Player
         private float _previousDir = 0f;
         private float _moveHorizontalDir = 1f;
 
-        
-        
+
+
         private PlayerController _playerController;
 
         /// <summary>
@@ -198,24 +198,12 @@ namespace Player
             }
         }
 
-        public void EndAvoidanceInout(float inputValue)
+        public void EndAvoidance()
         {
-            if(inputValue!=0)
-            {
-                _currentHorizontalMoveMode = HorizontalMoveMode.Move;
-
-
-                // 方向を表す値を更新する。（右に相当する値なら1, 左に相当する値なら-1。）
-                _moveHorizontalDir = inputValue > 0f ? 1f : -1f;
-                // 1フレーム前の水平移動方向（入力方向）を保存しておく
-                _previousDir = _moveHorizontalDir;
-            }
-            else
-            {
-                _currentHorizontalMoveMode = HorizontalMoveMode.Stop;
-            }
-
+            // 方向を表す値を更新する。（右に相当する値なら1, 左に相当する値なら-1。）
+            _currentHorizontalSpeed = 0;
         }
+
 
         /// <summary>
         /// プレイヤーの水平方向移動状態を表現する値
