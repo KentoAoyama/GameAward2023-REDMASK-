@@ -93,10 +93,11 @@ namespace Player
         public void Update()
         {
             //回避中は移動不可、の条件を追加した
-            if (IsPause || _playerController.Avoidance.IsAvoiddanceNow)
+            if (IsPause || _playerController.Avoidance.IsAvoidanceNow || _playerController.Proximity.IsProximityNow)
             {
                 return;
             }
+
 
             // 移動入力があるときの処理
             if (_playerController.InputManager.IsExist[InputType.MoveHorizontal] && CanMove)
@@ -198,10 +199,35 @@ namespace Player
             }
         }
 
-        public void EndAvoidance()
+        public void EndOtherAction()
         {
             // 方向を表す値を更新する。（右に相当する値なら1, 左に相当する値なら-1。）
             _currentHorizontalSpeed = 0;
+        }
+
+
+        /// <summary>急停止する</summary>
+        public void VelocityDeceleration()
+        {
+            _currentHorizontalSpeed = _playerController.Rigidbody2D.velocity.x;
+
+            if (_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX))
+            {
+                _currentHorizontalSpeed -= Time.deltaTime * _landDeceleration * _playerController.Player.transform.localScale.x;
+            } // 地上移動中の減速処理
+
+            if (_playerController.Player.transform.localScale.x > 0f && _currentHorizontalSpeed < 0f ||
+                _playerController.Player.transform.localScale.x < 0f && _currentHorizontalSpeed > 0f)
+            {
+                _currentHorizontalSpeed = 0f;
+            } // 「右」に向いている状態で減速するときは0より小さくならない、
+              // 「左」に向いている状態で減速するときは0より大きくならない。
+
+
+            // 速度を割り当てる。
+            _playerController.Rigidbody2D.velocity =
+                    new Vector2(_currentHorizontalSpeed,
+                    _playerController.Rigidbody2D.velocity.y);
         }
 
 

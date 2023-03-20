@@ -17,6 +17,7 @@ namespace Player
             SetAction<float>(_inputActionCollection.Player.Avoidance, InputType.Avoidance);
             SetAction<float>(_inputActionCollection.Player.CrossButtonHorizontal, InputType.HorizontalSelect);
             SetAction<float>(_inputActionCollection.Player.LoadBullet, InputType.LoadBullet);
+            SetAction<float>(_inputActionCollection.Player.Proximity, InputType.Proximity);
         }
     }
     public enum InputType
@@ -39,5 +40,7 @@ namespace Player
         HorizontalSelect,
         /// <summary> リロード入力 </summary>
         LoadBullet,
+        /// <summary>近接攻撃入力 </summary>
+        Proximity,
     }
 }

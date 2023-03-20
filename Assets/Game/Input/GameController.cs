@@ -107,6 +107,15 @@ public partial class @GameController : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Proximity"",
+                    ""type"": ""Button"",
+                    ""id"": ""390d5d72-b1d6-4104-b5ff-ce9e43ed54c3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -415,6 +424,17 @@ public partial class @GameController : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""LookingAngleMouse"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3e5163e8-00ca-4412-a1f4-32436a7afbce"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Proximity"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1011,6 +1031,7 @@ public partial class @GameController : IInputActionCollection2, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_CrossButtonHorizontal = m_Player.FindAction("Cross Button Horizontal", throwIfNotFound: true);
         m_Player_LoadBullet = m_Player.FindAction("LoadBullet", throwIfNotFound: true);
+        m_Player_Proximity = m_Player.FindAction("Proximity", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1091,6 +1112,7 @@ public partial class @GameController : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_CrossButtonHorizontal;
     private readonly InputAction m_Player_LoadBullet;
+    private readonly InputAction m_Player_Proximity;
     public struct PlayerActions
     {
         private @GameController m_Wrapper;
@@ -1104,6 +1126,7 @@ public partial class @GameController : IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @CrossButtonHorizontal => m_Wrapper.m_Player_CrossButtonHorizontal;
         public InputAction @LoadBullet => m_Wrapper.m_Player_LoadBullet;
+        public InputAction @Proximity => m_Wrapper.m_Player_Proximity;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1140,6 +1163,9 @@ public partial class @GameController : IInputActionCollection2, IDisposable
                 @LoadBullet.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLoadBullet;
                 @LoadBullet.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLoadBullet;
                 @LoadBullet.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLoadBullet;
+                @Proximity.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnProximity;
+                @Proximity.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnProximity;
+                @Proximity.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnProximity;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1171,6 +1197,9 @@ public partial class @GameController : IInputActionCollection2, IDisposable
                 @LoadBullet.started += instance.OnLoadBullet;
                 @LoadBullet.performed += instance.OnLoadBullet;
                 @LoadBullet.canceled += instance.OnLoadBullet;
+                @Proximity.started += instance.OnProximity;
+                @Proximity.performed += instance.OnProximity;
+                @Proximity.canceled += instance.OnProximity;
             }
         }
     }
@@ -1336,6 +1365,7 @@ public partial class @GameController : IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnCrossButtonHorizontal(InputAction.CallbackContext context);
         void OnLoadBullet(InputAction.CallbackContext context);
+        void OnProximity(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

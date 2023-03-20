@@ -24,7 +24,7 @@ namespace Player
                 return;
             } // ポーズ中は何もできない
 
-            if(_playerController.Avoidance.IsAvoiddanceNow)
+            if(_playerController.Avoidance.IsAvoidanceNow)
             {
                 return;
             } //回避中はできない
