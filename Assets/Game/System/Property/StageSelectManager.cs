@@ -24,4 +24,5 @@ public enum StageType
     Two,
     Three,
     Four,
+    Test2,
 }
