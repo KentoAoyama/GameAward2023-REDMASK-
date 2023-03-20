@@ -18,6 +18,9 @@ namespace UI
         [SerializeField]
         private Image[] _chamber = default;
 
+        [SerializeField]
+        private Sprite _shallCaseImage = default;
+
         private PlayerController _playerController = null;
 
         public void Init(PlayerController playerController)
@@ -45,11 +48,13 @@ namespace UI
             {
                 if (bulletType == BulletType.ShellCase)
                 {
+                    _chamber[targetChamberNumber].sprite = _shallCaseImage;
                     _chamber[targetChamberNumber].color = Color.yellow;
                 }
                 else if (_playerController.BulletDataBase.Bullets.TryGetValue(bulletType, out BulletBase result))
                 {
-                    _chamber[targetChamberNumber].color = result.Color;
+                    _chamber[targetChamberNumber].color = Color.white;
+                    _chamber[targetChamberNumber].sprite = result.CylinderUISprite;
                 }
                 else
                 {

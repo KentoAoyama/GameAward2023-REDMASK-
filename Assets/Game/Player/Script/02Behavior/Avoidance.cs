@@ -110,6 +110,10 @@ namespace Player
             //Pause中は実行しない
             if (IsPause) return;
 
+            //近接攻撃中は出来ない
+            if (_playerController.Proximity.IsProximityNow) return;
+
+
             //ボタンの押し込み時間を計測
             CheckInputButtun();
             //クールタイムを数える
@@ -221,25 +225,7 @@ namespace Player
         {
             if (_isAvoidacneNow)
             {
-                _currentHorizontalSpeed = _playerController.Rigidbody2D.velocity.x;
-
-                if (_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX))
-                {
-                    _currentHorizontalSpeed -= Time.deltaTime * _landDeceleration * _playerController.Player.transform.localScale.x;
-                } // 地上移動中の減速処理
-
-                if (_playerController.Player.transform.localScale.x > 0f && _currentHorizontalSpeed < 0f ||
-                    _playerController.Player.transform.localScale.x < 0f && _currentHorizontalSpeed > 0f)
-                {
-                    _currentHorizontalSpeed = 0f;
-                } // 「右」に向いている状態で減速するときは0より小さくならない、
-                  // 「左」に向いている状態で減速するときは0より大きくならない。
-
-
-                // 速度を割り当てる。
-                _playerController.Rigidbody2D.velocity =
-                        new Vector2(_currentHorizontalSpeed,
-                        _playerController.Rigidbody2D.velocity.y);
+                _playerController.Move.VelocityDeceleration();
             }
         }
 
@@ -270,7 +256,7 @@ namespace Player
             Physics2D.IgnoreLayerCollision(_ignoreLayerIndex, _myLayerIndex, false);
 
             //回避が終了したことをMoveクラスに伝える
-            _playerController.Move.EndAvoidance();
+            _playerController.Move.EndOtherAction();
 
             _isAvoidacneNow = false;
         }

@@ -44,6 +44,10 @@ namespace Player
         private Avoidance _avoidance = default;
         [Tooltip("アニメーター制御"), SerializeField]
         private PlayerAnimationControl _playerAnimatorControl = default;
+        [Tooltip("攻撃当たり判定"), SerializeField]
+        private OverlapBox2D _proximityHitChecker = default;
+        [Tooltip("近接攻撃"), SerializeField]
+        private Proximity _proximity = default;
 
         private Rigidbody2D _rigidbody2D = null;
 
@@ -63,10 +67,10 @@ namespace Player
         public BulletDataBase BulletDataBase => _bulletDataBase;
         public LifeController LifeController => _lifeController;
         public Avoidance Avoidance => _avoidance;
-
         public PlayerAnimationControl PlayerAnimatorControl => _playerAnimatorControl;
-
+        public OverlapBox2D ProximityHitChecker => _proximityHitChecker;
         public Animator PlayerAnim => _playerAnim;
+        public Proximity Proximity => _proximity;
 
         private void Start()
         {
@@ -83,6 +87,8 @@ namespace Player
             TestRevolverLoading(); // テスト
 
             _playerAnimatorControl.Init(this);
+            _proximity.Init(this);
+            _proximityHitChecker.Init(transform);
 
         }
         private void Update()
@@ -94,10 +100,12 @@ namespace Player
             _revolver.Update();           // リボルバーの更新処理
             _revolver.OnDrawAimingLine(); // 照準描画処理（カメラの更新タイミングと合わせる必要有り）
             _avoidance.Update();          // 回避制御
+            _proximity.Update();
         }
         private void OnDrawGizmosSelected()
         {
             _groungChecker.OnDrawGizmos(transform, DirectionControler.MovementDirectionX);
+            _proximityHitChecker.OnDrawGizmos(transform, DirectionControler.MovementDirectionX);
         }
 
         #region Test
