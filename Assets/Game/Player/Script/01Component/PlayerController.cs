@@ -8,6 +8,7 @@ using Input;
 using Bullet;
 using UI;
 using Cysharp.Threading.Tasks;
+using Cinemachine;
 
 namespace Player
 {
@@ -24,7 +25,7 @@ namespace Player
 
         [Header("プレイヤーについているシネマシーン")]
         [Tooltip("プレイヤーのアニメーター"), SerializeField]
-        private GameObject _camera;
+        private CinemachineVirtualCamera _camera;
 
         [Tooltip("プレイヤーのUIを管理するクラス"), SerializeField]
         private UIController _uIController;
@@ -52,13 +53,15 @@ namespace Player
         private OverlapBox2D _proximityHitChecker = default;
         [Tooltip("近接攻撃"), SerializeField]
         private Proximity _proximity = default;
+        [Tooltip("カメラ制御"), SerializeField]
+        private CameraShake _camraControl = default;
 
         private Rigidbody2D _rigidbody2D = null;
 
 
         public GameObject Player => _player;
 
-        public GameObject Camera => _camera;
+        public CinemachineVirtualCamera Camera => _camera;
         public UIController UIController => _uIController;
         public Move Move => _move;
         public OverlapCircle2D GroungChecker => _groungChecker;
@@ -77,6 +80,8 @@ namespace Player
         public Animator PlayerAnim => _playerAnim;
         public Proximity Proximity => _proximity;
 
+        public CameraShake CameraControl => _camraControl;
+
         private void Start()
         {
             _rigidbody2D = GetComponent<Rigidbody2D>();
@@ -94,7 +99,7 @@ namespace Player
             _playerAnimatorControl.Init(this);
             _proximity.Init(this);
             _proximityHitChecker.Init(transform);
-
+            _camraControl.Init(this);
         }
         private void Update()
         {
