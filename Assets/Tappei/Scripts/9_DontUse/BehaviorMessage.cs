@@ -4,12 +4,12 @@
 /// </summary>
 public struct BehaviorMessage
 {
-    public BehaviorMessage(BehaviorType type, int id)
-    {
-        Type = type;
-        ID = id;
-    }
+    //public BehaviorMessage(BehaviorType type, int id)
+    //{
+    //    Type = type;
+    //    ID = id;
+    //}
 
-    public BehaviorType Type { get; }
-    public int ID { get; }
+    //public BehaviorType Type { get; }
+    //public int ID { get; }
 }

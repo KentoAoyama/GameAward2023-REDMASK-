@@ -1,31 +1,45 @@
 /// <summary>
-/// 一定間隔で攻撃をするステートのクラス
+/// 一定間隔で攻撃をする状態のクラス
 /// </summary>
 public class StateTypeAttack : StateTypeBase
 {
-    // TODO:本来なら攻撃間隔は外部から設定出来ると良い
-    //private static readonly float Interval = 120.0f;
+    public StateTypeAttack(EnemyController controller, StateType stateType)
+        : base(controller, stateType) { }
 
-    // TODO:仮のタイムスピード、この値を操作することでスローモーション/ポーズに対応させる
-    private float _timeSpeed = 1.0f;
-    private float _timer;
-
-    public StateTypeAttack(BehaviorFacade facade, StateType stateType)
-        : base(facade, stateType) { }
+    private float _interval;
+    /// <summary>
+    /// 遷移を繰り返すことでの連射対策として
+    /// この値は状態の遷移をしても初期化されない
+    /// </summary>
+    private float _time;
 
     protected override void Enter()
     {
-        _timer = 0;
-        //Facade.SendMessage(BehaviorType.Attack);
+        _interval = Controller.Params.AttackRate;
     }
 
     protected override void Stay()
     {
-        //_timer += _timeSpeed;
-        //if (_timer > Interval)
-        //{
-        //    _timer = 0;
-        //    //Facade.SendMessage(BehaviorType.Attack);
-        //}
+        // TODO:プレイヤーとは常に一定距離にいてほしい
+
+        float timeScale = GameManager.Instance.TimeController.CurrentTimeScale.Value;
+        _time += timeScale;
+        if (_time > _interval)
+        {
+            _time = 0;
+            Controller.Attack();
+        }
+
+        SightResult result = Controller.IsFindPlayer();
+        if (result == SightResult.OutSight)
+        {
+            TryChangeState(StateType.Search);
+            return;
+        }
+        else if (result == SightResult.InSight)
+        {
+            TryChangeState(StateType.Move);
+            return;
+        }
     }
 }

@@ -1,7 +1,4 @@
 using UnityEngine;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 /// <summary>
 /// このクラスを使用して視界内にプレイヤーがいるかどうかを検出する
@@ -9,6 +6,9 @@ using UnityEditor;
 /// </summary>
 public class SightSensor : MonoBehaviour
 {
+    /// <summary>プレイヤーが視界内にいない場合に返る値</summary>
+    public static readonly int PlayerOutSight = -1;
+
     /// <summary>
     /// 一度に視界が検出できるオブジェクトの最大数
     /// ステージに大量の検出できるオブジェクトが存在する場合は増やす必要がある
@@ -21,31 +21,25 @@ public class SightSensor : MonoBehaviour
     [Header("検出するオブジェクトが属するレイヤー")]
     [SerializeField] private LayerMask _detectedLayerMask;
 
-#if UNITY_EDITOR
-    // 以下2つのフィールドはエディタのPlayモードで視界のギズモを表示するためのもの
-    private float _radius;
-    private float _angle;
-#endif
-
     private Collider2D[] _detectedResults = new Collider2D[MaxDetected];
+
+#if UNITY_EDITOR
+    /// <summary>EnemyControllerでギズモに表示する用途で使っている</summary>
+    public Transform EyeTransform => _eyeTransform;
+#endif
 
     /// <returns>
     /// プレイヤーが視界内にいる場合はプレイヤーとの距離を返す
-    /// 視界内にいない場合は -1 が返る
+    /// 視界内にいない場合は PlayerOutSight が返る
     /// </returns>
     public float TryGetDistanceToPlayer(float radius, float maxAngle, bool isIgnoreObstacle = false)
     {
-#if UNITY_EDITOR
-        _radius = radius;
-        _angle = maxAngle;
-#endif
-
         Vector3 rayOrigin = _eyeTransform.position;
 
         // ヒットしなかった場合でも配列内の要素は削除されないので
         // ヒットしたオブジェクトの情報を返すように変更する場合は注意
         int hitCount = Physics2D.OverlapCircleNonAlloc(rayOrigin, radius, _detectedResults, _detectedLayerMask);
-        if (hitCount == 0) return -1;
+        if (hitCount == 0) return PlayerOutSight;
 
         foreach (Collider2D detectedCollider in _detectedResults)
         {
@@ -73,23 +67,6 @@ public class SightSensor : MonoBehaviour
             if (isSightable) return distance;
         }
 
-        return -1;
+        return PlayerOutSight;
     }
-
-#if UNITY_EDITOR
-    public void OnDrawGizmos()
-    {
-        if (_eyeTransform != null)
-        {
-            DrawSearchArea();
-        }
-    }
-
-    private void DrawSearchArea()
-    {
-        Handles.color = new Color32(0, 0, 255, 64);
-        Vector3 dir = Quaternion.Euler(0, 0, -_angle / 2) * _eyeTransform.right;
-        Handles.DrawSolidArc(_eyeTransform.position, Vector3.forward, dir, _angle, _radius);
-    }
-#endif
 }

@@ -1,18 +1,33 @@
 /// <summary>
-/// プレイヤーに向けて移動するステートのクラス
+/// プレイヤーに向けて移動する状態のクラス
 /// </summary>
 public class StateTypeMove : StateTypeBase
 {
-    public StateTypeMove(BehaviorFacade facade, StateType stateType)
-        : base(facade, stateType) { }
+    public StateTypeMove(EnemyController controller, StateType stateType)
+        : base(controller, stateType) { }
 
     protected override void Enter()
     {
-        //Facade.SendMessage(BehaviorType.MoveToPlayer);
+        Controller.MoveToPlayer();
+    }
+
+    protected override void Stay()
+    {
+        SightResult result = Controller.IsFindPlayer();
+        if (result == SightResult.OutSight)
+        {
+            TryChangeState(StateType.Search);
+            return;
+        }
+        else if (result == SightResult.InAttackRange)
+        {
+            TryChangeState(StateType.Attack);
+            return;
+        }
     }
 
     protected override void Exit()
     {
-        //Facade.SendMessage(BehaviorType.StopMove);
+        Controller.CancelMoving();
     }
 }

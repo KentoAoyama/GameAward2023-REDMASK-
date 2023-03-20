@@ -17,8 +17,8 @@ public class StateTransitionMessenger
     /// このメソッドを呼ぶことでステートマシンに
     /// 遷移の条件を満たしたというメッセージを送信する
     /// </summary>
-    public void SendMessage(StateTransitionTrigger trigger)
-    {
-        MessageBroker.Default.Publish(new StateTransitionMessage(trigger, _instanceID));
-    }
+    //public void SendMessage(StateTransitionTrigger trigger)
+    //{
+    //    MessageBroker.Default.Publish(new StateTransitionMessage(trigger, _instanceID));
+    //}
 }

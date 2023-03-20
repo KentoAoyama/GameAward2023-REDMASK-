@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 /// <summary>
 /// このクラスを用いて時間経過によるステートの遷移を行う
+/// つ川に
 /// </summary>
 public class TransitionTimer
 {

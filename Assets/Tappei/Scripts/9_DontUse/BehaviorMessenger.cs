@@ -17,8 +17,8 @@ public class BehaviorMessenger
     /// 各ステートはこのメソッドでメッセージを送信することで各行動の処理を呼び出す
     /// メッセージの受信はEnemyActorクラスが行う
     /// </summary>
-    public void SendMessage(BehaviorType type)
-    {
-        MessageBroker.Default.Publish(new BehaviorMessage(type, _instanceID));
-    }
+    //public void SendMessage(BehaviorType type)
+    //{
+    //    MessageBroker.Default.Publish(new BehaviorMessage(type, _instanceID));
+    //}
 }

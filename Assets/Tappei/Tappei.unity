@@ -1255,13 +1255,13 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_GravityScale: 1
   m_Material: {fileID: 6200000, guid: 83540b14eb0b07349b2f6932e37d4cdc, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!4 &470746923
 Transform:
   m_ObjectHideFlags: 0
@@ -1318,8 +1318,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyParamsSO: {fileID: 11400000, guid: dcbebc8bd73bb224cb873bda1e7e44b5, type: 2}
-  _attackRane: 3
-  _text: {fileID: 0}
+  _player: {fileID: 862475256}
+  _text: {fileID: 604228678}
 --- !u!114 &470746936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1332,7 +1332,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ed4cba9d30ea4049bf14c1ace3c8ad7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _defeatedEffectPrefab: {fileID: 0}
+  _defeatedEffectSettings:
+    _prefab: {fileID: 8859864333319523518, guid: dbf046998fb35464fa2ba5d231abd22a, type: 3}
+    _offset: {x: 0, y: 1.5}
+  _discoverEffectSettings:
+    _prefab: {fileID: 2575482251197777418, guid: 939e59cbd3556074f8f4d43a47fbfaa9, type: 3}
+    _offset: {x: 0, y: 4.5}
+  _initActive: 0
 --- !u!114 &470746937
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1345,8 +1351,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c8729bf1877e544a5695693ff6fd90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bulletPreafb: {fileID: 0}
-  _muzzle: {fileID: 0}
+  _bulletPreafb: {fileID: 976015700519703472, guid: d4c36ac64d6ed104f927e17ea01fdeb9, type: 3}
+  _muzzle: {fileID: 1249282959}
 --- !u!114 &470746938
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1359,10 +1365,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4b8c61805a99304d8f0b07aa608acb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spriteTrans: {fileID: 0}
-  _eyeTrans: {fileID: 0}
-  _walkSpeed: 2
-  _runSpeed: 4
+  _spriteTrans: {fileID: 1416200034}
+  _eyeTrans: {fileID: 1789053537}
+  _groundLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
+  _rayDistance: 1
 --- !u!114 &470746939
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1375,13 +1383,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9ad6c43dcf56e54c8846d38ff496282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _eyeTransform: {fileID: 0}
-  _radius: 0
-  _angle: 0
+  _eyeTransform: {fileID: 1789053537}
   _detectedLayerMask:
     serializedVersion: 2
-    m_Bits: 0
-  _isIgnoreObstacle: 0
+    m_Bits: 8
 --- !u!1 &604228676
 GameObject:
   m_ObjectHideFlags: 0
@@ -1540,7 +1545,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 862475253}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -14.42, y: 8.13, z: 0}
+  m_LocalPosition: {x: 10.96, y: -7.39, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1607,8 +1612,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77e0da3b90fc0714b93a7e70c9b15336, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _memo: "Hierarchy2\u5C0E\u5165\nPixelAdventure1\u5C0E\u5165\nWizard-2D-Character\u5C0E\u5165\n\u4E0A\u8A18\u30A2\u30BB\u30C3\u30C8\u306F\u5168\u3066\u30ED\u30FC\u30AB\u30EB\u3067\u4F7F\u7528\u3059\u308B\u305F\u3081AssetStoreTools\u30D5\u30A9\u30EB\u30C0\u306B\u683C\u7D0D\n\n\n\u6575\u306E\u4ED5\u69D8\n\u6575\u5168\u4F53\u3092\u7BA1\u7406\u3059\u308B\u30AF\u30E9\u30B9\u304C\u3044\u308B\u3002\n\u6575\u3092\u4EFB\u610F\u306E\u30BF\u30A4\u30DF\u30F3\u30B0\u3067\u3069\u3063\u304B\u3089\u3067\u3082\u7834\u68C4\u3067\u304D\u308B\u3088\u3046\u306B\u4F5C\u308B\u3079\u304D\n\n\u72B6\u614B\u306E\u5909\u5316\u3092\u691C\u77E5\u3059\u308B\u305F\u3081\u306BUniRx\u306E\u30EA\u30A2\u30D7\u30ED\u304C\u5FC5\u8981\n\u3044\u3064\u3082\u901A\u308A\u8996\u754C\u306E\u30BB\u30F3\u30B5\u30FC
-    + \u30A8\u30D5\u30A7\u30AF\u30BF\u30FC\u3092\u7528\u3044\u308B\n\n\u6575\u5168\u4F53\u3092\u76E3\u8996\u3059\u308BAI\u304C\u5FC5\u8981\n\n\u30DD\u30FC\u30BA\u6A5F\u80FD\u3001\u30B9\u30ED\u30FC\u30E2\u30FC\u30B7\u30E7\u30F3\u6A5F\u80FD\u306B\u5BFE\u5FDC\u3059\u308B\u5FC5\u8981\u304C\u3042\u308B\n\n\u2605\u30B3\u30E1\u30F3\u30C8\u30EB\u30FC\u30EB\nIdle/Search\u306A\u3069\u30B9\u30C6\u30FC\u30C8\u540D\u3092\u63CF\u304F\u3068\u304D\u306F\u30D7\u30E9\u30F3\u30CA\u30FC\u306E\u540D\u4ED8\u3051\u305F\u540D\u524D\u3092\u4F7F\u3046\n\u72B6\u614B\u3067\u306F\u306A\u304F\u30B9\u30C6\u30FC\u30C8\u3067\u7D71\u4E00\u3059\u308B\n\n\u2605\u9032\u6357\n\u5217\u6319\u578B\u3067\u4EFB\u610F\u306E\u30B9\u30C6\u30FC\u30C8\u3092\u751F\u6210\uFF06\u767B\u9332\u3055\u305B\u305F\n\u30B9\u30C6\u30FC\u30C8\u306E\u9077\u79FB\u3092\u884C\u3046\u969B\u306F\u30B9\u30C6\u30FC\u30C8\u30DE\u30B7\u30F3\u5074\u304B\u3089\u9077\u79FB\u5148\u3092\u6E21\u3059\u3088\u3046\u306B\u3057\u305F\nEnter()\u306E\u51E6\u7406\u304C\u7D42\u308F\u3089\u306A\u3044\u3068\u6B21\u306E\u30B9\u30C6\u30FC\u30C8\u306B\u9077\u79FB\u3067\u304D\u306A\u3044\u3088\u3046\u5909\u66F4\n\u540C\u3058\u30B9\u30C6\u30FC\u30C8\u306B\u9077\u79FB\u3057\u3066\u3082\u5927\u4E08\u592B\n\u30AD\u30E3\u30E9\u30AF\u30BF\u30FC\u306E\u69D8\u3005\u306A\u884C\u52D5\u6642\u306B\u9001\u4FE1\u3055\u308C\u308B\u30E1\u30C3\u30BB\u30FC\u30B8\u3092\u53D7\u4FE1\u3067\u304D\u308B\u3088\u3046\u306B\u3057\u305F\n\u30E1\u30BD\u30C3\u30C9\u3092\u547C\u3073\u51FA\u3059\u3068\u4E00\u5B9A\u6642\u9593\u5F8C\u306B\u6642\u9593\u7D4C\u904E\u3067\u306E\u9077\u79FB\u306E\u30E1\u30C3\u30BB\u30FC\u30B8\u3092\u3059\u308B\u30AF\u30E9\u30B9\u3092\u4F5C\u6210\n\u2605\u6B21\u30BF\u30B9\u30AF\nIlde\u30B9\u30C6\u30FC\u30C8\u306B\u9077\u79FB\u3057\u305F\u969B\u306B\u5742\u9053\u3067\u30C4\u30C4\u30FC\u3063\u3068\u6ED1\u3063\u3066\u884C\u3063\u3066\u3057\u307E\u3046\u3001\u308A\u3058\u307C\u3092\u4F7F\u3063\u3066\u3044\u308B\u304B\u3089\n\n\u6483\u7834\u3055\u308C\u305F\u969B\u306E\u5404\u6A5F\u80FD\u306E\u51E6\u7406\n\n\u30E1\u30C3\u30BB\u30FC\u30B8\u306E\u9001\u53D7\u4FE1\u3092\u884C\u3046\u305F\u3081\u306E\u30E1\u30C3\u30BB\u30F3\u30B8\u30E3\u30FC\u30AF\u30E9\u30B9\u306F\u5217\u6319\u578B\u4EE5\u5916\u304C\u540C\u3058\u306A\u306E\u3067Generic\u3092\u4F7F\u7528\u3067\u304D\u306A\u3044\u304B\u8A66\u3059\n\n\u2605\u4F9D\u5B58\u6027\nPlayer\u30BF\u30B0\u304C\u4ED8\u3044\u305FPlayer\nGround\u30EC\u30A4\u30E4\u30FC\u306E\u30B9\u30C6\u30FC\u30B8"
+  _memo: "\u2605\u5C65\u6B74\nHierarchy2\u5C0E\u5165\nPixelAdventure1\u5C0E\u5165\nWizard-2D-Character\u5C0E\u5165\n\u4E0A\u8A18\u30A2\u30BB\u30C3\u30C8\u306F\u5168\u3066\u30ED\u30FC\u30AB\u30EB\u3067\u4F7F\u7528\u3059\u308B\u305F\u3081AssetStoreTools\u30D5\u30A9\u30EB\u30C0\u306B\u683C\u7D0D\n\n\u2605\u4F9D\u5B58\u6027\nPlayer\u30BF\u30B0\u304C\u4ED8\u3044\u305FPlayer\nGround\u30EC\u30A4\u30E4\u30FC\u306E\u30B9\u30C6\u30FC\u30B8"
 --- !u!4 &1055550137 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -2364307010229973598, guid: dde2588f5e0bc7b4ab407c1ae99bd5c1, type: 3}
@@ -1658,6 +1662,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 111a6a55eb31cba419baf96af6b800bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1249282958
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1249282959}
+  m_Layer: 0
+  m_Name: Muzzle
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1249282959
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1249282958}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.68, y: 1.44, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1416200034}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1305081336
 GameObject:
   m_ObjectHideFlags: 0
@@ -1971,6 +2006,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1055550137}
+  - {fileID: 1249282959}
   m_Father: {fileID: 470746923}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4256,7 +4292,7 @@ GameObject:
   m_Layer: 0
   m_Name: Eye
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1

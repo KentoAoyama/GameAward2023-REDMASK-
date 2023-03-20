@@ -1,32 +1,44 @@
 /// <summary>
-/// プレイヤーを探すために移動するステートのクラス
+/// プレイヤーを探すために移動する状態のクラス
+/// 時間経過でIdle状態に遷移する
 /// </summary>
 public class StateTypeSearch : StateTypeBase
 {
-    // TODO:うろうろの距離を広くしたり小さくしたりするとこの値が同じでもうろうろ間隔が変わってしまう
-    //      タイムスピードをかけるのでポーズ/スローモーションは気にしないでよい
-    //private static readonly float Interval = 240.0f;
+    private float _interval;
+    private float _time;
 
-    // TODO:仮のタイムスピード、この値を操作することでスローモーション/ポーズに対応させる
-    private float _timeSpeed = 1.0f;
-    private float _timer;
-
-    public StateTypeSearch(BehaviorFacade facade, StateType stateType)
-        : base(facade, stateType) { }
+    public StateTypeSearch(EnemyController controller, StateType stateType)
+        : base(controller, stateType) { }
 
     protected override void Enter()
     {
-        _timer = 0;
-        //Facade.SendMessage(BehaviorType.SearchMove);
+        // 移動を行うメソッドを呼び出して時間経過でIdleに遷移する
+        // を繰り返して周囲を探索させる
+        _interval = Controller.Params.TurningPoint / Controller.Params.WalkSpeed * 60;
+        Controller.SearchMoving();
     }
 
     protected override void Stay()
-    {        
-        //_timer += _timeSpeed;
-        //if (_timer > Interval)
-        //{
-        //    _timer = 0;
-        //    Facade.SendMessage(BehaviorType.SearchMove);
-        //}
+    {
+        SightResult result = Controller.IsFindPlayer();
+        if (result == SightResult.InSight || result == SightResult.InAttackRange)
+        {
+            TryChangeState(StateType.Discover);
+            return;
+        }
+
+        float timeScale = GameManager.Instance.TimeController.CurrentTimeScale.Value;
+        _time += timeScale;
+        if (_time > _interval)
+        {
+            _time = 0;
+            TryChangeState(StateType.Idle);
+        }
+    }
+
+    protected override void Exit()
+    {
+        _time = 0;
+        Controller.CancelMoving();
     }
 }
