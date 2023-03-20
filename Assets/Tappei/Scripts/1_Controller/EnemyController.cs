@@ -10,7 +10,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(MoveBehavior))]
 [RequireComponent(typeof(AttackBehavior))]
 [RequireComponent(typeof(PerformanceBehavior))]
-public class EnemyController : MonoBehaviour, IPausable
+public class EnemyController : MonoBehaviour, IPausable, IDamageable
 {
     [Header("敵の各種パラメーターを設定したSO")]
     [Tooltip("各振る舞いのクラスはこのSO内の値を参照して機能する")]
@@ -29,6 +29,9 @@ public class EnemyController : MonoBehaviour, IPausable
 
     public EnemyParamsSO Params => _enemyParamsSO;
 
+    /// <summary>撃破された際にtrueになるフラグ</summary>
+    public bool IsDefeated { get; private set; }
+
     private void Awake()
     {
         _sightSensor = gameObject.GetComponent<SightSensor>();
@@ -42,7 +45,11 @@ public class EnemyController : MonoBehaviour, IPausable
     private void Update()
     {
         _currentState.Value = _currentState.Value.Execute();
-        _text.text = _currentState.Value.ToString();
+
+        if (_text != null)
+        {
+            _text.text = _currentState.Value.ToString();
+        }
     }
 
     private void InitStateRegister()
@@ -127,12 +134,21 @@ public class EnemyController : MonoBehaviour, IPausable
 
     public void Pause()
     {
-        throw new System.NotImplementedException();
+        // 各振る舞いのポーズ処理をまとめて呼ぶ
     }
 
     public void Resume()
     {
-        throw new System.NotImplementedException();
+        // 各振る舞いのポーズ解除処理をまとめて呼ぶ
+    }
+
+    /// <summary>撃破された際は非表示にして画面外に移動させる</summary>
+    public void Damage(float value)
+    {
+        IsDefeated = true;
+        _performanceBehavior.Defeated();
+        gameObject.SetActive(false);
+        gameObject.transform.position = Vector3.one * 100;
     }
 
 #if UNITY_EDITOR

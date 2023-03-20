@@ -58,6 +58,7 @@ public class MoveBehavior : MonoBehaviour
     private void OnDisable()
     {
         CancelMoving();
+        _rigidbody.isKinematic = true;
     }
 
     /// <summary>

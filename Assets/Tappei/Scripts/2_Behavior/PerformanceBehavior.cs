@@ -57,8 +57,5 @@ public class PerformanceBehavior : MonoBehaviour
     public void Defeated()
     {
         _defeatedEffect.SetActive(true);
-
-        //gameObject.transform.position = new Vector3(100, 100, 100);
-        //gameObject.SetActive(false);
     }
 }
