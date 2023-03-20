@@ -254,6 +254,7 @@ MonoBehaviour:
     - {fileID: 362879560129471356}
     - {fileID: 362879560592040377}
     - {fileID: 362879560507578964}
+    _shellCaseColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
     _shallCaseImage: {fileID: 21300000, guid: 2bbb61b10bc2dfa419ddd7823129c4ed, type: 3}
   _howToPlayUI:
     _moveImage: {fileID: 3657436424964238763}
@@ -292,8 +293,8 @@ GameObject:
   m_Component:
   - component: {fileID: 328675651}
   - component: {fileID: 328675650}
-  - component: {fileID: 328675652}
-  - component: {fileID: 328675653}
+  - component: {fileID: 328675655}
+  - component: {fileID: 328675656}
   m_Layer: 0
   m_Name: CM vcam1
   m_TagString: Untagged
@@ -355,7 +356,30 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 2109781609}
---- !u!114 &328675652
+--- !u!114 &328675655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 328675649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00b2d199b96b516448144ab30fb26aed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ApplyAfter: 2
+  m_ChannelMask: 1
+  m_Gain: 1
+  m_Use2DDistance: 0
+  m_UseCameraSpace: 1
+  m_ReactionSettings:
+    m_SecondaryNoise: {fileID: 0}
+    m_AmplitudeGain: 1
+    m_FrequencyGain: 1
+    m_Duration: 1
+    m_NoiseOffsets: {x: 0, y: 0, z: 0}
+--- !u!114 &328675656
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -369,7 +393,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ImpulseDefinition:
     m_ImpulseChannel: 1
-    m_ImpulseShape: 2
+    m_ImpulseShape: 3
     m_CustomImpulseShape:
       serializedVersion: 2
       m_Curve: []
@@ -407,30 +431,7 @@ MonoBehaviour:
     m_DissipationMode: 2
     m_DissipationDistance: 100
     m_PropagationSpeed: 343
-  m_DefaultVelocity: {x: 3.21, y: -1, z: 0}
---- !u!114 &328675653
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 328675649}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00b2d199b96b516448144ab30fb26aed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ApplyAfter: 2
-  m_ChannelMask: 1
-  m_Gain: 1
-  m_Use2DDistance: 0
-  m_UseCameraSpace: 1
-  m_ReactionSettings:
-    m_SecondaryNoise: {fileID: 0}
-    m_AmplitudeGain: 1
-    m_FrequencyGain: 1
-    m_Duration: 1
-    m_NoiseOffsets: {x: 0, y: 0, z: 0}
+  m_DefaultVelocity: {x: 0.77, y: 0.12, z: 0}
 --- !u!1 &937439616
 GameObject:
   m_ObjectHideFlags: 0
@@ -1729,7 +1730,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 4514520410212876861}
   _playerAnim: {fileID: 0}
-  _camera: {fileID: 0}
+  _camera: {fileID: 328675650}
   _uIController: {fileID: 231753012}
   _move:
     _startSpeed: 0.66

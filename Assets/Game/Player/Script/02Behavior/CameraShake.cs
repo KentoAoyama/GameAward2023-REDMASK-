@@ -1,19 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
-
-public class CameraShake : MonoBehaviour
+/// <summary>ÉJÉÅÉâÇÃêßå‰</summary>
+namespace Player
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [System.Serializable]
 
-    // Update is called once per frame
-    void Update()
+    public class CameraShake
     {
-        
+        private PlayerController _playerController;
+
+        private CinemachineImpulseSource _source;
+
+        public void Init(PlayerController playerController)
+        {
+            _playerController = playerController;
+            _source = _playerController.Camera.GetComponent<CinemachineImpulseSource>();
+        }
+
+
+        public void RevolverShootShake()
+        {
+            _source.GenerateImpulse();
+            Debug.Log("êUìÆ");
+        }
     }
 }
