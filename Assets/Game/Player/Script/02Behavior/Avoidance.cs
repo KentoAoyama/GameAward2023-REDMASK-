@@ -18,6 +18,14 @@ namespace Player
         [Tooltip("回避を適用するボタンの押し込み時間"), SerializeField]
         private float _doAvoidanceTime = 0.69f;
 
+        [Header("回避を行う時間")]
+        [Tooltip("回避を行う時間"), SerializeField]
+        private float _avoidanceDoTime = 1f;
+
+        [Header("時遅を行う時間")]
+        [Tooltip("時遅を行う時間"), SerializeField]
+        private float _slowTimeDoTime = 5f;
+
         [Header("回避のクールタイム")]
         [Tooltip("回避のクールタイム"), SerializeField]
         private float _avoidanceCoolTime = 4f;
@@ -35,6 +43,11 @@ namespace Player
 
         [Header("Test用。後で消す")]
         [SerializeField] private SpriteRenderer _spriteRenderer;
+
+        /// <summary>回避、の実行時間の計測用</summary>
+        private float _avoidanceDoTimeCount = 0f;
+        /// <summary>時遅、の実行時間の計測用</summary>
+        private float _slowTimeDoTimeCount = 0f;
 
         /// <summary>回避、のクールタイムの計測用</summary>
         private float _avoidanceCoolTimeCount = 0f;
@@ -65,8 +78,6 @@ namespace Player
         /// <summary>時遅が実行可能かどうか</summary>
         private bool _isCanSlowTime = false;
 
-        private bool _isExecutionNow = false;
-
         private PlayerController _playerController = null;
 
         public bool IsAvoiddanceNow => _isAvoidacneNow;
@@ -93,7 +104,8 @@ namespace Player
             _myLayerIndex = LayerMask.NameToLayer("Player"); // ここの文字列を消したい
         }
 
-        public async void Update()
+
+        public  void Update()
         {
             //Pause中は実行しない
             if (IsPause) return;
@@ -109,32 +121,24 @@ namespace Player
                 _isDoSlowTime = false;
                 _isCanSlowTime = false;
                 StartTimeSlow();
-                await UniTask.Delay(8000); // とりあえず一秒待つ
-                EndTimeSlow();
             }
 
             // 回避入力が発生したときに処理を実行する
-            if (!_isExecutionNow &&
+            if (!_isAvoidacneNow &&
                 _isDoAvoidance
                 && _playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX))
             {
-                _isExecutionNow = true;
-
                 _isDoAvoidance = false;
 
                 _isCanAvoidance = false;
 
                 StartThereAvoidance();
-                // 回避が完了するまで待機する
-                // await UniTask.WaitUntil(() => true);
-                await UniTask.Delay(1000); // とりあえず一秒待つ
-                EndThereAvoidance();
-
-                // 入力を開放するまで待機
-                await UniTask.WaitUntil(() => _playerController.InputManager.GetValue<float>(InputType.Avoidance) < 0.01f);
-                _isExecutionNow = false;
             }
-            //速度の減速
+
+            //回避、時遅、の実行時間を計測
+            CountDoTime();
+
+            //速度の減速(急停止)
             VelocityDeceleration();
         }
 
@@ -159,6 +163,33 @@ namespace Player
                 }
                 _countL2Time = 0;
             }
+        }
+        /// <summary>回避、時遅の実行時間を計測する</summary>
+        private void CountDoTime()
+        {
+            //回避実行中のタイムを計算
+            if (_isAvoidacneNow)
+            {
+                _avoidanceDoTimeCount += Time.deltaTime;
+
+                if (_avoidanceDoTimeCount >= _avoidanceDoTime)
+                {
+                    _avoidanceDoTimeCount = 0;
+                    EndThereAvoidance();
+                }
+            }
+
+            if (_isSlowTimeNow)
+            {
+                _slowTimeDoTimeCount += Time.deltaTime;
+
+                if (_slowTimeDoTimeCount > _slowTimeDoTime)
+                {
+                    _slowTimeDoTimeCount = 0;
+                    EndTimeSlow();
+                }
+            }
+
         }
 
         /// <summary>回避、時遅のクールタイムを数える</summary>
