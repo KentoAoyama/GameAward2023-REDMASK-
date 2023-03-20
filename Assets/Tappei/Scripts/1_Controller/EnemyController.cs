@@ -1,0 +1,179 @@
+using System;
+using UniRx;
+using UnityEngine;
+using UnityEngine.UI;
+
+/// <summary>
+/// 各振る舞いのクラスのメソッドを組み合わせて行動を制御するクラス
+/// </summary>
+[RequireComponent(typeof(SightSensor))]
+[RequireComponent(typeof(MoveBehavior))]
+[RequireComponent(typeof(AttackBehavior))]
+[RequireComponent(typeof(PerformanceBehavior))]
+public class EnemyController : MonoBehaviour, IPausable
+{
+    [Header("敵の各種パラメーターを設定したSO")]
+    [Tooltip("各振る舞いのクラスはこのSO内の値を参照して機能する")]
+    [SerializeField] private EnemyParamsSO _enemyParamsSO;
+    [Header("シーン上に配置されているプレイヤー")]
+    [SerializeField] private Transform _player;
+    [Header("デバッグ用:現在の状態を表示するText")]
+    [SerializeField] private Text _text;
+
+    private SightSensor _sightSensor;
+    private MoveBehavior _moveBehavior;
+    private AttackBehavior _attackBehavior;
+    private PerformanceBehavior _performanceBehavior;
+    private ReactiveProperty<StateTypeBase> _currentState = new();
+    private StateRegister _stateRegister = new();
+
+    public EnemyParamsSO Params => _enemyParamsSO;
+
+    private void Awake()
+    {
+        _sightSensor = gameObject.GetComponent<SightSensor>();
+        _moveBehavior = gameObject.GetComponent<MoveBehavior>();
+        _attackBehavior = gameObject.GetComponent<AttackBehavior>();
+        _performanceBehavior = gameObject.GetComponent<PerformanceBehavior>();
+        InitStateRegister();
+        InitCurrentState();
+    }
+
+    private void Update()
+    {
+        _currentState.Value = _currentState.Value.Execute();
+        _text.text = _currentState.Value.ToString();
+    }
+
+    private void InitStateRegister()
+    {
+        _stateRegister.Register(StateType.Idle, this);
+        _stateRegister.Register(StateType.Search, this);
+        _stateRegister.Register(StateType.Discover, this);
+        _stateRegister.Register(StateType.Move, this);
+        _stateRegister.Register(StateType.Attack, this);
+        _stateRegister.Register(StateType.Defeated, this);
+    }
+
+    private void InitCurrentState()
+    {
+        StateType state = Params.EntryState;
+        _currentState.Value = _stateRegister.GetState(state);
+    }
+
+    /// <summary>
+    /// 攻撃する
+    /// Attack状態の時、一定間隔で呼ばれる
+    /// </summary>
+    public void Attack() => _attackBehavior.Attack();
+
+    /// <summary>
+    /// プレイヤーに向けて移動する
+    /// Move状態での移動をする際にステートのEnter()で呼ばれる
+    /// </summary>
+    public void MoveToPlayer()
+    {
+        _moveBehavior.CancelMoving();
+        _moveBehavior.StartMoveToTarget(_player, Params.RunSpeed);
+    }
+
+    /// <summary>
+    /// 周囲のランダムな個所に移動する
+    /// Search状態での移動をする際にステートのEnter()で呼ばれる
+    /// </summary>
+    public void SearchMoving()
+    {
+        _moveBehavior.CancelMoving();
+        Transform target = _moveBehavior.GetSearchDestination(
+            Params.TurningPoint, Params.UseRandomTurningPoint);
+        _moveBehavior.StartMoveToTarget(target, Params.WalkSpeed);
+    }
+
+    /// <summary>
+    /// 遷移する際に現在の移動をキャンセルするためにステートから呼ばれる
+    /// </summary>
+    public void CancelMoving() => _moveBehavior.CancelMoving();
+
+    /// <summary>
+    /// 視界に対してプレイヤーがどの位置にいるのかを判定する
+    /// 各ステートの実行中呼ばれ続ける
+    /// </summary>
+    public SightResult IsFindPlayer()
+    {
+        float distance = _sightSensor.TryGetDistanceToPlayer(
+            Params.SightRadius, Params.SightAngle, Params.IsIgnoreObstacle);
+
+        if (distance == SightSensor.PlayerOutSight)
+        {
+            return SightResult.OutSight;
+        }
+        else if (distance < Params.AttackRange)
+        {
+            return SightResult.InAttackRange;
+        }
+        else
+        {
+            return SightResult.InSight;
+        }
+    }
+
+    public void DefeatedPerformance() => _performanceBehavior.Defeated();
+    public void DiscoverPerformance() => _performanceBehavior.Discover();
+
+    /// <summary>
+    /// 各ステートはこのメソッドを呼ぶことで遷移先のステートを取得する
+    /// </summary>
+    public StateTypeBase GetState(StateType type) => _stateRegister.GetState(type);
+
+    public void Pause()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Resume()
+    {
+        throw new System.NotImplementedException();
+    }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        if (UnityEditor.EditorApplication.isPlaying)
+        {
+            DrawTurningPoint();
+            DrawSight();
+            DrawAttackRange();
+        }
+    }
+
+    private void DrawTurningPoint()
+    {
+        float turningPoint = Params.TurningPoint;
+        Vector3 footPos = _moveBehavior.FootPos;
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(footPos + Vector3.right * turningPoint, 0.25f);
+        Gizmos.DrawSphere(footPos + Vector3.left * turningPoint, 0.25f);
+    }
+
+    private void DrawSight()
+    {
+        Transform eye = _sightSensor.EyeTransform;
+        Vector3 dir = Quaternion.Euler(0, 0, -Params.SightAngle / 2) * eye.right;
+
+        UnityEditor.Handles.color = new Color32(0, 0, 255, 64);
+        UnityEditor.Handles.DrawSolidArc(eye.position, Vector3.forward, dir, 
+            Params.SightAngle, Params.SightRadius);
+    }
+
+    private void DrawAttackRange()
+    {
+        Transform eye = _sightSensor.EyeTransform;
+        Vector3 dir = Quaternion.Euler(0, 0, -Params.SightAngle / 2) * eye.right;
+
+        UnityEditor.Handles.color = new Color32(255, 0, 0, 64);
+        UnityEditor.Handles.DrawSolidArc(eye.position, Vector3.forward, dir,
+            Params.SightAngle, Params.AttackRange);
+    }
+#endif
+}
