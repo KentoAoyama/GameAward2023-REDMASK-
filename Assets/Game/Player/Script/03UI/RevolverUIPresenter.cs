@@ -18,6 +18,12 @@ namespace UI
         [SerializeField]
         private Image[] _chamber = default;
 
+        [Header("ShellCaseの色")]
+        [SerializeField]
+        private Color _shellCaseColor = Color.yellow;
+
+
+
         [SerializeField]
         private Sprite _shallCaseImage = default;
 
@@ -49,7 +55,7 @@ namespace UI
                 if (bulletType == BulletType.ShellCase)
                 {
                     _chamber[targetChamberNumber].sprite = _shallCaseImage;
-                    _chamber[targetChamberNumber].color = Color.yellow;
+                    _chamber[targetChamberNumber].color = _shellCaseColor;
                 }
                 else if (_playerController.BulletDataBase.Bullets.TryGetValue(bulletType, out BulletBase result))
                 {

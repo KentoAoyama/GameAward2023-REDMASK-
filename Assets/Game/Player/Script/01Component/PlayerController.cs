@@ -22,6 +22,10 @@ namespace Player
         [Tooltip("プレイヤーのアニメーター"), SerializeField]
         private Animator _playerAnim;
 
+        [Header("プレイヤーについているシネマシーン")]
+        [Tooltip("プレイヤーのアニメーター"), SerializeField]
+        private GameObject _camera;
+
         [Tooltip("プレイヤーのUIを管理するクラス"), SerializeField]
         private UIController _uIController;
         [Tooltip("移動制御"), SerializeField]
@@ -54,6 +58,7 @@ namespace Player
 
         public GameObject Player => _player;
 
+        public GameObject Camera => _camera;
         public UIController UIController => _uIController;
         public Move Move => _move;
         public OverlapCircle2D GroungChecker => _groungChecker;
