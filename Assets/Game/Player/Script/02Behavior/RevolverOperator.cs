@@ -3,6 +3,7 @@ using Bullet;
 using UI;
 using UnityEngine;
 
+
 namespace Player
 {
     /// <summary>
@@ -12,6 +13,8 @@ namespace Player
     public class RevolverOperator
     {
         private PlayerController _playerController = null;
+
+        
 
         public void Init(PlayerController playerController)
         {
