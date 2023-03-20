@@ -37,7 +37,7 @@ public class StateRegister
 
         if (stateClass == null)
         {
-            Debug.LogError("StateTypeにステートが紐づけられていません: " + type);;
+            Debug.LogError("StateTypeにステートが紐づけられていません: " + type);
             return null;
         }
 

@@ -27,7 +27,7 @@ public class MoveBehavior : MonoBehaviour
     [SerializeField] private Transform _spriteTrans;
     [SerializeField] private Transform _eyeTrans;
     [Header("°‚ğŒŸ’m‚·‚é‚½‚ß‚ÌRay‚Ìİ’è")]
-    [SerializeField] private LayerMask _groundLayerMask;
+    [SerializeField] private LayerMask _groundLayerMask = LayerMask.NameToLayer("Ground");
     [SerializeField] private float _rayDistance = 1.0f;
 
     private CancellationTokenSource _cts;
@@ -58,6 +58,7 @@ public class MoveBehavior : MonoBehaviour
     private void OnDisable()
     {
         CancelMoving();
+        _rigidbody.isKinematic = true;
     }
 
     /// <summary>
