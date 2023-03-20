@@ -133,6 +133,8 @@ namespace Player
             await UniTask.WaitUntil(() => InputManager.InputActionCollection != null);
             InputManager.InputActionCollection.Disable();
             _revolver.IsPause = true;
+
+            _avoidance.Pause();
         }
 
         public void Resume()
@@ -140,6 +142,7 @@ namespace Player
             _move.Resume();
             InputManager.InputActionCollection.Enable();
             _revolver.IsPause = false;
+            _avoidance.Resume();
         }
         #endregion
     }
