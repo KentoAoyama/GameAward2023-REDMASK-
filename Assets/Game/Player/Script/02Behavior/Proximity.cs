@@ -55,18 +55,28 @@ namespace Player
                 return;
             } // ポーズ中は何もできない
 
-            if (_playerController.Avoidance.IsAvoiddanceNow)
+            if (_playerController.Avoidance.IsAvoidanceNow)
             {
                 return;
             } //回避中はできない
 
 
-            if (_playerController.InputManager.IsPressed[InputType.Proximity])
+            if (_playerController.InputManager.IsPressed[InputType.Proximity]
+                &&!_playerController.InputManager.IsPressed[InputType.Jump])
             {
                 //現在攻撃中でない、攻撃可能である、地面についている
                 if (!_isAttackNow && _isCanAttack
                     && _playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX))
                 {
+                    //ジャンプ入力と同フレームで入力した際に、上昇しながら回避に入る問題を防ぐための処理
+                    if (_playerController.Rigidbody2D.velocity.y > 0f)
+                    {
+                        return;
+                    }
+
+                    //攻撃中
+                    _isAttackNow = true;
+
                     AttckStart();
                 }
             }
@@ -89,9 +99,6 @@ namespace Player
 
             //試験的に、色を変える    
             _spriteRenderer.color = Color.blue;
-
-            //攻撃中
-            _isAttackNow = true;
 
             var targets = _playerController.ProximityHitChecker.GetCollider(_playerController.Player.transform.localScale.x) ;
 

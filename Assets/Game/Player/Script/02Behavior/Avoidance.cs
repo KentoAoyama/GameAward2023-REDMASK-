@@ -80,7 +80,9 @@ namespace Player
 
         private PlayerController _playerController = null;
 
-        public bool IsAvoiddanceNow => _isAvoidacneNow;
+        public bool IsAvoidanceNow => _isAvoidacneNow;
+
+        public bool IsDoAvoidance => _isDoAvoidance;
 
         public bool IsPause { get; private set; } = false;
 
@@ -132,11 +134,23 @@ namespace Player
                 _isDoAvoidance
                 && _playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX))
             {
+                //ジャンプ入力と同フレームで入力した際に、上昇しながら回避に入る問題を防ぐための処理
+                if (_playerController.Rigidbody2D.velocity.y > 0f)
+                {
+                    return;
+                }
+
                 _isDoAvoidance = false;
+
+                _isAvoidacneNow = true;
 
                 _isCanAvoidance = false;
 
                 StartThereAvoidance();
+            }
+            else if(_isDoAvoidance && !_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX))
+            {
+                _isDoAvoidance = false;
             }
 
             //回避、時遅、の実行時間を計測
@@ -234,6 +248,7 @@ namespace Player
         /// </summary>
         private void StartThereAvoidance()
         {
+
             //テスト用で、回避を分かりやすくするために使用
             _spriteRenderer.color = Color.red;
 
@@ -241,7 +256,6 @@ namespace Player
             _playerController.LifeController.IsGodMode = true;
             Physics2D.IgnoreLayerCollision(_ignoreLayerIndex, _myLayerIndex, true);
 
-            _isAvoidacneNow = true;
         }
         /// <summary>
         /// その場回避終了処理

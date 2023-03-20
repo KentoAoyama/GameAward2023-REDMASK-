@@ -95,12 +95,14 @@ namespace Player
         {
             DeviceManager.Update();       // デバイス制御
             DirectionControler.Update();  // 方向制御
+
             _move.Update();               // 移動処理
             _revolverOperator.Update();   // リボルバー操作の更新
             _revolver.Update();           // リボルバーの更新処理
             _revolver.OnDrawAimingLine(); // 照準描画処理（カメラの更新タイミングと合わせる必要有り）
             _avoidance.Update();          // 回避制御
-            _proximity.Update();
+            _proximity.Update();          //近接攻撃
+
         }
         private void OnDrawGizmosSelected()
         {

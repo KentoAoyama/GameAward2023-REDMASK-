@@ -93,7 +93,7 @@ namespace Player
         public void Update()
         {
             //回避中は移動不可、の条件を追加した
-            if (IsPause || _playerController.Avoidance.IsAvoiddanceNow || _playerController.Proximity.IsProximityNow)
+            if (IsPause || _playerController.Avoidance.IsAvoidanceNow || _playerController.Proximity.IsProximityNow)
             {
                 return;
             }
