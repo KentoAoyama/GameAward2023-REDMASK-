@@ -172,6 +172,9 @@ namespace Player
                     (b as ReflectBullet).ToStart(GetPositions(b).ToArray());
                 }
 
+                //弾を撃った場合に、カメラを揺らす
+                _playerController.CameraControl.RevolverShootShake();
+
                 _cylinder[_currentChamber] = _shellCase; // 殻薬莢を残す
                 OnChamberStateChanged?.Invoke(_currentChamber, BulletType.ShellCase);
             }

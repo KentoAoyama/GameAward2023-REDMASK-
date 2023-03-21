@@ -1,5 +1,5 @@
 /// <summary>
-/// 敵のステートマシンで取りうるステートの種類
+/// ステートの種類の判定を行う際に使用する列挙型
 /// 各ステートは必ずこの列挙型のうちのどれかに対応していなければならない
 /// </summary>
 public enum StateType
@@ -7,6 +7,7 @@ public enum StateType
     Unknown,
     Idle,
     Search,
+    Discover,
     Move,
     Attack,
     Defeated,
@@ -14,27 +15,12 @@ public enum StateType
 }
 
 /// <summary>
-/// ステート遷移のトリガーとなるイベントの種類
-/// この列挙型を含むメッセージを受け取ったらステートが遷移する
+/// 視界に対してプレイヤーがどの位置にいるかの判定に使用される列挙型
+/// 視界の処理とその結果を受けての分岐に使用される
 /// </summary>
-public enum StateTransitionTrigger
+public enum SightResult
 {
-    TimeElapsed,
-    PlayerFind,
-    PlayerHide,
-    PlayerInAttackRange,
-    PlayerOutAttackRange,
-}
-
-/// <summary>
-/// 取りうる行動の種類
-/// 各ステートが対応した行動の処理を呼び出すのに使用する
-/// </summary>
-public enum BehaviorType
-{
-    Attack,
-    MoveToPlayer,
-    SearchMove,
-    StopMove,
-    Defeated,
+    OutSight,
+    InSight,
+    InAttackRange,
 }

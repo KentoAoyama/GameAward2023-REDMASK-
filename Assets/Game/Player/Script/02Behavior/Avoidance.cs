@@ -44,6 +44,9 @@ namespace Player
         [Header("Test用。後で消す")]
         [SerializeField] private SpriteRenderer _spriteRenderer;
 
+        [Header("Test用。後で消す")]
+        [SerializeField] private SlowTimeAnimation _testSlowAnim;
+
         /// <summary>回避、の実行時間の計測用</summary>
         private float _avoidanceDoTimeCount = 0f;
         /// <summary>時遅、の実行時間の計測用</summary>
@@ -277,6 +280,9 @@ namespace Player
 
         private void StartTimeSlow()
         {
+            //テスト用、後で消す
+            _testSlowAnim.PanelActive(true);
+
             Debug.Log("時を遅くする");
             // 時間の速度をゆっくりにする。
             GameManager.Instance.TimeController.ChangeTimeSpeed(_timeScale);
@@ -285,6 +291,9 @@ namespace Player
 
         private void EndTimeSlow()
         {
+            //テスト用、後で消す
+            _testSlowAnim.PanelActive(false);
+
             Debug.Log("時を戻す");
             // 時間の速度をもとの状態に戻す。
             GameManager.Instance.TimeController.ChangeTimeSpeed(1f);

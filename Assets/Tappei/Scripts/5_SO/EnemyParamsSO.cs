@@ -2,7 +2,6 @@ using UnityEngine;
 
 /// <summary>
 /// 通常の敵の各パラメータを設定するScriptableObject
-/// EnemyParamsManagerに持たせ、敵毎に参照する
 /// </summary>
 [CreateAssetMenu(fileName = "EnemyParams_")]
 public class EnemyParamsSO : ScriptableObject
@@ -41,6 +40,8 @@ public class EnemyParamsSO : ScriptableObject
 
     [Header("Entry時の状態")]
     [SerializeField] private State _entryState;
+    [Header("プレイヤー未発見時は常にSearch状態にする")]
+    [SerializeField] private bool _isAlwaysSearching;
 
     public float WalkSpeed => _walkSpeed;
     public float RunSpeed => _runSpeed;
@@ -51,10 +52,14 @@ public class EnemyParamsSO : ScriptableObject
     public bool IsIgnoreObstacle => _isIgnoreObstacle;
     public float AttackRange => _attackRange;
     public float AttackRate => _attackRate;
+    public bool IsAlwaysSearching => _isAlwaysSearching;
     public StateType EntryState
     {
         get
         {
+            // フラグが立っている場合はIdle状態にせず、常にSearch状態となる
+            if (_isAlwaysSearching) return StateType.Search;
+
             if (_entryState == State.Idle)
             {
                 return StateType.Idle;
@@ -65,4 +70,9 @@ public class EnemyParamsSO : ScriptableObject
             }
         }
     }
+
+    // 以下2つは時間経過でステートを遷移する際に使用する値
+    // 要望があった際にはこれもインスペクターで割り当てられるように変更可能
+    public float MinDelayToTransition => 1.0f;
+    public float MaxDelayToTransition => 2.0f;
 }
