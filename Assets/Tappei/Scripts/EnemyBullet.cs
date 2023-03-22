@@ -34,7 +34,7 @@ public class EnemyBullet : MonoBehaviour
         if (collision.CompareTag("Player") && 
             collision.gameObject.TryGetComponent(out IDamageable damageable))
         {
-            damageable.Damage(0);
+            damageable.Damage();
         }
     }
 }

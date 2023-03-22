@@ -143,7 +143,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     }
 
     /// <summary>Œ‚”j‚³‚ê‚½Û‚Í”ñ•\¦‚É‚µ‚Ä‰æ–ÊŠO‚ÉˆÚ“®‚³‚¹‚é</summary>
-    public void Damage(float value)
+    public void Damage()
     {
         IsDefeated = true;
         _performanceBehavior.Defeated();
