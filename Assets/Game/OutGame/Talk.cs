@@ -12,8 +12,6 @@ public class Talk : MonoBehaviour
     private Text _viewArea = default;
     [Tooltip("会話テキスト"), SerializeField]
     private TextAsset _talkData = default;
-    [Tooltip("起動時から実行するかどうか"), SerializeField]
-    private bool _playOnAwake = default;
     [Tooltip("連打防止時間（入力無効時間）"), SerializeField]
     private float _inputInvalidTime = 1f;
     [Tooltip("入力コンポーネント（ここは後で修正したい）"), SerializeField]
@@ -27,13 +25,7 @@ public class Talk : MonoBehaviour
 
     private void Awake()
     {
-        gameObject.SetActive(_playOnAwake);
-    }
-    private void Start()
-    {
         _talkTexts = _talkData.text.Split('\n');
-        _alive = true;
-        TextControl();
     }
     private async void TextControl()
     {
@@ -84,8 +76,10 @@ public class Talk : MonoBehaviour
         }
         OnComplete?.Invoke();
     }
-    public void ClearIndex()
+    public void Play()
     {
         _currentIndex = 0;
+        _alive = true;
+        TextControl();
     }
 }

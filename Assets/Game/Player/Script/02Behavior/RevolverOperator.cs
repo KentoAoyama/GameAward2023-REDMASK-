@@ -3,6 +3,7 @@ using Bullet;
 using UI;
 using UnityEngine;
 
+
 namespace Player
 {
     /// <summary>
@@ -13,12 +14,24 @@ namespace Player
     {
         private PlayerController _playerController = null;
 
+        
+
         public void Init(PlayerController playerController)
         {
             _playerController = playerController;
         }
         public void Update()
         {
+            if (GameManager.Instance.PauseManager.PauseCounter > 0)
+            {
+                return;
+            } // ポーズ中は何もできない
+
+            if(_playerController.Avoidance.IsAvoidanceNow)
+            {
+                return;
+            } //回避中はできない
+
             // 撃てる状態かつ、撃つ入力が発生したとき 銃を撃つ
             if (_playerController.InputManager.GetValue<float>(InputType.Fire1) > 0.49f &&
                 _playerController.Revolver.CanFire)

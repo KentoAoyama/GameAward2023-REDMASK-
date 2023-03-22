@@ -46,9 +46,18 @@ public partial class @GameController : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""LookingAngle"",
+                    ""name"": ""LookingAngleGamePad"",
                     ""type"": ""Value"",
                     ""id"": ""5c04c9a1-ef50-4b1b-a55c-54f45dc2613f"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""LookingAngleMouse"",
+                    ""type"": ""Value"",
+                    ""id"": ""9e2ac6de-b869-400b-9659-41ad393b4043"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -94,6 +103,15 @@ public partial class @GameController : IInputActionCollection2, IDisposable
                     ""name"": ""LoadBullet"",
                     ""type"": ""Button"",
                     ""id"": ""a32747a4-4d74-4815-b685-4deea8e896d8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Proximity"",
+                    ""type"": ""Button"",
+                    ""id"": ""390d5d72-b1d6-4104-b5ff-ce9e43ed54c3"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -174,7 +192,7 @@ public partial class @GameController : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""LookingAngle"",
+                    ""action"": ""LookingAngleGamePad"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -395,6 +413,28 @@ public partial class @GameController : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""LoadBullet"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3f0f9466-a395-4e9e-b5b7-a839fdbe2556"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""LookingAngleMouse"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3e5163e8-00ca-4412-a1f4-32436a7afbce"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Proximity"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -984,12 +1024,14 @@ public partial class @GameController : IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Horizontal = m_Player.FindAction("Horizontal", throwIfNotFound: true);
         m_Player_Vertical = m_Player.FindAction("Vertical", throwIfNotFound: true);
-        m_Player_LookingAngle = m_Player.FindAction("LookingAngle", throwIfNotFound: true);
+        m_Player_LookingAngleGamePad = m_Player.FindAction("LookingAngleGamePad", throwIfNotFound: true);
+        m_Player_LookingAngleMouse = m_Player.FindAction("LookingAngleMouse", throwIfNotFound: true);
         m_Player_Fire1 = m_Player.FindAction("Fire1", throwIfNotFound: true);
         m_Player_Avoidance = m_Player.FindAction("Avoidance", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_CrossButtonHorizontal = m_Player.FindAction("Cross Button Horizontal", throwIfNotFound: true);
         m_Player_LoadBullet = m_Player.FindAction("LoadBullet", throwIfNotFound: true);
+        m_Player_Proximity = m_Player.FindAction("Proximity", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1063,24 +1105,28 @@ public partial class @GameController : IInputActionCollection2, IDisposable
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_Horizontal;
     private readonly InputAction m_Player_Vertical;
-    private readonly InputAction m_Player_LookingAngle;
+    private readonly InputAction m_Player_LookingAngleGamePad;
+    private readonly InputAction m_Player_LookingAngleMouse;
     private readonly InputAction m_Player_Fire1;
     private readonly InputAction m_Player_Avoidance;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_CrossButtonHorizontal;
     private readonly InputAction m_Player_LoadBullet;
+    private readonly InputAction m_Player_Proximity;
     public struct PlayerActions
     {
         private @GameController m_Wrapper;
         public PlayerActions(@GameController wrapper) { m_Wrapper = wrapper; }
         public InputAction @Horizontal => m_Wrapper.m_Player_Horizontal;
         public InputAction @Vertical => m_Wrapper.m_Player_Vertical;
-        public InputAction @LookingAngle => m_Wrapper.m_Player_LookingAngle;
+        public InputAction @LookingAngleGamePad => m_Wrapper.m_Player_LookingAngleGamePad;
+        public InputAction @LookingAngleMouse => m_Wrapper.m_Player_LookingAngleMouse;
         public InputAction @Fire1 => m_Wrapper.m_Player_Fire1;
         public InputAction @Avoidance => m_Wrapper.m_Player_Avoidance;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @CrossButtonHorizontal => m_Wrapper.m_Player_CrossButtonHorizontal;
         public InputAction @LoadBullet => m_Wrapper.m_Player_LoadBullet;
+        public InputAction @Proximity => m_Wrapper.m_Player_Proximity;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1096,9 +1142,12 @@ public partial class @GameController : IInputActionCollection2, IDisposable
                 @Vertical.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnVertical;
                 @Vertical.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnVertical;
                 @Vertical.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnVertical;
-                @LookingAngle.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLookingAngle;
-                @LookingAngle.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLookingAngle;
-                @LookingAngle.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLookingAngle;
+                @LookingAngleGamePad.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLookingAngleGamePad;
+                @LookingAngleGamePad.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLookingAngleGamePad;
+                @LookingAngleGamePad.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLookingAngleGamePad;
+                @LookingAngleMouse.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLookingAngleMouse;
+                @LookingAngleMouse.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLookingAngleMouse;
+                @LookingAngleMouse.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLookingAngleMouse;
                 @Fire1.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire1;
                 @Fire1.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire1;
                 @Fire1.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire1;
@@ -1114,6 +1163,9 @@ public partial class @GameController : IInputActionCollection2, IDisposable
                 @LoadBullet.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLoadBullet;
                 @LoadBullet.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLoadBullet;
                 @LoadBullet.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLoadBullet;
+                @Proximity.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnProximity;
+                @Proximity.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnProximity;
+                @Proximity.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnProximity;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1124,9 +1176,12 @@ public partial class @GameController : IInputActionCollection2, IDisposable
                 @Vertical.started += instance.OnVertical;
                 @Vertical.performed += instance.OnVertical;
                 @Vertical.canceled += instance.OnVertical;
-                @LookingAngle.started += instance.OnLookingAngle;
-                @LookingAngle.performed += instance.OnLookingAngle;
-                @LookingAngle.canceled += instance.OnLookingAngle;
+                @LookingAngleGamePad.started += instance.OnLookingAngleGamePad;
+                @LookingAngleGamePad.performed += instance.OnLookingAngleGamePad;
+                @LookingAngleGamePad.canceled += instance.OnLookingAngleGamePad;
+                @LookingAngleMouse.started += instance.OnLookingAngleMouse;
+                @LookingAngleMouse.performed += instance.OnLookingAngleMouse;
+                @LookingAngleMouse.canceled += instance.OnLookingAngleMouse;
                 @Fire1.started += instance.OnFire1;
                 @Fire1.performed += instance.OnFire1;
                 @Fire1.canceled += instance.OnFire1;
@@ -1142,6 +1197,9 @@ public partial class @GameController : IInputActionCollection2, IDisposable
                 @LoadBullet.started += instance.OnLoadBullet;
                 @LoadBullet.performed += instance.OnLoadBullet;
                 @LoadBullet.canceled += instance.OnLoadBullet;
+                @Proximity.started += instance.OnProximity;
+                @Proximity.performed += instance.OnProximity;
+                @Proximity.canceled += instance.OnProximity;
             }
         }
     }
@@ -1300,12 +1358,14 @@ public partial class @GameController : IInputActionCollection2, IDisposable
     {
         void OnHorizontal(InputAction.CallbackContext context);
         void OnVertical(InputAction.CallbackContext context);
-        void OnLookingAngle(InputAction.CallbackContext context);
+        void OnLookingAngleGamePad(InputAction.CallbackContext context);
+        void OnLookingAngleMouse(InputAction.CallbackContext context);
         void OnFire1(InputAction.CallbackContext context);
         void OnAvoidance(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnCrossButtonHorizontal(InputAction.CallbackContext context);
         void OnLoadBullet(InputAction.CallbackContext context);
+        void OnProximity(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

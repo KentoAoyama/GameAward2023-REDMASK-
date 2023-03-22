@@ -1,6 +1,5 @@
 // 日本語対応
-using System.Collections;
-using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,6 +16,9 @@ public class StageSelectButton : MonoBehaviour
     /// </summary>
     public void SetGoToStage()
     {
+        // シーン遷移に伴い、ポーズカウントを初期化、
+        GameManager.Instance.PauseManager.ClearCount();
+        DOTween.KillAll();
         GameManager.Instance.StageSelectManager.SetStage(_stageType);
     }
 }

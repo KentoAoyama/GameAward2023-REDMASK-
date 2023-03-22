@@ -15,6 +15,8 @@ namespace Bullet
 
         private int _wallHitCount = 0;
 
+        public int MaxWallHitNumber => _maxWallHitNumber;
+
         public override BulletType Type => BulletType.PenetrateBullet;
 
         protected override void OnHitCollision(Collision2D target)
@@ -27,7 +29,7 @@ namespace Bullet
             // ダメージを加える
             if (target.TryGetComponent(out IDamageable hit))
             {
-                hit.Damage(_attackPower);
+                hit.Damage();
                 return;
             }
             if (target.tag == _wallTagName)

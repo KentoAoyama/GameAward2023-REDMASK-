@@ -11,10 +11,10 @@ public abstract class PlayerDeadEventBase : MonoBehaviour
     [Tooltip("プレイヤー死亡時に実行するイベント"), SerializeField]
     private UnityEvent _onPlayerDead = default;
     [Tooltip("死亡演出が完了したときに実行するイベント"), SerializeField]
-    private UnityEvent _onComplete = default;
+    private UnityEvent _onPerformanceComplete = default;
 
     public UnityEvent OnPlayerDead => _onPlayerDead;
-    public UnityEvent OnComplete => _onComplete;
+    public UnityEvent OnComplete => _onPerformanceComplete;
 
     private void Awake()
     {
@@ -23,6 +23,8 @@ public abstract class PlayerDeadEventBase : MonoBehaviour
     }
     private async void Start()
     {
+        // ポーズする
+        GameManager.Instance.PauseManager.ExecutePause();
         // プレイヤー死亡時に実行するイベントを発行する
         _onPlayerDead?.Invoke();
         // ゲームの状態を更新する
@@ -30,7 +32,7 @@ public abstract class PlayerDeadEventBase : MonoBehaviour
         // プレイヤー死亡演出を再生する
         await PlayerDeadPerformance();
         // 演出完了時処理を発行する
-        _onComplete?.Invoke();
+        _onPerformanceComplete?.Invoke();
     }
     /// <summary>
     /// 継承先で独自のプレイヤー死亡時演出を実装してください
