@@ -29,7 +29,7 @@ namespace Bullet
             // ダメージを加える
             if (target.TryGetComponent(out IDamageable hit))
             {
-                hit.Damage(_attackPower);
+                hit.Damage();
                 return;
             }
             if (target.tag == _wallTagName)

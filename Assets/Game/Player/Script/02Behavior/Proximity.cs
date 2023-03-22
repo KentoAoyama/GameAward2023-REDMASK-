@@ -110,7 +110,7 @@ namespace Player
                     // ダメージを加える
                     if (target.TryGetComponent(out IDamageable hit))
                     {
-                        hit.Damage(_attackPower);
+                        hit.Damage();
                         return;
                     }
                 }

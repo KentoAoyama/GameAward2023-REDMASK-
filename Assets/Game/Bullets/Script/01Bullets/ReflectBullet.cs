@@ -48,7 +48,7 @@ namespace Bullet
             // ダメージを加える
             if (target.TryGetComponent(out IDamageable damageable))
             {
-                damageable.Damage(_attackPower);
+                damageable.Damage();
             }
         }
 

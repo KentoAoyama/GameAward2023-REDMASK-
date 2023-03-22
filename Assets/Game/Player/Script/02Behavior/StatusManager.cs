@@ -14,9 +14,9 @@ namespace Player
 
         public PlayerStatus Status => _status;
 
-        public void Damage(float value)
+        public void Damage()
         {
-            _status._life -= value;
+
         }
     }
 }
