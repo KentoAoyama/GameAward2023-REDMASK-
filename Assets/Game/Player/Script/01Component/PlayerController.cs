@@ -13,7 +13,11 @@ using Cinemachine;
 namespace Player
 {
     [RequireComponent(typeof(Rigidbody2D))]
+<<<<<<< HEAD
     public class PlayerController : MonoBehaviour, IPausable, IDamageable
+=======
+    public class PlayerController : MonoBehaviour, IPausable,IDamageable
+>>>>>>> 86e333fb58cbaf1e3887bf1c72518885847fb10e
     {
         [Header("プレイヤーのオブジェクト")]
         [Tooltip("プレイヤーのオブジェクト"), SerializeField]
@@ -57,6 +61,9 @@ namespace Player
         private CameraShake _camraControl = default;
 
         private Rigidbody2D _rigidbody2D = null;
+
+        [Tooltip("プレイヤーが死亡")]
+        private bool _isDead = false;
 
 
         public GameObject Player => _player;
@@ -103,16 +110,19 @@ namespace Player
         }
         private void Update()
         {
-            DeviceManager.Update();       // デバイス制御
-            DirectionControler.Update();  // 方向制御
+            if (!_isDead)
+            {
 
-            _move.Update();               // 移動処理
-            _revolverOperator.Update();   // リボルバー操作の更新
-            _revolver.Update();           // リボルバーの更新処理
-            _revolver.OnDrawAimingLine(); // 照準描画処理（カメラの更新タイミングと合わせる必要有り）
-            _avoidance.Update();          // 回避制御
-            _proximity.Update();          //近接攻撃
+                DeviceManager.Update();       // デバイス制御
+                DirectionControler.Update();  // 方向制御
 
+                _move.Update();               // 移動処理
+                _revolverOperator.Update();   // リボルバー操作の更新
+                _revolver.Update();           // リボルバーの更新処理
+                _revolver.OnDrawAimingLine(); // 照準描画処理（カメラの更新タイミングと合わせる必要有り）
+                _avoidance.Update();          // 回避制御
+                _proximity.Update();          //近接攻撃
+            }
         }
         private void OnDrawGizmosSelected()
         {
@@ -165,7 +175,11 @@ namespace Player
             _avoidance.Resume();
         }
 
+<<<<<<< HEAD
         public void Damage()
+=======
+        public void Damage(float value)
+>>>>>>> 86e333fb58cbaf1e3887bf1c72518885847fb10e
         {
 
         }
