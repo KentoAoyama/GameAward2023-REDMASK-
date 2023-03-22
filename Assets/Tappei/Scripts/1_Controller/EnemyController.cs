@@ -14,12 +14,11 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
 {
     [Header("敵の各種パラメーターを設定したSO")]
     [Tooltip("各振る舞いのクラスはこのSO内の値を参照して機能する")]
-    [SerializeField] private EnemyParamsSO _enemyParamsSO;
-    [Header("シーン上に配置されているプレイヤー")]
-    [SerializeField] private Transform _player;
+    [SerializeField] private EnemyParamsSO _enemyParamsSO; 
     [Header("デバッグ用:現在の状態を表示するText")]
     [SerializeField] private Text _text;
-
+    
+    private Transform _player;
     private SightSensor _sightSensor;
     private MoveBehavior _moveBehavior;
     private AttackBehavior _attackBehavior;
@@ -40,6 +39,11 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         _performanceBehavior = gameObject.GetComponent<PerformanceBehavior>();
         InitStateRegister();
         InitCurrentState();
+    }
+
+    private void Start()
+    {
+        _player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     private void Update()
