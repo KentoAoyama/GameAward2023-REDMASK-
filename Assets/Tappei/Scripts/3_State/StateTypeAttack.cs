@@ -16,6 +16,7 @@ public class StateTypeAttack : StateTypeBase
     protected override void Enter()
     {
         _interval = Controller.Params.AttackRate;
+        //Controller.MoveToPlayer();
     }
 
     protected override void Stay()
