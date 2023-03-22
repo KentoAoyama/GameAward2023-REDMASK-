@@ -26,7 +26,8 @@ public class EnemyRifle : MonoBehaviour, IEnemyWeapon
     {
         for (int i = 0; i < _poolQuantity; i++)
         {
-            EnemyBullet bullet = Instantiate(_enemyBullet, transform.position, Quaternion.identity);
+            EnemyBullet bullet = Instantiate(_enemyBullet, transform.position, Quaternion.identity, transform);
+            bullet.InitSetPool(_pool);
             bullet.gameObject.SetActive(false);
             _pool.Push(bullet);
         }
@@ -53,7 +54,10 @@ public class EnemyRifle : MonoBehaviour, IEnemyWeapon
     public void Attack()
     {
         EnemyBullet bullet = PopPool();
+
+        if (bullet == null) return;
+
         bullet.transform.position = _muzzle.position;
-        bullet.Shot(_muzzle.forward);
+        bullet.Shot(_muzzle.right);
     }
 }
