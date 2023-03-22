@@ -22,4 +22,10 @@ public class EnemyMeleeWeapon : MonoBehaviour, IEnemyWeapon
             _results[0].GetComponent<IDamageable>().Damage();
         }
     }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, _radius);
+    }
 }
