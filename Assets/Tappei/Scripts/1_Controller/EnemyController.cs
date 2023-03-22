@@ -12,6 +12,8 @@ using UnityEngine.UI;
 [RequireComponent(typeof(PerformanceBehavior))]
 public class EnemyController : MonoBehaviour, IPausable, IDamageable
 {
+    [Header("シーン上に配置されているプレイヤーのタグ")]
+    [SerializeField, TagName] private string _playerTagName;
     [Header("敵の各種パラメーターを設定したSO")]
     [Tooltip("各振る舞いのクラスはこのSO内の値を参照して機能する")]
     [SerializeField] private EnemyParamsSO _enemyParamsSO; 
@@ -43,7 +45,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
 
     private void Start()
     {
-        _player = GameObject.FindGameObjectWithTag("Player").transform;
+        _player = GameObject.FindGameObjectWithTag(_playerTagName).transform;
     }
 
     private void Update()
