@@ -13,7 +13,7 @@ using Cinemachine;
 namespace Player
 {
     [RequireComponent(typeof(Rigidbody2D))]
-    public class PlayerController : MonoBehaviour, IPausable
+    public class PlayerController : MonoBehaviour, IPausable, IDamageable
     {
         [Header("プレイヤーのオブジェクト")]
         [Tooltip("プレイヤーのオブジェクト"), SerializeField]
@@ -163,6 +163,11 @@ namespace Player
             InputManager.InputActionCollection.Enable();
             _revolver.IsPause = false;
             _avoidance.Resume();
+        }
+
+        public void Damage()
+        {
+
         }
         #endregion
     }
