@@ -20,7 +20,7 @@ namespace Bullet
             // ダメージを加える
             if (target.TryGetComponent(out IDamageable hit))
             {
-                hit.Damage(_attackPower);
+                hit.Damage();
 
                 // 弾の消滅処理
                 if (_maxEnemyHitNumber <= 0)
