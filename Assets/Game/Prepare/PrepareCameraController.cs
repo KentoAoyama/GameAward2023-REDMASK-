@@ -63,9 +63,9 @@ public class PrepareCameraController : MonoBehaviour
     {
         [SerializeField]
         private float _speed = default;
-        [SerializeField]
+        [SerializeField, Range(5f, 10f)]
         private float _minSize = default;
-        [SerializeField]
+        [SerializeField, Range(5f, 10f)]
         private float _maxSize = default;
 
         public float Speed => _speed;
