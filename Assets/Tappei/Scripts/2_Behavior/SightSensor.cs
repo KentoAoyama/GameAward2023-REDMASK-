@@ -19,7 +19,9 @@ public class SightSensor : MonoBehaviour
     [Tooltip("視線上の障害物として検知してしまうので他のコライダーと被せないこと")]
     [SerializeField] private Transform _eyeTransform;
     [Header("検出するオブジェクトが属するレイヤー")]
-    [SerializeField] private LayerMask _detectedLayerMask;
+    [SerializeField] private LayerMask _playerLayerMask;
+    [Tooltip("視界を遮るオブジェクトのレイヤー")]
+    [SerializeField] private LayerMask _obstacleLayerMask;
 
     private Collider2D[] _detectedResults = new Collider2D[MaxDetected];
 
@@ -38,7 +40,7 @@ public class SightSensor : MonoBehaviour
 
         // ヒットしなかった場合でも配列内の要素は削除されないので
         // ヒットしたオブジェクトの情報を返すように変更する場合は注意
-        int hitCount = Physics2D.OverlapCircleNonAlloc(rayOrigin, radius, _detectedResults, _detectedLayerMask);
+        int hitCount = Physics2D.OverlapCircleNonAlloc(rayOrigin, radius, _detectedResults, _playerLayerMask);
         if (hitCount == 0) return PlayerOutSight;
 
         foreach (Collider2D detectedCollider in _detectedResults)
@@ -52,13 +54,14 @@ public class SightSensor : MonoBehaviour
             if (angle > maxAngle / 2) continue;
 
             float distance = Vector3.Distance(rayOrigin, targetPos);
-            RaycastHit2D hit = Physics2D.Raycast(rayOrigin, targetDir, distance);
+            RaycastHit2D hit = Physics2D.Raycast(rayOrigin, targetDir, distance, _obstacleLayerMask);
 
             if (isIgnoreObstacle) return distance;
 
             // 視界を遮るオブジェクト用のレイヤーがあれば、ターゲットまでのRayを飛ばして
             // 視界を遮るオブジェクトにヒットしたら視界に映らないという処理に変更出来る。
-            bool isSightable = hit.collider.GetInstanceID() == detectedCollider.GetInstanceID();
+            //bool isSightable = hit.collider.GetInstanceID() == detectedCollider.GetInstanceID();
+            bool isSightable = !hit;
 
 #if UNITY_EDITOR
             Color color = isSightable ? Color.green : Color.red;

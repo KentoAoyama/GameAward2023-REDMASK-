@@ -2,7 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 敵の銃
+/// 遠距離攻撃の武器のクラス
+/// Enemy_RangeAttackオブジェクトが使用する
 /// </summary>
 public class EnemyRifle : MonoBehaviour, IEnemyWeapon
 {
@@ -11,7 +12,7 @@ public class EnemyRifle : MonoBehaviour, IEnemyWeapon
     [Tooltip("プールする敵弾の数、攻撃頻度を上げる場合はこちらも上げないといけない")]
     [SerializeField] private int _poolQuantity;
     [Header("敵弾を発射するマズル")]
-    [Tooltip("弾はマズルの位置からマズルの前方向に飛んでいく")]
+    [Tooltip("飛ぶ方向の左右の制御はスケールのxを-1にすることで行う")]
     [SerializeField] private Transform _muzzle;
 
     private Stack<EnemyBullet> _pool;

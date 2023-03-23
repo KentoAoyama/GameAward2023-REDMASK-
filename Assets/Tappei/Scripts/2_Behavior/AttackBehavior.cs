@@ -6,13 +6,18 @@ using UnityEngine;
 /// </summary>
 public class AttackBehavior : MonoBehaviour
 {
-    [Header("弾のプレハブ")]
-    [SerializeField] private GameObject _bulletPreafb;
-    [Header("弾を発射する位置")]
-    [SerializeField] private Transform _muzzle;
+    [Header("武器のオブジェクト")]
+    [SerializeField] private MonoBehaviour _weapon;
 
-    public void Attack()
+    IEnemyWeapon _enemyWeapon;
+
+    private void Awake()
     {
-        Debug.Log("攻撃");
+        if (!_weapon.TryGetComponent(out _enemyWeapon))
+        {
+            Debug.LogError("IEnemyWeaponを実装したコンポーネントではありません: " + _weapon);
+        }
     }
+
+    public void Attack() => _enemyWeapon.Attack();
 }
