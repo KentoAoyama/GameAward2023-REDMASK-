@@ -47,18 +47,18 @@ public class PrepareCameraController2 : MonoBehaviour
         pos.y += Time.deltaTime * _useValue.Speed * _dir;
         transform.position = pos;
 
-        if (transform.position.y > _useValue.MaxSize)
+        if (transform.position.y > _useValue.MaxValue && _dir > 0f)
         {
             pos = transform.position;
-            pos.y = _useValue.MaxSize - 0.001f;
+            pos.y = _useValue.MaxValue;
             transform.position = pos;
 
             _dir *= -1;
         }
-        else if (transform.position.y < _useValue.MinSize)
+        else if (transform.position.y < _useValue.MinValue && _dir < 0f)
         {
             pos = transform.position;
-            pos.y = _useValue.MinSize + 0.001f;
+            pos.y = _useValue.MinValue;
             transform.position = pos;
 
             _dir *= -1;
@@ -70,12 +70,12 @@ public class PrepareCameraController2 : MonoBehaviour
         [SerializeField]
         private float _speed = default;
         [SerializeField]
-        private float _minSize = default;
+        private float _minValue = default;
         [SerializeField]
-        private float _maxSize = default;
+        private float _maxValue = default;
 
         public float Speed => _speed;
-        public float MinSize => _minSize;
-        public float MaxSize => _maxSize;
+        public float MinValue => _minValue;
+        public float MaxValue => _maxValue;
     }
 }
