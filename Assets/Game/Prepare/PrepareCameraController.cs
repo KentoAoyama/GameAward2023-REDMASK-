@@ -49,12 +49,12 @@ public class PrepareCameraController : MonoBehaviour
 
         if (_camera.orthographicSize > _useValue.MaxSize)
         {
-            _camera.orthographicSize = _useValue.MinSize;
+            _camera.orthographicSize = _useValue.MaxSize - 0.001f;
             _dir *= -1;
         }
         else if (_camera.orthographicSize < _useValue.MinSize)
         {
-            _camera.orthographicSize = _useValue.MinSize;
+            _camera.orthographicSize = _useValue.MinSize + 0.001f;
             _dir *= -1;
         }
     }
