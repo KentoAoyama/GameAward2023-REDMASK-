@@ -1,7 +1,6 @@
 // 日本語対応
 using System;
 using UnityEngine;
-using DG.Tweening;
 
 public class PrepareCameraController2 : MonoBehaviour
 {
