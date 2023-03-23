@@ -26,6 +26,7 @@ public class MoveBehavior : MonoBehaviour
     [Header("移動方向に向けるオブジェクトの設定")]
     [SerializeField] private Transform _spriteTrans;
     [SerializeField] private Transform _eyeTrans;
+    [SerializeField] private Transform _weaponTrans;
     [Header("床を検知するためのRayの設定")]
     [SerializeField] private LayerMask _groundLayerMask;
     [SerializeField] private float _rayDistance = 1.0f;
@@ -181,11 +182,17 @@ public class MoveBehavior : MonoBehaviour
         int dir = (int)Mathf.Sign(diff);
         _spriteTrans.localScale = new Vector3(dir, 1, 1);
         
-        Vector3 pos = _eyeTrans.localPosition;
-        pos.x = Mathf.Abs(pos.x) * dir;
-        _eyeTrans.localPosition = pos;
+        Vector3 eyePos = _eyeTrans.localPosition;
+        eyePos.x = Mathf.Abs(eyePos.x) * dir;
+        _eyeTrans.localPosition = eyePos;
 
         int angle = dir == 1 ? 0 : 180;
         _eyeTrans.eulerAngles = new Vector3(0, 0, angle);
+
+        Vector3 weaponPos = _weaponTrans.localPosition;
+        weaponPos.x = Mathf.Abs(weaponPos.x) * dir;
+        _weaponTrans.localPosition = weaponPos;
+
+        _weaponTrans.localScale = new Vector3(dir, 1, 1);
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,14 +11,15 @@ using UnityEngine.UI;
 [RequireComponent(typeof(PerformanceBehavior))]
 public class EnemyController : MonoBehaviour, IPausable, IDamageable
 {
+    [Header("シーン上に配置されているプレイヤーのタグ")]
+    [SerializeField, TagName] private string _playerTagName;
     [Header("敵の各種パラメーターを設定したSO")]
     [Tooltip("各振る舞いのクラスはこのSO内の値を参照して機能する")]
-    [SerializeField] private EnemyParamsSO _enemyParamsSO;
-    [Header("シーン上に配置されているプレイヤー")]
-    [SerializeField] private Transform _player;
+    [SerializeField] private EnemyParamsSO _enemyParamsSO; 
     [Header("デバッグ用:現在の状態を表示するText")]
     [SerializeField] private Text _text;
-
+    
+    private Transform _player;
     private SightSensor _sightSensor;
     private MoveBehavior _moveBehavior;
     private AttackBehavior _attackBehavior;
@@ -40,6 +40,11 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         _performanceBehavior = gameObject.GetComponent<PerformanceBehavior>();
         InitStateRegister();
         InitCurrentState();
+    }
+
+    private void Start()
+    {
+        _player = GameObject.FindGameObjectWithTag(_playerTagName).transform;
     }
 
     private void Update()
