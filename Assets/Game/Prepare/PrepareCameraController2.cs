@@ -50,7 +50,7 @@ public class PrepareCameraController2 : MonoBehaviour
         if (transform.position.y > _useValue.MaxSize)
         {
             pos = transform.position;
-            pos.y = _useValue.MaxSize;
+            pos.y = _useValue.MaxSize - 0.001f;
             transform.position = pos;
 
             _dir *= -1;
@@ -58,7 +58,7 @@ public class PrepareCameraController2 : MonoBehaviour
         else if (transform.position.y < _useValue.MinSize)
         {
             pos = transform.position;
-            pos.y = _useValue.MinSize;
+            pos.y = _useValue.MinSize + 0.001f;
             transform.position = pos;
 
             _dir *= -1;
