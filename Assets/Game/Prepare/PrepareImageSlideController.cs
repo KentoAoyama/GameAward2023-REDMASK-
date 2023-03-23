@@ -1,6 +1,8 @@
 // 日本語対応
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -23,6 +25,8 @@ public class PrepareImageSlideController : MonoBehaviour
     private bool _canScroll = true;
     /// <summary> 自身のRectTransform </summary>
     private RectTransform _rectTransform = null;
+    /// <summary> DOTween保存用 </summary>
+    private TweenerCore<Vector3, Vector3, VectorOptions> _slidingAnim = default;
 
     private async void Awake()
     {
@@ -45,7 +49,7 @@ public class PrepareImageSlideController : MonoBehaviour
             {
                 _canScroll = false;
                 _currentScreenArea = ScreenArea.Right;
-                _rectTransform.DOLocalMoveX(_rightAreaPos, _duration).
+                _slidingAnim = _rectTransform.DOLocalMoveX(_rightAreaPos, _duration).
                     SetEase(_slidingEasing).
                     OnComplete(() => _canScroll = true);
             }
@@ -53,13 +57,18 @@ public class PrepareImageSlideController : MonoBehaviour
             {
                 _canScroll = false;
                 _currentScreenArea = ScreenArea.Left;
-                _rectTransform.DOLocalMoveX(_leftAreaPos, _duration).
+                _slidingAnim = _rectTransform.DOLocalMoveX(_leftAreaPos, _duration).
                     SetEase(_slidingEasing).
                     OnComplete(() => _canScroll = true);
             }
         }
     }
-
+    private void OnDestroy()
+    {
+        // このオブジェクトを破棄する際にDOTweenをキルする。
+        // （警告を発生させない為の処理）
+        _slidingAnim?.Kill();
+    }
     public enum ScreenArea
     {
         Right,
