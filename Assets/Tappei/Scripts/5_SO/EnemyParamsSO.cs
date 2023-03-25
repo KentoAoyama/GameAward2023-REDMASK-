@@ -75,4 +75,6 @@ public class EnemyParamsSO : ScriptableObject
     // 要望があった際にはこれもインスペクターで割り当てられるように変更可能
     public float MinDelayToTransition => 1.0f;
     public float MaxDelayToTransition => 2.0f;
+
+    public int GetAnimationHash(AnimationName name) => Animator.StringToHash(name.ToString());
 }
