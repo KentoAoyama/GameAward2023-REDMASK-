@@ -24,3 +24,18 @@ public enum SightResult
     InSight,
     InAttackRange,
 }
+
+/// <summary>
+/// アニメーション名の取得に使用される列挙型
+/// 列挙型からハッシュを取得するのに使用するので値は各Animation名と一致させること
+/// </summary>
+public enum AnimationName
+{
+    Idle,
+    Search,
+    Discover,
+    Move,
+    Attack,
+    Death,
+    Reflection,
+}
