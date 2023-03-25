@@ -5,6 +5,7 @@ using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PrepareImageSlideController : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class PrepareImageSlideController : MonoBehaviour
     private float _leftAreaPos;
     [Tooltip("右側の中心ポジション"), SerializeField]
     private float _rightAreaPos;
+    [SerializeField]
+    private Image _behindObjDontTouchiImage = default;
 
     /// <summary> 現在表示している場所 </summary>
     private ScreenArea _currentScreenArea = ScreenArea.Left;
@@ -28,13 +31,26 @@ public class PrepareImageSlideController : MonoBehaviour
     /// <summary> DOTween保存用 </summary>
     private TweenerCore<Vector3, Vector3, VectorOptions> _slidingAnim = default;
 
-    private async void Awake()
+    private void Awake()
     {
+        _behindObjDontTouchiImage.gameObject.SetActive(false);
         _rectTransform = GetComponent<RectTransform>();
+    }
+    private async void OnEnable()
+    {
         await UniTask.WaitUntil(() => _prepareInputManager != null);
         _prepareInputManager.PrepareInputController.UI.Navigate.performed += InputTracking;
     }
-
+    private void OnDisable()
+    {
+        _prepareInputManager.PrepareInputController.UI.Navigate.performed -= InputTracking;
+    }
+    private void OnDestroy()
+    {
+        // このオブジェクトを破棄する際にDOTweenをキルする。
+        // （警告を発生させない為の処理）
+        _slidingAnim?.Kill();
+    }
     /// <summary>
     /// 入力を追跡し、条件に応じて
     /// </summary>
@@ -47,27 +63,31 @@ public class PrepareImageSlideController : MonoBehaviour
         {
             if (value > 0f && _currentScreenArea == ScreenArea.Left)
             {
-                _canScroll = false;
+                AnimStart();
                 _currentScreenArea = ScreenArea.Right;
                 _slidingAnim = _rectTransform.DOLocalMoveX(_rightAreaPos, _duration).
                     SetEase(_slidingEasing).
-                    OnComplete(() => _canScroll = true);
+                    OnComplete(AnimEnd);
             }
             else if (value < 0f && _currentScreenArea == ScreenArea.Right)
             {
-                _canScroll = false;
+                AnimStart();
                 _currentScreenArea = ScreenArea.Left;
                 _slidingAnim = _rectTransform.DOLocalMoveX(_leftAreaPos, _duration).
                     SetEase(_slidingEasing).
-                    OnComplete(() => _canScroll = true);
+                    OnComplete(AnimEnd);
             }
         }
-    }
-    private void OnDestroy()
-    {
-        // このオブジェクトを破棄する際にDOTweenをキルする。
-        // （警告を発生させない為の処理）
-        _slidingAnim?.Kill();
+        void AnimStart()
+        {
+            _canScroll = false;
+            _behindObjDontTouchiImage.gameObject.SetActive(true);
+        }
+        void AnimEnd()
+        {
+            _canScroll = true;
+            _behindObjDontTouchiImage.gameObject.SetActive(false);
+        }
     }
     public enum ScreenArea
     {
