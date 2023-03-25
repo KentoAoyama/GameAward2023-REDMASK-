@@ -100,16 +100,19 @@ namespace Player
             //試験的に、色を変える    
             _spriteRenderer.color = Color.blue;
 
-            var targets = _playerController.ProximityHitChecker.GetCollider(_playerController.Player.transform.localScale.x) ;
+            var targets = _playerController.ProximityHitChecker.GetCollider(_playerController.DirectionControler.MovementDirectionX) ;
+            Debug.Log(targets.Length);
 
-            if (targets.Length != 0)
+            if (targets.Length > 0)
             {
+                Debug.Log("攻撃対象あり");
                 //Hitしたコライダーに対して、ダメージを与えていく
                 foreach (var target in targets)
                 {
                     // ダメージを加える
                     if (target.TryGetComponent(out IDamageable hit))
                     {
+                        Debug.Log("攻撃実行可能");
                         hit.Damage();
                         return;
                     }
