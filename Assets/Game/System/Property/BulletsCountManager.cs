@@ -1,5 +1,4 @@
 // 日本語対応
-
 using Bullet;
 using System.Collections.Generic;
 using UniRx;
@@ -7,7 +6,7 @@ using UniRx;
 /// <summary>
 /// 弾の数を覚えておくクラス
 /// </summary>
-public class BulletsCountManager
+public class BulletsCountManager : ISavable
 {
     /// <summary>
     /// アジトにある弾の数
@@ -33,5 +32,19 @@ public class BulletsCountManager
     public BulletType[] Cylinder
     {
         get => _cylinder; set => _cylinder = value;
+    }
+
+    private string _saveFileName = "BulletsCount";
+
+    public void Save()
+    {
+        SaveLoadManager.Save<BulletsCountManager>(this, _saveFileName);
+    }
+    public void Load()
+    {
+        var temp = SaveLoadManager.Load<BulletsCountManager>(_saveFileName);
+        _bulletCountHome = temp._bulletCountHome;
+        _bulletCountStage = temp._bulletCountStage;
+        _cylinder = temp._cylinder;
     }
 }
