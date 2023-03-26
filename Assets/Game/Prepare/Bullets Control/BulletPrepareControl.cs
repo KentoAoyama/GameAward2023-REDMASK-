@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 using UniRx;
+using System.Collections.Generic;
 
 /// <summary>
 /// 準備画面上での弾を制御するクラス
@@ -47,23 +48,33 @@ public class BulletPrepareControl : MonoBehaviour
     /// </returns>
     public (int, StorageSiteType) PushBullet(BulletType bulletType)
     {
+        if (GameManager.Instance.BulletsCountManager.BulletCountHome[bulletType].Value < 1)
+        {
+            return (-1, StorageSiteType.Error);
+        }
         // 空のチェンバーを探す
         for (int i = 0; i < _cylinder.Length; i++)
         {
             if (_cylinder[i].Value == BulletType.NotSet)
             {
+                // シリンダーの弾の状態を更新する
                 _cylinder[i].Value = bulletType;
+                // アジトの弾の総数を減らす
+                GameManager.Instance.BulletsCountManager.BulletCountHome[bulletType].Value--;
                 return (i, StorageSiteType.Cylinder);
-            }
+            } // 見つかった時の処理
         }
         // 空のガンベルトを探す
         for (int i = 0; i < _gunBelt.Length; i++)
         {
             if (_gunBelt[i].Value == BulletType.NotSet)
             {
+                // ガンベルトの弾の状態を更新する
                 _gunBelt[i].Value = bulletType;
+                // アジトの弾の総数を減らす
+                GameManager.Instance.BulletsCountManager.BulletCountHome[bulletType].Value--;
                 return (i, StorageSiteType.GunBelt);
-            }
+            } // 見つかった時の処理
         }
         return (-1, StorageSiteType.Error);
     }
@@ -79,11 +90,17 @@ public class BulletPrepareControl : MonoBehaviour
         {
             if (storageSiteType == StorageSiteType.Cylinder)
             {
+                // アジトの弾の数を増やす
+                GameManager.Instance.BulletsCountManager.BulletCountHome[_cylinder[index].Value].Value++;
+                // ガンベルトの弾の状態を更新する
                 _cylinder[index].Value = BulletType.NotSet;
                 return true;
             }
             if (storageSiteType == StorageSiteType.GunBelt)
             {
+                // アジトの弾の数を増やす
+                GameManager.Instance.BulletsCountManager.BulletCountHome[_cylinder[index].Value].Value++;
+                // ガンベルトの弾の状態を更新する
                 _gunBelt[index].Value = BulletType.NotSet;
                 return true;
             }
@@ -93,6 +110,10 @@ public class BulletPrepareControl : MonoBehaviour
             Debug.LogError(e.Message);
             Debug.LogError($"範囲外が指定されました！\n" +
                 $"種類 :{storageSiteType}, インデックス :{index}");
+        }
+        catch (KeyNotFoundException)
+        {
+
         }
         return false;
     }
@@ -113,7 +134,7 @@ public class BulletPrepareControl : MonoBehaviour
                 if (_gunBelt[i].Value == type) count++;
             }
             // ガンベルトの状態を保存
-            GameManager.Instance.BulletsCountManager.BulletCountStage[type] = count;
+            GameManager.Instance.BulletsCountManager.BulletCountStage[type].Value = count;
 
             // 現在走査している種類と合致する,シリンダーにある弾の総数を取得する。
             for (int i = 0; i < _cylinder.Length; i++)
@@ -121,7 +142,7 @@ public class BulletPrepareControl : MonoBehaviour
                 if (_cylinder[i].Value == type) count++;
             }
             // アジトの弾の数を更新
-            GameManager.Instance.BulletsCountManager.BulletCountHome[type] -= count;
+            GameManager.Instance.BulletsCountManager.BulletCountHome[type].Value -= count;
         }
         BulletType[] bullets = new BulletType[_cylinder.Length];
         for (int i = 0; i < bullets.Length; i++)
