@@ -2,7 +2,8 @@
 
 using Bullet;
 using System.Collections.Generic;
-using System.Linq;
+using UniRx;
+
 /// <summary>
 /// 弾の数を覚えておくクラス
 /// </summary>
@@ -11,24 +12,24 @@ public class BulletsCountManager
     /// <summary>
     /// アジトにある弾の数
     /// </summary>
-    private Dictionary<BulletType, int> _bulletCountHome = new Dictionary<BulletType, int>() {
-            { BulletType.StandardBullet, 0 },
-            { BulletType.PenetrateBullet, 0 },
-            { BulletType.ReflectBullet, 0 } };
+    private Dictionary<BulletType, IntReactiveProperty> _bulletCountHome = new Dictionary<BulletType, IntReactiveProperty>() {
+            { BulletType.StandardBullet, new IntReactiveProperty(0) },
+            { BulletType.PenetrateBullet, new IntReactiveProperty(0) },
+            { BulletType.ReflectBullet, new IntReactiveProperty(0) } };
     /// <summary>
     /// ステージ内で所持している弾の数
     /// </summary>
-    private Dictionary<BulletType, int> _bulletCountStage = new Dictionary<BulletType, int>() {
-            { BulletType.StandardBullet, 0 },
-            { BulletType.PenetrateBullet, 0 },
-            { BulletType.ReflectBullet, 0 } };
+    private Dictionary<BulletType, IntReactiveProperty> _bulletCountStage = new Dictionary<BulletType, IntReactiveProperty>() {
+            { BulletType.StandardBullet, new IntReactiveProperty(0) },
+            { BulletType.PenetrateBullet, new IntReactiveProperty(0) },
+            { BulletType.ReflectBullet, new IntReactiveProperty(0) } };
     /// <summary>
     /// シリンダーの状態を表現する値
     /// </summary>
     private BulletType[] _cylinder = null;
 
-    public Dictionary<BulletType, int> BulletCountHome => _bulletCountHome;
-    public Dictionary<BulletType, int> BulletCountStage => _bulletCountStage;
+    public Dictionary<BulletType, IntReactiveProperty> BulletCountHome => _bulletCountHome;
+    public Dictionary<BulletType, IntReactiveProperty> BulletCountStage => _bulletCountStage;
     public BulletType[] Cylinder
     {
         get => _cylinder; set => _cylinder = value;
