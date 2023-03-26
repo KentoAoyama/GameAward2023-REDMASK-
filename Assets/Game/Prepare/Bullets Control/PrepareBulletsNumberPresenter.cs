@@ -5,7 +5,8 @@ using UniRx;
 using Bullet;
 
 /// <summary>
-/// 
+/// 準備画面用 <br/>
+/// 弾の数を表示する用のクラス
 /// </summary>
 public class PrepareBulletsNumberPresenter : MonoBehaviour
 {
