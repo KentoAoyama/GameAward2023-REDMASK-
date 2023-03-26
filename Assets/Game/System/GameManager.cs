@@ -26,6 +26,7 @@ public class GameManager
     private PauseManager _pauseManager = new PauseManager();
     private TimeController _timeController = new TimeController();
     private StageSelectManager _stageSelectManager = new StageSelectManager();
+    private BulletsCountManager _bulletsCountManager = new BulletsCountManager();
 
     /// <summary>
     /// ゲームの状態を表現するクラス
@@ -43,4 +44,8 @@ public class GameManager
     /// ステージ選択状態をシーンを跨いで保存する用のクラス
     /// </summary>
     public StageSelectManager StageSelectManager => _stageSelectManager;
+    /// <summary>
+    /// 弾の所持数をシーンを跨いで保存する用のクラス
+    /// </summary>
+    public BulletsCountManager BulletsCountManager => _bulletsCountManager;
 }
