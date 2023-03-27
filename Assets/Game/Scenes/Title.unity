@@ -123,6 +123,50 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &48805886
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 48805887}
+  - component: {fileID: 48805888}
+  m_Layer: 0
+  m_Name: Data Load Agent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &48805887
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 48805886}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2068565434}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &48805888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 48805886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36325ee7158a83f4989ed800a880c052, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &69639550
 GameObject:
   m_ObjectHideFlags: 0
@@ -2104,7 +2148,8 @@ GameObject:
   - component: {fileID: 1462578507}
   - component: {fileID: 1462578506}
   - component: {fileID: 1462578505}
-  - component: {fileID: 1462578508}
+  - component: {fileID: 1462578509}
+  - component: {fileID: 1462578510}
   m_Layer: 5
   m_Name: Continue Button
   m_TagString: Untagged
@@ -2215,7 +2260,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1462578503}
   m_CullTransparentMesh: 1
---- !u!114 &1462578508
+--- !u!114 &1462578509
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2224,10 +2269,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 1462578503}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7f250ff34c88b547bb96a7595058bad, type: 3}
+  m_Script: {fileID: 11500000, guid: 7a0f0dd7b571dae48b3f5782b5808cad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextSceneName: StageSelect
+--- !u!114 &1462578510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1462578503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fe21c6fe45483649b1f5abdf8d72264, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stageSelectButton: StageSelect
 --- !u!1 &1483030028
 GameObject:
   m_ObjectHideFlags: 0
@@ -3197,7 +3254,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 48805887}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

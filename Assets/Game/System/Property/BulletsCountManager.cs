@@ -43,6 +43,7 @@ public class BulletsCountManager : ISavable
     public void Load()
     {
         var temp = SaveLoadManager.Load<BulletsCountManager>(_saveFileName);
+        if (temp == null) return; // 読み込みに失敗した場合は処理しない。
         _bulletCountHome = temp._bulletCountHome;
         _bulletCountStage = temp._bulletCountStage;
         _cylinder = temp._cylinder;
