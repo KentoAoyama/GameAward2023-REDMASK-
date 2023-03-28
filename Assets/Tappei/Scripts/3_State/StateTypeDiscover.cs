@@ -9,6 +9,7 @@ public class StateTypeDiscover : StateTypeBase
 
     protected override void Enter()
     {
+        Controller.PlayAnimation(AnimationName.Discover);
         Controller.DiscoverPerformance();
     }
 

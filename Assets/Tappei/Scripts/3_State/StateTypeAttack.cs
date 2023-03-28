@@ -15,6 +15,8 @@ public class StateTypeAttack : StateTypeBase
 
     protected override void Enter()
     {
+        Controller.PlayAnimation(AnimationName.Attack);
+
         _interval = Controller.Params.AttackRate;
         //Controller.MoveToPlayer();
     }
