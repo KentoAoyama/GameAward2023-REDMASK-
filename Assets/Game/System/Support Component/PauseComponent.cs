@@ -14,11 +14,11 @@ public class PauseComponent : MonoBehaviour
 
     public void ExecutePause()
     {
-        GameManager.Instance.PauseManager.ExecutePause();
+        GameManager.Instance.PauseManager.ExecutePause(_onPause);
     }
     public void ExecuteResume()
     {
-        GameManager.Instance.PauseManager.ExecuteResume();
+        GameManager.Instance.PauseManager.ExecuteResume(_onResume);
     }
 
     private void OnEnable()
