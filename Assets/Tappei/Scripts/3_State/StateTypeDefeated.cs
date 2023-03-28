@@ -9,6 +9,6 @@ public class StateTypeDefeated : StateTypeBase
 
     protected override void Enter()
     {
-        //Facade.SendMessage(BehaviorType.Defeated);
+        Controller.PlayAnimation(AnimationName.Death);
     }
 }

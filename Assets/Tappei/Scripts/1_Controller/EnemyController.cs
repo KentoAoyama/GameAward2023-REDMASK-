@@ -26,6 +26,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     private PerformanceBehavior _performanceBehavior;
     private ReactiveProperty<StateTypeBase> _currentState = new();
     private StateRegister _stateRegister = new();
+    private Animator _animator;
 
     public EnemyParamsSO Params => _enemyParamsSO;
 
@@ -38,6 +39,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         _moveBehavior = gameObject.GetComponent<MoveBehavior>();
         _attackBehavior = gameObject.GetComponent<AttackBehavior>();
         _performanceBehavior = gameObject.GetComponent<PerformanceBehavior>();
+        _animator = gameObject.GetComponentInChildren<Animator>();
         InitStateRegister();
         InitCurrentState();
     }
@@ -128,6 +130,9 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
             return SightResult.InSight;
         }
     }
+
+    /// <summary>各ステートが再生するアニメーションを呼び出す</summary>
+    public void PlayAnimation(AnimationName name) => _animator.Play(Params.GetAnimationHash(name));
 
     public void DefeatedPerformance() => _performanceBehavior.Defeated();
     public void DiscoverPerformance() => _performanceBehavior.Discover();
