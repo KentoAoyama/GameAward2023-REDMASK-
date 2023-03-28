@@ -12,6 +12,8 @@ public class StateTypeSearch : StateTypeBase
 
     protected override void Enter()
     {
+        Controller.PlayAnimation(AnimationName.Search);
+
         // 移動を行うメソッドを呼び出して時間経過でIdleに遷移する
         // を繰り返して周囲を探索させる
         _interval = Controller.Params.TurningPoint / Controller.Params.WalkSpeed * 60;
