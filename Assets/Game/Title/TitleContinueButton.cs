@@ -15,11 +15,12 @@ public class TitleContinueButton : MonoBehaviour
     public void Awake()
     {
         if (GameManager.Instance.CompletedStageManager.
-            LoadStageCompleteNumber() < 1)
+            LoadStageCompleteNumber() < 0)
         {
-            Destroy(gameObject);
-            return;
-        }
+            //Destroy(gameObject);
+            //return;
+        } // どのステージもクリアしていない状態であれば続きからボタンを破棄する。
+
         GetComponent<Button>().onClick.AddListener(OnSceneChange);
     }
     /// <summary>
