@@ -5,6 +5,6 @@ public class StageOneCompletePerformance : StageCompleteEventBase
 {
     protected override UniTask CompletePerformance()
     {
-        throw new System.NotImplementedException();
+        return default;
     }
 }
