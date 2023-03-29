@@ -6,7 +6,7 @@ public class SaveCompletedStageNumber : MonoBehaviour
     [SerializeField]
     private int _stageNumber = 0;
 
-    public void OnSave()
+    public void OnStageCompleted()
     {
         // 完了済みステージ番号を更新する。
         GameManager.Instance.CompletedStageManager.SetCompletedStage(_stageNumber);

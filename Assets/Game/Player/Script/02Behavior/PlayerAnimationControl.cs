@@ -9,16 +9,23 @@ namespace Player
     [System.Serializable]
     public class PlayerAnimationControl
     {
-
         [Header("絵が右向きならTrueにしてください")]
         [Tooltip("絵が右向きならTrueに"), SerializeField]
         private bool _isRightDirOnPictuer = true;
 
-        [Tooltip("現在のキャラの絵の向き")]
-        private float _isNowPictureDir = 1;
+        [Header("死亡アニメーション。Animatorの名前")]
+        [Tooltip("絵が右向きならTrueに"), SerializeField]
+        private string _deadAnimName = "死亡アニメーション。Animatorの名前";
 
-        [Tooltip("現在のキャラの移動の入力の向き")]
+
+        /// <summary>現在のキャラの移動の入力の向き</summary>
         private float _moveHorizontalDir = 1;
+
+
+
+
+
+
 
         public float MoveDir { get => _moveHorizontalDir; set => _moveHorizontalDir = value; }
 
@@ -26,6 +33,7 @@ namespace Player
         public bool IsPause { get; private set; } = false;
 
         private PlayerController _playerController;
+
 
         public void Init(PlayerController playerController)
         {
@@ -82,6 +90,11 @@ namespace Player
 
         }
 
+        /// <summary>死亡アニメーションを再生</summary>
+        public void Dead()
+        {
+            _playerController.PlayerAnim.Play(_deadAnimName);
+        }
 
     }
 }
