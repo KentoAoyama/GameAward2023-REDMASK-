@@ -31,7 +31,7 @@ public class StateTypeIdle : StateTypeBase
             return;
         }
 
-        float timeScale = GameManager.Instance.TimeController.CurrentTimeScale.Value;
+        float timeScale = GameManager.Instance.TimeController.EnemyTime;
         _time += timeScale * Time.deltaTime;
         if (_time > _delay)
         {
