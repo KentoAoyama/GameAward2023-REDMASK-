@@ -151,6 +151,8 @@ namespace Player
 
                     _currentHorizontalSpeed += Time.deltaTime * _midairMoveAcceleration * _moveHorizontalDir * gameTime;
                     if (_currentHorizontalSpeed > _maxMidairMoveSpeed) _currentHorizontalSpeed = _maxMidairMoveSpeed; // 最大速度を超えない
+                    else if(_currentHorizontalSpeed < -_maxMidairMoveSpeed) _currentHorizontalSpeed = -_maxMidairMoveSpeed;
+
                 }
             }
             // 入力がないとき、現在速度を減算する。
