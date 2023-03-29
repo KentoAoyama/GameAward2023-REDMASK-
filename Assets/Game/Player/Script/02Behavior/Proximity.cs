@@ -126,7 +126,7 @@ namespace Player
 
             Debug.Log("近接攻撃終わり！");
             //試験的に、色を変える    
-            _spriteRenderer.color = Color.black;
+            _spriteRenderer.color = Color.white;
 
             //攻撃中
             _isAttackNow = false;
