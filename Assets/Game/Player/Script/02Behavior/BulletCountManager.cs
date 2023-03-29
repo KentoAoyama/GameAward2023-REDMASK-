@@ -12,6 +12,11 @@ namespace Player
     [System.Serializable]
     public class BulletCountManager
     {
+        [Header("テストプレイで弾を調整したいならTrueにしてください")]
+        [Tooltip("テストプレイで弾を調整したいならTrueにしてください"), SerializeField]
+        private bool _isTestPlay = false;
+
+
         [Tooltip("標準弾の初期所持数"), SerializeField]
         private int _standardBulletCountInitialValue = 50;
         [Tooltip("貫通弾の初期所持数"), SerializeField]
@@ -41,9 +46,19 @@ namespace Player
         /// <summary> このクラスの初期化処理 </summary>
         public void Setup()
         {
-            _standardBulletCount.Value = _standardBulletCountInitialValue;
-            _penetrateBulletCount.Value = _penetrateBulletCountInitialValue;
-            _reflectBulletCount.Value = _reflectBulletCountInitialValue;
+
+            if (_isTestPlay)
+            {
+                _standardBulletCount.Value = _standardBulletCountInitialValue;
+                _penetrateBulletCount.Value = _penetrateBulletCountInitialValue;
+                _reflectBulletCount.Value = _reflectBulletCountInitialValue;
+            }      //TestPlayなら弾を調整した値にする
+            else
+            {
+                _standardBulletCount.Value = GameManager.Instance.BulletsCountManager.BulletCountStage[BulletType.StandardBullet].Value;
+                _penetrateBulletCount.Value = GameManager.Instance.BulletsCountManager.BulletCountStage[BulletType.PenetrateBullet].Value;
+                _reflectBulletCount.Value = GameManager.Instance.BulletsCountManager.BulletCountStage[BulletType.ReflectBullet].Value;
+            } //GameManagerの調整した値にする
 
             // 各ReactivePropertyをディクショナリに登録する。
             _bulletCounts.Add(BulletType.StandardBullet, _standardBulletCount);

@@ -15,6 +15,9 @@ namespace Player
     [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerController : MonoBehaviour, IPausable, IDamageable
     {
+        [Header("Test用。GameOverのUI")]
+        [Tooltip("Test用。GameOverのUI"), SerializeField] private GameObject _gameOverUI;
+
         [Header("プレイヤーのオブジェクト")]
         [Tooltip("プレイヤーのオブジェクト"), SerializeField]
         private GameObject _player;
@@ -58,7 +61,10 @@ namespace Player
 
         private Rigidbody2D _rigidbody2D = null;
 
+        /// <summary>死亡しているかどうかを示す</summary>
+        private bool _isDead = false;
 
+        public bool IsDead => _isDead;
         public GameObject Player => _player;
 
         public CinemachineVirtualCamera Camera => _camera;
@@ -103,16 +109,18 @@ namespace Player
         }
         private void Update()
         {
-            DeviceManager.Update();       // デバイス制御
-            DirectionControler.Update();  // 方向制御
+            if (!_isDead)
+            {
+                DeviceManager.Update();       // デバイス制御
+                DirectionControler.Update();  // 方向制御
 
-            _move.Update();               // 移動処理
-            _revolverOperator.Update();   // リボルバー操作の更新
-            _revolver.Update();           // リボルバーの更新処理
-            _revolver.OnDrawAimingLine(); // 照準描画処理（カメラの更新タイミングと合わせる必要有り）
-            _avoidance.Update();          // 回避制御
-            _proximity.Update();          //近接攻撃
-
+                _move.Update();               // 移動処理
+                _revolverOperator.Update();   // リボルバー操作の更新
+                _revolver.Update();           // リボルバーの更新処理
+                _revolver.OnDrawAimingLine(); // 照準描画処理（カメラの更新タイミングと合わせる必要有り）
+                _avoidance.Update();          // 回避制御
+                _proximity.Update();          //近接攻撃
+            }
         }
         private void OnDrawGizmosSelected()
         {
@@ -175,10 +183,34 @@ namespace Player
             _camraControl.Pause();
         }
 
+        /// <summary>ダメージを受けた時の処理</summary>
         public void Damage()
         {
+            //死体撃ちで、2回呼ばれないようにする
+            if (!_isDead)
+            {
+                //死亡した
+                _isDead = true;
 
+                //GameOverのUIを出す
+                _gameOverUI.SetActive(true);
+
+                //近接攻撃中に当たったら、近接攻撃を強制終了させる
+                _proximity.AttackEnd();
+
+                //死亡時のカメラの揺れ
+                _camraControl.DeadCameraShake();
+            }
         }
+
+        public void TestRetry()
+        {
+            _isDead = false;
+
+            //GameOverのUIを消す
+            _gameOverUI.SetActive(false);
+        }
+
         #endregion
     }
 }

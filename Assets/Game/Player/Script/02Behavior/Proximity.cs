@@ -121,7 +121,7 @@ namespace Player
         }
 
 
-        private void AttackEnd()
+        public void AttackEnd()
         {
 
             Debug.Log("近接攻撃終わり！");

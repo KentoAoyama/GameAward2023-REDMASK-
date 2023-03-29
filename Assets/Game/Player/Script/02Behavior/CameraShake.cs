@@ -11,6 +11,10 @@ namespace Player
 
     public class CameraShake
     {
+        [Header("死亡事にカメラの揺らすかどうか")]
+        [Tooltip("プレイヤーのオブジェクト"), SerializeField]
+        private bool _isDeadCameraChake = false;
+
         private PlayerController _playerController;
 
         private CinemachineImpulseSource _source;
@@ -30,6 +34,20 @@ namespace Player
         {
             _source.GenerateImpulse();
 
+        }
+
+        public void DeadCameraShake()
+        {
+            if(_isDeadCameraChake)
+            {
+                //カメラを揺らす
+                _source.GenerateImpulse();
+            }
+            else
+            {
+                //カメラの揺れを止める
+                impulseListener.enabled = false;
+            }
         }
 
         public async void Pause()
