@@ -9,7 +9,6 @@ public class GoToStageButton : MonoBehaviour
     [SerializeField]
     private StageTypeStageNamePair[] _stageTypeStageNamePair = default;
 
-
     private void Start()
     {
         GetComponent<Button>().onClick.AddListener(GoToStage);

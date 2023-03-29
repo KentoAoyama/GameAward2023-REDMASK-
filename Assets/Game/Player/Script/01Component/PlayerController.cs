@@ -13,7 +13,7 @@ using Cinemachine;
 namespace Player
 {
     [RequireComponent(typeof(Rigidbody2D))]
-    public class PlayerController : MonoBehaviour, IPausable
+    public class PlayerController : MonoBehaviour, IPausable, IDamageable
     {
         [Header("プレイヤーのオブジェクト")]
         [Tooltip("プレイヤーのオブジェクト"), SerializeField]
@@ -154,7 +154,12 @@ namespace Player
             InputManager.InputActionCollection.Disable();
             _revolver.IsPause = true;
 
+            //回避モーションの一時停止
             _avoidance.Pause();
+
+            //カメラの振動一時停止
+            _camraControl.Pause();
+
         }
 
         public void Resume()
@@ -162,7 +167,17 @@ namespace Player
             _move.Resume();
             InputManager.InputActionCollection.Enable();
             _revolver.IsPause = false;
+
+            //回避モーションの再開
             _avoidance.Resume();
+
+            //カメラの振動の再開
+            _camraControl.Pause();
+        }
+
+        public void Damage()
+        {
+
         }
         #endregion
     }

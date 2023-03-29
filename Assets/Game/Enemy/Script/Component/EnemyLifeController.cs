@@ -9,7 +9,7 @@ namespace Enemy
         [Tooltip("死亡時に生成するオブジェクト。この敵の死亡演出。"), SerializeField]
         private GameObject _deathEffect = default;
 
-        public virtual void Damage(float value)
+        public virtual void Damage()
         {
             if (_deathEffect != null)
             {

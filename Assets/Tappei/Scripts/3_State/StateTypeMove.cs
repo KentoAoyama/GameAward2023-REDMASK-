@@ -8,6 +8,7 @@ public class StateTypeMove : StateTypeBase
 
     protected override void Enter()
     {
+        Controller.PlayAnimation(AnimationName.Move);
         Controller.MoveToPlayer();
     }
 

@@ -266,7 +266,7 @@ namespace Player
         private void EndThereAvoidance()
         {
             //テスト用で、回避を分かりやすくするために使用
-            _spriteRenderer.color = Color.black;
+            _spriteRenderer.color = Color.white;
 
             Debug.Log("その場回避終了！");
             _playerController.LifeController.IsGodMode = false;

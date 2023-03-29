@@ -71,8 +71,11 @@ public class EnemyParamsSO : ScriptableObject
         }
     }
 
-    // 以下2つは時間経過でステートを遷移する際に使用する値
-    // 要望があった際にはこれもインスペクターで割り当てられるように変更可能
-    public float MinDelayToTransition => 1.0f;
-    public float MaxDelayToTransition => 2.0f;
+    // ここから下はプランナーに弄らせない値
+    // ただし、要望があった際にはインスペクターで割り当てられるように変更可能
+    public float MinTransitionTimeElapsed => 1.0f;
+    public float MaxTransitionTimeElapsed => 2.0f;
+    public float DiscoverStateTransitionDelay => 1.0f;
+
+    public int GetAnimationHash(AnimationName name) => Animator.StringToHash(name.ToString());
 }

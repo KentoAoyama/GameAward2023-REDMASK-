@@ -1,9 +1,9 @@
-using System;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
+/// 近接、遠距離、ドローン用
 /// 各振る舞いのクラスのメソッドを組み合わせて行動を制御するクラス
 /// </summary>
 [RequireComponent(typeof(SightSensor))]
@@ -12,18 +12,20 @@ using UnityEngine.UI;
 [RequireComponent(typeof(PerformanceBehavior))]
 public class EnemyController : MonoBehaviour, IPausable, IDamageable
 {
+    [Header("シーン上に配置されているプレイヤーのタグ")]
+    [SerializeField, TagName] private string _playerTagName;
     [Header("敵の各種パラメーターを設定したSO")]
     [Tooltip("各振る舞いのクラスはこのSO内の値を参照して機能する")]
-    [SerializeField] private EnemyParamsSO _enemyParamsSO;
-    [Header("シーン上に配置されているプレイヤー")]
-    [SerializeField] private Transform _player;
+    [SerializeField] private EnemyParamsSO _enemyParamsSO; 
     [Header("デバッグ用:現在の状態を表示するText")]
     [SerializeField] private Text _text;
-
+    
+    private Transform _player;
     private SightSensor _sightSensor;
     private MoveBehavior _moveBehavior;
     private AttackBehavior _attackBehavior;
     private PerformanceBehavior _performanceBehavior;
+    private Animator _animator;
     private ReactiveProperty<StateTypeBase> _currentState = new();
     private StateRegister _stateRegister = new();
 
@@ -32,20 +34,27 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     /// <summary>撃破された際にtrueになるフラグ</summary>
     public bool IsDefeated { get; private set; }
 
-    private void Awake()
+    protected virtual void Awake()
     {
         _sightSensor = gameObject.GetComponent<SightSensor>();
         _moveBehavior = gameObject.GetComponent<MoveBehavior>();
         _attackBehavior = gameObject.GetComponent<AttackBehavior>();
         _performanceBehavior = gameObject.GetComponent<PerformanceBehavior>();
+        _animator = gameObject.GetComponentInChildren<Animator>();
         InitStateRegister();
         InitCurrentState();
+    }
+
+    private void Start()
+    {
+        _player = GameObject.FindGameObjectWithTag(_playerTagName).transform;
     }
 
     private void Update()
     {
         _currentState.Value = _currentState.Value.Execute();
 
+        // デバッグ用
         if (_text != null)
         {
             _text.text = _currentState.Value.ToString();
@@ -124,6 +133,9 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         }
     }
 
+    /// <summary>各ステートが再生するアニメーションを呼び出す</summary>
+    public void PlayAnimation(AnimationName name) => _animator.Play(Params.GetAnimationHash(name));
+
     public void DefeatedPerformance() => _performanceBehavior.Defeated();
     public void DiscoverPerformance() => _performanceBehavior.Discover();
 
@@ -143,7 +155,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     }
 
     /// <summary>撃破された際は非表示にして画面外に移動させる</summary>
-    public void Damage(float value)
+    public void Damage()
     {
         IsDefeated = true;
         _performanceBehavior.Defeated();

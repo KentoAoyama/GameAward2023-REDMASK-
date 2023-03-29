@@ -26,6 +26,8 @@ namespace Player
         [Tooltip("ガイドライン用レイヤーマスク"), SerializeField]
         private LayerMask _guidelineLayerMask = default;
 
+
+
         private PlayerController _playerController = null;
         /// <summary> シリンダーを表現する値 </summary>
         private IStoreableInChamber[] _cylinder = new IStoreableInChamber[6];
@@ -174,6 +176,7 @@ namespace Player
 
                 //弾を撃った場合に、カメラを揺らす
                 _playerController.CameraControl.RevolverShootShake();
+
 
                 _cylinder[_currentChamber] = _shellCase; // 殻薬莢を残す
                 OnChamberStateChanged?.Invoke(_currentChamber, BulletType.ShellCase);

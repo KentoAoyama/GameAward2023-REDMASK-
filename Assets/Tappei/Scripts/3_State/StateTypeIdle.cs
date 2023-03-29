@@ -14,10 +14,11 @@ public class StateTypeIdle : StateTypeBase
 
     protected override void Enter()
     {
-        // ƒ‰ƒ“ƒ_ƒ€‚ÈŠÔ‚Å‘JˆÚ‚·‚é‚æ‚¤‚Éİ’è‚·‚é
-        float min = Controller.Params.MinDelayToTransition;
-        float max = Controller.Params.MaxDelayToTransition;
+        Controller.PlayAnimation(AnimationName.Idle);
 
+        // ƒ‰ƒ“ƒ_ƒ€‚ÈŠÔ‚Å‘JˆÚ‚·‚é‚æ‚¤‚Éİ’è‚·‚é
+        float min = Controller.Params.MinTransitionTimeElapsed;
+        float max = Controller.Params.MaxTransitionTimeElapsed;
         _delay = Random.Range(min, max);
     }
 
