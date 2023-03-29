@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Enemy
@@ -15,7 +13,6 @@ namespace Enemy
             {
                 Instantiate(_deathEffect, transform.position, Quaternion.identity);
             }
-            
             Destroy(this.gameObject);
         }
     }
