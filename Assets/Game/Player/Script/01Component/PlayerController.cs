@@ -15,6 +15,10 @@ namespace Player
     [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerController : MonoBehaviour, IPausable, IDamageable
     {
+
+        [SerializeField]
+        public GameObject _camerad;
+
         [Header("Test用。GameOverのUI")]
         [Tooltip("Test用。GameOverのUI"), SerializeField] private GameObject _gameOverUI;
 
@@ -29,6 +33,9 @@ namespace Player
         [Header("プレイヤーについているシネマシーン")]
         [Tooltip("プレイヤーのアニメーター"), SerializeField]
         private CinemachineVirtualCamera _camera;
+
+
+
 
         [Tooltip("プレイヤーのUIを管理するクラス"), SerializeField]
         private UIController _uIController;
@@ -105,7 +112,7 @@ namespace Player
             _playerAnimatorControl.Init(this);
             _proximity.Init(this);
             _proximityHitChecker.Init(transform);
-            _camraControl.Init(this);
+            _camraControl.Init(this);   
         }
         private void Update()
         {
@@ -120,6 +127,8 @@ namespace Player
                 _revolver.OnDrawAimingLine(); // 照準描画処理（カメラの更新タイミングと合わせる必要有り）
                 _avoidance.Update();          // 回避制御
                 _proximity.Update();          //近接攻撃
+
+                //_camraControl.CameraShakeSpeed(); //カメラの再生速度
             }
         }
         private void OnDrawGizmosSelected()
