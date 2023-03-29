@@ -1,17 +1,15 @@
-Shader "Custom/Monochrome"
+Shader "Hidden/MotionBlur"
 {
     Properties
     {
-        [PerRendererData]_MainTex ("Texture", 2D) = "white" {}
-        [HDR] _MonoColor("MonoColor", Color) = (1, 1, 1, 1)
+        _MainTex ("Texture", 2D) = "white" {}
+        _Alpha ("Alpha", Range(0.0, 1.0)) = 0.5
     }
     SubShader
     {
-        Tags {"Queue" = "Transparent" "RenderType" = "Transparent" "RenderPipeline" = "UniversalPipeline" }
-
-        Blend SrcAlpha OneMinusSrcAlpha, One OneMinusSrcAlpha
         Cull Off
         ZWrite Off
+        ZTest Off
 
         Pass
         {
@@ -24,42 +22,32 @@ Shader "Custom/Monochrome"
             struct appdata
             {
                 float4 vertex : POSITION;
-                float4 color : COLOR;
                 float2 uv : TEXCOORD0;
             };
 
             struct v2f
             {
                 float2 uv : TEXCOORD0;
-                float4 color : COLOR;
                 float4 vertex : SV_POSITION;
             };
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
-            float _MonoBlend;
-            float4 _MonoColor;
+            float _Alpha;
 
             v2f vert (appdata v)
             {
                 v2f o;
                 o.vertex = TransformObjectToHClip(v.vertex.xyz);
-                o.color = v.color;
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 return o;
             }
 
-            float3 Monochrome(float3 color)
-            {
-                return (color.r * 0.299 + color.g * 0.587 + color.b * 0.114) * _MonoColor;
-            }
-
             float4 frag (v2f i) : SV_Target
             {
-                float4 col = tex2D(_MainTex, i.uv) * i.color;
-                float3 MonoCol = Monochrome(col.rgb);
+                // sample the texture
+                float4 col = float4(tex2D(_MainTex, i.uv).rgb, _Alpha);
 
-                col.rgb = lerp(col.rgb, MonoCol, _MonoBlend);
                 return col;
             }
             ENDHLSL
