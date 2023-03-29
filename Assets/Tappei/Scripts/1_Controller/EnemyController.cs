@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
+/// 近接、遠距離、ドローン用
 /// 各振る舞いのクラスのメソッドを組み合わせて行動を制御するクラス
 /// </summary>
 [RequireComponent(typeof(SightSensor))]
@@ -33,7 +34,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     /// <summary>撃破された際にtrueになるフラグ</summary>
     public bool IsDefeated { get; private set; }
 
-    private void Awake()
+    protected virtual void Awake()
     {
         _sightSensor = gameObject.GetComponent<SightSensor>();
         _moveBehavior = gameObject.GetComponent<MoveBehavior>();
