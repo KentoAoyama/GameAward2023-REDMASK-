@@ -24,9 +24,9 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     private MoveBehavior _moveBehavior;
     private AttackBehavior _attackBehavior;
     private PerformanceBehavior _performanceBehavior;
+    private Animator _animator;
     private ReactiveProperty<StateTypeBase> _currentState = new();
     private StateRegister _stateRegister = new();
-    private Animator _animator;
 
     public EnemyParamsSO Params => _enemyParamsSO;
 
@@ -53,6 +53,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     {
         _currentState.Value = _currentState.Value.Execute();
 
+        // デバッグ用
         if (_text != null)
         {
             _text.text = _currentState.Value.ToString();
