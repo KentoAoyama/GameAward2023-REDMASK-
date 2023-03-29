@@ -31,7 +31,10 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
 
     public EnemyParamsSO Params => _enemyParamsSO;
 
-    /// <summary>撃破された際にtrueになるフラグ</summary>
+    /// <summary>
+    /// 撃破された際にtrueになるフラグ
+    /// このフラグが立ったらDefeated状態に遷移する
+    /// </summary>
     public bool IsDefeated { get; private set; }
 
     protected virtual void Awake()
@@ -61,7 +64,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         }
     }
 
-    private void InitStateRegister()
+    protected virtual void InitStateRegister()
     {
         _stateRegister.Register(StateType.Idle, this);
         _stateRegister.Register(StateType.Search, this);
