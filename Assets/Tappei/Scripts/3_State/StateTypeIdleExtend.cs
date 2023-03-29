@@ -1,18 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class StateTypeIdleExtend : MonoBehaviour
+/// <summary>
+/// 盾持ち用
+/// 立ち止まっている状態のクラス
+/// 時間経過でSearch状態に遷移する
+/// </summary>
+public class StateTypeIdleExtend : StateTypeIdle
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public StateTypeIdleExtend(EnemyController controller, StateType stateType)
+    : base(controller, stateType) { }
 
-    // Update is called once per frame
-    void Update()
+    protected override void Enter()
     {
-        
+
     }
 }

@@ -27,7 +27,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     private PerformanceBehavior _performanceBehavior;
     private Animator _animator;
     private ReactiveProperty<StateTypeBase> _currentState = new();
-    private StateRegister _stateRegister = new();
+    protected StateRegister _stateRegister = new();
 
     public EnemyParamsSO Params => _enemyParamsSO;
 

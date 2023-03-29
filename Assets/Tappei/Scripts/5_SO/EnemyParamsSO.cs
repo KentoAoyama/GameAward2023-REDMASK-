@@ -6,7 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "EnemyParams_")]
 public class EnemyParamsSO : ScriptableObject
 {
-    enum State
+    protected enum State
     {
         Idle,
         Search,
@@ -39,9 +39,9 @@ public class EnemyParamsSO : ScriptableObject
     [SerializeField] private float _attackRate = 2.0f;
 
     [Header("EntryŽž‚Ìó‘Ô")]
-    [SerializeField] private State _entryState;
+    [SerializeField] protected State _entryState;
     [Header("ƒvƒŒƒCƒ„[–¢”­Œ©Žž‚Íí‚ÉSearchó‘Ô‚É‚·‚é")]
-    [SerializeField] private bool _isAlwaysSearching;
+    [SerializeField] protected bool _isAlwaysSearching;
 
     public float WalkSpeed => _walkSpeed;
     public float RunSpeed => _runSpeed;
@@ -53,7 +53,7 @@ public class EnemyParamsSO : ScriptableObject
     public float AttackRange => _attackRange;
     public float AttackRate => _attackRate;
     public bool IsAlwaysSearching => _isAlwaysSearching;
-    public StateType EntryState
+    public virtual StateType EntryState
     {
         get
         {

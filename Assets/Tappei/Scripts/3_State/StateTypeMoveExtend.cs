@@ -1,9 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class StateTypeMoveExtend : MonoBehaviour
+/// <summary>
+/// 盾持ち用
+/// プレイヤーに向けて移動する状態のクラス
+/// </summary>
+public class StateTypeMoveExtend : StateTypeMove
 {
+    public StateTypeMoveExtend(EnemyController controller, StateType stateType)
+    : base(controller, stateType) { }
+
     // Start is called before the first frame update
     void Start()
     {
