@@ -85,6 +85,13 @@ public class PauseManager
     public void ExecuteResume(UnityEvent onResume = null)
     {
         // ポーズ回数カウンターを減算する。（カウンターは0より小さくならない）
+        if (PauseCounter == 1)
+        {
+            Debug.Log("リジュームします。");
+            _unityEventResume?.Invoke();
+            OnResume?.Invoke();
+            onResume?.Invoke();
+        }
         if (PauseCounter >= 1)
         {
             PauseCounter--;
@@ -93,19 +100,6 @@ public class PauseManager
         {
             //Debug.LogWarning("リジューム命令が過剰に発行されました！\n" +
             //    "確認してください！");
-        }
-
-        // リジューム中でなければ登録されているリジューム処理を実行する。
-        if (PauseCounter == 0)
-        {
-            Debug.Log("リジュームします。");
-            _unityEventResume?.Invoke();
-            OnResume?.Invoke();
-            onResume?.Invoke();
-        }
-        else
-        {
-            //Debug.Log("既にリジューム中です。リジューム命令が重複して発行されました。");
         }
     }
 }
