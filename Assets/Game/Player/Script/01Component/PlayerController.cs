@@ -112,7 +112,7 @@ namespace Player
             _playerAnimatorControl.Init(this);
             _proximity.Init(this);
             _proximityHitChecker.Init(transform);
-            _camraControl.Init(this);   
+            _camraControl.Init(this);
         }
         private void Update()
         {
@@ -138,17 +138,46 @@ namespace Player
         }
 
         #region Test
+
+
+        [Header("Test用に、Sceneで設定したものを使うならTrueにしてね")]
+        [SerializeField]
+        private bool _isTestRevoler = true;
+
         [Header("リボルバーテスト用")]
         [SerializeField]
         private BulletBase _basicBullet = default;
+
         /// <summary>
         /// 全てのチェンバーに弾を装填する
         /// </summary>
-        private void TestRevolverLoading()
+        private async void TestRevolverLoading()
         {
-            for (int i = 0; i < _revolver.Cylinder.Length; i++)
+            if (_isTestRevoler)
             {
-                _revolver.LoadBullet(_basicBullet, i);
+                for (int i = 0; i < _revolver.Cylinder.Length; i++)
+                {
+                    _revolver.LoadBullet(_basicBullet, i);
+                }
+            }   //Test用に、Sceneで設定したものを使う
+            else
+            {
+                for (int i = 0; i < _revolver.Cylinder.Length; i++)
+                {
+                    await UniTask.WaitUntil(()=> BulletDataBase.IsInit);
+                    BulletDataBase.Bullets.TryGetValue(GameManager.Instance.BulletsCountManager.Cylinder[i], out BulletBase bullet);
+                    _revolver.LoadBullet(bullet, i);
+                }
+            }　//アジトで設定したものを使う
+        }
+        private IStoreableInChamber BulletTypeTofIStoreableInChamber(BulletType bulletType)
+        {
+            switch (bulletType)
+            {
+                case BulletType.StandardBullet: return _bulletDataBase.Bullets[bulletType];
+                case BulletType.PenetrateBullet: return _bulletDataBase.Bullets[bulletType];
+                case BulletType.ReflectBullet: return _bulletDataBase.Bullets[bulletType];
+                default: return default;
             }
         }
 

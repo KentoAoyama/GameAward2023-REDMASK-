@@ -93,7 +93,14 @@ namespace Player
                 }
                 else
                 {
-                    OnChamberStateChanged?.Invoke(chamberNumber, bullet.Type);
+                    if (bullet == null)
+                    {
+                        OnChamberStateChanged?.Invoke(chamberNumber, BulletType.Empty);
+                    }
+                    else
+                    {
+                        OnChamberStateChanged?.Invoke(chamberNumber, bullet.Type);
+                    }
                     _cylinder[chamberNumber] = bullet;
                     return true;
                 }

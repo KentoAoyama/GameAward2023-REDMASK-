@@ -25,7 +25,9 @@ public class BulletsCountManager : ISavable
     /// <summary>
     /// シリンダーの状態を表現する値
     /// </summary>
-    private BulletType[] _cylinder = null;
+    private BulletType[] _cylinder = new BulletType[] {
+        BulletType.NotSet, BulletType.NotSet, BulletType.NotSet,
+        BulletType.NotSet, BulletType.NotSet, BulletType.NotSet};
 
     public Dictionary<BulletType, IntReactiveProperty> BulletCountHome => _bulletCountHome;
     public Dictionary<BulletType, IntReactiveProperty> BulletCountStage => _bulletCountStage;
