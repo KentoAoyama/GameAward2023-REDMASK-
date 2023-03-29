@@ -1,18 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class StateTypeAttackExtend : MonoBehaviour
+/// <summary>
+/// ‚‚¿—p
+/// ˆê’èŠÔŠu‚ÅUŒ‚‚ğ‚·‚éó‘Ô‚ÌƒNƒ‰ƒX
+/// </summary>
+public class StateTypeAttackExtend : StateTypeAttack
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public StateTypeAttackExtend(EnemyController controller, StateType stateType)
+    : base(controller, stateType) { }
 }
