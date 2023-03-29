@@ -89,6 +89,7 @@ namespace Player
 
         public bool IsPause { get; private set; } = false;
 
+
         public async void Pause()
         {
             await UniTask.WaitUntil(() => _playerController != null);
@@ -285,7 +286,7 @@ namespace Player
 
             Debug.Log("時を遅くする");
             // 時間の速度をゆっくりにする。
-            GameManager.Instance.TimeController.ChangeTimeSpeed(_timeScale);
+            GameManager.Instance.TimeController.ChangeTimeSpeed(true);
             _isSlowTimeNow = true;
         }
 
@@ -296,7 +297,7 @@ namespace Player
 
             Debug.Log("時を戻す");
             // 時間の速度をもとの状態に戻す。
-            GameManager.Instance.TimeController.ChangeTimeSpeed(1f);
+            GameManager.Instance.TimeController.ChangeTimeSpeed(false);
             _isSlowTimeNow = false;
         }
     }

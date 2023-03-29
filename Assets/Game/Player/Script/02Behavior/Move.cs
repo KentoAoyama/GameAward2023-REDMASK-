@@ -98,6 +98,7 @@ namespace Player
                 return;
             }
 
+            var gameTime = GameManager.Instance.TimeController.PlayerTime;
 
             // 移動入力があるときの処理
             if (_playerController.InputManager.IsExist[InputType.MoveHorizontal] && CanMove)
@@ -128,12 +129,12 @@ namespace Player
                             _currentHorizontalMoveMode = HorizontalMoveMode.Start;
                             break;
                         case HorizontalMoveMode.Start:
-                            _currentHorizontalSpeed = _startSpeed * _moveHorizontalDir;
+                            _currentHorizontalSpeed = _startSpeed * _moveHorizontalDir * gameTime;
                             _toMoveTimer += Time.deltaTime;
                             if (_toMoveTimer > _toMoveTime) _currentHorizontalMoveMode = HorizontalMoveMode.Move;
                             break;
                         case HorizontalMoveMode.Move:
-                            _currentHorizontalSpeed = _moveSpeed * _moveHorizontalDir;
+                            _currentHorizontalSpeed = _moveSpeed * _moveHorizontalDir * gameTime;
                             break;
                         case HorizontalMoveMode.Deceleration:
                             _toMoveTimer = 0f;
@@ -146,7 +147,7 @@ namespace Player
                 {
                     _currentHorizontalMoveMode = HorizontalMoveMode.Move;
 
-                    _currentHorizontalSpeed += Time.deltaTime * _midairMoveAcceleration * _moveHorizontalDir;
+                    _currentHorizontalSpeed += Time.deltaTime * _midairMoveAcceleration * _moveHorizontalDir * gameTime;
                     if (_currentHorizontalSpeed > _maxMidairMoveSpeed) _currentHorizontalSpeed = _maxMidairMoveSpeed; // 最大速度を超えない
                 }
             }
@@ -155,11 +156,11 @@ namespace Player
             {
                 if (_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX))
                 {
-                    _currentHorizontalSpeed -= Time.deltaTime * _landDeceleration * _moveHorizontalDir;
+                    _currentHorizontalSpeed -= Time.deltaTime * _landDeceleration * _moveHorizontalDir * gameTime;
                 } // 地上移動中の減速処理
                 else
                 {
-                    _currentHorizontalSpeed -= Time.deltaTime * _midairDeceleration * _moveHorizontalDir;
+                    _currentHorizontalSpeed -= Time.deltaTime * _midairDeceleration * _moveHorizontalDir * gameTime;
                 } // 空中移動中の減速処理
 
                 if (_moveHorizontalDir > 0f && _currentHorizontalSpeed < 0f ||
@@ -213,7 +214,7 @@ namespace Player
 
             if (_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX))
             {
-                _currentHorizontalSpeed -= Time.deltaTime * _landDeceleration * _playerController.Player.transform.localScale.x;
+                _currentHorizontalSpeed -= Time.deltaTime * _landDeceleration * _playerController.Player.transform.localScale.x * GameManager.Instance.TimeController.PlayerTime;
             } // 地上移動中の減速処理
 
             if (_playerController.Player.transform.localScale.x > 0f && _currentHorizontalSpeed < 0f ||

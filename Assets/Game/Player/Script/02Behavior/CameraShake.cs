@@ -20,8 +20,6 @@ namespace Player
         private CinemachineImpulseSource _source;
         CinemachineImpulseListener impulseListener;
 
-        Vector3 saveVelo;
-
         public void Init(PlayerController playerController)
         {
             _playerController = playerController;
@@ -29,16 +27,20 @@ namespace Player
             impulseListener = _playerController.Camera.GetComponent<CinemachineImpulseListener>();
         }
 
+        public void SlowCamera()
+        {
+
+        }
+
 
         public void RevolverShootShake()
         {
             _source.GenerateImpulse();
-
         }
 
         public void DeadCameraShake()
         {
-            if(_isDeadCameraChake)
+            if (_isDeadCameraChake)
             {
                 //ÉJÉÅÉâÇóhÇÁÇ∑
                 _source.GenerateImpulse();
