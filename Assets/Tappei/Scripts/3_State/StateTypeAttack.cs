@@ -25,7 +25,7 @@ public class StateTypeAttack : StateTypeBase
     {
         // TODO:ƒvƒŒƒCƒ„[‚Æ‚Íí‚Éˆê’è‹——£‚É‚¢‚Ä‚Ù‚µ‚¢
 
-        float timeScale = GameManager.Instance.TimeController.CurrentTimeScale.Value;
+        float timeScale = GameManager.Instance.TimeController.EnemyTime;
         _time += timeScale;
         if (_time > _interval)
         {

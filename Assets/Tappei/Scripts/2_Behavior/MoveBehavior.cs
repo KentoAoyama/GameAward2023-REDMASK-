@@ -159,7 +159,7 @@ public class MoveBehavior : MonoBehaviour
     private void SetVelocityToTarget(Vector3 targetPos, float moveSpeed)
     {
         Vector3 velo = targetPos - transform.position;
-        float TimeScale = GameManager.Instance.TimeController.CurrentTimeScale.Value;
+        float TimeScale = GameManager.Instance.TimeController.EnemyTime;
 
         if (velo.sqrMagnitude < moveSpeed / ArrivalTolerance)
         {
