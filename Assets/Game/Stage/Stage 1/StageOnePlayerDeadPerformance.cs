@@ -5,6 +5,6 @@ public class StageOnePlayerDeadPerformance : PlayerDeadEventBase
 {
     protected override UniTask PlayerDeadPerformance()
     {
-        throw new System.NotImplementedException();
+        return default;
     }
 }

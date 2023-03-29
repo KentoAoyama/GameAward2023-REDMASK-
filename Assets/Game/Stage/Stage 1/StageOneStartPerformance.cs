@@ -5,6 +5,6 @@ public class StageOneStartPerformance : StageStartEventBase
 {
     protected override UniTask StartPerformance()
     {
-        throw new System.NotImplementedException();
+        return default;
     }
 }
