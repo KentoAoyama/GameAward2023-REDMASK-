@@ -108,11 +108,13 @@ namespace Player
                 // 方向を表す値を更新する。（右に相当する値なら1, 左に相当する値なら-1。）
                 _moveHorizontalDir = _playerController.InputManager.GetValue<float>(InputType.MoveHorizontal) > 0f ? 1f : -1f;
 
+
+                    _playerController.PlayerAnimatorControl.SetPlayerDir(_moveHorizontalDir);
                 // 入力方向が切り替わった時の処理
                 if (Mathf.Abs(_previousDir - _moveHorizontalDir) > 0.1f)
                 {
                     //プレイヤーの向きを設定
-                    _playerController.PlayerAnimatorControl.SetPlayerDir(_moveHorizontalDir);
+
 
                     _toMoveTimer = 0f;
                     _currentHorizontalMoveMode = HorizontalMoveMode.Start;
