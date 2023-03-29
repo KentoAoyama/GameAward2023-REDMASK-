@@ -54,13 +54,13 @@ namespace Bullet
             // Rigidbody2Dを取得
             _rigidbody2D = GetComponent<Rigidbody2D>();
             // 指定した方向、速度で弾を移動させる。
-            _rigidbody2D.velocity = _shootAngle.normalized * _shootSpeed * GameManager.Instance.TimeController.CurrentTimeScale.Value;
+            _rigidbody2D.velocity = _shootAngle.normalized * _shootSpeed * GameManager.Instance.TimeController.BulletTime;
         }
 
         private void Update()
         {
             // 移動ベクトル       =  方向ベクトル                    *  速度       *  時間の大きさ
-            _rigidbody2D.velocity = _rigidbody2D.velocity.normalized * _shootSpeed * GameManager.Instance.TimeController.CurrentTimeScale.Value;
+            _rigidbody2D.velocity = _rigidbody2D.velocity.normalized * _shootSpeed * GameManager.Instance.TimeController.BulletTime;
         }
         private void OnBecameInvisible()
         {

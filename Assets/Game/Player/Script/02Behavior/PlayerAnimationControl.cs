@@ -13,6 +13,15 @@ namespace Player
         [Tooltip("絵が右向きならTrueに"), SerializeField]
         private bool _isRightDirOnPictuer = true;
 
+        [Header("Animatorのパラメータ名")]
+
+        [Header("走り_float")]
+        private string _xVelocityParameta = "";
+
+
+        [Header("設置判定_bool")]
+        private bool _isGroundParameta = false;
+
         [Header("死亡アニメーション。Animatorの名前")]
         [Tooltip("絵が右向きならTrueに"), SerializeField]
         private string _deadAnimName = "死亡アニメーション。Animatorの名前";
@@ -75,7 +84,7 @@ namespace Player
             //プレイヤーのイラストの向きによって、左右反転の仕方を変える
             if (_isRightDirOnPictuer)
             {
-                _playerController.Player.transform.localScale= new Vector3(_moveHorizontalDir, 1, 1);
+                _playerController.Player.transform.localScale = new Vector3(_moveHorizontalDir, 1, 1);
             }
             else
             {
