@@ -32,6 +32,12 @@ public class ShieldEnemyController : EnemyController
 
     protected override void InitStateRegister()
     {
-        // “o˜^ˆ—
+        _stateRegister.Register(StateType.IdleExtend, this);
+        _stateRegister.Register(StateType.SearchExtend, this);
+        _stateRegister.Register(StateType.DiscoverExtend, this);
+        _stateRegister.Register(StateType.MoveExtend, this);
+        _stateRegister.Register(StateType.AttackExtend, this);
+        _stateRegister.Register(StateType.Defeated, this);
+        _stateRegister.Register(StateType.Reflection, this);
     }
 }
