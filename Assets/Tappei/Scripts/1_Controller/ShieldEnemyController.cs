@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UniRx;
 using UniRx.Triggers;
+using UnityEngine;
 
 /// <summary>
 /// 盾持ち用
@@ -21,10 +19,6 @@ public class ShieldEnemyController : EnemyController
 
     private void InitSubscribeShield()
     {
-        int PlayerBulletLayer = LayerMask.NameToLayer("PlayerBullet");
-
-        _shield.OnTriggerEnter2DAsObservable()
-            .Where(c => c.gameObject.layer == PlayerBulletLayer)
-            .Subscribe(c => Debug.Log("ヒット"));
+        _shield.OnDisableAsObservable().Subscribe(_ => Debug.Log("ヒット"));
     }
 }
