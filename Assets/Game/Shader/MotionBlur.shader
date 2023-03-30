@@ -7,6 +7,8 @@ Shader "Hidden/MotionBlur"
     }
     SubShader
     {
+        Tags {"Queue" = "Transparent" "RenderType" = "Transparent" "RenderPipeline" = "UniversalPipeline" }
+
         Cull Off
         ZWrite Off
         ZTest Off
