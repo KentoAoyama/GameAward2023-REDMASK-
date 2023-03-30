@@ -137,6 +137,13 @@ namespace Player
             _proximityHitChecker.OnDrawGizmos(transform, DirectionControler.MovementDirectionX);
         }
 
+
+        /// <summary>ゲームクリア時に呼ぶ、ホームに弾を追加</summary>
+        public void Clear()
+        {
+            _bulletCountManager.HomeBulletAddEndStage();
+        }
+
         #region Test
 
 
