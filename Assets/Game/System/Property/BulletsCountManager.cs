@@ -50,4 +50,16 @@ public class BulletsCountManager : ISavable
         _bulletCountStage = temp._bulletCountStage;
         _cylinder = temp._cylinder;
     }
+    public void Clear()
+    {
+        // ステージの弾の数を初期値に戻す
+        _bulletCountStage[BulletType.StandardBullet].Value = 0;
+        _bulletCountStage[BulletType.PenetrateBullet].Value = 0;
+        _bulletCountStage[BulletType.ReflectBullet].Value = 0;
+        // シリンダーの状態を初期値に戻す
+        for (int i = 0; i < _cylinder.Length; i++)
+        {
+            _cylinder[i] = BulletType.NotSet;
+        }
+    }
 }
