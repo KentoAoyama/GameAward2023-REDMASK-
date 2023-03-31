@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2142653098245390536}
   - component: {fileID: 2142653098245390539}
   - component: {fileID: 3984178706759122551}
-  - component: {fileID: 5050003952683016063}
   m_Layer: 0
   m_Name: Penetrate Bullet 2
   m_TagString: Untagged
@@ -99,23 +98,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHitCount: 0
-  _moveSpeed: 1000
+  _moveSpeed: 10
   _bulletType: 1
-  _guidelineLength: 10
+  _guidelineLength: 15
   _cylinderUISprite: {fileID: 21300000, guid: ed1169d6c2ee13b4eab47a7c367d0713, type: 3}
   _targetLayer:
     serializedVersion: 2
-    m_Bits: 2112
+    m_Bits: 2113
   _maxWallHitNumber: 1
---- !u!114 &5050003952683016063
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2142653098245390538}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4afdcb1cbadf954ba8b1cf465429e17, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
