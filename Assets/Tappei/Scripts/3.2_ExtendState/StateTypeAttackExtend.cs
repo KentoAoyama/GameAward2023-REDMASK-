@@ -1,29 +1,27 @@
 /// <summary>
+/// 盾持ち用
 /// 一定間隔で攻撃をする状態のクラス
 /// </summary>
-public class StateTypeAttack : StateTypeBase
+public class StateTypeAttackExtend : StateTypeAttack
 {
-    public StateTypeAttack(EnemyController controller, StateType stateType)
-        : base(controller, stateType) { }
+    private ShieldEnemyController _shieldController;
 
-    private float _interval;
-    /// <summary>
-    /// 遷移を繰り返すことでの連射対策として
-    /// この値は状態の遷移をしても初期化されない
-    /// </summary>
-    private float _time;
-
-    protected override void Enter()
+    public StateTypeAttackExtend(EnemyController controller, StateType stateType)
+    : base(controller, stateType) 
     {
-        Controller.PlayAnimation(AnimationName.Attack);
-
-        _interval = Controller.Params.AttackRate;
-        //Controller.MoveToPlayer();
+        _shieldController = controller as ShieldEnemyController;
     }
 
     protected override void Stay()
     {
         // TODO:プレイヤーとは常に一定距離にいてほしい
+        
+        if (_shieldController.IsReflect)
+        {
+            _shieldController.LastStateType = StateType.AttackExtend;
+            TryChangeState(StateType.Reflection);
+            return;
+        }
 
         float timeScale = GameManager.Instance.TimeController.EnemyTime;
         _time += timeScale;
@@ -36,12 +34,12 @@ public class StateTypeAttack : StateTypeBase
         SightResult result = Controller.IsFindPlayer();
         if (result == SightResult.OutSight)
         {
-            TryChangeState(StateType.Search);
+            TryChangeState(StateType.SearchExtend);
             return;
         }
         else if (result == SightResult.InSight)
         {
-            TryChangeState(StateType.Move);
+            TryChangeState(StateType.MoveExtend);
             return;
         }
     }
