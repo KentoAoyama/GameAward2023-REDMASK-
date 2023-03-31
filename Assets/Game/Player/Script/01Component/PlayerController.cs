@@ -146,7 +146,7 @@ namespace Player
 
         [Header("リボルバーテスト用")]
         [SerializeField]
-        private BulletBase _basicBullet = default;
+        private Bullet2 _basicBullet = default;
 
         /// <summary>
         /// 全てのチェンバーに弾を装填する
@@ -165,7 +165,7 @@ namespace Player
                 for (int i = 0; i < _revolver.Cylinder.Length; i++)
                 {
                     await UniTask.WaitUntil(()=> BulletDataBase.IsInit);
-                    BulletDataBase.Bullets.TryGetValue(GameManager.Instance.BulletsCountManager.Cylinder[i], out BulletBase bullet);
+                    BulletDataBase.Bullets.TryGetValue(GameManager.Instance.BulletsCountManager.Cylinder[i], out Bullet2 bullet);
                     _revolver.LoadBullet(bullet, i);
                 }
             }　//アジトで設定したものを使う
