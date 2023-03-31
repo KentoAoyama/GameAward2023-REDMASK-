@@ -144,9 +144,12 @@ public class MoveBehavior : MonoBehaviour
     {
         _cts.Token.ThrowIfCancellationRequested();
 
-        while (true)
+        TurnToMoveDirection(target.position);
+        while (IsExistFloor())
         {
             SetVelocityToTarget(target.position, moveSpeed);
+            TurnToMoveDirection(target.position);
+
             await UniTask.Yield(PlayerLoopTiming.FixedUpdate, _cts.Token);
         }
     }
@@ -157,7 +160,7 @@ public class MoveBehavior : MonoBehaviour
     /// </summary>
     private void SetVelocityToTarget(Vector3 targetPos, float moveSpeed)
     {
-        Vector3 velo = targetPos - transform.position;
+        Vector3 velo = targetPos - _transform.position;
         float TimeScale = GameManager.Instance.TimeController.EnemyTime;
 
         if (velo.sqrMagnitude < moveSpeed / ArrivalTolerance)
@@ -169,15 +172,13 @@ public class MoveBehavior : MonoBehaviour
             velo = Vector3.Normalize(velo) * moveSpeed;
         }
 
-        TurnToMoveDirection(targetPos);
-
         velo.y = _rigidbody.velocity.y;
         _rigidbody.velocity = velo * TimeScale;
     }
 
     private void TurnToMoveDirection(Vector3 targetPos)
     {
-        float diff = targetPos.x - transform.position.x;
+        float diff = targetPos.x - _transform.position.x;
         int dir = (int)Mathf.Sign(diff);
         _spriteTrans.localScale = new Vector3(dir, 1, 1);
         
@@ -194,4 +195,14 @@ public class MoveBehavior : MonoBehaviour
 
         _weaponTrans.localScale = new Vector3(dir, 1, 1);
     }
+
+    private bool IsExistFloor()
+    {
+        Vector3 rayOrigin = _transform.position + Vector3.up * RayOffset * 3;
+        Vector3 dir = ((_transform.right * _spriteTrans.localScale.x) + Vector3.down).normalized;
+        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, dir, _rayDistance * 3, _groundLayerMask);
+        Debug.DrawRay(rayOrigin, dir * (_rayDistance * 3), Color.red, 1.0f);
+
+        return hit;
+    } 
 }
