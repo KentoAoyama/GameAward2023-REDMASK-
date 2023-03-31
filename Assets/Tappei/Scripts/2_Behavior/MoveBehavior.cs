@@ -138,8 +138,7 @@ public class MoveBehavior : MonoBehaviour
 
     /// <summary>
     /// FixedUpdate()のタイミングでターゲットに向かって1フレーム分だけ移動する事によって
-    /// ターゲットへの移動を行う<br></br>
-    /// 引数がTransformのためターゲットが動いていても追従する
+    /// ターゲットへの移動を行う。引数がTransformのためターゲットが動いていても追従する
     /// </summary>
     private async UniTask MoveToTargetAsync(Transform target, float moveSpeed)
     {

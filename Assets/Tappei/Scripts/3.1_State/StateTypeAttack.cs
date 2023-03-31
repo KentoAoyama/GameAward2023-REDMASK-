@@ -6,12 +6,12 @@ public class StateTypeAttack : StateTypeBase
     public StateTypeAttack(EnemyController controller, StateType stateType)
         : base(controller, stateType) { }
 
-    private float _interval;
+    protected float _interval;
     /// <summary>
     /// ‘JˆÚ‚ğŒJ‚è•Ô‚·‚±‚Æ‚Å‚Ì˜AË‘Îô‚Æ‚µ‚Ä
     /// ‚±‚Ì’l‚Íó‘Ô‚Ì‘JˆÚ‚ğ‚µ‚Ä‚à‰Šú‰»‚³‚ê‚È‚¢
     /// </summary>
-    private float _time;
+    protected float _time;
 
     protected override void Enter()
     {

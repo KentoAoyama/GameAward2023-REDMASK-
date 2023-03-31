@@ -11,9 +11,9 @@ public class StateTypeDiscover : StateTypeBase
 
     /// <summary>
     /// 発見時のアニメーションの終了を待って遷移させるためのフラグ
-    /// このフラグ立つまで遷移は不可能だが、視界は機能している
+    /// このフラグが立つまで遷移は不可能だが、視界は機能している
     /// </summary>
-    bool _isTransitionable;
+    protected bool _isTransitionable;
     Tween _tween;
 
     protected override void Enter()
@@ -39,6 +39,8 @@ public class StateTypeDiscover : StateTypeBase
             {
                 TryChangeState(StateType.Attack);
             }
+
+            return;
         }
     }
 

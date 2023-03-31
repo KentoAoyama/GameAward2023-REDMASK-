@@ -4,8 +4,11 @@
 /// </summary>
 public class StateTypeSearch : StateTypeBase
 {
-    private float _interval;
-    private float _time;
+    /// <summary>遷移するまでの間隔を調整するために使用する値</summary>
+    static readonly int TransitionTimerMag = 60; 
+
+    protected float _interval;
+    protected float _time;
 
     public StateTypeSearch(EnemyController controller, StateType stateType)
         : base(controller, stateType) { }
@@ -16,7 +19,7 @@ public class StateTypeSearch : StateTypeBase
 
         // 移動を行うメソッドを呼び出して時間経過でIdleに遷移する
         // を繰り返して周囲を探索させる
-        _interval = Controller.Params.TurningPoint / Controller.Params.WalkSpeed * 60;
+        _interval = Controller.Params.TurningPoint / Controller.Params.WalkSpeed * TransitionTimerMag;
         Controller.SearchMoving();
     }
 

@@ -6,8 +6,8 @@ using UnityEngine;
 /// </summary>
 public class StateTypeIdle : StateTypeBase
 {
-    private float _delay;
-    private float _time;
+    protected float _delay;
+    protected float _time;
 
     public StateTypeIdle(EnemyController controller, StateType stateType)
         : base(controller, stateType) { }
@@ -36,6 +36,7 @@ public class StateTypeIdle : StateTypeBase
         if (_time > _delay)
         {
             TryChangeState(StateType.Search);
+            return;
         }
     }
 

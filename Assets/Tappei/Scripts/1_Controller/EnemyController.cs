@@ -16,7 +16,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     [SerializeField, TagName] private string _playerTagName;
     [Header("敵の各種パラメーターを設定したSO")]
     [Tooltip("各振る舞いのクラスはこのSO内の値を参照して機能する")]
-    [SerializeField] private EnemyParamsSO _enemyParamsSO; 
+    [SerializeField] protected EnemyParamsSO _enemyParamsSO; 
     [Header("デバッグ用:現在の状態を表示するText")]
     [SerializeField] private Text _text;
     
@@ -26,7 +26,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     private AttackBehavior _attackBehavior;
     private PerformanceBehavior _performanceBehavior;
     private Animator _animator;
-    private ReactiveProperty<StateTypeBase> _currentState = new();
+    protected ReactiveProperty<StateTypeBase> _currentState = new();
     protected StateRegister _stateRegister = new();
 
     public EnemyParamsSO Params => _enemyParamsSO;
