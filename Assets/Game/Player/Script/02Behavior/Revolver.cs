@@ -255,6 +255,11 @@ namespace Player
                     {
                         _potisions.Add(hitsPen[i].point);
                         lengthPen -= (_potisions[_potisions.Count - 1] - _potisions[_potisions.Count - 2]).magnitude;
+
+                        if (hitsPen[i].collider.tag == _gameZone)
+                        {
+                            break;
+                        }
                     }
                     // 半端分が余っているときの処理。
                     if (hitsPen.Length <= penetrate.MaxWallHitNumber)
@@ -280,6 +285,11 @@ namespace Player
                             length -= (pos - hit.point).magnitude;             // 長さを減算
                             pos = hit.point;                                   // 位置を更新
                             dir = Vector2.Reflect(dir, hit.normal.normalized); // 角度を反転
+
+                            if (hit.collider.tag == _gameZone)
+                            {
+                                break;
+                            }
                         }
                         else // レイが当たらなかった時の処理
                         {
