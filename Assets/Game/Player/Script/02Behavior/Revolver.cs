@@ -250,19 +250,20 @@ namespace Player
                     var hitsPen = Physics2D.RaycastAll(_muzzleTransform.position, _aimingAngle, bullet.GuidelineLength, _guidelineLayerMask);
                     var penetrate = bullet as PenetrateBullet2;
                     var lengthPen = bullet.GuidelineLength; // 半端分用の値
+                    bool _isHitGameZone = false;
                     // 何かにヒットしていれば貫通して最終的に届く位置まで取得する
                     for (int i = 0; i < hitsPen.Length && i < penetrate.MaxWallHitNumber + 1; i++)
                     {
                         _potisions.Add(hitsPen[i].point);
                         lengthPen -= (_potisions[_potisions.Count - 1] - _potisions[_potisions.Count - 2]).magnitude;
 
-                        if (hitsPen[i].collider.tag == _gameZone)
+                        if (_isHitGameZone = hitsPen[i].collider.tag == _gameZone)
                         {
                             break;
                         }
                     }
                     // 半端分が余っているときの処理。
-                    if (hitsPen.Length <= penetrate.MaxWallHitNumber)
+                    if (hitsPen.Length <= penetrate.MaxWallHitNumber && !_isHitGameZone)
                     {
                         _potisions.Add(_potisions[_potisions.Count - 1] + _aimingAngle.normalized * lengthPen);
                     }
@@ -302,7 +303,11 @@ namespace Player
             }
             return _potisions;
         }
-        /// <summary> Bullet2の実際の弾用 </summary>
+        /// <summary> 
+        /// Bullet2の実際の弾用 <br/>
+        /// ガイドライン用と異なる点 <br/>
+        /// GuideLineLengthに関係なくどこまでも飛ぶ。
+        /// </summary>
         /// <param name="bullet"></param>
         /// <returns></returns>
         private List<Vector2> GetPositions2ForBullet2(Bullet2 bullet)
@@ -326,18 +331,21 @@ namespace Player
                     // レイを飛ばす
                     var hitsPen = Physics2D.RaycastAll(_muzzleTransform.position, _aimingAngle, 1000f, _bulletLayerMask);
                     var penetrate = bullet as PenetrateBullet2;
+                    bool _isHitGameZone = false;
                     // 何かにヒットしていれば貫通して最終的に届く位置まで取得する
                     for (int i = 0; i < hitsPen.Length && i < penetrate.MaxWallHitNumber + 1; i++)
                     {
                         _potisions2.Add(hitsPen[i].point);
-                        if (hitsPen[i].collider.tag == _gameZone)
+                        if (_isHitGameZone = hitsPen[i].collider.tag == _gameZone)
                         {
                             break;
                         }
                     }
                     // 半端分が余っているときの処理。
-                    if (hitsPen.Length <= penetrate.MaxWallHitNumber)
+                    if (hitsPen.Length <= penetrate.MaxWallHitNumber && !_isHitGameZone)
+                    {
                         _potisions2.Add(_potisions2[_potisions2.Count - 1] + _aimingAngle.normalized * 1000f);
+                    }
                     break;
                 case BulletType.ReflectBullet: // 反射弾のガイドラインポジションをリストに追加
                     var reflect = bullet as ReflectBullet2; // 本来の型に変換
