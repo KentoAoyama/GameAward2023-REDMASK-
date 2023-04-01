@@ -16,6 +16,8 @@ public class GoToStageButton : MonoBehaviour
 
     public void GoToStage()
     {
+        GameManager.Instance.StageManager.StageStartMode = StageStartMode.FromTheBeginning;
+
         for (int i = 0; i < _stageTypeStageNamePair.Length; i++)
         {
             if (GameManager.Instance.StageSelectManager.GoToStageType.Value ==
