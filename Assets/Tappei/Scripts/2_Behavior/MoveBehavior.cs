@@ -20,7 +20,7 @@ public class MoveBehavior : MonoBehaviour
     private static readonly float UpdateFootPosInterval = 0.15f;
 
     private static readonly float FootPosRayDistance = 1.0f;
-    private static readonly float FloorRayDistance = 3.0f;
+    private static readonly float FloorRayDistance = 6.0f;
     private static readonly float EnemyTypeRayDistance = 1.1f;
     private static readonly Vector2 FootPosRayOffset = new Vector2(0, 0.5f);
     private static readonly Vector2 FloorRayOffset = new Vector2(0, 1.5f);
