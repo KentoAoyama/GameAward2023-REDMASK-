@@ -18,18 +18,22 @@ public class MoveBehavior : MonoBehaviour
     /// 毎フレームRayを飛ばさないように、Search状態での移動範囲を更新する間隔を設定する
     /// </summary>
     private static readonly float UpdateFootPosInterval = 0.15f;
-    /// <summary>
-    /// 身体の中心付近からRayを飛ばすことでコライダーの大きさに左右されにくくする
-    /// </summary>
-    private static readonly float RayOffset = 0.5f;
+
+    private static readonly float FootPosRayDistance = 1.0f;
+    private static readonly float FloorRayDistance = 6.0f;
+    private static readonly float EnemyTypeRayDistance = 1.1f;
+    private static readonly Vector2 FootPosRayOffset = new Vector2(0, 0.5f);
+    private static readonly Vector2 FloorRayOffset = new Vector2(0, 1.5f);
 
     [Header("移動方向に向けるオブジェクトの設定")]
     [SerializeField] private Transform _spriteTrans;
     [SerializeField] private Transform _eyeTrans;
     [SerializeField] private Transform _weaponTrans;
-    [Header("床を検知するためのRayの設定")]
+    [Header("移動時に検知するためのRayの設定")]
     [SerializeField] private LayerMask _groundLayerMask;
-    [SerializeField] private float _rayDistance = 1.0f;
+    [SerializeField] private LayerMask _enemyTypeLayerMask;
+    [Tooltip("自身のコライダーとぶつからないように設定する")]
+    [SerializeField] private Vector2 EnemyTypeRayOffset = new Vector2(1.25f, 0.5f);
 
     private CancellationTokenSource _cts;
     private Transform _transform;
@@ -77,16 +81,10 @@ public class MoveBehavior : MonoBehaviour
 
     private void UpdateFootPos()
     {
-        Vector3 rayOrigin = _transform.position + Vector3.up * RayOffset;
-        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector3.down, _rayDistance, _groundLayerMask);
+        Vector3 rayOrigin = _transform.position + (Vector3)FootPosRayOffset;
+        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector3.down, FootPosRayDistance, _groundLayerMask);
 
         if (hit.collider) _footPos = hit.point;
-
-#if UNITY_EDITOR
-        Color color = hit.collider ? Color.green : Color.red;
-        Vector3 pos = _transform.position;
-        Debug.DrawLine(pos + Vector3.up, pos + Vector3.down, color, 1.0f);
-#endif
     }
 
     /// <summary>
@@ -105,7 +103,7 @@ public class MoveBehavior : MonoBehaviour
         _searchDestination.transform.position = targetPos;
 
 #if UNITY_EDITOR
-        Debug.DrawLine(targetPos + Vector3.up, targetPos + Vector3.down, Color.green, 1.0f);
+        Debug.DrawLine(targetPos + Vector3.up, targetPos + Vector3.down, Color.yellow, 1.0f);
 #endif
 
         return _searchDestination.transform;
@@ -145,13 +143,14 @@ public class MoveBehavior : MonoBehaviour
         _cts.Token.ThrowIfCancellationRequested();
 
         TurnToMoveDirection(target.position);
-        while (IsExistFloor())
+        while (IsDetectedFloor() && IsUndetectedEnemy())
         {
             SetVelocityToTarget(target.position, moveSpeed);
             TurnToMoveDirection(target.position);
 
             await UniTask.Yield(PlayerLoopTiming.FixedUpdate, _cts.Token);
         }
+        CancelMoving();
     }
 
     /// <summary>
@@ -196,13 +195,32 @@ public class MoveBehavior : MonoBehaviour
         _weaponTrans.localScale = new Vector3(dir, 1, 1);
     }
 
-    private bool IsExistFloor()
+    private bool IsDetectedFloor()
     {
-        Vector3 rayOrigin = _transform.position + Vector3.up * RayOffset * 3;
+        Vector3 rayOrigin = _transform.position + (Vector3)FloorRayOffset;
         Vector3 dir = ((_transform.right * _spriteTrans.localScale.x) + Vector3.down).normalized;
-        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, dir, _rayDistance * 3, _groundLayerMask);
-        Debug.DrawRay(rayOrigin, dir * (_rayDistance * 3), Color.red, 1.0f);
+        RaycastHit2D groundHit = Physics2D.Raycast(rayOrigin, dir, FloorRayDistance, _groundLayerMask);
 
-        return hit;
-    } 
+#if UNITY_EDITOR
+        Color c = groundHit ? Color.blue : Color.red;
+        Debug.DrawRay(rayOrigin, dir * FloorRayDistance, c, 0.016f);
+#endif
+
+        return groundHit;
+    }
+
+    private bool IsUndetectedEnemy()
+    {
+        Vector3 offset = new Vector3(EnemyTypeRayOffset.x * _spriteTrans.localScale.x, EnemyTypeRayOffset.y, 0);
+        Vector3 rayOrigin = _transform.position + offset;
+        Vector3 dir = _transform.right * _spriteTrans.localScale.x;
+        RaycastHit2D enemyHit = Physics2D.Raycast(rayOrigin, dir, EnemyTypeRayDistance, _enemyTypeLayerMask);
+
+#if UNITY_EDITOR
+        Color c = !enemyHit ? Color.blue : Color.red;
+        Debug.DrawRay(rayOrigin, dir * EnemyTypeRayDistance, c, 0.016f);
+#endif
+
+        return !enemyHit;
+    }
 }
