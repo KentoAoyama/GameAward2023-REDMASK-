@@ -182,9 +182,9 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         float turningPoint = Params.TurningPoint;
         Vector3 footPos = _moveBehavior.FootPos;
 
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(footPos + Vector3.right * turningPoint, 0.25f);
-        Gizmos.DrawSphere(footPos + Vector3.left * turningPoint, 0.25f);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(footPos + Vector3.right * turningPoint, 0.25f);
+        Gizmos.DrawWireSphere(footPos + Vector3.left * turningPoint, 0.25f);
     }
 
     private void DrawSight()
