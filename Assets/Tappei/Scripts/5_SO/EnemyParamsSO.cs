@@ -79,6 +79,7 @@ public class EnemyParamsSO : ScriptableObject
     // ただし、要望があった際にはインスペクターで割り当てられるように変更可能
     public float MinTransitionTimeElapsed => 1.0f;
     public float MaxTransitionTimeElapsed => 2.0f;
+    public float MoveCancelTimerThreshold => 0.25f;
 
     public int GetAnimationHash(AnimationName name) => Animator.StringToHash(name.ToString());
 }
