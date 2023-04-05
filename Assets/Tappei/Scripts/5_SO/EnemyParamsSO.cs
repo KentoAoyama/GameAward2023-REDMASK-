@@ -12,6 +12,9 @@ public class EnemyParamsSO : ScriptableObject
         Search,
     }
 
+    [Tooltip("Discover状態のAnimationClipを割り当てる")]
+    [SerializeField] AnimationClip _discoverAnimClip;
+
     [Header("移動速度の設定")]
     [Tooltip("歩いて移動する際の速度")]
     [SerializeField] private float _walkSpeed = 2.0f;
@@ -43,6 +46,7 @@ public class EnemyParamsSO : ScriptableObject
     [Header("プレイヤー未発見時は常にSearch状態にする")]
     [SerializeField] protected bool _isAlwaysSearching;
 
+    public float DiscoverStateTransitionDelay => _discoverAnimClip.length;
     public float WalkSpeed => _walkSpeed;
     public float RunSpeed => _runSpeed;
     public float TurningPoint => _turningPoint;
@@ -75,7 +79,6 @@ public class EnemyParamsSO : ScriptableObject
     // ただし、要望があった際にはインスペクターで割り当てられるように変更可能
     public float MinTransitionTimeElapsed => 1.0f;
     public float MaxTransitionTimeElapsed => 2.0f;
-    public float DiscoverStateTransitionDelay => 1.0f;
 
     public int GetAnimationHash(AnimationName name) => Animator.StringToHash(name.ToString());
 }
