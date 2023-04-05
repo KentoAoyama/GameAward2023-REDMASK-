@@ -17,6 +17,8 @@ public class StateTypeIdleExtend : StateTypeIdle
 
     protected override void Stay()
     {
+        _shieldController.Idle();
+
         if (_shieldController.IsReflect)
         {
             _shieldController.LastStateType = StateType.IdleExtend;

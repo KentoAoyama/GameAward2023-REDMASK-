@@ -24,6 +24,8 @@ public class StateTypeIdle : StateTypeBase
 
     protected override void Stay()
     {
+        Controller.Idle();
+
         SightResult result = Controller.IsFindPlayer();
         if (result == SightResult.InSight || result == SightResult.InAttackRange)
         {
