@@ -21,6 +21,12 @@ public class StateTypeMoveExtend : StateTypeMove
             return;
         }
 
+        if (IsMoveCancel())
+        {
+            TryChangeState(StateType.SearchExtend);
+            return;
+        }
+
         SightResult result = Controller.IsFindPlayer();
         if (result == SightResult.OutSight)
         {
