@@ -6,15 +6,15 @@ using DG.Tweening;
 /// </summary>
 public class StateTypeDiscover : StateTypeBase
 {
-    public StateTypeDiscover(EnemyController controller, StateType type) 
-        : base(controller, type) { }
-
     /// <summary>
     /// 発見時のアニメーションの終了を待って遷移させるためのフラグ
     /// このフラグが立つまで遷移は不可能だが、視界は機能している
     /// </summary>
     protected bool _isTransitionable;
     Tween _tween;
+
+    public StateTypeDiscover(EnemyController controller, StateType type) 
+        : base(controller, type) { }
 
     protected override void Enter()
     {
