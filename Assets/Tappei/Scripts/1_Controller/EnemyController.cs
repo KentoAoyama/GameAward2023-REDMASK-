@@ -86,6 +86,8 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     /// </summary>
     public void Attack() => _attackBehavior.Attack();
 
+    public void Idle() => _moveBehavior.Idle();
+
     /// <summary>
     /// プレイヤーに向けて移動する
     /// Move状態での移動をする際にステートのEnter()で呼ばれる

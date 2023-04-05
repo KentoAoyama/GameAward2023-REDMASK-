@@ -116,13 +116,42 @@ public class MoveBehavior : MonoBehaviour
     public void CancelMoving()
     {
         _cts?.Cancel();
+        DropVertically();
+    }
 
-        // 左右の移動を止めるが落下だけは重力に従う
+    /// <summary>
+    /// 足元からのRayがヒットしない場合はそのまま落下し
+    /// ヒットした場合はPositionをその座標にすることで滑らないようにしている
+    /// </summary>
+    public void Idle()
+    {
+        RaycastHit2D groundHit = Physics2D.Raycast(_transform.position, Vector3.down, 0.25f, _groundLayerMask);
+        if (groundHit)
+        {
+            _rigidbody.velocity = Vector3.zero;
+            _transform.position = groundHit.point;
+        }
+        else
+        {
+            DropVertically();
+        }
+
+        _rigidbody.isKinematic = groundHit;
+
+#if UNITY_EDITOR
+        Color c = groundHit ? Color.blue : Color.red;
+        Debug.DrawRay(_transform.position, Vector3.down * 0.5f, c, 0.016f);
+#endif
+    }
+
+    /// <summary>左右の移動をキャンセルして垂直落下させる</summary>
+    private void DropVertically()
+    {
         Vector3 velo = _rigidbody.velocity;
         velo.x = 0;
         velo.z = 0;
         _rigidbody.velocity = velo;
-    }
+    } 
 
     /// <summary>
     /// このメソッドを外部から呼ぶことで移動を行う
@@ -130,6 +159,9 @@ public class MoveBehavior : MonoBehaviour
     /// </summary>
     public void StartMoveToTarget(Transform target, float moveSpeed)
     {
+        // アイドル状態で無効化しているので移動する際は再度物理演算を有効にする
+        _rigidbody.isKinematic = false;
+
         _cts = new CancellationTokenSource();
         MoveToTargetAsync(target, moveSpeed).Forget();
     }
@@ -198,7 +230,7 @@ public class MoveBehavior : MonoBehaviour
     private bool IsDetectedFloor()
     {
         Vector3 rayOrigin = _transform.position + (Vector3)FloorRayOffset;
-        Vector3 dir = ((_transform.right * _spriteTrans.localScale.x) + Vector3.down).normalized;
+        Vector3 dir = ((_transform.right * _spriteTrans.localScale.x) + new Vector3(0, -2f, 0)).normalized;
         RaycastHit2D groundHit = Physics2D.Raycast(rayOrigin, dir, FloorRayDistance, _groundLayerMask);
 
 #if UNITY_EDITOR
