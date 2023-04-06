@@ -15,7 +15,13 @@ public class StateTypeAttackExtend : StateTypeAttack
     protected override void Stay()
     {
         // TODO:ƒvƒŒƒCƒ„[‚Æ‚Íí‚Éˆê’è‹——£‚É‚¢‚Ä‚Ù‚µ‚¢
-        
+
+        if (Controller.IsDefeated)
+        {
+            TryChangeState(StateType.Defeated);
+            return;
+        }
+
         if (_shieldController.IsReflect)
         {
             _shieldController.LastStateType = StateType.AttackExtend;

@@ -33,6 +33,12 @@ public class StateTypeAttack : StateTypeBase
             Controller.Attack();
         }
 
+        if (Controller.IsDefeated)
+        {
+            TryChangeState(StateType.Defeated);
+            return;
+        }
+
         SightResult result = Controller.IsFindPlayer();
         if (result == SightResult.OutSight)
         {

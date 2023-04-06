@@ -15,6 +15,12 @@ public class StateTypeDiscoverExtend : StateTypeDiscover
 
     protected override void Stay()
     {
+        if (Controller.IsDefeated)
+        {
+            TryChangeState(StateType.Defeated);
+            return;
+        }
+
         if (_shieldController.IsReflect)
         {
             _shieldController.LastStateType = StateType.DiscoverExtend;

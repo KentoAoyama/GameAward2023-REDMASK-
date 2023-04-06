@@ -25,6 +25,12 @@ public class StateTypeSearch : StateTypeBase
 
     protected override void Stay()
     {
+        if (Controller.IsDefeated)
+        {
+            TryChangeState(StateType.Defeated);
+            return;
+        }
+
         SightResult result = Controller.IsFindPlayer();
         if (result == SightResult.InSight || result == SightResult.InAttackRange)
         {

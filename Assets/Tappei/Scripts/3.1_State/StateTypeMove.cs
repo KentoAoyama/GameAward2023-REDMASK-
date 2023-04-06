@@ -24,6 +24,12 @@ public class StateTypeMove : StateTypeBase
 
     protected override void Stay()
     {
+        if (Controller.IsDefeated)
+        {
+            TryChangeState(StateType.Defeated);
+            return;
+        }
+
         if (IsMoveCancel())
         {
             TryChangeState(StateType.Search);

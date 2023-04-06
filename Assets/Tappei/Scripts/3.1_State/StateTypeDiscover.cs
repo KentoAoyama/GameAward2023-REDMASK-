@@ -27,6 +27,12 @@ public class StateTypeDiscover : StateTypeBase
 
     protected override void Stay()
     {
+        if (Controller.IsDefeated)
+        {
+            TryChangeState(StateType.Defeated);
+            return;
+        }
+
         // 一度発見したら視界の外に出てしまった場合でも一度Move状態に遷移する
         SightResult result = Controller.IsFindPlayer();
         if (_isTransitionable)
