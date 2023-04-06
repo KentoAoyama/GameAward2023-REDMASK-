@@ -11,7 +11,7 @@ public class StateTypeDiscover : StateTypeBase
     /// このフラグが立つまで遷移は不可能だが、視界は機能している
     /// </summary>
     protected bool _isTransitionable;
-    Tween _tween;
+    private Tween _tween;
 
     public StateTypeDiscover(EnemyController controller, StateType type) 
         : base(controller, type) { }

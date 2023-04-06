@@ -5,7 +5,7 @@
 public class StateTypeSearch : StateTypeBase
 {
     /// <summary>‘JˆÚ‚·‚é‚Ü‚Å‚ÌŠÔŠu‚ğ’²®‚·‚é‚½‚ß‚Ég—p‚·‚é’l</summary>
-    static readonly int TransitionTimerMag = 60; 
+    private static readonly int TransitionTimerMag = 60; 
 
     protected float _interval;
     protected float _time;
