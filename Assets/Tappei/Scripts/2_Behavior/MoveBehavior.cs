@@ -39,6 +39,7 @@ public class MoveBehavior : MonoBehaviour
     private Transform _transform;
     private Rigidbody2D _rigidbody;
     private GameObject _searchDestination;
+    private GameObject _forwardDestination;
 
     /// <summary>‚±‚ÌÀ•W‚ğŠî€‚É‚µ‚ÄSearchó‘Ô‚ÌˆÚ“®‚ğs‚¤summary>
     private Vector3 _footPos;
@@ -53,6 +54,7 @@ public class MoveBehavior : MonoBehaviour
         _transform = GetComponent<Transform>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _searchDestination = new GameObject("SearchDestination");
+        _forwardDestination = new GameObject("ForwardDestination");
     }
 
     private void Start()
@@ -151,7 +153,21 @@ public class MoveBehavior : MonoBehaviour
         velo.x = 0;
         velo.z = 0;
         _rigidbody.velocity = velo;
-    } 
+    }
+
+    /// <summary>ï¿½Oï¿½ï¿½ï¿½É”Cï¿½Ó‚Ì‹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú“ï¿½ï¿½ï¿½ï¿½ï¿½</summary>
+    public void StartMoveForward(float distance, float moveSpeed)
+    {
+        // ï¿½wï¿½è‚µï¿½ï¿½ï¿½Ê’uï¿½ï¿½forwardDestinationï¿½ï¿½Ú“ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ÉŒï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÄˆÚ“ï¿½ï¿½ï¿½ï¿½ï¿½
+        Vector3 pos = transform.position;
+        pos.x += _spriteTrans.localScale.x * distance;
+        _forwardDestination.transform.position = pos;
+        StartMoveToTarget(_forwardDestination.transform, moveSpeed * 2);
+
+#if UNITY_EDITOR
+        Debug.DrawRay(pos, Vector3.up * 5, Color.magenta, 3.0f);
+#endif
+    }
 
     /// <summary>
     /// ‚±‚Ìƒƒ\ƒbƒh‚ğŠO•”‚©‚çŒÄ‚Ô‚±‚Æ‚ÅˆÚ“®‚ğs‚¤

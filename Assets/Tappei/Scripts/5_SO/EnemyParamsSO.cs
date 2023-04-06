@@ -13,9 +13,9 @@ public class EnemyParamsSO : ScriptableObject
     }
 
     [Tooltip("Discoveró‘Ô‚ÌAnimationClip‚ğŠ„‚è“–‚Ä‚é")]
-    [SerializeField] AnimationClip _discoverAnimClip;
+    [SerializeField] private AnimationClip _discoverAnimClip;
     [Tooltip("Deadó‘Ô‚ÌAnimationClip‚ğŠ„‚è“–‚Ä‚é")]
-    [SerializeField] AnimationClip _deadAnimClip;
+    [SerializeField] private AnimationClip _deadAnimClip;
 
     [Header("ˆÚ“®‘¬“x‚Ìİ’è")]
     [Tooltip("•à‚¢‚ÄˆÚ“®‚·‚éÛ‚Ì‘¬“x")]
