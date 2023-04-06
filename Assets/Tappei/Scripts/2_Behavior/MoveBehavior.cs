@@ -41,8 +41,12 @@ public class MoveBehavior : MonoBehaviour
     private GameObject _searchDestination;
     private GameObject _forwardDestination;
 
+    /// <summary>ƒ|[ƒY‚µ‚½‚Æ‚«‚ÉVelocity‚ğˆê’U•Û‘¶‚µ‚Ä‚¨‚­‚½‚ß‚Ì•Ï”</summary>
+    private Vector3 _tempVelocity;
     /// <summary>‚±‚ÌÀ•W‚ğŠî€‚É‚µ‚ÄSearchó‘Ô‚ÌˆÚ“®‚ğs‚¤summary>
     private Vector3 _footPos;
+    /// <summary>Pause()‚ªŒÄ‚Î‚ê‚é‚Ætrue‚ÉResume()‚ªŒÄ‚Î‚ê‚é‚Æfalse‚É‚È‚é</summary>
+    private bool _isPause;
 
 #if UNITY_EDITOR
     /// <summary>EnemyController‚ÅƒMƒYƒ‚‚É•\¦‚·‚é—p“r‚Åg‚Á‚Ä‚¢‚é</summary>
@@ -65,7 +69,21 @@ public class MoveBehavior : MonoBehaviour
     private void OnDisable()
     {
         CancelMoving();
+    }
+
+    public void Pause()
+    {
+        _isPause = true;
         _rigidbody.isKinematic = true;
+        _tempVelocity = _rigidbody.velocity;
+        _rigidbody.velocity = Vector3.zero;
+    }
+
+    public void Resume()
+    {
+        _isPause = false;
+        _rigidbody.isKinematic = false;
+        _rigidbody.velocity = _tempVelocity;
     }
 
     /// <summary>
@@ -127,6 +145,8 @@ public class MoveBehavior : MonoBehaviour
     /// </summary>
     public void Idle()
     {
+        if (_isPause) return;
+
         RaycastHit2D groundHit = Physics2D.Raycast(_transform.position, Vector3.down, 0.25f, _groundLayerMask);
         if (groundHit)
         {
@@ -155,10 +175,10 @@ public class MoveBehavior : MonoBehaviour
         _rigidbody.velocity = velo;
     }
 
-    /// <summary>ï¿½Oï¿½ï¿½ï¿½É”Cï¿½Ó‚Ì‹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú“ï¿½ï¿½ï¿½ï¿½ï¿½</summary>
+    /// <summary>‘O•û‚É”CˆÓ‚Ì‹——£‚¾‚¯ˆÚ“®‚·‚é</summary>
     public void StartMoveForward(float distance, float moveSpeed)
     {
-        // ï¿½wï¿½è‚µï¿½ï¿½ï¿½Ê’uï¿½ï¿½forwardDestinationï¿½ï¿½Ú“ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½ï¿½ÉŒï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÄˆÚ“ï¿½ï¿½ï¿½ï¿½ï¿½
+        // w’è‚µ‚½ˆÊ’u‚ÉforwardDestination‚ğˆÚ“®‚³‚¹‚Ä‚»‚±‚ÉŒü‚©‚Á‚ÄˆÚ“®‚·‚é
         Vector3 pos = transform.position;
         pos.x += _spriteTrans.localScale.x * distance;
         _forwardDestination.transform.position = pos;
@@ -193,8 +213,11 @@ public class MoveBehavior : MonoBehaviour
         TurnToMoveDirection(target.position);
         while (IsDetectedFloor() && IsUndetectedEnemy())
         {
-            SetVelocityToTarget(target.position, moveSpeed);
-            TurnToMoveDirection(target.position);
+            if (!_isPause)
+            {
+                SetVelocityToTarget(target.position, moveSpeed);
+                TurnToMoveDirection(target.position);
+            }
 
             await UniTask.Yield(PlayerLoopTiming.FixedUpdate, _cts.Token);
         }
