@@ -19,6 +19,12 @@ public class StateTypeIdleExtend : StateTypeIdle
     {
         _shieldController.Idle();
 
+        if (Controller.IsDefeated)
+        {
+            TryChangeState(StateType.Defeated);
+            return;
+        }
+
         if (_shieldController.IsReflect)
         {
             _shieldController.LastStateType = StateType.IdleExtend;

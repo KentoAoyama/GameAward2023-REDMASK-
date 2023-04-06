@@ -14,6 +14,8 @@ public class EnemyParamsSO : ScriptableObject
 
     [Tooltip("Discoveró‘Ô‚ÌAnimationClip‚ðŠ„‚è“–‚Ä‚é")]
     [SerializeField] AnimationClip _discoverAnimClip;
+    [Tooltip("Deadó‘Ô‚ÌAnimationClip‚ðŠ„‚è“–‚Ä‚é")]
+    [SerializeField] AnimationClip _deadAnimClip;
 
     [Header("ˆÚ“®‘¬“x‚ÌÝ’è")]
     [Tooltip("•à‚¢‚ÄˆÚ“®‚·‚éÛ‚Ì‘¬“x")]
@@ -47,6 +49,7 @@ public class EnemyParamsSO : ScriptableObject
     [SerializeField] protected bool _isAlwaysSearching;
 
     public float DiscoverStateTransitionDelay => _discoverAnimClip.length;
+    public float DefeatedStateTransitionDelay => _deadAnimClip.length;
     public float WalkSpeed => _walkSpeed;
     public float RunSpeed => _runSpeed;
     public float TurningPoint => _turningPoint;

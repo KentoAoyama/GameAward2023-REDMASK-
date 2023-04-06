@@ -1,6 +1,7 @@
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 /// <summary>
 /// 近接、遠距離、ドローン用
@@ -164,8 +165,12 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     {
         IsDefeated = true;
         _performanceBehavior.Defeated();
-        gameObject.SetActive(false);
-        gameObject.transform.position = Vector3.one * 100;
+
+        DOVirtual.DelayedCall(Params.DefeatedStateTransitionDelay, () =>
+        {
+            gameObject.SetActive(false);
+            gameObject.transform.position = Vector3.one * 100;
+        }).SetLink(gameObject);
     }
 
 #if UNITY_EDITOR

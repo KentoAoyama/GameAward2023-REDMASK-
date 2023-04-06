@@ -1,3 +1,5 @@
+using UnityEngine;
+
 /// <summary>
 /// 盾持ち用
 /// 一定間隔で攻撃をする状態のクラス
@@ -15,7 +17,13 @@ public class StateTypeAttackExtend : StateTypeAttack
     protected override void Stay()
     {
         // TODO:プレイヤーとは常に一定距離にいてほしい
-        
+
+        if (Controller.IsDefeated)
+        {
+            TryChangeState(StateType.Defeated);
+            return;
+        }
+
         if (_shieldController.IsReflect)
         {
             _shieldController.LastStateType = StateType.AttackExtend;
@@ -23,9 +31,8 @@ public class StateTypeAttackExtend : StateTypeAttack
             return;
         }
 
-        float timeScale = GameManager.Instance.TimeController.EnemyTime;
-        _time += timeScale;
-        if (_time > _interval)
+        _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime * AttackTimerMag;
+        if (_time > Controller.Params.AttackRate)
         {
             _time = 0;
             Controller.Attack();

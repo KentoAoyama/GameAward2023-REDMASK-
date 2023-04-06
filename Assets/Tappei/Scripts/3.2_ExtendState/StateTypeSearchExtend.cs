@@ -1,3 +1,5 @@
+using UnityEngine;
+
 /// <summary>
 /// 盾持ち用
 /// プレイヤーを探すために移動する状態のクラス
@@ -15,6 +17,12 @@ public class StateTypeSearchExtend : StateTypeSearch
 
     protected override void Stay()
     {
+        if (Controller.IsDefeated)
+        {
+            TryChangeState(StateType.Defeated);
+            return;
+        }
+
         if (_shieldController.IsReflect)
         {
             _shieldController.LastStateType = StateType.SearchExtend;
@@ -29,9 +37,9 @@ public class StateTypeSearchExtend : StateTypeSearch
             return;
         }
 
-        float timeScale = GameManager.Instance.TimeController.EnemyTime;
-        _time += timeScale;
-        if (_time > _interval)
+        _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime;
+        float interval = Controller.Params.TurningPoint / Controller.Params.WalkSpeed;
+        if (_time > interval)
         {
             _time = 0;
             TryChangeState(StateType.IdleExtend);

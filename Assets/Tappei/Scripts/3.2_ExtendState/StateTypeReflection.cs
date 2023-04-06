@@ -25,6 +25,12 @@ public class StateTypeReflection : StateTypeBase
 
     protected override void Stay()
     {
+        if (Controller.IsDefeated)
+        {
+            TryChangeState(StateType.Defeated);
+            return;
+        }
+
         float timeScale = GameManager.Instance.TimeController.EnemyTime;
         _time += timeScale * Time.deltaTime;
         if (_time > _delay)

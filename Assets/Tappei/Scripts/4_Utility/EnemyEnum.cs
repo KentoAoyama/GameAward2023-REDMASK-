@@ -41,6 +41,6 @@ public enum AnimationName
     Discover,
     Move,
     Attack,
-    Death,
+    Dead,
     Reflection,
 }
