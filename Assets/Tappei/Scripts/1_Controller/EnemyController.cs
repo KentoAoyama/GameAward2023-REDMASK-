@@ -52,6 +52,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     private void Start()
     {
         _player = GameObject.FindGameObjectWithTag(_playerTagName).transform;
+        GameManager.Instance.PauseManager.Register(this);
     }
 
     private void Update()
@@ -81,12 +82,10 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         _currentState.Value = _stateRegister.GetState(state);
     }
 
-    /// <summary>
-    /// 攻撃する
-    /// Attack状態の時、一定間隔で呼ばれる
-    /// </summary>
-    public void Attack() => _attackBehavior.Attack();
+    /// <summary>その場で攻撃する。Attack状態の時、一定間隔で呼ばれる</summary>
+    public virtual void Attack() => _attackBehavior.Attack();
 
+    /// <summary>その場で待機する。Idle状態の時、毎フレーム呼ばれる</summary>
     public void Idle() => _moveBehavior.Idle();
 
     /// <summary>
@@ -153,11 +152,17 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     public void Pause()
     {
         // 各振る舞いのポーズ処理をまとめて呼ぶ
+        Debug.Log("ポーズ:" + gameObject.name);
+        _currentState.Value.Pause();
+        _moveBehavior.Pause();
     }
 
     public void Resume()
     {
         // 各振る舞いのポーズ解除処理をまとめて呼ぶ
+        Debug.Log("再開:" + gameObject.name);
+        _currentState.Value.Resume();
+        _moveBehavior.Resume();
     }
 
     /// <summary>撃破された際は非表示にして画面外に移動させる</summary>
