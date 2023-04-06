@@ -1,9 +1,12 @@
+using UnityEngine;
+
 /// <summary>
 /// 一定間隔で攻撃をする状態のクラス
 /// </summary>
 public class StateTypeAttack : StateTypeBase
 {
-    protected float _interval;
+    /// <summary>遷移するまでの間隔を調整するために使用する値</summary>
+    protected static readonly int AttackTimerMag = 60;
     /// <summary>
     /// 遷移を繰り返すことでの連射対策として
     /// この値は状態の遷移をしても初期化されない
@@ -16,8 +19,6 @@ public class StateTypeAttack : StateTypeBase
     protected override void Enter()
     {
         Controller.PlayAnimation(AnimationName.Attack);
-
-        _interval = Controller.Params.AttackRate;
         //Controller.MoveToPlayer();
     }
 
@@ -25,9 +26,8 @@ public class StateTypeAttack : StateTypeBase
     {
         // TODO:プレイヤーとは常に一定距離にいてほしい
 
-        float timeScale = GameManager.Instance.TimeController.EnemyTime;
-        _time += timeScale;
-        if (_time > _interval)
+        _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime * AttackTimerMag;
+        if (_time > Controller.Params.AttackRate)
         {
             _time = 0;
             Controller.Attack();
