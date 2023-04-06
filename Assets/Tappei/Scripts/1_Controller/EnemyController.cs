@@ -20,15 +20,15 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     [SerializeField] protected EnemyParamsSO _enemyParamsSO; 
     [Header("デバッグ用:現在の状態を表示するText")]
     [SerializeField] private Text _text;
-    
+
+    protected ReactiveProperty<StateTypeBase> _currentState = new();
+    protected StateRegister _stateRegister = new();
+    protected MoveBehavior _moveBehavior;
     private Transform _player;
     private SightSensor _sightSensor;
-    private MoveBehavior _moveBehavior;
     private AttackBehavior _attackBehavior;
     private PerformanceBehavior _performanceBehavior;
     private Animator _animator;
-    protected ReactiveProperty<StateTypeBase> _currentState = new();
-    protected StateRegister _stateRegister = new();
 
     public EnemyParamsSO Params => _enemyParamsSO;
 
