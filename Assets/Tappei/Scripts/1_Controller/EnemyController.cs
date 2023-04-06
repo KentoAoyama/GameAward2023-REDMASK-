@@ -32,6 +32,9 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
 
     public EnemyParamsSO Params => _enemyParamsSO;
 
+    /// <summary>Pause()が呼ばれるとtrueにResume()が呼ばれるとfalseになる</summary>
+    private bool _isPause;
+
     /// <summary>
     /// 撃破された際にtrueになるフラグ
     /// このフラグが立ったらDefeated状態に遷移する
@@ -62,6 +65,8 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
 
     private void Update()
     {
+        if (_isPause) return;
+
         _currentState.Value = _currentState.Value.Execute();
 
         // デバッグ用
@@ -156,16 +161,14 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
 
     public void Pause()
     {
-        // 各振る舞いのポーズ処理をまとめて呼ぶ
-        Debug.Log("ポーズ:" + gameObject.name);
+        _isPause = true;
         _currentState.Value.Pause();
         _moveBehavior.Pause();
     }
 
     public void Resume()
     {
-        // 各振る舞いのポーズ解除処理をまとめて呼ぶ
-        Debug.Log("再開:" + gameObject.name);
+        _isPause = false;
         _currentState.Value.Resume();
         _moveBehavior.Resume();
     }
