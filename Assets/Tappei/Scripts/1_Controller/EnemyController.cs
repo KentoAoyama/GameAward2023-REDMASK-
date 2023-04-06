@@ -55,6 +55,11 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         GameManager.Instance.PauseManager.Register(this);
     }
 
+    private void OnDisable()
+    {
+        GameManager.Instance.PauseManager.Lift(this);
+    }
+
     private void Update()
     {
         _currentState.Value = _currentState.Value.Execute();
