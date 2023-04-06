@@ -47,4 +47,11 @@ public class ShieldEnemyController : EnemyController
         _stateRegister.Register(StateType.Defeated, this);
         _stateRegister.Register(StateType.Reflection, this);
     }
+
+    public override void Attack()
+    {
+        // TODO:移動と同時に攻撃の処理が呼ばれているのでアニメーションに合わせる必要がある
+        _moveBehavior.StartMoveForward(Params.AttackRange, Params.RunSpeed);
+        base.Attack();
+    }
 }

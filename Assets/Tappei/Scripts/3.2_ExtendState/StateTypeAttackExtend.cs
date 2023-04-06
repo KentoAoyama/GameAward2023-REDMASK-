@@ -31,11 +31,15 @@ public class StateTypeAttackExtend : StateTypeAttack
             return;
         }
 
+        // 攻撃するために移動する
+        // 攻撃するたびにアニメーションを最初から再生する必要がある
+        // ↑攻撃とアニメーションの再生タイミングが合っていないとおかしい
         _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime * AttackTimerMag;
         if (_time > Controller.Params.AttackRate)
         {
             _time = 0;
-            Controller.Attack();
+            // 攻撃範囲の分だけ移動しつつ攻撃する
+            _shieldController.Attack();
         }
 
         SightResult result = Controller.IsFindPlayer();
