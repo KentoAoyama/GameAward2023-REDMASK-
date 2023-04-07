@@ -29,13 +29,17 @@ public class Bullet2 : MonoBehaviour, IPausable, IStoreableInChamber
 
     private int _currentHitCount = 0;
     private List<Vector2> _targetPositions = null;
-    private Rigidbody2D _rigidbody2D = null;
     private HashSet<IDamageable> _damaged = new HashSet<IDamageable>();
     private Vector2 _currentTargetPosition = default;
     private bool _isComplete = false;
 
     private Vector2 _previousPosition = default;
     private Vector2 _moveDir = default;
+    /// <summary>
+    /// 敵のシールドを貫くかどうかを表現する値
+    /// </summary>
+    protected virtual bool IsPenetrateShield => true;
+    private string _shieldTagName = "Shield";
 
 
     public BulletType Type => _bulletType;
@@ -45,14 +49,13 @@ public class Bullet2 : MonoBehaviour, IPausable, IStoreableInChamber
     private void Start()
     {
         _previousPosition = transform.position;
-        _rigidbody2D = GetComponent<Rigidbody2D>();
     }
 
     private void Update()
     {
         transform.Translate(_moveDir.normalized * Time.deltaTime * _moveSpeed);
 
-        // 左右の補正
+        // 左右の補正（行き過ぎた場合、目標地点に強制移動する。）
         if (_moveDir.x >= 0f && transform.position.x > _currentTargetPosition.x ||
             _moveDir.x <= 0f && transform.position.x < _currentTargetPosition.x)
         {
@@ -60,7 +63,7 @@ public class Bullet2 : MonoBehaviour, IPausable, IStoreableInChamber
             pos.x = _currentTargetPosition.x;
             transform.position = pos;
         }
-        // 上下の補正
+        // 上下の補正（行き過ぎた場合、目標地点に強制移動する。）
         if (_moveDir.y >= 0f && transform.position.y > _currentTargetPosition.y ||
             _moveDir.y <= 0f && transform.position.y < _currentTargetPosition.y)
         {
@@ -82,6 +85,12 @@ public class Bullet2 : MonoBehaviour, IPausable, IStoreableInChamber
                     damageable.Damage();
                     _currentHitCount++;
                 } // 何度も呼び出さない為の処理
+
+                if (!IsPenetrateShield && hits[i].collider.tag == _shieldTagName)
+                {
+                    Destroy(this.gameObject);
+                    return;
+                } // シールドを貫通しないオブジェクトはここで消滅する。
 
                 // 指定回数ヒットしたらこのオブジェクトを破棄する。
                 // 最大ヒット数が0以下であれば処理しない。

@@ -139,9 +139,10 @@ namespace Player
 
 
         /// <summary>ゲームクリア時に呼ぶ、ホームに弾を追加</summary>
-        public void Clear()
+        public void StageComplete()
         {
             _bulletCountManager.HomeBulletAddEndStage();
+            GameManager.Instance.BulletsCountManager.Clear();
         }
 
         #region Test
@@ -171,7 +172,7 @@ namespace Player
             {
                 for (int i = 0; i < _revolver.Cylinder.Length; i++)
                 {
-                    await UniTask.WaitUntil(()=> BulletDataBase.IsInit);
+                    await UniTask.WaitUntil(() => BulletDataBase.IsInit);
                     BulletDataBase.Bullets.TryGetValue(GameManager.Instance.BulletsCountManager.Cylinder[i], out Bullet2 bullet);
                     _revolver.LoadBullet(bullet, i);
                 }
