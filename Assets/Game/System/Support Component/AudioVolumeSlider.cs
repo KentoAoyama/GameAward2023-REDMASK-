@@ -8,9 +8,12 @@ public class AudioVolumeSlider : MonoBehaviour
     private AudioType _audioType = default;
     private void Awake()
     {
+        // スライダーを取得
         var slider = GetComponent<Slider>();
+        // スライダーの最大値と最小値を設定
         slider.minValue = 0f;
         slider.maxValue = 1f;
+        // スライダーの値が変わった時に呼ばれる処理を登録
         switch (_audioType)
         {
             case AudioType.Master:
