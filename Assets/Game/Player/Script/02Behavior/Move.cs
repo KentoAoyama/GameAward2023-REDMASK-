@@ -8,6 +8,9 @@ namespace Player
     [System.Serializable]
     public class Move
     {
+        [SerializeField] LayerMask _ground;
+        [SerializeField] float _rayLong = 1.2f;
+
         [Header("水平移動")]
         [Header("地上 : 移動開始")]
         [Tooltip("低速移動速度"), SerializeField]
@@ -39,7 +42,7 @@ namespace Player
         private float _previousDir = 0f;
         private float _moveHorizontalDir = 1f;
 
-
+        Vector2 dir;
 
         private PlayerController _playerController;
 
@@ -90,6 +93,35 @@ namespace Player
             _playerController.Rigidbody2D.angularVelocity = _angularVelocity;
             _playerController.Rigidbody2D.velocity = _velocity;
         }
+
+        public bool CheckMoveDir(float inputH)
+        {
+            RaycastHit2D hit;
+            hit = Physics2D.Raycast(_playerController.Player.transform.position, -_playerController.Player.transform.up, _rayLong, _ground);
+            Vector2 moveDir = Vector2.right * inputH;
+            float angle = Vector3.Angle(Vector2.up, hit.normal);
+
+            dir = Quaternion.AngleAxis(angle, Vector3.forward) * moveDir;
+
+            Debug.DrawRay(_playerController.Player.transform.position, -_playerController.Player.transform.up * _rayLong, Color.blue);
+
+            if (hit.collider == null)
+            {
+                return false;
+            }
+            else
+            {
+                Debug.DrawRay(_playerController.Player.transform.position, dir * _rayLong, Color.blue);
+                return true;
+            }
+        }
+
+        public void DirReturn()
+        {
+
+        }
+
+
         public void Update()
         {
             //回避中は移動不可、の条件を追加した
@@ -109,13 +141,11 @@ namespace Player
                 _moveHorizontalDir = _playerController.InputManager.GetValue<float>(InputType.MoveHorizontal) > 0f ? 1f : -1f;
 
 
-                    _playerController.PlayerAnimatorControl.SetPlayerDir(_moveHorizontalDir);
+                _playerController.PlayerAnimatorControl.SetPlayerDir(_moveHorizontalDir);
                 // 入力方向が切り替わった時の処理
                 if (Mathf.Abs(_previousDir - _moveHorizontalDir) > 0.1f)
                 {
                     //プレイヤーの向きを設定
-
-
                     _toMoveTimer = 0f;
                     _currentHorizontalMoveMode = HorizontalMoveMode.Start;
                 }
@@ -151,7 +181,7 @@ namespace Player
 
                     _currentHorizontalSpeed += Time.deltaTime * _midairMoveAcceleration * _moveHorizontalDir * gameTime;
                     if (_currentHorizontalSpeed > _maxMidairMoveSpeed) _currentHorizontalSpeed = _maxMidairMoveSpeed; // 最大速度を超えない
-                    else if(_currentHorizontalSpeed < -_maxMidairMoveSpeed) _currentHorizontalSpeed = -_maxMidairMoveSpeed;
+                    else if (_currentHorizontalSpeed < -_maxMidairMoveSpeed) _currentHorizontalSpeed = -_maxMidairMoveSpeed;
 
                 }
             }
@@ -186,9 +216,17 @@ namespace Player
             }
 
             // 速度を割り当てる。
-            _playerController.Rigidbody2D.velocity =
-                    new Vector2(_currentHorizontalSpeed,
-                    _playerController.Rigidbody2D.velocity.y);
+
+            if (CheckMoveDir(_moveHorizontalDir))
+            {
+                _playerController.Rigidbody2D.velocity = Mathf.Abs( _currentHorizontalSpeed) * dir;
+            }
+            else
+            {
+                _playerController.Rigidbody2D.velocity =
+                        new Vector2(_currentHorizontalSpeed,
+                       _playerController.Rigidbody2D.velocity.y);
+            }
 
             if (CanJump)
             {
@@ -230,9 +268,16 @@ namespace Player
 
 
             // 速度を割り当てる。
-            _playerController.Rigidbody2D.velocity =
-                    new Vector2(_currentHorizontalSpeed,
-                    _playerController.Rigidbody2D.velocity.y);
+            if (CheckMoveDir(_previousDir))
+            {
+                _playerController.Rigidbody2D.velocity = _currentHorizontalSpeed * dir;
+            }
+            else
+            {
+                _playerController.Rigidbody2D.velocity =
+                        new Vector2(_currentHorizontalSpeed,
+                       _playerController.Rigidbody2D.velocity.y);
+            }
         }
 
 
