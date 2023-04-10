@@ -12,22 +12,19 @@ namespace Player
     public class BulletDataBase
     {
         [SerializeField]
-        private StandardBullet2 _standardBullet = null;
+        private StandardBullet _standardBullet = null;
         [SerializeField]
-        private PenetrateBullet2 _penetrateBullet = null;
+        private PenetrateBullet _penetrateBullet = null;
         [SerializeField]
-        private ReflectBullet2 _reflectBullet = null;
+        private ReflectBullet _reflectBullet = null;
 
-        public Dictionary<BulletType, Bullet2> Bullets { get; private set; } = new Dictionary<BulletType, Bullet2>();
-
-        public bool IsInit { get; private set; } = false; 
+        public Dictionary<BulletType, BulletBase> Bullets { get; private set; } = new Dictionary<BulletType, BulletBase>();
 
         public void Init()
         {
             Bullets.Add(BulletType.StandardBullet, _standardBullet);
             Bullets.Add(BulletType.PenetrateBullet, _penetrateBullet);
             Bullets.Add(BulletType.ReflectBullet, _reflectBullet);
-            IsInit = true;
         }
         /// <summary>
         /// シリアライズフィールドで割り当てない場合このメソッドを呼び出す

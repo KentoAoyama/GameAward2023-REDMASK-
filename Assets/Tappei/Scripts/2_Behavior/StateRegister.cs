@@ -70,17 +70,11 @@ public class StateRegister
         switch (type)
         {
             case StateType.Idle: return typeof(StateTypeIdle);
-            case StateType.IdleExtend: return typeof(StateTypeIdleExtend);
             case StateType.Search: return typeof(StateTypeSearch);
-            case StateType.SearchExtend: return typeof(StateTypeSearchExtend);
             case StateType.Discover: return typeof(StateTypeDiscover);
-            case StateType.DiscoverExtend: return typeof(StateTypeDiscoverExtend);
             case StateType.Move: return typeof(StateTypeMove);
-            case StateType.MoveExtend: return typeof(StateTypeMoveExtend);
             case StateType.Attack: return typeof(StateTypeAttack);
-            case StateType.AttackExtend: return typeof(StateTypeAttackExtend);
             case StateType.Defeated: return typeof(StateTypeDefeated);
-            case StateType.Reflection:return typeof(StateTypeReflection);
             default:
                 Debug.LogError("対応するステートが紐づけられていません: " + type);
                 return null;

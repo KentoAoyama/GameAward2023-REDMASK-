@@ -25,9 +25,7 @@ public class BulletsCountManager : ISavable
     /// <summary>
     /// シリンダーの状態を表現する値
     /// </summary>
-    private BulletType[] _cylinder = new BulletType[] {
-        BulletType.NotSet, BulletType.NotSet, BulletType.NotSet,
-        BulletType.NotSet, BulletType.NotSet, BulletType.NotSet};
+    private BulletType[] _cylinder = null;
 
     public Dictionary<BulletType, IntReactiveProperty> BulletCountHome => _bulletCountHome;
     public Dictionary<BulletType, IntReactiveProperty> BulletCountStage => _bulletCountStage;
@@ -45,21 +43,8 @@ public class BulletsCountManager : ISavable
     public void Load()
     {
         var temp = SaveLoadManager.Load<BulletsCountManager>(_saveFileName);
-        if (temp == null) return; // 読み込みに失敗した場合は処理しない。
         _bulletCountHome = temp._bulletCountHome;
         _bulletCountStage = temp._bulletCountStage;
         _cylinder = temp._cylinder;
-    }
-    public void Clear()
-    {
-        // ステージの弾の数を初期値に戻す
-        _bulletCountStage[BulletType.StandardBullet].Value = 0;
-        _bulletCountStage[BulletType.PenetrateBullet].Value = 0;
-        _bulletCountStage[BulletType.ReflectBullet].Value = 0;
-        // シリンダーの状態を初期値に戻す
-        for (int i = 0; i < _cylinder.Length; i++)
-        {
-            _cylinder[i] = BulletType.NotSet;
-        }
     }
 }

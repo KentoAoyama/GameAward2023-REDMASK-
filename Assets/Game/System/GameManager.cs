@@ -28,10 +28,6 @@ public class GameManager
     private StageSelectManager _stageSelectManager = new StageSelectManager();
     private BulletsCountManager _bulletsCountManager = new BulletsCountManager();
     private SaveLoadManager _saveLoadManager = new SaveLoadManager();
-    private CompletedStageManager _completedStageManager = new CompletedStageManager();
-    private StageManager _stageManager = new StageManager();
-    private EnemyRegister _enemyRegister = new EnemyRegister();
-    private AudioManager _audioManager = new AudioManager();
 
     /// <summary>
     /// ゲームの状態を表現するクラス
@@ -57,11 +53,4 @@ public class GameManager
     /// セーブ
     /// </summary>
     public SaveLoadManager SaveLoadManager => _saveLoadManager;
-    /// <summary>
-    /// 完了済みステージを保存する用のクラス
-    /// </summary>
-    public CompletedStageManager CompletedStageManager => _completedStageManager;
-    public StageManager StageManager => _stageManager;
-    public EnemyRegister EnemyRegister => _enemyRegister;
-    public AudioManager AudioManager => _audioManager;
 }

@@ -6,16 +6,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "EnemyParams_")]
 public class EnemyParamsSO : ScriptableObject
 {
-    protected enum State
+    enum State
     {
         Idle,
         Search,
     }
-
-    [Tooltip("Discover状態のAnimationClipを割り当てる")]
-    [SerializeField] private AnimationClip _discoverAnimClip;
-    [Tooltip("Dead状態のAnimationClipを割り当てる")]
-    [SerializeField] private AnimationClip _deadAnimClip;
 
     [Header("移動速度の設定")]
     [Tooltip("歩いて移動する際の速度")]
@@ -44,12 +39,10 @@ public class EnemyParamsSO : ScriptableObject
     [SerializeField] private float _attackRate = 2.0f;
 
     [Header("Entry時の状態")]
-    [SerializeField] protected State _entryState;
+    [SerializeField] private State _entryState;
     [Header("プレイヤー未発見時は常にSearch状態にする")]
-    [SerializeField] protected bool _isAlwaysSearching;
+    [SerializeField] private bool _isAlwaysSearching;
 
-    public float DiscoverStateTransitionDelay => _discoverAnimClip.length;
-    public float DefeatedStateTransitionDelay => _deadAnimClip.length;
     public float WalkSpeed => _walkSpeed;
     public float RunSpeed => _runSpeed;
     public float TurningPoint => _turningPoint;
@@ -60,7 +53,7 @@ public class EnemyParamsSO : ScriptableObject
     public float AttackRange => _attackRange;
     public float AttackRate => _attackRate;
     public bool IsAlwaysSearching => _isAlwaysSearching;
-    public virtual StateType EntryState
+    public StateType EntryState
     {
         get
         {
@@ -78,11 +71,10 @@ public class EnemyParamsSO : ScriptableObject
         }
     }
 
-    // ここから下はプランナーに弄らせない値
-    // ただし、要望があった際にはインスペクターで割り当てられるように変更可能
-    public float MinTransitionTimeElapsed => 1.0f;
-    public float MaxTransitionTimeElapsed => 2.0f;
-    public float MoveCancelTimerThreshold => 0.25f;
+    // 以下2つは時間経過でステートを遷移する際に使用する値
+    // 要望があった際にはこれもインスペクターで割り当てられるように変更可能
+    public float MinDelayToTransition => 1.0f;
+    public float MaxDelayToTransition => 2.0f;
 
     public int GetAnimationHash(AnimationName name) => Animator.StringToHash(name.ToString());
 }

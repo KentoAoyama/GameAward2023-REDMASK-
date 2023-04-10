@@ -7,7 +7,7 @@ public class StageSelectButton : MonoBehaviour
 {
     [SerializeField]
     private StageType _stageType = default;
-    private void Awake()
+    private void Start()
     {
         GetComponent<Button>().onClick.AddListener(SetGoToStage);
     }

@@ -89,7 +89,6 @@ namespace Player
 
         public bool IsPause { get; private set; } = false;
 
-
         public async void Pause()
         {
             await UniTask.WaitUntil(() => _playerController != null);
@@ -267,7 +266,7 @@ namespace Player
         private void EndThereAvoidance()
         {
             //テスト用で、回避を分かりやすくするために使用
-            _spriteRenderer.color = Color.white;
+            _spriteRenderer.color = Color.black;
 
             Debug.Log("その場回避終了！");
             _playerController.LifeController.IsGodMode = false;
@@ -286,7 +285,7 @@ namespace Player
 
             Debug.Log("時を遅くする");
             // 時間の速度をゆっくりにする。
-            GameManager.Instance.TimeController.ChangeTimeSpeed(true);
+            GameManager.Instance.TimeController.ChangeTimeSpeed(_timeScale);
             _isSlowTimeNow = true;
         }
 
@@ -297,7 +296,7 @@ namespace Player
 
             Debug.Log("時を戻す");
             // 時間の速度をもとの状態に戻す。
-            GameManager.Instance.TimeController.ChangeTimeSpeed(false);
+            GameManager.Instance.TimeController.ChangeTimeSpeed(1f);
             _isSlowTimeNow = false;
         }
     }

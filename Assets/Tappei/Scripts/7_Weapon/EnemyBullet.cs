@@ -37,7 +37,7 @@ public class EnemyBullet : MonoBehaviour
     {
         Vector3 forward = dir.normalized;
         _tween = DOVirtual.DelayedCall(_lifeTime, ReturnPool)
-            .OnUpdate(() => _transform.Translate(forward * _speed * GameManager.Instance.TimeController.EnemyTime));
+            .OnUpdate(() => _transform.Translate(forward * _speed));
     }
 
     /// <summary>
