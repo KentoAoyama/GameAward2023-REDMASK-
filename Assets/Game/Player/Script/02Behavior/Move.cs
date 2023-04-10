@@ -8,6 +8,9 @@ namespace Player
     [System.Serializable]
     public class Move
     {
+        [SerializeField] LayerMask _ground;
+        [SerializeField] float _rayLong = 1.2f;
+
         [Header("水平移動")]
         [Header("地上 : 移動開始")]
         [Tooltip("低速移動速度"), SerializeField]
@@ -39,7 +42,7 @@ namespace Player
         private float _previousDir = 0f;
         private float _moveHorizontalDir = 1f;
 
-
+        Vector2 dir;
 
         private PlayerController _playerController;
 
@@ -90,6 +93,35 @@ namespace Player
             _playerController.Rigidbody2D.angularVelocity = _angularVelocity;
             _playerController.Rigidbody2D.velocity = _velocity;
         }
+
+        public bool CheckMoveDir(float inputH)
+        {
+            RaycastHit2D hit;
+            hit = Physics2D.Raycast(_playerController.Player.transform.position, -_playerController.Player.transform.up, _rayLong, _ground);
+            Vector2 moveDir = Vector2.right * inputH;
+            float angle = Vector3.Angle(Vector2.up, hit.normal);
+
+            dir = Quaternion.AngleAxis(angle, Vector3.forward) * moveDir;
+
+            Debug.DrawRay(_playerController.Player.transform.position, -_playerController.Player.transform.up * _rayLong, Color.blue);
+
+            if (hit.collider == null)
+            {
+                return false;
+            }
+            else
+            {
+                Debug.DrawRay(_playerController.Player.transform.position, dir * _rayLong, Color.blue);
+                return true;
+            }
+        }
+
+        public void DirReturn()
+        {
+
+        }
+
+
         public void Update()
         {
             //回避中は移動不可、の条件を追加した
@@ -98,6 +130,7 @@ namespace Player
                 return;
             }
 
+            var gameTime = GameManager.Instance.TimeController.PlayerTime;
 
             // 移動入力があるときの処理
             if (_playerController.InputManager.IsExist[InputType.MoveHorizontal] && CanMove)
@@ -107,12 +140,12 @@ namespace Player
                 // 方向を表す値を更新する。（右に相当する値なら1, 左に相当する値なら-1。）
                 _moveHorizontalDir = _playerController.InputManager.GetValue<float>(InputType.MoveHorizontal) > 0f ? 1f : -1f;
 
+
+                _playerController.PlayerAnimatorControl.SetPlayerDir(_moveHorizontalDir);
                 // 入力方向が切り替わった時の処理
                 if (Mathf.Abs(_previousDir - _moveHorizontalDir) > 0.1f)
                 {
                     //プレイヤーの向きを設定
-                    _playerController.PlayerAnimatorControl.SetPlayerDir(_moveHorizontalDir);
-
                     _toMoveTimer = 0f;
                     _currentHorizontalMoveMode = HorizontalMoveMode.Start;
                 }
@@ -128,12 +161,12 @@ namespace Player
                             _currentHorizontalMoveMode = HorizontalMoveMode.Start;
                             break;
                         case HorizontalMoveMode.Start:
-                            _currentHorizontalSpeed = _startSpeed * _moveHorizontalDir;
+                            _currentHorizontalSpeed = _startSpeed * _moveHorizontalDir * gameTime;
                             _toMoveTimer += Time.deltaTime;
                             if (_toMoveTimer > _toMoveTime) _currentHorizontalMoveMode = HorizontalMoveMode.Move;
                             break;
                         case HorizontalMoveMode.Move:
-                            _currentHorizontalSpeed = _moveSpeed * _moveHorizontalDir;
+                            _currentHorizontalSpeed = _moveSpeed * _moveHorizontalDir * gameTime;
                             break;
                         case HorizontalMoveMode.Deceleration:
                             _toMoveTimer = 0f;
@@ -146,8 +179,10 @@ namespace Player
                 {
                     _currentHorizontalMoveMode = HorizontalMoveMode.Move;
 
-                    _currentHorizontalSpeed += Time.deltaTime * _midairMoveAcceleration * _moveHorizontalDir;
+                    _currentHorizontalSpeed += Time.deltaTime * _midairMoveAcceleration * _moveHorizontalDir * gameTime;
                     if (_currentHorizontalSpeed > _maxMidairMoveSpeed) _currentHorizontalSpeed = _maxMidairMoveSpeed; // 最大速度を超えない
+                    else if (_currentHorizontalSpeed < -_maxMidairMoveSpeed) _currentHorizontalSpeed = -_maxMidairMoveSpeed;
+
                 }
             }
             // 入力がないとき、現在速度を減算する。
@@ -155,11 +190,11 @@ namespace Player
             {
                 if (_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX))
                 {
-                    _currentHorizontalSpeed -= Time.deltaTime * _landDeceleration * _moveHorizontalDir;
+                    _currentHorizontalSpeed -= Time.deltaTime * _landDeceleration * _moveHorizontalDir * gameTime;
                 } // 地上移動中の減速処理
                 else
                 {
-                    _currentHorizontalSpeed -= Time.deltaTime * _midairDeceleration * _moveHorizontalDir;
+                    _currentHorizontalSpeed -= Time.deltaTime * _midairDeceleration * _moveHorizontalDir * gameTime;
                 } // 空中移動中の減速処理
 
                 if (_moveHorizontalDir > 0f && _currentHorizontalSpeed < 0f ||
@@ -181,9 +216,17 @@ namespace Player
             }
 
             // 速度を割り当てる。
-            _playerController.Rigidbody2D.velocity =
-                    new Vector2(_currentHorizontalSpeed,
-                    _playerController.Rigidbody2D.velocity.y);
+
+            if (CheckMoveDir(_moveHorizontalDir))
+            {
+                _playerController.Rigidbody2D.velocity = Mathf.Abs( _currentHorizontalSpeed) * dir;
+            }
+            else
+            {
+                _playerController.Rigidbody2D.velocity =
+                        new Vector2(_currentHorizontalSpeed,
+                       _playerController.Rigidbody2D.velocity.y);
+            }
 
             if (CanJump)
             {
@@ -213,7 +256,7 @@ namespace Player
 
             if (_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX))
             {
-                _currentHorizontalSpeed -= Time.deltaTime * _landDeceleration * _playerController.Player.transform.localScale.x;
+                _currentHorizontalSpeed -= Time.deltaTime * _landDeceleration * _playerController.Player.transform.localScale.x * GameManager.Instance.TimeController.PlayerTime;
             } // 地上移動中の減速処理
 
             if (_playerController.Player.transform.localScale.x > 0f && _currentHorizontalSpeed < 0f ||
@@ -225,9 +268,16 @@ namespace Player
 
 
             // 速度を割り当てる。
-            _playerController.Rigidbody2D.velocity =
-                    new Vector2(_currentHorizontalSpeed,
-                    _playerController.Rigidbody2D.velocity.y);
+            if (CheckMoveDir(_previousDir))
+            {
+                _playerController.Rigidbody2D.velocity = _currentHorizontalSpeed * dir;
+            }
+            else
+            {
+                _playerController.Rigidbody2D.velocity =
+                        new Vector2(_currentHorizontalSpeed,
+                       _playerController.Rigidbody2D.velocity.y);
+            }
         }
 
 

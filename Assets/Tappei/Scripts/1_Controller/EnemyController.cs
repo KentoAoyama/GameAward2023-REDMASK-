@@ -1,8 +1,10 @@
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 /// <summary>
+/// 近接、遠距離、ドローン用
 /// 各振る舞いのクラスのメソッドを組み合わせて行動を制御するクラス
 /// </summary>
 [RequireComponent(typeof(SightSensor))]
@@ -15,29 +17,37 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     [SerializeField, TagName] private string _playerTagName;
     [Header("敵の各種パラメーターを設定したSO")]
     [Tooltip("各振る舞いのクラスはこのSO内の値を参照して機能する")]
-    [SerializeField] private EnemyParamsSO _enemyParamsSO; 
+    [SerializeField] protected EnemyParamsSO _enemyParamsSO; 
     [Header("デバッグ用:現在の状態を表示するText")]
     [SerializeField] private Text _text;
-    
+
+    protected ReactiveProperty<StateTypeBase> _currentState = new();
+    protected StateRegister _stateRegister = new();
+    protected MoveBehavior _moveBehavior;
     private Transform _player;
     private SightSensor _sightSensor;
-    private MoveBehavior _moveBehavior;
     private AttackBehavior _attackBehavior;
     private PerformanceBehavior _performanceBehavior;
-    private ReactiveProperty<StateTypeBase> _currentState = new();
-    private StateRegister _stateRegister = new();
+    private Animator _animator;
 
     public EnemyParamsSO Params => _enemyParamsSO;
 
-    /// <summary>撃破された際にtrueになるフラグ</summary>
+    /// <summary>Pause()が呼ばれるとtrueにResume()が呼ばれるとfalseになる</summary>
+    private bool _isPause;
+
+    /// <summary>
+    /// 撃破された際にtrueになるフラグ
+    /// このフラグが立ったらDefeated状態に遷移する
+    /// </summary>
     public bool IsDefeated { get; private set; }
 
-    private void Awake()
+    protected virtual void Awake()
     {
         _sightSensor = gameObject.GetComponent<SightSensor>();
         _moveBehavior = gameObject.GetComponent<MoveBehavior>();
         _attackBehavior = gameObject.GetComponent<AttackBehavior>();
         _performanceBehavior = gameObject.GetComponent<PerformanceBehavior>();
+        _animator = gameObject.GetComponentInChildren<Animator>();
         InitStateRegister();
         InitCurrentState();
     }
@@ -45,19 +55,28 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     private void Start()
     {
         _player = GameObject.FindGameObjectWithTag(_playerTagName).transform;
+        GameManager.Instance.PauseManager.Register(this);
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.PauseManager.Lift(this);
     }
 
     private void Update()
     {
+        if (_isPause) return;
+
         _currentState.Value = _currentState.Value.Execute();
 
+        // デバッグ用
         if (_text != null)
         {
             _text.text = _currentState.Value.ToString();
         }
     }
 
-    private void InitStateRegister()
+    protected virtual void InitStateRegister()
     {
         _stateRegister.Register(StateType.Idle, this);
         _stateRegister.Register(StateType.Search, this);
@@ -73,11 +92,11 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         _currentState.Value = _stateRegister.GetState(state);
     }
 
-    /// <summary>
-    /// 攻撃する
-    /// Attack状態の時、一定間隔で呼ばれる
-    /// </summary>
-    public void Attack() => _attackBehavior.Attack();
+    /// <summary>その場で攻撃する。Attack状態の時、一定間隔で呼ばれる</summary>
+    public virtual void Attack() => _attackBehavior.Attack();
+
+    /// <summary>その場で待機する。Idle状態の時、毎フレーム呼ばれる</summary>
+    public void Idle() => _moveBehavior.Idle();
 
     /// <summary>
     /// プレイヤーに向けて移動する
@@ -129,6 +148,9 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         }
     }
 
+    /// <summary>各ステートが再生するアニメーションを呼び出す</summary>
+    public void PlayAnimation(AnimationName name) => _animator.Play(Params.GetAnimationHash(name));
+
     public void DefeatedPerformance() => _performanceBehavior.Defeated();
     public void DiscoverPerformance() => _performanceBehavior.Discover();
 
@@ -139,12 +161,16 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
 
     public void Pause()
     {
-        // 各振る舞いのポーズ処理をまとめて呼ぶ
+        _isPause = true;
+        _currentState.Value.Pause();
+        _moveBehavior.Pause();
     }
 
     public void Resume()
     {
-        // 各振る舞いのポーズ解除処理をまとめて呼ぶ
+        _isPause = false;
+        _currentState.Value.Resume();
+        _moveBehavior.Resume();
     }
 
     /// <summary>撃破された際は非表示にして画面外に移動させる</summary>
@@ -152,8 +178,12 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     {
         IsDefeated = true;
         _performanceBehavior.Defeated();
-        gameObject.SetActive(false);
-        gameObject.transform.position = Vector3.one * 100;
+
+        DOVirtual.DelayedCall(Params.DefeatedStateTransitionDelay, () =>
+        {
+            gameObject.SetActive(false);
+            gameObject.transform.position = Vector3.one * 100;
+        }).SetLink(gameObject);
     }
 
 #if UNITY_EDITOR
@@ -172,9 +202,9 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         float turningPoint = Params.TurningPoint;
         Vector3 footPos = _moveBehavior.FootPos;
 
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(footPos + Vector3.right * turningPoint, 0.25f);
-        Gizmos.DrawSphere(footPos + Vector3.left * turningPoint, 0.25f);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(footPos + Vector3.right * turningPoint, 0.25f);
+        Gizmos.DrawWireSphere(footPos + Vector3.left * turningPoint, 0.25f);
     }
 
     private void DrawSight()

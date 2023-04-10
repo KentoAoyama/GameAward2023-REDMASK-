@@ -50,7 +50,7 @@ namespace Player
                     // UIで現在選択している弾を装填する
                     if (_playerController.BulletDataBase.Bullets.TryGetValue(
                             _playerController.UIController.BulletSelectUIPresenter.CurrentSelectBulletType,
-                            out BulletBase bullet))
+                            out Bullet2 bullet))
                     {
                         // 弾を減らす。弾を減らせなかった場合、処理しない。
                         if (_playerController.BulletCountManager.ReduceOneBullet(_playerController.UIController.BulletSelectUIPresenter.CurrentSelectBulletType))

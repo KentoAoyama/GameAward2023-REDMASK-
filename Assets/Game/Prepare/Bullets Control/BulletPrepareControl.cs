@@ -99,7 +99,7 @@ public class BulletPrepareControl : MonoBehaviour
             if (storageSiteType == StorageSiteType.GunBelt)
             {
                 // アジトの弾の数を増やす
-                GameManager.Instance.BulletsCountManager.BulletCountHome[_cylinder[index].Value].Value++;
+                GameManager.Instance.BulletsCountManager.BulletCountHome[_gunBelt[index].Value].Value++;
                 // ガンベルトの弾の状態を更新する
                 _gunBelt[index].Value = BulletType.NotSet;
                 return true;

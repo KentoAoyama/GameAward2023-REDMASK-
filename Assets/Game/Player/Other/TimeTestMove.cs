@@ -8,6 +8,7 @@ public class TimeTestMove : MonoBehaviour
 
     private void Update()
     {
-        _animator.speed = GameManager.Instance.TimeController.CurrentTimeScale.Value;
+        Debug.Log(GameManager.Instance.TimeController.EnemyTime);
+        _animator.speed = GameManager.Instance.TimeController.EnemyTime;
     }
 }

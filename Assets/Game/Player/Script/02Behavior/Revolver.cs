@@ -3,7 +3,6 @@ using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Player
 {
@@ -25,8 +24,10 @@ namespace Player
         private LineRenderer _aimingLineRenderer = null;
         [Tooltip("ガイドライン用レイヤーマスク"), SerializeField]
         private LayerMask _guidelineLayerMask = default;
-
-
+        [Tooltip("ガイドライン用レイヤーマスク"), SerializeField]
+        private LayerMask _bulletLayerMask = default;
+        [TagName, SerializeField]
+        private string _gameZone = default;
 
         private PlayerController _playerController = null;
         /// <summary> シリンダーを表現する値 </summary>
@@ -80,7 +81,7 @@ namespace Player
         /// <param name="bullet"> 装填する弾 </param>
         /// <param name="chamberNumber"> 装填するチェンバーの位置 </param>
         /// <returns> 装填に成功したかどうかを表す値 </returns>
-        public bool LoadBullet(BulletBase bullet, int chamberNumber)
+        public bool LoadBullet(Bullet2 bullet, int chamberNumber)
         {
             try
             {
@@ -93,7 +94,14 @@ namespace Player
                 }
                 else
                 {
-                    OnChamberStateChanged?.Invoke(chamberNumber, bullet.Type);
+                    if (bullet == null)
+                    {
+                        OnChamberStateChanged?.Invoke(chamberNumber, BulletType.Empty);
+                    }
+                    else
+                    {
+                        OnChamberStateChanged?.Invoke(chamberNumber, bullet.Type);
+                    }
                     _cylinder[chamberNumber] = bullet;
                     return true;
                 }
@@ -161,22 +169,23 @@ namespace Player
                 _canFire = true;
                 return;
             }
-            // 弾であれば発射する。その後、殻薬莢が残る。
-            else if (_cylinder[_currentChamber] is BulletBase)
+            else if (_cylinder[_currentChamber] is Bullet2)
             {
-                var bullet = _cylinder[_currentChamber] as BulletBase;
-                // 弾を複製し、弾のセットアップ処理を実行する
+                var bullet = _cylinder[_currentChamber] as Bullet2;
+                // 弾を複製
                 var bulletClone = GameObject.Instantiate(bullet.gameObject, _muzzleTransform.position, Quaternion.identity);
-                var b = bulletClone.GetComponent<BulletBase>();
-                b.Setup(_aimingAngle);
-                if (b is ReflectBullet)
-                {
-                    (b as ReflectBullet).ToStart(GetPositions(b).ToArray());
-                }
+                // 弾のコンポーネントを取得
+                var bulletComponent = bulletClone.GetComponent<Bullet2>();
+                // 移動先のポジションを取得
+                var positions = GetPositions2ForBullet2(bulletComponent);
+
+                positions.RemoveAt(0); // 原点を除く
+                var positionsClone = new List<Vector2>(positions); // ポジションの集まりを持つリストを複製。（同じインスタンスを利用できない為）
+                bulletComponent.SetPositions(positionsClone); // ポジションをセット
+                bulletComponent.StartMove(); // 移動を開始
 
                 //弾を撃った場合に、カメラを揺らす
                 _playerController.CameraControl.RevolverShootShake();
-
 
                 _cylinder[_currentChamber] = _shellCase; // 殻薬莢を残す
                 OnChamberStateChanged?.Invoke(_currentChamber, BulletType.ShellCase);
@@ -202,7 +211,7 @@ namespace Player
         public void OnDrawAimingLine()
         {
             // 位置リストを取得
-            var potisitons = GetPositions(_cylinder[_currentChamber] as BulletBase);
+            var potisitons = GetPositions2ForGuideline(_cylinder[_currentChamber] as Bullet2);
             // ラインレンダラーにいくつの位置があるか教える
             _aimingLineRenderer.positionCount = potisitons.Count;
             // ラインレンダラーに各座標を教える
@@ -214,10 +223,12 @@ namespace Player
 
         /// <summary> ガイドライン用のポジションをまとめて持つリスト </summary>
         private List<Vector2> _potisions = new List<Vector2>();
-        /// <summary> ガイドライン用のポジションのリストを取得する。 </summary>
-        /// <param name="bullet"> 弾。種類によって異なるガイドラインを表示するので。 </param>
-        /// <returns> 位置リスト </returns>
-        private List<Vector2> GetPositions(BulletBase bullet)
+        /// <summary> ガイドライン用のポジションをまとめて持つリスト </summary>
+        private List<Vector2> _potisions2 = new List<Vector2>();
+        /// <summary> Bullet2のガイドライン用 </summary>
+        /// <param name="bullet"></param>
+        /// <returns></returns>
+        private List<Vector2> GetPositions2ForGuideline(Bullet2 bullet)
         {
             _potisions.Clear(); // リストをクリア
             _potisions.Add(_muzzleTransform.position); // 原点を追加
@@ -237,20 +248,28 @@ namespace Player
                 case BulletType.PenetrateBullet: // 貫通弾のガイドラインポジションをリストに追加
                     // レイを飛ばす
                     var hitsPen = Physics2D.RaycastAll(_muzzleTransform.position, _aimingAngle, bullet.GuidelineLength, _guidelineLayerMask);
-                    var penetrate = bullet as PenetrateBullet;
+                    var penetrate = bullet as PenetrateBullet2;
                     var lengthPen = bullet.GuidelineLength; // 半端分用の値
+                    bool _isHitGameZone = false;
                     // 何かにヒットしていれば貫通して最終的に届く位置まで取得する
                     for (int i = 0; i < hitsPen.Length && i < penetrate.MaxWallHitNumber + 1; i++)
                     {
                         _potisions.Add(hitsPen[i].point);
                         lengthPen -= (_potisions[_potisions.Count - 1] - _potisions[_potisions.Count - 2]).magnitude;
+
+                        if (_isHitGameZone = hitsPen[i].collider.tag == _gameZone)
+                        {
+                            break;
+                        }
                     }
                     // 半端分が余っているときの処理。
-                    if (hitsPen.Length <= penetrate.MaxWallHitNumber)
+                    if (hitsPen.Length <= penetrate.MaxWallHitNumber && !_isHitGameZone)
+                    {
                         _potisions.Add(_potisions[_potisions.Count - 1] + _aimingAngle.normalized * lengthPen);
+                    }
                     break;
                 case BulletType.ReflectBullet: // 反射弾のガイドラインポジションをリストに追加
-                    var reflect = bullet as ReflectBullet; // 本来の型に変換
+                    var reflect = bullet as ReflectBullet2; // 本来の型に変換
                     var length = reflect.GuidelineLength;  // 残りの長さ
                     Vector2 pos = _muzzleTransform.position; // 位置を保存する用の変数。（初期位置は、マズルの位置）
                     Vector2 dir = _aimingAngle; // 最初の角度ベクトル。（初期位置は、プレイヤーからマウス座標へのベクトルか右スティックの角度）
@@ -267,6 +286,11 @@ namespace Player
                             length -= (pos - hit.point).magnitude;             // 長さを減算
                             pos = hit.point;                                   // 位置を更新
                             dir = Vector2.Reflect(dir, hit.normal.normalized); // 角度を反転
+
+                            if (hit.collider.tag == _gameZone)
+                            {
+                                break;
+                            }
                         }
                         else // レイが当たらなかった時の処理
                         {
@@ -278,6 +302,83 @@ namespace Player
                 default: return _potisions;
             }
             return _potisions;
+        }
+        /// <summary> 
+        /// Bullet2の実際の弾用 <br/>
+        /// ガイドライン用と異なる点 <br/>
+        /// GuideLineLengthに関係なくどこまでも飛ぶ。
+        /// </summary>
+        /// <param name="bullet"></param>
+        /// <returns></returns>
+        private List<Vector2> GetPositions2ForBullet2(Bullet2 bullet)
+        {
+            _potisions2.Clear(); // リストをクリア
+            _potisions2.Add(_muzzleTransform.position); // 原点を追加
+
+            if (bullet == null) return _potisions2;
+
+            switch (bullet.Type)
+            {
+                case BulletType.StandardBullet: // 標準弾のガイドラインポジションをリストに追加
+                    // 原点から指定の方向にレイを飛ばす。
+                    var hitStd = Physics2D.Raycast(_muzzleTransform.position, _aimingAngle, 1000f, _bulletLayerMask);
+                    // レイがヒットしたらその位置をリストに追加
+                    if (hitStd.collider != null) _potisions2.Add(hitStd.point);
+                    // ヒットしなかったらレイの先端位置をリストに追加
+                    else _potisions2.Add(_muzzleTransform.position + (Vector3)_aimingAngle.normalized * 1000f);
+                    break;
+                case BulletType.PenetrateBullet: // 貫通弾のガイドラインポジションをリストに追加
+                    // レイを飛ばす
+                    var hitsPen = Physics2D.RaycastAll(_muzzleTransform.position, _aimingAngle, 1000f, _bulletLayerMask);
+                    var penetrate = bullet as PenetrateBullet2;
+                    bool _isHitGameZone = false;
+                    // 何かにヒットしていれば貫通して最終的に届く位置まで取得する
+                    for (int i = 0; i < hitsPen.Length && i < penetrate.MaxWallHitNumber + 1; i++)
+                    {
+                        _potisions2.Add(hitsPen[i].point);
+                        if (_isHitGameZone = hitsPen[i].collider.tag == _gameZone)
+                        {
+                            break;
+                        }
+                    }
+                    // 半端分が余っているときの処理。
+                    if (hitsPen.Length <= penetrate.MaxWallHitNumber && !_isHitGameZone)
+                    {
+                        _potisions2.Add(_potisions2[_potisions2.Count - 1] + _aimingAngle.normalized * 1000f);
+                    }
+                    break;
+                case BulletType.ReflectBullet: // 反射弾のガイドラインポジションをリストに追加
+                    var reflect = bullet as ReflectBullet2; // 本来の型に変換
+                    Vector2 pos = _muzzleTransform.position; // 位置を保存する用の変数。（初期位置は、マズルの位置）
+                    Vector2 dir = _aimingAngle; // 最初の角度ベクトル。（初期位置は、プレイヤーからマウス座標へのベクトルか右スティックの角度）
+                    RaycastHit2D hit; // レイのヒット情報
+
+                    for (int i = 0; i < reflect.MaxWallCollisionCount; i++)
+                    {
+                        // 位置の計算についてメモ(レイが対象に埋まるのでちょっとずらす)
+                        hit = Physics2D.Raycast(pos + dir * 0.01f, dir, 1000f, _bulletLayerMask);
+
+                        if (hit.collider != null) // レイが当たった時の処理
+                        {
+                            _potisions2.Add(hit.point);                         // 当たった位置をリストに追加
+                            pos = hit.point;                                   // 位置を更新
+                            dir = Vector2.Reflect(dir, hit.normal.normalized); // 角度を反転
+
+                            if (hit.collider.tag == _gameZone)
+                            {
+                                break;
+                            }
+                        }
+                        else // レイが当たらなかった時の処理
+                        {
+                            _potisions2.Add(pos + dir.normalized * 1000f);
+                            break;
+                        }
+                    }
+                    break;
+                default: return _potisions2;
+            }
+            return _potisions2;
         }
     }
 }
