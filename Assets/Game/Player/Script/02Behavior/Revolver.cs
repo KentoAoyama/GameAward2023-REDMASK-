@@ -77,6 +77,9 @@ namespace Player
             }
         }
 
+
+
+
         /// <summary> 弾を装填する </summary>
         /// <param name="bullet"> 装填する弾 </param>
         /// <param name="chamberNumber"> 装填するチェンバーの位置 </param>

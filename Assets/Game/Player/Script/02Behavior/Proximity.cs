@@ -77,6 +77,9 @@ namespace Player
                     //攻撃中
                     _isAttackNow = true;
 
+                    //リロードを中断する
+                    _playerController.RevolverOperator.StopRevolverReLoad();
+
                     AttckStart();
                 }
             }

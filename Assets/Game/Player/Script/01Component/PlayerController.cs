@@ -15,13 +15,6 @@ namespace Player
     [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerController : MonoBehaviour, IPausable, IDamageable
     {
-
-        [SerializeField]
-        public GameObject _camerad;
-
-        [Header("Test用。GameOverのUI")]
-        [Tooltip("Test用。GameOverのUI"), SerializeField] private GameObject _gameOverUI;
-
         [Header("プレイヤーのオブジェクト")]
         [Tooltip("プレイヤーのオブジェクト"), SerializeField]
         private GameObject _player;
@@ -33,9 +26,6 @@ namespace Player
         [Header("プレイヤーについているシネマシーン")]
         [Tooltip("プレイヤーのアニメーター"), SerializeField]
         private CinemachineVirtualCamera _camera;
-
-
-
 
         [Tooltip("プレイヤーのUIを管理するクラス"), SerializeField]
         private UIController _uIController;
@@ -68,10 +58,7 @@ namespace Player
 
         private Rigidbody2D _rigidbody2D = null;
 
-        /// <summary>死亡しているかどうかを示す</summary>
-        private bool _isDead = false;
 
-        public bool IsDead => _isDead;
         public GameObject Player => _player;
 
         public CinemachineVirtualCamera Camera => _camera;
@@ -116,20 +103,16 @@ namespace Player
         }
         private void Update()
         {
-            if (!_isDead)
-            {
-                DeviceManager.Update();       // デバイス制御
-                DirectionControler.Update();  // 方向制御
+            DeviceManager.Update();       // デバイス制御
+            DirectionControler.Update();  // 方向制御
 
-                _move.Update();               // 移動処理
-                _revolverOperator.Update();   // リボルバー操作の更新
-                _revolver.Update();           // リボルバーの更新処理
-                _revolver.OnDrawAimingLine(); // 照準描画処理（カメラの更新タイミングと合わせる必要有り）
-                _avoidance.Update();          // 回避制御
-                _proximity.Update();          //近接攻撃
+            _move.Update();               // 移動処理
+            _revolverOperator.Update();   // リボルバー操作の更新
+            _revolver.Update();           // リボルバーの更新処理
+            _revolver.OnDrawAimingLine(); // 照準描画処理（カメラの更新タイミングと合わせる必要有り）
+            _avoidance.Update();          // 回避制御
+            _proximity.Update();          //近接攻撃
 
-                //_camraControl.CameraShakeSpeed(); //カメラの再生速度
-            }
         }
         private void OnDrawGizmosSelected()
         {
@@ -137,55 +120,18 @@ namespace Player
             _proximityHitChecker.OnDrawGizmos(transform, DirectionControler.MovementDirectionX);
         }
 
-
-        /// <summary>ゲームクリア時に呼ぶ、ホームに弾を追加</summary>
-        public void StageComplete()
-        {
-            _bulletCountManager.HomeBulletAddEndStage();
-            GameManager.Instance.BulletsCountManager.Clear();
-        }
-
         #region Test
-
-
-        [Header("Test用に、Sceneで設定したものを使うならTrueにしてね")]
-        [SerializeField]
-        private bool _isTestRevoler = true;
-
         [Header("リボルバーテスト用")]
         [SerializeField]
         private Bullet2 _basicBullet = default;
-
         /// <summary>
         /// 全てのチェンバーに弾を装填する
         /// </summary>
-        private async void TestRevolverLoading()
+        private void TestRevolverLoading()
         {
-            if (_isTestRevoler)
+            for (int i = 0; i < _revolver.Cylinder.Length; i++)
             {
-                for (int i = 0; i < _revolver.Cylinder.Length; i++)
-                {
-                    _revolver.LoadBullet(_basicBullet, i);
-                }
-            }   //Test用に、Sceneで設定したものを使う
-            else
-            {
-                for (int i = 0; i < _revolver.Cylinder.Length; i++)
-                {
-                    await UniTask.WaitUntil(() => BulletDataBase.IsInit);
-                    BulletDataBase.Bullets.TryGetValue(GameManager.Instance.BulletsCountManager.Cylinder[i], out Bullet2 bullet);
-                    _revolver.LoadBullet(bullet, i);
-                }
-            }　//アジトで設定したものを使う
-        }
-        private IStoreableInChamber BulletTypeTofIStoreableInChamber(BulletType bulletType)
-        {
-            switch (bulletType)
-            {
-                case BulletType.StandardBullet: return _bulletDataBase.Bullets[bulletType];
-                case BulletType.PenetrateBullet: return _bulletDataBase.Bullets[bulletType];
-                case BulletType.ReflectBullet: return _bulletDataBase.Bullets[bulletType];
-                default: return default;
+                _revolver.LoadBullet(_basicBullet, i);
             }
         }
 
@@ -229,34 +175,10 @@ namespace Player
             _camraControl.Pause();
         }
 
-        /// <summary>ダメージを受けた時の処理</summary>
         public void Damage()
         {
-            //死体撃ちで、2回呼ばれないようにする
-            if (!_isDead)
-            {
-                //死亡した
-                _isDead = true;
 
-                //GameOverのUIを出す
-                _gameOverUI.SetActive(true);
-
-                //近接攻撃中に当たったら、近接攻撃を強制終了させる
-                _proximity.AttackEnd();
-
-                //死亡時のカメラの揺れ
-                _camraControl.DeadCameraShake();
-            }
         }
-
-        public void TestRetry()
-        {
-            _isDead = false;
-
-            //GameOverのUIを消す
-            _gameOverUI.SetActive(false);
-        }
-
         #endregion
     }
 }

@@ -14,7 +14,24 @@ namespace Player
     {
         private PlayerController _playerController = null;
 
-        
+        [Header("Test用。排莢を分かりやすくするためのText")]
+        [SerializeField] private GameObject _excretedText;
+
+        [Header("Test用。リロード中を分かりやすくするためのText")]
+        [SerializeField] private GameObject _setBulletText;
+
+        [Header("排莢にかかる時間")]
+        [SerializeField] private float _excretedPodsTime = 1;
+
+        private float _countExcretedPodsTime = 0;
+
+        [Header("排莢にかかる時間")]
+        [SerializeField] private float _setBulletTime = 1;
+
+        private float _countSetBulletTime = 0;
+
+        private bool _isExcretedPods = false;
+        private bool _isSetBullet = false;
 
         public void Init(PlayerController playerController)
         {
@@ -27,7 +44,7 @@ namespace Player
                 return;
             } // ポーズ中は何もできない
 
-            if(_playerController.Avoidance.IsAvoidanceNow)
+            if (_playerController.Avoidance.IsAvoidanceNow)
             {
                 return;
             } //回避中はできない
@@ -37,16 +54,93 @@ namespace Player
                 _playerController.Revolver.CanFire)
             {
                 _playerController.Revolver.Fire();
+
+                StopRevolverReLoad();
             }
+
             // リロード処理
             if (_playerController.InputManager.IsPressed[InputType.LoadBullet])
             {
-                // 排莢する
-                var cylinder = _playerController.Revolver.EjectShellsAll();
-                // 空いているチャンバーを検索する。
-                var index = FindEmptyChamber();
-                if (index != -1) // 空いているチャンバーが見つかった場合の処理
+                //排出、弾を籠めている最中に押して何度も呼ばれないようにする
+                if (_isExcretedPods || _isSetBullet) return;
+
+                bool isShallCase = false;
+
+                foreach (var cylinder in _playerController.Revolver.Cylinder)
                 {
+                    if (cylinder == null)
+                    {
+                        continue;
+                    }
+
+                    if (cylinder.Type == BulletType.ShellCase)
+                    {
+                        isShallCase = true;
+                    }
+
+                }
+
+                //空の薬莢が残っていたら排出
+                if (isShallCase)
+                {
+                    _isExcretedPods = true;
+                }
+                else
+                {
+                    // 空いているチャンバーを検索する。
+                    var index = FindEmptyChamber();
+
+                    if (index != -1) // 空いているチャンバーが見つかった場合の処理
+                    {
+                        _isSetBullet = true;
+                    }
+                    else
+                    {
+                        return;
+                    }  //チェンバーが空いていないので何もしない
+                }
+            }
+
+            //排莢の処理
+            if (_isExcretedPods)
+            {
+                /////////////////////////////////TEST用!!!!!!!!!!!!!!!!//////////////////////////
+                _excretedText.SetActive(true);
+
+                _countExcretedPodsTime += Time.deltaTime;
+                if (_excretedPodsTime < _countExcretedPodsTime)
+                {
+                    /////////////////////////////////TEST用!!!!!!!!!!!!!!!!//////////////////////////
+                    _excretedText.SetActive(false);
+
+                    // 排莢する
+                    var cylinder = _playerController.Revolver.EjectShellsAll();
+                    _countExcretedPodsTime = 0;
+
+                    _isExcretedPods = false;
+
+                    // 空いているチャンバーを検索する。
+                    var index = FindEmptyChamber();
+                    if (index != -1) // 空いているチャンバーが見つかった場合の処理
+                    {
+                        _isSetBullet = true;
+                    }
+                }
+            }
+            else if (_isSetBullet)   //弾を籠める処理
+            {
+                /////////////////////////////////TEST用!!!!!!!!!!!!!!!!//////////////////////////
+                _setBulletText.SetActive(true);
+
+                _countSetBulletTime += Time.deltaTime;
+                if (_setBulletTime < _countSetBulletTime)
+                {
+                    /////////////////////////////////TEST用!!!!!!!!!!!!!!!!//////////////////////////
+                    _setBulletText.SetActive(false);
+
+                    // 空いているチャンバーを検索する。
+                    var index = FindEmptyChamber();
+
                     // UIで現在選択している弾を装填する
                     if (_playerController.BulletDataBase.Bullets.TryGetValue(
                             _playerController.UIController.BulletSelectUIPresenter.CurrentSelectBulletType,
@@ -68,9 +162,30 @@ namespace Player
                             $"{_playerController.UIController.BulletSelectUIPresenter.CurrentSelectBulletType}" +
                             $"は登録されていません！修正してください！");
                     }
+
+                    _isSetBullet = false;
+                    _countSetBulletTime = 0;
                 }
+
             }
         }
+
+
+
+
+        /// <summary>他の行動をしたことによるリロードの中断</summary>
+        public void StopRevolverReLoad()
+        {
+            /////////////////////////////////TEST用!!!!!!!!!!!!!!!!//////////////////////////
+            _excretedText.SetActive(false);
+            _setBulletText.SetActive(false);
+
+            _isExcretedPods = false;
+            _isSetBullet = false;
+            _countSetBulletTime = 0;
+            _countExcretedPodsTime = 0;
+        }
+
         /// <summary> 空のチャンバーを見つける </summary>
         /// <returns> 空のチャンバーの位置。無い場合 -1を返す。 </returns>
         private int FindEmptyChamber()
