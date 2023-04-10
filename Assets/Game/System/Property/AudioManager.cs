@@ -5,12 +5,14 @@ using CriWare;
 
 public class AudioManager
 {
-    private FloatReactiveProperty _masterVolume = new FloatReactiveProperty();
-    private FloatReactiveProperty _bgmVolume = new FloatReactiveProperty();
-    private FloatReactiveProperty _seVolume = new FloatReactiveProperty();
+    private FloatReactiveProperty _masterVolume = new FloatReactiveProperty(1f);
+    private FloatReactiveProperty _bgmVolume = new FloatReactiveProperty(1f);
+    private FloatReactiveProperty _seVolume = new FloatReactiveProperty(1f);
 
     private CriAtomExPlayer _bgmPlayer = new CriAtomExPlayer();
+    private CriAtomExPlayback _bgmPlayback;
     private List<CriAtomExPlayer> _sePlayer = new List<CriAtomExPlayer>();
+    private List<CriAtomExPlayback> _sePlayback = new List<CriAtomExPlayback>();
 
     public IReadOnlyReactiveProperty<float> MasterVolume => _masterVolume;
     public IReadOnlyReactiveProperty<float> BGMVolume => _bgmVolume;
@@ -29,27 +31,36 @@ public class AudioManager
         _seVolume.Value = volume;
     }
 
-    private AudioManager()
+    public AudioManager()
     {
         MasterVolume.Subscribe(_ =>
         {
             _bgmPlayer.SetVolume(_masterVolume.Value * _bgmVolume.Value);
+            _bgmPlayer.Update(_bgmPlayback);
 
-            foreach (var n in _sePlayer)
+            for (int i = 0; i < _sePlayer.Count; i++)
             {
-                n.SetVolume(_masterVolume.Value * _seVolume.Value);
+                _sePlayer[i].SetVolume(_masterVolume.Value * _seVolume.Value);
+                _sePlayer[i].Update(_sePlayback[i]);
             }
         });
 
-        BGMVolume.Subscribe(_ => _bgmPlayer.SetVolume(_masterVolume.Value * _bgmVolume.Value));
+        BGMVolume.Subscribe(_ => 
+        {
+            _bgmPlayer.SetVolume(_masterVolume.Value * _bgmVolume.Value);
+            _bgmPlayer.Update(_bgmPlayback);
+        });
 
         SEVolume.Subscribe(_ =>
         {
-            foreach (var n in _sePlayer)
+            for(int i = 0; i < _sePlayer.Count; i++)
             {
-                n.SetVolume(_masterVolume.Value * _seVolume.Value);
+                _sePlayer[i].SetVolume(_masterVolume.Value * _seVolume.Value);
+                _sePlayer[i].Update(_sePlayback[i]);
             }
         });
+
+        CriAtom.AddCueSheet("CueSheet_0", "CueSheet_0.acb", "CueSheet_0.awb");
     }
     // ここに音を鳴らす関数を書いてください
 
@@ -63,7 +74,7 @@ public class AudioManager
         var temp = CriAtom.GetCueSheet(cueSheetName).acb;
 
         _bgmPlayer.SetCue(temp, cueName);
-        _bgmPlayer.Start();
+        _bgmPlayback = _bgmPlayer.Start();
     }
 
     public void StopBGM()
@@ -92,7 +103,7 @@ public class AudioManager
 
                 _sePlayer[i].SetVolume(volume * _seVolume.Value * _masterVolume.Value);
                 _sePlayer[i].SetCue(temp, cueName);
-                _sePlayer[i].Start();
+                _sePlayback[i] = _sePlayer[i].Start();
 
                 return i;
             }
@@ -104,7 +115,7 @@ public class AudioManager
 
         newAtomPlayer.SetVolume(volume * _seVolume.Value * _masterVolume.Value);
         newAtomPlayer.SetCue(tempAcb, cueName);
-        newAtomPlayer.Start();
+        _sePlayback.Add(newAtomPlayer.Start());
 
         _sePlayer.Add(newAtomPlayer);
         return _sePlayer.Count - 1;
