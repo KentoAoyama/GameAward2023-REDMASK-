@@ -184,6 +184,9 @@ namespace Player
                     if (_isCanAvoidance) _isDoAvoidance = true;
                 }
                 _countL2Time = 0;
+
+                //リロードを中断する
+                _playerController.RevolverOperator.StopRevolverReLoad();
             }
         }
         /// <summary>回避、時遅の実行時間を計測する</summary>

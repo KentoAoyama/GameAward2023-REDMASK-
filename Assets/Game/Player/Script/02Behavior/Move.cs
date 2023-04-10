@@ -44,6 +44,10 @@ namespace Player
 
         Vector2 dir;
 
+        private bool _isJump;
+        private float _countTime = 0;
+        private float _time = 0.7f;
+
         private PlayerController _playerController;
 
         /// <summary>
@@ -96,6 +100,18 @@ namespace Player
 
         public bool CheckMoveDir(float inputH)
         {
+            if (_isJump)
+            {
+                _countTime += Time.deltaTime;
+                if (_time < _countTime)
+                {
+                    _isJump = false;
+                    _countTime = 0;
+                }
+                return false;
+            }
+
+
             RaycastHit2D hit;
             hit = Physics2D.Raycast(_playerController.Player.transform.position, -_playerController.Player.transform.up, _rayLong, _ground);
             Vector2 moveDir = Vector2.right * inputH;
@@ -135,11 +151,19 @@ namespace Player
             // 移動入力があるときの処理
             if (_playerController.InputManager.IsExist[InputType.MoveHorizontal] && CanMove)
             {
+
+
+
                 // 1フレーム前の水平移動方向（入力方向）を保存しておく
                 _previousDir = _moveHorizontalDir;
                 // 方向を表す値を更新する。（右に相当する値なら1, 左に相当する値なら-1。）
                 _moveHorizontalDir = _playerController.InputManager.GetValue<float>(InputType.MoveHorizontal) > 0f ? 1f : -1f;
 
+                //止まっている状態から動き始めたら、リロード中断処理を実行
+                if (_previousDir == 0 || _moveHorizontalDir != 0)
+                {
+                    _playerController.RevolverOperator.StopRevolverReLoad();
+                }
 
                 _playerController.PlayerAnimatorControl.SetPlayerDir(_moveHorizontalDir);
                 // 入力方向が切り替わった時の処理
@@ -219,7 +243,7 @@ namespace Player
 
             if (CheckMoveDir(_moveHorizontalDir))
             {
-                _playerController.Rigidbody2D.velocity = Mathf.Abs( _currentHorizontalSpeed) * dir;
+                _playerController.Rigidbody2D.velocity = Mathf.Abs(_currentHorizontalSpeed) * dir;
             }
             else
             {
@@ -238,6 +262,11 @@ namespace Player
                     new Vector2(
                         _playerController.Rigidbody2D.velocity.x,
                         _jumpPower);
+
+                    _isJump = true;
+
+                    //リロードを中断する
+                    _playerController.RevolverOperator.StopRevolverReLoad();
                 }
             }
         }
