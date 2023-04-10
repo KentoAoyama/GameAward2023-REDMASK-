@@ -13,6 +13,8 @@ using DG.Tweening;
 [RequireComponent(typeof(PerformanceBehavior))]
 public class EnemyController : MonoBehaviour, IPausable, IDamageable
 {
+    private static string AnimationSpeedParam = "Speed";
+
     [Header("シーン上に配置されているプレイヤーのタグ")]
     [SerializeField, TagName] private string _playerTagName;
     [Header("敵の各種パラメーターを設定したSO")]
@@ -68,6 +70,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         if (_isPause) return;
 
         _currentState.Value = _currentState.Value.Execute();
+        _animator.SetFloat(AnimationSpeedParam, GameManager.Instance.TimeController.EnemyTime);
 
         // デバッグ用
         if (_text != null)
@@ -164,6 +167,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         _isPause = true;
         _currentState.Value.Pause();
         _moveBehavior.Pause();
+        _animator.SetFloat(AnimationSpeedParam, 0);
     }
 
     public void Resume()
@@ -171,6 +175,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         _isPause = false;
         _currentState.Value.Resume();
         _moveBehavior.Resume();
+        _animator.SetFloat(AnimationSpeedParam, GameManager.Instance.TimeController.EnemyTime);
     }
 
     /// <summary>撃破された際は非表示にして画面外に移動させる</summary>
