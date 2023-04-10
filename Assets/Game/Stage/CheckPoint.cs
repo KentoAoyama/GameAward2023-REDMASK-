@@ -10,7 +10,5 @@ public class CheckPoint : MonoBehaviour
     /// <summary>
     /// このチェックポイントが生きているかどうか
     /// </summary>
-    private bool _isAlive = true;
-
     public bool IsAlive { get; set; } = true;
 }
