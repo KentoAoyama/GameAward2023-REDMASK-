@@ -57,7 +57,7 @@ namespace UI
                     _chamber[targetChamberNumber].sprite = _shallCaseImage;
                     _chamber[targetChamberNumber].color = _shellCaseColor;
                 }
-                else if (_playerController.BulletDataBase.Bullets.TryGetValue(bulletType, out BulletBase result))
+                else if (_playerController.BulletDataBase.Bullets.TryGetValue(bulletType, out Bullet2 result))
                 {
                     _chamber[targetChamberNumber].color = Color.white;
                     _chamber[targetChamberNumber].sprite = result.CylinderUISprite;

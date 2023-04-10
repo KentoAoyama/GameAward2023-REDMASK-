@@ -6,23 +6,32 @@ using UnityEngine;
 /// </summary>
 public class StateTypeIdle : StateTypeBase
 {
-    private float _delay;
-    private float _time;
+    protected float _delay;
+    protected float _time;
 
     public StateTypeIdle(EnemyController controller, StateType stateType)
         : base(controller, stateType) { }
 
     protected override void Enter()
     {
-        // ƒ‰ƒ“ƒ_ƒ€‚ÈŽžŠÔ‚Å‘JˆÚ‚·‚é‚æ‚¤‚ÉÝ’è‚·‚é
-        float min = Controller.Params.MinDelayToTransition;
-        float max = Controller.Params.MaxDelayToTransition;
+        Controller.PlayAnimation(AnimationName.Idle);
 
+        // ƒ‰ƒ“ƒ_ƒ€‚ÈŽžŠÔ‚Å‘JˆÚ‚·‚é‚æ‚¤‚ÉÝ’è‚·‚é
+        float min = Controller.Params.MinTransitionTimeElapsed;
+        float max = Controller.Params.MaxTransitionTimeElapsed;
         _delay = Random.Range(min, max);
     }
 
     protected override void Stay()
     {
+        Controller.Idle();
+
+        if (Controller.IsDefeated)
+        {
+            TryChangeState(StateType.Defeated);
+            return;
+        }
+
         SightResult result = Controller.IsFindPlayer();
         if (result == SightResult.InSight || result == SightResult.InAttackRange)
         {
@@ -30,11 +39,12 @@ public class StateTypeIdle : StateTypeBase
             return;
         }
 
-        float timeScale = GameManager.Instance.TimeController.CurrentTimeScale.Value;
+        float timeScale = GameManager.Instance.TimeController.EnemyTime;
         _time += timeScale * Time.deltaTime;
         if (_time > _delay)
         {
             TryChangeState(StateType.Search);
+            return;
         }
     }
 

@@ -7,6 +7,24 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "ShieldEnemyParams_")]
 public class ShieldEnemyParamsSO : EnemyParamsSO
 {
+    public override StateType EntryState
+    {
+        get
+        {
+            // ƒtƒ‰ƒO‚ª—§‚Á‚Ä‚¢‚éê‡‚ÍIdleó‘Ô‚É‚¹‚¸Aí‚ÉSearchó‘Ô‚Æ‚È‚é
+            if (_isAlwaysSearching) return StateType.SearchExtend;
+
+            if (_entryState == State.Idle)
+            {
+                return StateType.IdleExtend;
+            }
+            else
+            {
+                return StateType.SearchExtend;
+            }
+        }
+    }
+
     [Header("UŒ‚‚³‚ê‚½ê‡‚Ìd’¼ŠÔ(•b)‚Ìİ’è")]
     [SerializeField] private float _stiffeningTime = 0.5f;
 
