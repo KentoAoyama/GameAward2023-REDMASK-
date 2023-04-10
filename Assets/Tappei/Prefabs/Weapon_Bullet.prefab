@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6250985844503329025}
   - component: {fileID: 8381049305356208410}
   - component: {fileID: -7024518274505260224}
+  - component: {fileID: 8925997407688691492}
   - component: {fileID: 7739563763425447393}
   m_Layer: 0
   m_Name: Weapon_Bullet
@@ -102,6 +103,27 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!50 &8925997407688691492
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 976015700519703472}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!114 &7739563763425447393
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,5 +136,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49d3181c6ccc4c8489de8eb4bdc713aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 1
-  _lifeTime: 2
+  PlayerTagName: Player
+  WallTagName: Wall
+  _speed: 24
