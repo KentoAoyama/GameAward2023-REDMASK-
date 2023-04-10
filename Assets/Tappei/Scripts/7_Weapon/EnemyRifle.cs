@@ -59,6 +59,6 @@ public class EnemyRifle : MonoBehaviour, IEnemyWeapon
         if (bullet == null) return;
 
         bullet.transform.position = _muzzle.position;
-        bullet.Shot(_muzzle.right);
+        bullet.SetVelocity(_muzzle.right);
     }
 }

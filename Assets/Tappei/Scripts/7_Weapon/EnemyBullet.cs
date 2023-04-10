@@ -1,43 +1,67 @@
-using UnityEngine;
-using DG.Tweening;
 using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// 指定した方向にまっすぐ飛ぶ敵弾のクラス
 /// EnemyRifleクラスにプールされており、発射する際にアクティブになる
 /// </summary>
-public class EnemyBullet : MonoBehaviour
+public class EnemyBullet : MonoBehaviour, IPausable
 {
+    /// <summary>途中で消えて違和感あるようだったらこの値を大きくする</summary>
+    private static float LifeTime = 3.0f;
+
+    [Header("ヒットするタグの設定")]
+    [Tooltip("プレイヤーのタグ")]
+    [SerializeField, TagName] private string PlayerTagName;
+    [Tooltip("壁などのステージ内のオブジェクトのタグ")]
+    [SerializeField, TagName] private string WallTagName;
     [Header("弾の設定")]
     [SerializeField] private float _speed;
-    [Tooltip("一定時間後に非アクティブになりプールに戻る")]
-    [SerializeField] private float _lifeTime;
 
-    private Stack<EnemyBullet> _pool;
-    private Tween _tween;
     private Transform _transform;
+    private Stack<EnemyBullet> _pool;
+    private Vector3 _velocity;
+    private float _timer;
+    private bool _isPause;
 
     private void Awake()
     {
         _transform = transform;
     }
 
-    private void OnDisable()
+    private void OnEnable()
     {
-        _tween?.Kill();
+        GameManager.Instance.PauseManager.Register(this);
     }
 
-    public void InitSetPool(Stack<EnemyBullet> pool) => _pool = pool;
-
-    /// <summary>
-    /// 発射される際にEnemyRifleクラスから呼び出される
-    /// 引数の方向に飛び、時間経過でプールに戻す
-    /// </summary>
-    public void Shot(Vector3 dir)
+    private void OnDisable()
     {
-        Vector3 forward = dir.normalized;
-        _tween = DOVirtual.DelayedCall(_lifeTime, ReturnPool)
-            .OnUpdate(() => _transform.Translate(forward * _speed * GameManager.Instance.TimeController.EnemyTime));
+        GameManager.Instance.PauseManager.Lift(this);
+    }
+
+    public void Pause() => _isPause = true;
+    public void Resume() => _isPause = false;
+
+    /// <summary>弾が生成された際にEnemyRifleクラスから呼び出される</summary>
+    public void InitSetPool(Stack<EnemyBullet> pool) => _pool = pool;
+    /// <summary>発射される際にEnemyRifleクラスから呼び出される</summary>
+    public void SetVelocity(Vector3 dir) => _velocity = dir * _speed;
+
+    void Update()
+    {
+        if (_isPause) return;
+
+        float deltaTime = Time.deltaTime * GameManager.Instance.TimeController.EnemyTime;
+
+        _timer += deltaTime;
+        if (_timer > LifeTime)
+        {
+            ReturnPool();
+        }
+        else
+        {
+            _transform.Translate(_velocity * deltaTime);
+        }
     }
 
     /// <summary>
@@ -46,16 +70,21 @@ public class EnemyBullet : MonoBehaviour
     /// </summary>
     private void ReturnPool()
     {
+        _timer = 0;
         gameObject.SetActive(false);
         _pool?.Push(this);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && 
+        if (collision.CompareTag(PlayerTagName) &&
             collision.gameObject.TryGetComponent(out IDamageable damageable))
         {
             damageable.Damage();
+            ReturnPool();
+        }
+        else if (collision.CompareTag(WallTagName))
+        {
             ReturnPool();
         }
     }
