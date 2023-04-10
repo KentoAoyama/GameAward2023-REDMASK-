@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine;
 using UnityEngine.Events;
@@ -57,6 +58,7 @@ public class PauseManager
         OnPause -= pausable.Pause;
         OnResume -= pausable.Resume;
     }
+    private int _cachedFrameCount = 0;
     /// <summary>
     /// ポーズの実行処理
     /// </summary>
@@ -65,6 +67,7 @@ public class PauseManager
         // 現在、ポーズ中でないときのみ 登録されているポーズ処理を実行する。（重複してポーズ処理を実行する必要はない。）
         if (PauseCounter == 0)
         {
+            _cachedFrameCount = Time.frameCount;
             Debug.Log("ポーズします。");
             _unityEventPause?.Invoke();
             OnPause?.Invoke();
@@ -82,11 +85,13 @@ public class PauseManager
     /// <summary>
     /// リジュームの実行処理
     /// </summary>
-    public void ExecuteResume(UnityEvent onResume = null)
+    public async void ExecuteResume(UnityEvent onResume = null)
     {
         // ポーズ回数カウンターを減算する。（カウンターは0より小さくならない）
         if (PauseCounter == 1)
         {
+            // 同一フレームでポーズとリジュームを行わない。少なくとも1フレーム待つ。
+            await UniTask.WaitUntil(() => _cachedFrameCount != Time.frameCount); 
             Debug.Log("リジュームします。");
             _unityEventResume?.Invoke();
             OnResume?.Invoke();
