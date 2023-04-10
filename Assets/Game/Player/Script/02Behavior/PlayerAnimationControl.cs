@@ -9,32 +9,16 @@ namespace Player
     [System.Serializable]
     public class PlayerAnimationControl
     {
+
         [Header("絵が右向きならTrueにしてください")]
         [Tooltip("絵が右向きならTrueに"), SerializeField]
         private bool _isRightDirOnPictuer = true;
 
-        [Header("Animatorのパラメータ名")]
+        [Tooltip("現在のキャラの絵の向き")]
+        private float _isNowPictureDir = 1;
 
-        [Header("走り_float")]
-        private string _xVelocityParameta = "";
-
-
-        [Header("設置判定_bool")]
-        private bool _isGroundParameta = false;
-
-        [Header("死亡アニメーション。Animatorの名前")]
-        [Tooltip("絵が右向きならTrueに"), SerializeField]
-        private string _deadAnimName = "死亡アニメーション。Animatorの名前";
-
-
-        /// <summary>現在のキャラの移動の入力の向き</summary>
+        [Tooltip("現在のキャラの移動の入力の向き")]
         private float _moveHorizontalDir = 1;
-
-
-
-
-
-
 
         public float MoveDir { get => _moveHorizontalDir; set => _moveHorizontalDir = value; }
 
@@ -42,7 +26,6 @@ namespace Player
         public bool IsPause { get; private set; } = false;
 
         private PlayerController _playerController;
-
 
         public void Init(PlayerController playerController)
         {
@@ -84,7 +67,7 @@ namespace Player
             //プレイヤーのイラストの向きによって、左右反転の仕方を変える
             if (_isRightDirOnPictuer)
             {
-                _playerController.Player.transform.localScale = new Vector3(_moveHorizontalDir, 1, 1);
+                _playerController.Player.transform.localScale= new Vector3(_moveHorizontalDir, 1, 1);
             }
             else
             {
@@ -99,11 +82,6 @@ namespace Player
 
         }
 
-        /// <summary>死亡アニメーションを再生</summary>
-        public void Dead()
-        {
-            _playerController.PlayerAnim.Play(_deadAnimName);
-        }
 
     }
 }

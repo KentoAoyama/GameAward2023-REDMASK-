@@ -6,14 +6,14 @@ public class MuzzleFlashController : MonoBehaviour
     /// <summary>アニメーションさせるParticle</summary>
     private ParticleSystem _particleSystem;
     /// <summary>アニメーションさせるLight2D</summary>
-    private SpriteRenderer _renderer;
+    private Light2D _light2D;
 
     private void Awake()
     {
         _particleSystem = GetComponentInChildren<ParticleSystem>();
-        _renderer = GetComponentInChildren<SpriteRenderer>();
+        _light2D = GetComponentInChildren<Light2D>();
 
-        _renderer.enabled = false;
+        _light2D.enabled = false;
     }
 
     /// <summary>Particleを呼び出す</summary>
@@ -25,12 +25,12 @@ public class MuzzleFlashController : MonoBehaviour
     /// <summary>ライトを有効にする</summary>
     private void LightEnable()
     {
-        _renderer.enabled = true;
+        _light2D.enabled = true;
     }
 
     /// <summary>ライトを無効にする</summary>
     private void LightDisable()
     {
-        _renderer.enabled = false;
+        _light2D.enabled = false;
     }
 }

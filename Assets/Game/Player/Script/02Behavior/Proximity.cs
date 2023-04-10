@@ -121,12 +121,12 @@ namespace Player
         }
 
 
-        public void AttackEnd()
+        private void AttackEnd()
         {
 
             Debug.Log("近接攻撃終わり！");
             //試験的に、色を変える    
-            _spriteRenderer.color = Color.white;
+            _spriteRenderer.color = Color.black;
 
             //攻撃中
             _isAttackNow = false;

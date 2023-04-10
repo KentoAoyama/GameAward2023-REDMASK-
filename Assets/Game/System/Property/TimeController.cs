@@ -9,28 +9,6 @@ using UniRx;
 /// </summary>
 public class TimeController
 {
-    public TimeController()
-    {
-        _timeInformation = Resources.Load<TimeInformation>("Time Information");
-    }
-    private TimeInformation _timeInformation = null;
-
-    private float _playerTime = 1;
-
-    private float _bulletTime = 1;
-
-    private float _enemyTime = 1;
-
-    private float _cameraTime = 1;
-
-    public float PlayerTime => _playerTime;
-
-    public float EnemyTime => _enemyTime;
-
-    public float BulletTime => _bulletTime;
-
-    public float CameraTime => _cameraTime;
-
     /// <summary> 現在の時間速度 </summary>
     private ReactiveProperty<float> _currentTimeScale = new ReactiveProperty<float>(1f);
 
@@ -38,23 +16,13 @@ public class TimeController
     public IReadOnlyReactiveProperty<float> CurrentTimeScale => _currentTimeScale;
 
     /// <summary> 時間の速度を変更する </summary>
-    public void ChangeTimeSpeed(bool isSlow)
+    public void ChangeTimeSpeed(float value)
     {
-        if (isSlow)
+        if (value < 0f)
         {
-            _playerTime = _timeInformation.PlayerSlowSpeed;
-            _enemyTime = _timeInformation.EnemySlowSpeed;
-            _bulletTime = _timeInformation.BulletSlowSpeed;
-            _cameraTime = _timeInformation.CameraSpeed;
+            Debug.LogWarning($"無効な値が渡されました。\n渡された値 :{value}");
+            return;
         }
-        else
-        {
-            _playerTime = 1;
-            _enemyTime = 1;
-            _bulletTime = 1;
-            _cameraTime = 1;
-        }
+        _currentTimeScale.Value = value;
     }
-
-
 }

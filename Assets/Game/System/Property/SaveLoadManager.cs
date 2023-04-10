@@ -71,24 +71,16 @@ public class SaveLoadManager
     /// <returns> ロードしたオブジェクト。ロードに失敗した場合nullを返す。 </returns>
     public static T Load<T>(string fileName)
     {
-        try
-        {
-            // ファイルへのパスを取得する
-            var path = Application.persistentDataPath + "\\" + fileName + ".json";
-            // ファイルを読み込む
-            var byteData = File.ReadAllBytes(path);
-            // 復号化する
-            byteData = AesDecrypt(byteData);
-            // バイト列をstring型にエンコード（変換）する
-            var json = Encoding.UTF8.GetString(byteData);
-            // json形式の文字列をT型に戻し、結果を返す。
-            return JsonUtility.FromJson<T>(json);
-        }
-        catch (FileNotFoundException)
-        {
-            // Debug.LogWarning("ファイルがないのでスキップ");
-            return default(T);
-        }
+        // ファイルへのパスを取得する
+        var path = Application.persistentDataPath + "\\" + fileName + ".json";
+        // ファイルを読み込む
+        var byteData = File.ReadAllBytes(path);
+        // 復号化する
+        byteData = AesDecrypt(byteData);
+        // バイト列をstring型にエンコード（変換）する
+        var json = Encoding.UTF8.GetString(byteData);
+        // json形式の文字列をT型に戻し、結果を返す。
+        return JsonUtility.FromJson<T>(json);
     }
 
     /// <summary> AES暗号化 </summary>

@@ -6,15 +6,10 @@ public enum StateType
 {
     Unknown,
     Idle,
-    IdleExtend,
     Search,
-    SearchExtend,
     Discover,
-    DiscoverExtend,
     Move,
-    MoveExtend,
     Attack,
-    AttackExtend,
     Defeated,
     Reflection,
 }
@@ -41,6 +36,6 @@ public enum AnimationName
     Discover,
     Move,
     Attack,
-    Dead,
+    Death,
     Reflection,
 }

@@ -11,14 +11,12 @@ namespace Player
 
     public class CameraShake
     {
-        [Header("死亡事にカメラの揺らすかどうか")]
-        [Tooltip("プレイヤーのオブジェクト"), SerializeField]
-        private bool _isDeadCameraChake = false;
-
         private PlayerController _playerController;
 
         private CinemachineImpulseSource _source;
         CinemachineImpulseListener impulseListener;
+
+        Vector3 saveVelo;
 
         public void Init(PlayerController playerController)
         {
@@ -27,29 +25,11 @@ namespace Player
             impulseListener = _playerController.Camera.GetComponent<CinemachineImpulseListener>();
         }
 
-        public void SlowCamera()
-        {
-
-        }
-
 
         public void RevolverShootShake()
         {
             _source.GenerateImpulse();
-        }
 
-        public void DeadCameraShake()
-        {
-            if (_isDeadCameraChake)
-            {
-                //カメラを揺らす
-                _source.GenerateImpulse();
-            }
-            else
-            {
-                //カメラの揺れを止める
-                impulseListener.enabled = false;
-            }
         }
 
         public async void Pause()
