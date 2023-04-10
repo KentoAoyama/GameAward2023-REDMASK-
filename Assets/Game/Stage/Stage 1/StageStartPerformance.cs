@@ -1,7 +1,7 @@
 // 日本語対応
 using Cysharp.Threading.Tasks;
 
-public class StageOneStartPerformance : StageStartEventBase
+public class StageStartPerformance : StageStartEventBase
 {
     protected override UniTask StartPerformance()
     {
