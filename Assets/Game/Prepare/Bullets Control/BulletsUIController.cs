@@ -55,15 +55,19 @@ public class BulletsUIController : MonoBehaviour
             switch (bulletType)
             {
                 case BulletType.StandardBullet:
+                    _cylinder[index].color = Color.white;
                     _cylinder[index].sprite = _standardBulletCylinder;
                     break;
                 case BulletType.PenetrateBullet:
+                    _cylinder[index].color = Color.white;
                     _cylinder[index].sprite = _penetrateBulletCylinder;
                     break;
                 case BulletType.ReflectBullet:
+                    _cylinder[index].color = Color.white;
                     _cylinder[index].sprite = _reflectBulletCylinder;
                     break;
                 default:
+                    _cylinder[index].color = Color.clear;
                     _cylinder[index].sprite = null;
                     break;
             }
@@ -81,15 +85,19 @@ public class BulletsUIController : MonoBehaviour
             switch (bulletType)
             {
                 case BulletType.StandardBullet:
+                    _gunBelt[index].color = Color.white;
                     _gunBelt[index].sprite = _standardBulletGunBelt;
                     break;
                 case BulletType.PenetrateBullet:
+                    _gunBelt[index].color = Color.white;
                     _gunBelt[index].sprite = _penetrateBulletGunBelt;
                     break;
                 case BulletType.ReflectBullet:
+                    _gunBelt[index].color = Color.white;
                     _gunBelt[index].sprite = _reflectBulletGunBelt;
                     break;
                 default:
+                    _gunBelt[index].color = Color.clear;
                     _gunBelt[index].sprite = null;
                     break;
             }
