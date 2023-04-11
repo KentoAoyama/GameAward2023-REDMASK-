@@ -16,12 +16,6 @@ public abstract class StageCompleteEventBase : MonoBehaviour
     public UnityEvent OnStageComplete => _onStageComplete;
     public UnityEvent OnComplete => _onPerformanceComplete;
 
-    private void Awake()
-    {
-        // シーン起動時に自身を非アクティブにする。
-        // シーン起動時にステージクリア時の演出は不要であるため。
-        this.gameObject.SetActive(false);
-    }
     private async void Start()
     {
         // ポーズする

@@ -135,14 +135,6 @@ public class BulletPrepareControl : MonoBehaviour
             }
             // ガンベルトの状態を保存
             GameManager.Instance.BulletsCountManager.BulletCountStage[type].Value = count;
-
-            // 現在走査している種類と合致する,シリンダーにある弾の総数を取得する。
-            for (int i = 0; i < _cylinder.Length; i++)
-            {
-                if (_cylinder[i].Value == type) count++;
-            }
-            // アジトの弾の数を更新
-            GameManager.Instance.BulletsCountManager.BulletCountHome[type].Value -= count;
         }
         BulletType[] bullets = new BulletType[_cylinder.Length];
         for (int i = 0; i < bullets.Length; i++)
