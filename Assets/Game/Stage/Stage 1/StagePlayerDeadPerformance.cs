@@ -1,10 +1,13 @@
 // 日本語対応
 using Cysharp.Threading.Tasks;
 
+/// <summary>
+/// プレイヤー死亡時用コンポーネント
+/// </summary>
 public class StagePlayerDeadPerformance : PlayerDeadEventBase
 {
-    protected override UniTask PlayerDeadPerformance()
+    protected async override UniTask PlayerDeadPerformance()
     {
-        return default;
+
     }
 }
