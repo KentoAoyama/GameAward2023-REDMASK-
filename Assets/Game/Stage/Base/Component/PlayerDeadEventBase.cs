@@ -16,11 +16,6 @@ public abstract class PlayerDeadEventBase : MonoBehaviour
     public UnityEvent OnPlayerDead => _onPlayerDead;
     public UnityEvent OnComplete => _onPerformanceComplete;
 
-    private void Awake()
-    {
-        // シーン起動時に死亡演出は不要であるため自身を非アクティブにする。
-        this.gameObject.SetActive(false);
-    }
     private async void Start()
     {
         // ポーズする
