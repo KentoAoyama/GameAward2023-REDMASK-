@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
 using Bullet;
+using System;
 
 /// <summary>
 /// 準備画面用 <br/>
@@ -17,19 +18,32 @@ public class PrepareBulletsNumberPresenter : MonoBehaviour
     [SerializeField]
     private Text _reflectBulletNum;
 
-    private void Awake()
+    private IDisposable _standardDisposable = null;
+    private IDisposable _penetrateDisposable = null;
+    private IDisposable _reflectDisposable = null;
+
+    private void OnEnable()
     {
+        _standardDisposable =
         GameManager.Instance.BulletsCountManager.
             BulletCountHome[BulletType.StandardBullet].Subscribe(value =>
             _standardBulletNum.text = $"標準弾の残りの数\n{value}");
 
+        _penetrateDisposable =
         GameManager.Instance.BulletsCountManager.
             BulletCountHome[BulletType.PenetrateBullet].Subscribe(value =>
             _penetrateBulletNum.text = $"貫通弾の残りの数\n{value}");
 
+        _reflectDisposable =
         GameManager.Instance.BulletsCountManager.
             BulletCountHome[BulletType.ReflectBullet].Subscribe(value =>
             _reflectBulletNum.text = $"反射" +
             $"弾の残りの数\n{value}");
+    }
+    private void OnDisable()
+    {
+        _standardDisposable.Dispose();
+        _penetrateDisposable.Dispose();
+        _reflectDisposable.Dispose();
     }
 }
