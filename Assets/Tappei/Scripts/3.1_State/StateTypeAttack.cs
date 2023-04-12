@@ -24,8 +24,6 @@ public class StateTypeAttack : StateTypeBase
 
     protected override void Stay()
     {
-        // TODO:ƒvƒŒƒCƒ„[‚Æ‚Íí‚Éˆê’è‹——£‚É‚¢‚Ä‚Ù‚µ‚¢
-
         _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime * AttackTimerMag;
         if (_time > Controller.Params.AttackRate)
         {
