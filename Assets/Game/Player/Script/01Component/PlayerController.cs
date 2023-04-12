@@ -90,7 +90,7 @@ namespace Player
             _groungChecker.Init(transform);
             _directionControler.Init(transform);
             _revolver.Init(this);
-            _bulletCountManager.Setup();
+            _bulletCountManager.Setup(this);
             _revolverOperator.Init(this);
             _bulletDataBase.Init();
             _avoidance.Init(this);
