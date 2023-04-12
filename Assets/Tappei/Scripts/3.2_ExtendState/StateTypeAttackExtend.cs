@@ -14,10 +14,13 @@ public class StateTypeAttackExtend : StateTypeAttack
         _shieldController = controller as ShieldEnemyController;
     }
 
+    protected override void Enter()
+    {
+        // このステートに入るたびに攻撃をする
+    }
+
     protected override void Stay()
     {
-        // TODO:プレイヤーとは常に一定距離にいてほしい
-
         if (Controller.IsDefeated)
         {
             TryChangeState(StateType.Defeated);

@@ -2,7 +2,6 @@ using UnityEngine;
 
 /// <summary>
 /// 攻撃を行う際に使用するクラス
-/// 各ステートからBehaviorFacadeクラス経由で呼び出される
 /// </summary>
 public class AttackBehavior : MonoBehaviour
 {
