@@ -2,6 +2,7 @@
 using Bullet;
 using System.Collections.Generic;
 using UniRx;
+using UnityEngine;
 
 /// <summary>
 /// 弾の数を覚えておくクラス
@@ -31,6 +32,15 @@ public class BulletsCountManager : ISavable
 
     public Dictionary<BulletType, IntReactiveProperty> BulletCountHome => _bulletCountHome;
     public Dictionary<BulletType, IntReactiveProperty> BulletCountStage => _bulletCountStage;
+
+    public BulletsCountManager()
+    {
+        // 各弾の初期所持数を設定する
+        _bulletCountHome[BulletType.StandardBullet].Value = 20;
+        _bulletCountHome[BulletType.PenetrateBullet].Value = 8;
+        _bulletCountHome[BulletType.ReflectBullet].Value = 12;
+    }
+
     public BulletType[] Cylinder
     {
         get => _cylinder; set => _cylinder = value;
@@ -40,15 +50,15 @@ public class BulletsCountManager : ISavable
 
     public void Save()
     {
-        SaveLoadManager.Save<BulletsCountManager>(this, _saveFileName);
+        //SaveLoadManager.Save<BulletsCountManager>(this, _saveFileName);
     }
     public void Load()
     {
-        var temp = SaveLoadManager.Load<BulletsCountManager>(_saveFileName);
-        if (temp == null) return; // 読み込みに失敗した場合は処理しない。
-        _bulletCountHome = temp._bulletCountHome;
-        _bulletCountStage = temp._bulletCountStage;
-        _cylinder = temp._cylinder;
+        //var temp = SaveLoadManager.Load<BulletsCountManager>(_saveFileName);
+        //if (temp == null) return; // 読み込みに失敗した場合は処理しない。
+        //_bulletCountHome = temp._bulletCountHome;
+        //_bulletCountStage = temp._bulletCountStage;
+        //_cylinder = temp._cylinder;
     }
     public void Clear()
     {
