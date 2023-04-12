@@ -41,7 +41,6 @@ public class StageController : MonoBehaviour
                 player.transform.position =
                     GameManager.Instance.StageManager.LastCheckPointPosition;
 
-
                 // プレイヤーコントローラー取得
                 var playerController = player.GetComponent<PlayerController>();
                 // シリンダーの状態を復元
