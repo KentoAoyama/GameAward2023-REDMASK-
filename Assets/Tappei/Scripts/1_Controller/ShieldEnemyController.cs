@@ -26,11 +26,19 @@ public class ShieldEnemyController : EnemyController
         base.Awake();
     }
 
+    /// <summary>
+    /// 盾が非表示になった場合、フラグが立ってReflectionに遷移する
+    /// 現状このフラグが立ったかどうかでReflectionに遷移しているので
+    /// 一定周期でこのフラグを立てれば大丈夫？
+    /// </summary>
     private void InitSubscribeShield()
     {
         _shield.OnDisableAsObservable().Subscribe(_ => IsReflect = true);
     }
 
+    /// <summary>
+    /// Reflectionに遷移した場合、フラグが折れるのでもう一度フラグが立てばReflectionに遷移可能
+    /// </summary>
     private void InitSubscribeReflectionState()
     {
         _currentState.Skip(1).Where(state => state.Type == StateType.Reflection)
