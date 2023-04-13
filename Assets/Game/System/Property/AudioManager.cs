@@ -105,6 +105,14 @@ public class AudioManager
                 _sePlayer[i].SetCue(temp, cueName);
                 _sePlayback[i] = _sePlayer[i].Start();
 
+                if (_sePlayer[i].GetStatus() == CriAtomExPlayer.Status.Error)
+                {
+                    _sePlayer[i].Dispose();
+                    _sePlayer.Remove(_sePlayer[i]);
+
+                    continue;
+                }
+
                 return i;
             }
         }

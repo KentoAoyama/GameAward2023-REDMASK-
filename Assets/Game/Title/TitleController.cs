@@ -11,6 +11,13 @@ public class TitleController : MonoBehaviour
     [Tooltip("タイトル画面起動時に不要なオブジェクトを割り当ててください"), SerializeField]
     private GameObject[] _firstNotNeededObject = default;
 
+    private TitleState _currentState = TitleState.Title;
+    public TitleState CurrentState
+    {
+        get { return _currentState; }
+        set { _currentState = value; }
+    }
+
     private void Start()
     {
         Setup();
@@ -33,5 +40,11 @@ public class TitleController : MonoBehaviour
         {
             e.SetActive(false);
         }
+    }
+
+    public enum TitleState
+    {
+        Title,
+        Menu
     }
 }

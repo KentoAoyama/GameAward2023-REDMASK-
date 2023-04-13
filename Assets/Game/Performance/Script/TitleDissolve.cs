@@ -8,6 +8,8 @@ public class TitleDissolve : MonoBehaviour
 {
     [SerializeField, Tooltip("タイトルのCanvas")]
     private Canvas _titleCanvas;
+    [SerializeField]
+    private TitleController _titleController;
 
     /// <summary>ディゾルブさせるパネル</summary>
     private Image _dissolvePanel;
@@ -32,6 +34,7 @@ public class TitleDissolve : MonoBehaviour
     /// <summary>親オブジェクトも含めて破壊する</summary>
     private void DestroyPanel()
     {
+        _titleController.CurrentState = TitleController.TitleState.Menu;
         Destroy(this.transform.root.gameObject);
     }
 
