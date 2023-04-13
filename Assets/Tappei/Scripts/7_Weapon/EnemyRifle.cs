@@ -52,7 +52,7 @@ public class EnemyRifle : MonoBehaviour, IEnemyWeapon
         }
     }
 
-    public void Attack()
+    public virtual void Attack()
     {
         EnemyBullet bullet = PopPool();
 
