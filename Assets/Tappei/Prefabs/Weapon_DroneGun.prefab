@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6324367588736487704}
   - component: {fileID: 6324367588736487707}
+  - component: {fileID: 8208472467010909740}
+  - component: {fileID: 4863105234154196963}
   m_Layer: 0
   m_Name: Weapon_DroneGun
   m_TagString: Untagged
@@ -84,3 +86,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8208472467010909740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6324367588736487705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd265acb5a731124ca3b1af620fb372e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enemyBullet: {fileID: 7739563763425447393, guid: d4c36ac64d6ed104f927e17ea01fdeb9, type: 3}
+  _poolQuantity: 5
+  _muzzle: {fileID: 6324367588736487704}
+--- !u!114 &4863105234154196963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6324367588736487705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9ad6c43dcf56e54c8846d38ff496282, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _eyeTransform: {fileID: 0}
+  _playerLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  _obstacleLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
