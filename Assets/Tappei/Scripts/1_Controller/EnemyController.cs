@@ -45,11 +45,11 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
 
     protected virtual void Awake()
     {
-        _sightSensor = gameObject.GetComponent<SightSensor>();
-        _moveBehavior = gameObject.GetComponent<MoveBehavior>();
-        _attackBehavior = gameObject.GetComponent<AttackBehavior>();
-        _performanceBehavior = gameObject.GetComponent<PerformanceBehavior>();
-        _animator = gameObject.GetComponentInChildren<Animator>();
+        _sightSensor = GetComponent<SightSensor>();
+        _moveBehavior = GetComponent<MoveBehavior>();
+        _attackBehavior = GetComponent<AttackBehavior>();
+        _performanceBehavior = GetComponent<PerformanceBehavior>();
+        _animator = GetComponentInChildren<Animator>();
         InitStateRegister();
         InitCurrentState();
     }
