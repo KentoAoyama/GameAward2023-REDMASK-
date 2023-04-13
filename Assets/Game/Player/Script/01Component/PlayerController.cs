@@ -9,6 +9,7 @@ using Bullet;
 using UI;
 using Cysharp.Threading.Tasks;
 using Cinemachine;
+using UnityEngine.UI;
 
 namespace Player
 {
@@ -34,7 +35,8 @@ namespace Player
         [Tooltip("プレイヤーのアニメーター"), SerializeField]
         private CinemachineVirtualCamera _camera;
 
-
+        [Header("演出用のテキスト"), SerializeField]
+        private Text _performanceText = default;
 
 
         [Tooltip("プレイヤーのUIを管理するクラス"), SerializeField]
@@ -145,8 +147,6 @@ namespace Player
             GameManager.Instance.BulletsCountManager.Clear();
         }
 
-        #region Test
-
 
         [Header("Test用に、Sceneで設定したものを使うならTrueにしてね")]
         [SerializeField]
@@ -188,12 +188,9 @@ namespace Player
                 default: return default;
             }
         }
-
         private void OnEnable()
         {
             GameManager.Instance.PauseManager.Register(this);
-
-
         }
         private void OnDisable()
         {
@@ -257,6 +254,30 @@ namespace Player
             _gameOverUI.SetActive(false);
         }
 
-        #endregion
+        // 以下はタイムラインから呼び出す事を想定して作成したメソッド群
+        public void InputDisable()
+        {
+            // Debug.Log("入力停止");
+            InputManager.InputActionCollection.Disable();
+            _performanceText.text = "開始";
+        }
+        public void InputEnable()
+        {
+            // Debug.Log("入力復帰");
+            InputManager.InputActionCollection.Enable();
+            _performanceText.text = "会話中";
+        }
+        public void WaitInputText()
+        {
+            _performanceText.text = "発砲ボタンを押下してください";
+        }
+        public void OnFireTimeline()
+        {
+            _performanceText.text = "終了";
+        }
+        public void TestPerformanceTextClear()
+        {
+            _performanceText.text = "";
+        }
     }
 }

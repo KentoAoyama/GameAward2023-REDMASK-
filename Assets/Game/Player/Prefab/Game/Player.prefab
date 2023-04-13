@@ -706,7 +706,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 328675649}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.67, y: 3.36, z: -10}
+  m_LocalPosition: {x: -1.6699998, y: 3.36, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2823,6 +2823,7 @@ GameObject:
   - component: {fileID: 4514520410212876862}
   - component: {fileID: 4514520410212876858}
   - component: {fileID: 1909928272}
+  - component: {fileID: 1521619148517409716}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -2940,9 +2941,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8102aa0af13803842847487167740ad7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _camerad: {fileID: 0}
+  _gameOverUI: {fileID: 0}
   _player: {fileID: 4514520410212876861}
   _playerAnim: {fileID: 0}
   _camera: {fileID: 328675650}
+  _performanceText: {fileID: 0}
   _uIController: {fileID: 231753012}
   _move:
     _ground:
@@ -2985,7 +2989,7 @@ MonoBehaviour:
       m_Bits: 2176
     _gameZone: GameZone
   _bulletCountManager:
-    _isTestPlay: 1
+    _isTestPlay: 0
     _standardBulletCountInitialValue: 50
     _penetrateBulletCountInitialValue: 50
     _reflectBulletCountInitialValue: 50
@@ -3026,6 +3030,7 @@ MonoBehaviour:
     _spriteRenderer: {fileID: 1892249080}
   _camraControl:
     _isDeadCameraChake: 1
+  _isTestRevoler: 0
   _basicBullet: {fileID: 5265649433146915775, guid: 015cb33e94855db448e75fc98caf6aa5, type: 3}
 --- !u!70 &4514520410212876858
 CapsuleCollider2D:
@@ -3056,6 +3061,96 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _slowTimePanel: {fileID: 1907648926}
+--- !u!114 &1521619148517409716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4514520410212876861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Events:
+    m_Signals:
+    - {fileID: 11400000, guid: 31cc5a8f0b87fe54aa87cbf45656cee2, type: 2}
+    - {fileID: 11400000, guid: 60300d6f9d98f8f448b0bc50db856e85, type: 2}
+    - {fileID: 11400000, guid: 51519079fd95ded488a718541746442e, type: 2}
+    - {fileID: 11400000, guid: 74ef8227e9b455f4db1ee6de253e70b1, type: 2}
+    - {fileID: 11400000, guid: ee4ec31bfd404374db06ad3bf5943693, type: 2}
+    m_Events:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4514520410212876862}
+          m_TargetAssemblyTypeName: Player.PlayerController, Game
+          m_MethodName: InputDisable
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4514520410212876862}
+          m_TargetAssemblyTypeName: Player.PlayerController, Game
+          m_MethodName: InputEnable
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4514520410212876862}
+          m_TargetAssemblyTypeName: Player.PlayerController, Game
+          m_MethodName: TestPerformanceTextClear
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4514520410212876862}
+          m_TargetAssemblyTypeName: Player.PlayerController, Game
+          m_MethodName: WaitInputText
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4514520410212876862}
+          m_TargetAssemblyTypeName: Player.PlayerController, Game
+          m_MethodName: OnFireTimeline
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &4886829830397451212
 GameObject:
   m_ObjectHideFlags: 0

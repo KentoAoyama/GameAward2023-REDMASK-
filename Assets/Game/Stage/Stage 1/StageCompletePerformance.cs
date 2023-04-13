@@ -11,18 +11,20 @@ public class StageCompletePerformance : StageCompleteEventBase
 {
     [SerializeField]
     private PlayerController _playerController = default;
-    [Header("完了演出開始"), SerializeField]
+    [SerializeField]
     private PlayableDirector _completePerformanceDirector = default;
     [SerializeField]
     private PlayableDirector _completePerformanceEndDirector = default;
 
     private bool _isTimeLineEnd = false;
+
     protected async override UniTask CompletePerformance()
     {
-        //// タイムラインの再生を開始する
-        //_talkDirector.Play();
-        //_talkDirector.stopped += _ => _isTimeLineEnd = true;
-        //// タイムラインの終了を検知したら処理を抜ける
-        //await UniTask.WaitUntil(() => _isTimeLineEnd);
+        _completePerformanceDirector.Play();
+        await UniTask.WaitUntil(() => _playerController.InputManager.IsPressed[InputType.Fire1]);
+        _completePerformanceDirector.Stop();
+        _completePerformanceEndDirector.Play();
+        _completePerformanceEndDirector.stopped += _ => _isTimeLineEnd = true;
+        await UniTask.WaitUntil(() => _isTimeLineEnd);
     }
 }
