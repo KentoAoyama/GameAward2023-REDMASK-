@@ -117,6 +117,11 @@ namespace Player
             Vector2 moveDir = Vector2.right * inputH;
             float angle = Vector3.Angle(Vector2.up, hit.normal);
 
+            if(hit.normal.x>0)
+            {
+                angle = 360 - angle;
+            }
+
             dir = Quaternion.AngleAxis(angle, Vector3.forward) * moveDir;
 
             Debug.DrawRay(_playerController.Player.transform.position, -_playerController.Player.transform.up * _rayLong, Color.blue);
@@ -269,6 +274,13 @@ namespace Player
                     _playerController.RevolverOperator.StopRevolverReLoad();
                 }
             }
+
+            //下方向に
+            if(!_isJump && _playerController.GroungChecker.IsHit(_moveHorizontalDir))
+            {
+                _playerController.Rigidbody2D.AddForce(Vector2.down * 10);
+            }
+
         }
 
         public void EndOtherAction()
