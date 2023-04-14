@@ -2,6 +2,9 @@
 using Player;
 using UnityEngine;
 
+/// <summary>
+/// ステージの状態を管理 監督するオブジェクト。
+/// </summary>
 public class StageController : MonoBehaviour
 {
     [Header("プレイヤーのタグ")]
@@ -17,41 +20,6 @@ public class StageController : MonoBehaviour
 
     private void Awake()
     {
-        // ステージの開始処理
-        // 完了演出、死亡時演出用オブジェクトを非アクティブにする。
-        _stageCompletePerformanceObject.gameObject.SetActive(false);
-        _playerDeadPerformanceObjct.gameObject.SetActive(false);
-        if (GameManager.Instance.StageManager.StageStartMode == StageStartMode.FromTheBeginning)
-        {
-            // チェックポイントの情報をリセット
-            GameManager.Instance.StageManager.IsTouchCheckPoint = false;
-            // 開始演出用オブジェクトをアクティブにする。
-            _stageStartPerformanceObjct.gameObject.SetActive(true);
-        }
-        else if (GameManager.Instance.StageManager.StageStartMode == StageStartMode.JustBefore)
-        {
-            // チェックポイントを一つでも触れていなければ、チェックポイント通過時の状態を復元する。
-            // 一つも触れていなければ、何もしない。
-            // チェックポイントからやり直す
-            if (GameManager.Instance.StageManager.IsTouchCheckPoint)
-            {
-                // プレイヤーオブジェクト取得
-                var player = GameObject.FindGameObjectWithTag(_playerTag);
-                // ポジション設定
-                player.transform.position =
-                    GameManager.Instance.StageManager.LastCheckPointPosition;
-
-                // プレイヤーコントローラー取得
-                var playerController = player.GetComponent<PlayerController>();
-                // シリンダーの状態を復元
-                // playerController.Revolver.Cylinder =
-                //     GameManager.Instance.StageManager.CheckPointCylinder;
-                // ガンベルトの状態を復元
-                // playerController.BulletCountManager.BulletCounts =
-                //     GameManager.Instance.StageManager.CheckPointGunBelt;
-            }
-            _stageStartPerformanceObjct.gameObject.SetActive(false);
-        }
     }
 
     /// <summary> ステージの完了演出を再生する </summary>

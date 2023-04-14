@@ -1,9 +1,6 @@
 // 日本語対応
-
 using Bullet;
-using System;
 using System.Collections.Generic;
-using UnityEngine;
 using UniRx;
 
 /// <summary>
@@ -15,8 +12,6 @@ using UniRx;
 /// </summary>
 public class StageManager
 {
-    /// <summary> 最後に通過したチェックポイントの座標 </summary>
-    public Vector2 LastCheckPointPosition { get; set; } = default;
     /// <summary> 
     /// どのようにステージを開始するかプレイヤーオブジェクトに教える用
     /// （プレイヤーの開始地点や弾の数をどこから割り当てるか判別する用。）
@@ -26,7 +21,6 @@ public class StageManager
 
     private IStoreableInChamber[] _checkPointCylinder = null;
     private Dictionary<BulletType, IReadOnlyReactiveProperty<int>> _checkPointGunBelt = null;
-    private CachedEnemy[] cachedEnemies = null;
 
     /// <summary>
     /// チェックポイントのシリンダーの状態を返す
@@ -61,59 +55,33 @@ public class StageManager
             return null;
         }
     }
-    public bool IsTouchCheckPoint { get; set; } = false;
     /// <summary>
     /// プレイヤーがチェックポイントを起動したときに実行する関数
     /// </summary>
     /// <param name="position"> 復活座標 </param>
     /// <param name="cylinder"> チェックポイント起動時のシリンダーの状態 </param>
     /// <param name="gunBelt"> チェックポイント起動時のガンベルトの状態 </param>
-    public void TouchCheckPoint(Vector2 position,
-        IStoreableInChamber[] cylinder, Dictionary<BulletType, IReadOnlyReactiveProperty<int>> gunBelt)
+    public void SetBulletsCount(IStoreableInChamber[] cylinder,
+        Dictionary<BulletType, IReadOnlyReactiveProperty<int>> gunBelt)
     {
-        IsTouchCheckPoint = true;
-        LastCheckPointPosition = position;
-        // エネミーの状態保存
-        cachedEnemies = new CachedEnemy[GameManager.Instance.EnemyRegister.Enemies.Count];
-        var index = 0;
-        foreach (var e in GameManager.Instance.EnemyRegister.Enemies)
-        {
-            cachedEnemies[index] = new CachedEnemy(e.transform.position, e.EnemyType);
-            index++;
-        }
         // シリンダーの状態保存
-        _checkPointCylinder = cylinder;
-        // ガンベルトの状態保存
-        _checkPointGunBelt = gunBelt;
-    }
-    /// <summary>
-    /// シーンに敵を配置する
-    /// </summary>
-    private void PlaceEnemies()
-    {
+        var cylinderResult = new IStoreableInChamber[_checkPointCylinder.Length];
+        for (int i = 0; i < cylinderResult.Length; i++)
+        {
+            cylinderResult[i] = cylinder[i];
+        }
+        _checkPointCylinder = cylinderResult;
 
+        // ガンベルトの状態保存
+        var gunBeltResult = new Dictionary<BulletType, IReadOnlyReactiveProperty<int>>(gunBelt);
+        gunBeltResult[BulletType.StandardBullet] =
+            new ReactiveProperty<int>(gunBelt[BulletType.StandardBullet].Value);
+        gunBeltResult[BulletType.PenetrateBullet] =
+            new ReactiveProperty<int>(gunBelt[BulletType.PenetrateBullet].Value);
+        gunBeltResult[BulletType.ReflectBullet] =
+            new ReactiveProperty<int>(gunBelt[BulletType.ReflectBullet].Value);
+        _checkPointGunBelt = gunBeltResult;
     }
-}
-/// <summary>
-/// 一時的にエネミーの情報を保存する用
-/// </summary>
-public struct CachedEnemy
-{
-    public CachedEnemy(Vector2 position, EnemyType type)
-    {
-        _position = position;
-        _enemyType = type;
-    }
-    public Vector2 _position;
-    public EnemyType _enemyType;
-}
-/// <summary>
-/// エネミーの種類を表現する列挙型
-/// </summary>
-[Serializable]
-public enum EnemyType
-{
-    Melee, Drawn, Range, Shield
 }
 /// <summary>
 /// ステージをどのように開始するか表現する列挙体

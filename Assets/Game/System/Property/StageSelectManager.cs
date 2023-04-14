@@ -1,11 +1,9 @@
 // 日本語対応
-using System;
-using UnityEngine;
 using UniRx;
 
 public class StageSelectManager
 {
-    private ReactiveProperty<StageType> _goToStage = new ReactiveProperty<StageType>(StageType.NotSet);
+    private ReactiveProperty<StageType> _goToStage = new ReactiveProperty<StageType>(StageType.One);
 
     public IReadOnlyReactiveProperty<StageType> GoToStageType => _goToStage;
 
