@@ -14,6 +14,9 @@ public class AudioManager
     private List<CriAtomExPlayer> _sePlayer = new List<CriAtomExPlayer>();
     private List<CriAtomExPlayback> _sePlayback = new List<CriAtomExPlayback>();
 
+    private string _currentBGMCueName = "";
+    private CriAtomExAcb _currentBGMAcb = null;
+
     public IReadOnlyReactiveProperty<float> MasterVolume => _masterVolume;
     public IReadOnlyReactiveProperty<float> BGMVolume => _bgmVolume;
     public IReadOnlyReactiveProperty<float> SEVolume => _seVolume;
@@ -69,12 +72,20 @@ public class AudioManager
     /// <param name="cueName">流したいキューの名前</param>
     public void PlayBGM(string cueSheetName, string cueName)
     {
-        StopBGM();
-
         var temp = CriAtom.GetCueSheet(cueSheetName).acb;
+
+        if (_currentBGMAcb == temp && _currentBGMCueName == cueName &&
+            _bgmPlayer.GetStatus() == CriAtomExPlayer.Status.Playing)
+        {
+            return;
+        }
+
+        StopBGM();
 
         _bgmPlayer.SetCue(temp, cueName);
         _bgmPlayback = _bgmPlayer.Start();
+        _currentBGMAcb = temp;
+        _currentBGMCueName = cueName;
     }
 
     public void StopBGM()
