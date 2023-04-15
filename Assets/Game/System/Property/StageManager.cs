@@ -55,13 +55,13 @@ public class StageManager
             return null;
         }
     }
+
     /// <summary>
-    /// プレイヤーがチェックポイントを起動したときに実行する関数
+    /// チェックポイント時の弾の数を保存する
     /// </summary>
-    /// <param name="position"> 復活座標 </param>
-    /// <param name="cylinder"> チェックポイント起動時のシリンダーの状態 </param>
-    /// <param name="gunBelt"> チェックポイント起動時のガンベルトの状態 </param>
-    public void SetBulletsCount(IStoreableInChamber[] cylinder,
+    /// <param name="cylinder"> シリンダーの数 </param>
+    /// <param name="gunBelt"> ガンベルトの数 </param>
+    public void SetCheckPointBulletsCount(IStoreableInChamber[] cylinder,
         Dictionary<BulletType, IReadOnlyReactiveProperty<int>> gunBelt)
     {
         // シリンダーの状態保存
