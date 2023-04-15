@@ -40,13 +40,6 @@ namespace Player
 
         [Tooltip("現在の速度 : インスペクタで値を追跡する用"), SerializeField]
         private float _currentHorizontalSpeed = 0f;
-
-        [Header("Test用。後で消す")]
-        [SerializeField] private SpriteRenderer _spriteRenderer;
-
-        [Header("Test用。後で消す")]
-        [SerializeField] private SlowTimeAnimation _testSlowAnim;
-
         /// <summary>回避、の実行時間の計測用</summary>
         private float _avoidanceDoTimeCount = 0f;
         /// <summary>時遅、の実行時間の計測用</summary>
@@ -88,6 +81,7 @@ namespace Player
         public bool IsDoAvoidance => _isDoAvoidance;
 
         public bool IsPause { get; private set; } = false;
+
 
 
         public async void Pause()
@@ -256,25 +250,16 @@ namespace Player
         private void StartThereAvoidance()
         {
 
-            //テスト用で、回避を分かりやすくするために使用
-            _spriteRenderer.color = Color.red;
-
             Debug.Log("その場回避始め！");
             _playerController.LifeController.IsGodMode = true;
-            Physics2D.IgnoreLayerCollision(_ignoreLayerIndex, _myLayerIndex, true);
-
         }
         /// <summary>
         /// その場回避終了処理
         /// </summary>
         private void EndThereAvoidance()
         {
-            //テスト用で、回避を分かりやすくするために使用
-            _spriteRenderer.color = Color.white;
-
             Debug.Log("その場回避終了！");
             _playerController.LifeController.IsGodMode = false;
-            Physics2D.IgnoreLayerCollision(_ignoreLayerIndex, _myLayerIndex, false);
 
             //回避が終了したことをMoveクラスに伝える
             _playerController.Move.EndOtherAction();
@@ -284,8 +269,7 @@ namespace Player
 
         private void StartTimeSlow()
         {
-            //テスト用、後で消す
-            _testSlowAnim.PanelActive(true);
+            GameManager.Instance.ShaderPropertyController.MonochromeController.SetMonoBlend(1,0.2f);
 
             Debug.Log("時を遅くする");
             // 時間の速度をゆっくりにする。
@@ -295,8 +279,7 @@ namespace Player
 
         private void EndTimeSlow()
         {
-            //テスト用、後で消す
-            _testSlowAnim.PanelActive(false);
+            GameManager.Instance.ShaderPropertyController.MonochromeController.SetMonoBlend(0, 0.2f);
 
             Debug.Log("時を戻す");
             // 時間の速度をもとの状態に戻す。

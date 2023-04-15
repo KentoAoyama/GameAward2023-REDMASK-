@@ -68,6 +68,9 @@ namespace Player
         [Tooltip("カメラ制御"), SerializeField]
         private CameraShake _camraControl = default;
 
+        [Tooltip("腕のアニメーション"), SerializeField]
+        private PlayerBodyAndArmAngleSetting _bodyAngleSetting = default;
+
         private Rigidbody2D _rigidbody2D = null;
 
         /// <summary>死亡しているかどうかを示す</summary>
@@ -97,6 +100,8 @@ namespace Player
 
         public CameraShake CameraControl => _camraControl;
 
+        public PlayerBodyAndArmAngleSetting BodyAnglSetteing => _bodyAngleSetting;
+
         private void Start()
         {
             _rigidbody2D = GetComponent<Rigidbody2D>();
@@ -115,6 +120,10 @@ namespace Player
             _proximity.Init(this);
             _proximityHitChecker.Init(transform);
             _camraControl.Init(this);
+            _bodyAngleSetting.Init(this);
+
+
+
         }
         private void Update()
         {
@@ -131,6 +140,8 @@ namespace Player
                 _proximity.Update();          //近接攻撃
 
                 //_camraControl.CameraShakeSpeed(); //カメラの再生速度
+
+                _bodyAngleSetting.Update();
             }
         }
         private void OnDrawGizmosSelected()
@@ -229,6 +240,8 @@ namespace Player
         /// <summary>ダメージを受けた時の処理</summary>
         public void Damage()
         {
+            if (_lifeController.IsGodMode) return;
+
             //死体撃ちで、2回呼ばれないようにする
             if (!_isDead)
             {

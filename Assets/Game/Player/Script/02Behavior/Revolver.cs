@@ -175,7 +175,7 @@ namespace Player
             else if (_cylinder[_currentChamber] is Bullet2)
             {
                 //音を鳴らす
-                GameManager.Instance.AudioManager.PlaySE("CueSheet_0", "gun");
+                GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Attack_Gun");
 
                 var bullet = _cylinder[_currentChamber] as Bullet2;
                 // 弾を複製
