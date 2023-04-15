@@ -6,18 +6,20 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-[ExecuteAlways]
-public class MonochromeController : MonoBehaviour
+public class MonochromeController
 {
-    private FloatReactiveProperty _monoblend = new FloatReactiveProperty();
+    private FloatReactiveProperty _monoblend = new FloatReactiveProperty(0.0f);
     
-    /// <summary>_MonoBlend��ID</summary>
+    /// <summary>_MonoBlendのID</summary>
     int _monoBlendId = Shader.PropertyToID("_MonoBlend");
-    private void Awake()
+    public MonochromeController()
     {
         _monoblend.Subscribe(x => Shader.SetGlobalFloat(_monoBlendId, x));
     }
 
+    /// <summary>Monochromeにするための閾値を変更する</summary>
+    /// <param name="endValue">0～1のあたいでどの程度白黒にするか</param>
+    /// <param name="duration">何秒かけて変化させるか デフォルトは1</param>
     public void SetMonoBlend(float endValue, float duration = 1.0f)
     {
         endValue = Mathf.Clamp01(endValue);
