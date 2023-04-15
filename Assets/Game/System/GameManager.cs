@@ -32,6 +32,7 @@ public class GameManager
     private StageManager _stageManager = new StageManager();
     private EnemyRegister _enemyRegister = new EnemyRegister();
     private AudioManager _audioManager = new AudioManager();
+    private ShaderPropertyController _shaderPropertyController= new ShaderPropertyController();
 
     /// <summary>
     /// ゲームの状態を表現するクラス
@@ -64,4 +65,8 @@ public class GameManager
     public StageManager StageManager => _stageManager;
     public EnemyRegister EnemyRegister => _enemyRegister;
     public AudioManager AudioManager => _audioManager;
+    /// <summary>
+    /// ShaderのPropertyを管理するクラス
+    /// </summary>
+    public ShaderPropertyController ShaderPropertyController => _shaderPropertyController;
 }
