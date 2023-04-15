@@ -1,5 +1,7 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -7,23 +9,18 @@ using UnityEngine.Rendering.Universal;
 [ExecuteAlways]
 public class MonochromeController : MonoBehaviour
 {
-    [SerializeField, Tooltip("îíçïÇ…Ç»ÇËãÔçá"), Range(0.0f, 1.0f)]
-    float _monoBlend;
+    private FloatReactiveProperty _monoblend = new FloatReactiveProperty();
     
     /// <summary>_MonoBlendÇÃID</summary>
     int _monoBlendId = Shader.PropertyToID("_MonoBlend");
     private void Awake()
     {
-        Shader.SetGlobalFloat(_monoBlendId, _monoBlend);
+        _monoblend.Subscribe(x => Shader.SetGlobalFloat(_monoBlendId, x));
     }
 
-    private void Update()
+    public void SetMonoBlend(float endValue, float duration = 1.0f)
     {
-        Shader.SetGlobalFloat(_monoBlendId, _monoBlend);
-    }
-
-    private void OnValidate()
-    {
-        Shader.SetGlobalFloat(_monoBlendId, _monoBlend);
+        endValue = Mathf.Clamp01(endValue);
+        DOTween.To(() => _monoblend.Value, x => _monoblend.Value = x, endValue, duration);
     }
 }
