@@ -48,8 +48,8 @@ public class EnemyParamsSO : ScriptableObject
     [Header("ƒvƒŒƒCƒ„[–¢”­Œ©Žž‚Íí‚ÉSearchó‘Ô‚É‚·‚é")]
     [SerializeField] protected bool _isAlwaysSearching;
 
-    public float DiscoverStateTransitionDelay => _discoverAnimClip.length;
-    public float DefeatedStateTransitionDelay => _deadAnimClip.length;
+    public float DiscoverStateTransitionDelay => _discoverAnimClip != null ? _discoverAnimClip.length : 0;
+    public float DefeatedStateTransitionDelay => _deadAnimClip != null ? _deadAnimClip.length : 0;
     public float WalkSpeed => _walkSpeed;
     public float RunSpeed => _runSpeed;
     public float TurningPoint => _turningPoint;
