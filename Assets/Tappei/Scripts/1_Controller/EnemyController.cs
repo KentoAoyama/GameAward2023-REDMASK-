@@ -154,7 +154,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     /// <summary>各ステートが再生するアニメーションを呼び出す</summary>
     public void PlayAnimation(AnimationName name) => _animator.Play(Params.GetAnimationHash(name));
 
-    public void DefeatedPerformance() => _performanceBehavior.Defeated();
+    //public void DefeatedPerformance() => _performanceBehavior.Defeated();
     public void DiscoverPerformance() => _performanceBehavior.Discover();
 
     /// <summary>
@@ -182,7 +182,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     public void Damage()
     {
         IsDefeated = true;
-        _performanceBehavior.Defeated();
+        _performanceBehavior.Defeated(_moveBehavior.SpriteScaleX);
 
         DOVirtual.DelayedCall(Params.DefeatedStateTransitionDelay, () =>
         {
