@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -18,7 +16,7 @@ public class EnemyDroneRifle : EnemyRifle
     private float _sightRadius = 10;
     private float _maxAngle = 360;
 
-    private void Awake()
+    protected override void Awake()
     {
         _sightSensor = GetComponent<SightSensor>();
 
@@ -26,6 +24,8 @@ public class EnemyDroneRifle : EnemyRifle
         {
             InitParams();
         }
+
+        base.Awake();
     }
 
     private void Start()
@@ -48,9 +48,9 @@ public class EnemyDroneRifle : EnemyRifle
         transform.right = dir * transform.localScale.x;
     }
 
-    public override void Attack()
+    protected override Vector3 GetBulletDirection()
     {
-        // çUåÇèàóùÇèëÇ≠
+        return (_player.transform.position - _muzzle.position).normalized;
     }
 
     private void InitParams()

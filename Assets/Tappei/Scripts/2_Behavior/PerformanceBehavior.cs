@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using DG.Tweening;
 
 /// <summary>
 /// 各種演出を行うクラス
@@ -17,6 +18,8 @@ public class PerformanceBehavior : MonoBehaviour
         public Vector2 Offset => _offset;
     }
 
+    static readonly float DefeatedEffectLifeTime = 1.5f;
+
     [Header("撃破された際のエフェクト")]
     [SerializeField] private EffectSettings _defeatedEffectSettings;
     [Header("発見時のエフェクト")]
@@ -24,12 +27,10 @@ public class PerformanceBehavior : MonoBehaviour
     [Header("調整用:生成した際にエフェクトを表示する")]
     [SerializeField] private bool _initActive;
 
-    private GameObject _defeatedEffect;
     private GameObject _discoverEffect;
 
     private void Awake()
     {
-        _defeatedEffect = Instantiate(_defeatedEffectSettings);
         _discoverEffect = Instantiate(_discoverEffectSettings);
     }
 
@@ -54,8 +55,18 @@ public class PerformanceBehavior : MonoBehaviour
         _discoverEffect.SetActive(true);
     }
 
-    public void Defeated()
+    /// <summary>
+    /// キャラクターの向きに合わせて生成する必要があるのでSpriteの向きが必要
+    /// </summary>
+    public void Defeated(int scaleX)
     {
-        _defeatedEffect.SetActive(true);
+        GameObject instance = Instantiate(_defeatedEffectSettings);
+        instance.transform.parent = null;
+        DOVirtual.DelayedCall(DefeatedEffectLifeTime, () => instance.SetActive(false))
+            .OnStart(() => instance.SetActive(true)).SetLink(gameObject);
+
+        Vector3 scale = Vector3.one;
+        scale.x = scaleX;
+        instance.transform.localScale = scale;
     }
 }

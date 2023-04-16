@@ -48,6 +48,9 @@ public class MoveBehavior : MonoBehaviour
     /// <summary>Pause()が呼ばれるとtrueにResume()が呼ばれるとfalseになる</summary>
     private bool _isPause;
 
+    /// <summary>Spriteの左右の向きに合わせた処理をする際に使う</summary>
+    public int SpriteScaleX => (int)_spriteTrans.localScale.x;
+
 #if UNITY_EDITOR
     /// <summary>EnemyControllerでギズモに表示する用途で使っている</summary>
     public Vector3 FootPos => _footPos;

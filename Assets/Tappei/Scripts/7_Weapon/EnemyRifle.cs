@@ -7,27 +7,48 @@ using UnityEngine;
 /// </summary>
 public class EnemyRifle : MonoBehaviour, IEnemyWeapon
 {
+    /// <summary>
+    /// 敵毎にこのオブジェクトの子に弾を生成していく
+    /// ドローンと遠距離攻撃の敵が使用する弾が同じという想定
+    /// </summary>
+    private static Transform _poolObject;
+
     [Header("発射する弾の設定")]
     [SerializeField] private EnemyBullet _enemyBullet;
     [Tooltip("プールする敵弾の数、攻撃頻度を上げる場合はこちらも上げないといけない")]
     [SerializeField] private int _poolQuantity;
     [Header("敵弾を発射するマズル")]
     [Tooltip("飛ぶ方向の左右の制御はスケールのxを-1にすることで行う")]
-    [SerializeField] private Transform _muzzle;
+    [SerializeField] protected Transform _muzzle;
 
     private Stack<EnemyBullet> _pool;
 
-    private void Awake()
+    protected virtual void Awake()
     {
+        if (_poolObject == null)
+        {
+            CreatePoolObject();
+        }
+
         _pool = new Stack<EnemyBullet>(_poolQuantity);
         CreatePool();
+    }
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private void ReleasePoolObjectInstance() => _poolObject = null;
+
+    private void CreatePoolObject()
+    {
+        GameObject poolObject = new GameObject();
+        poolObject.name = "EnemyBulletPool";
+        _poolObject = poolObject.transform;
     }
 
     private void CreatePool()
     {
         for (int i = 0; i < _poolQuantity; i++)
         {
-            EnemyBullet bullet = Instantiate(_enemyBullet, transform.position, Quaternion.identity, transform);
+            EnemyBullet bullet = Instantiate(_enemyBullet, transform.position, Quaternion.identity, _poolObject);
             bullet.InitSetPool(_pool);
             bullet.gameObject.SetActive(false);
             _pool.Push(bullet);
@@ -38,7 +59,7 @@ public class EnemyRifle : MonoBehaviour, IEnemyWeapon
     /// プールから取り出す処理
     /// 戻す処理は弾側に持たせている
     /// </summary>
-    private EnemyBullet PopPool()
+    protected EnemyBullet PopPool()
     {
         if (_pool.Count > 0)
         {
@@ -52,13 +73,14 @@ public class EnemyRifle : MonoBehaviour, IEnemyWeapon
         }
     }
 
-    public virtual void Attack()
+    public void Attack()
     {
         EnemyBullet bullet = PopPool();
-
         if (bullet == null) return;
 
         bullet.transform.position = _muzzle.position;
-        bullet.SetVelocity(_muzzle.right);
+        bullet.SetVelocity(GetBulletDirection());
     }
+
+    protected virtual Vector3 GetBulletDirection() => _muzzle.right * _muzzle.transform.localScale.x;
 }
