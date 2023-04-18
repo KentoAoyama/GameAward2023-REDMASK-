@@ -182,7 +182,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     public void Damage()
     {
         IsDefeated = true;
-        _performanceBehavior.Defeated(_moveBehavior.SpriteScaleX);
+        _performanceBehavior.Defeated(_moveBehavior.SpriteDirection);
 
         DOVirtual.DelayedCall(Params.DefeatedStateTransitionDelay, () =>
         {

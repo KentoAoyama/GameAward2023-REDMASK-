@@ -26,8 +26,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3988215833671822387}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 1.55, z: 0}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3988215834778814119}
@@ -129,7 +129,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3988215834080215046}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.3799999, y: 3.3100002, z: 0}
+  m_LocalPosition: {x: 0.1, y: 1.85, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -211,8 +211,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 2}
-  m_Size: {x: 1, y: 4}
+  m_Offset: {x: 0.04643154, y: 1.4705038}
+  m_Size: {x: 0.9867344, y: 2.917984}
   m_Direction: 0
 --- !u!114 &3988215834778814116
 MonoBehaviour:
@@ -315,11 +315,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8444222073557182755, guid: d9ce6fd8be2d0864eac033d72f682ebc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.338
+      value: 0.86
       objectReference: {fileID: 0}
     - target: {fileID: 8444222073557182755, guid: d9ce6fd8be2d0864eac033d72f682ebc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.668
+      value: 1.84
       objectReference: {fileID: 0}
     - target: {fileID: 8444222073557182755, guid: d9ce6fd8be2d0864eac033d72f682ebc, type: 3}
       propertyPath: m_LocalPosition.z
@@ -353,6 +353,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8444222073557182757, guid: d9ce6fd8be2d0864eac033d72f682ebc, type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
     - target: {fileID: 8444222073557182757, guid: d9ce6fd8be2d0864eac033d72f682ebc, type: 3}
       propertyPath: m_Name
       value: Weapon_Rifle
