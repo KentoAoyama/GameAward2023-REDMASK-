@@ -42,7 +42,7 @@ namespace Player
         /// <summary> 現在のチェンバーの位置 </summary>
         public int CurrentChamber => _currentChamber;
         /// <summary> 現在のシリンダーの状態 </summary>
-        public IStoreableInChamber[] Cylinder => _cylinder;
+        public IStoreableInChamber[] Cylinder { get => _cylinder; set => _cylinder = value; }
         /// <summary> 発砲可能かどうかを表す値 </summary>
         public bool CanFire => _canFire;
 

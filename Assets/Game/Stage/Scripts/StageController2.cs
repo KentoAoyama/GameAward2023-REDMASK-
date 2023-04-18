@@ -1,4 +1,5 @@
 // 日本語対応
+using Cysharp.Threading.Tasks;
 using Player;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -15,12 +16,13 @@ public class StageController2 : MonoBehaviour
     [SceneName, SerializeField]
     private string _firstStageSceneName = default;
 
-    private void Awake()
+    private async void Start()
     {
         // シーン開始時に現在の弾の数を保存する
         // （敗北時に直前からやり直すボタンを選択した場合にその値を使用する。）
         var player = GameObject.FindGameObjectWithTag(_playerTag);
         var playerController = player.GetComponent<PlayerController>();
+        await UniTask.WaitUntil(() => playerController.IsSetUp);
         GameManager.Instance.StageManager.SetCheckPointBulletsCount(
             playerController.Revolver.Cylinder, playerController.BulletCountManager.BulletCounts);
     }

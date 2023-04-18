@@ -20,7 +20,7 @@ public class StageAdvance : MonoBehaviour
     [Header("この面でこのステージは最後かどうか")]
     [SerializeField]
     private bool _isCompletedAtThisStage = default;
-    [Header("このステージの番号（ステージクリア時用）")]
+    [Header("このステージの番号（ステージクリア時用。\n上記のチェックボックスにチェックがついている時のみ使用する。）")]
     [SerializeField]
     private int _stageNumber = default;
 

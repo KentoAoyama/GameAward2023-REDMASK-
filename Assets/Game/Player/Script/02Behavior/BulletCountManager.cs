@@ -56,10 +56,18 @@ namespace Player
             }      //TestPlayなら弾を調整した値にする
             else
             {
-                _standardBulletCount.Value = GameManager.Instance.BulletsCountManager.BulletCountStage[BulletType.StandardBullet].Value;
-                _penetrateBulletCount.Value = GameManager.Instance.BulletsCountManager.BulletCountStage[BulletType.PenetrateBullet].Value;
-                _reflectBulletCount.Value = GameManager.Instance.BulletsCountManager.BulletCountStage[BulletType.ReflectBullet].Value;
-            } //GameManagerの調整した値にする
+                if (GameManager.Instance.StageManager.StageStartMode == StageStartMode.JustBefore)
+                {
+                    BulletCounts = GameManager.Instance.StageManager.CheckPointGunBelt;
+                    return;
+                }
+                else
+                {
+                    _standardBulletCount.Value = GameManager.Instance.BulletsCountManager.BulletCountStage[BulletType.StandardBullet].Value;
+                    _penetrateBulletCount.Value = GameManager.Instance.BulletsCountManager.BulletCountStage[BulletType.PenetrateBullet].Value;
+                    _reflectBulletCount.Value = GameManager.Instance.BulletsCountManager.BulletCountStage[BulletType.ReflectBullet].Value;
+                } //GameManagerの調整した値にする
+            }
 
             // 各ReactivePropertyをディクショナリに登録する。
             _bulletCounts.Add(BulletType.StandardBullet, _standardBulletCount);
