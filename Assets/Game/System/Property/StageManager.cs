@@ -1,7 +1,5 @@
 // 日本語対応
 using Bullet;
-using Cysharp.Threading.Tasks;
-using System;
 using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
@@ -26,27 +24,22 @@ public class StageManager
     private Dictionary<BulletType, IReadOnlyReactiveProperty<int>> _checkPointGunBelt = null;
 
     /// <summary>
-    /// チェックポイントのシリンダーの状態を返す
+    /// チェックポイントのシリンダーの状態
     /// </summary>
-    public IStoreableInChamber[] CheckPointCylinder { get => _checkPointCylinder == null ? new IStoreableInChamber[6] : _checkPointCylinder; }
+    public IStoreableInChamber[] CheckPointCylinder { get => _checkPointCylinder; }
     /// <summary>
-    /// チェックポイントのガンベルトの状態を返す
+    /// チェックポイントのガンベルトの状態
     /// </summary>
-    public Dictionary<BulletType, IReadOnlyReactiveProperty<int>> CheckPointGunBelt
-    {
-        get
-        {
-            var result = new Dictionary<BulletType, IReadOnlyReactiveProperty<int>>(_checkPointGunBelt);
-            result[BulletType.StandardBullet] =
-                new ReactiveProperty<int>(_checkPointGunBelt[BulletType.StandardBullet].Value);
-            result[BulletType.PenetrateBullet] =
-                new ReactiveProperty<int>(_checkPointGunBelt[BulletType.PenetrateBullet].Value);
-            result[BulletType.ReflectBullet] =
-                new ReactiveProperty<int>(_checkPointGunBelt[BulletType.ReflectBullet].Value);
-            return result;
-        }
-    }
+    public Dictionary<BulletType, IReadOnlyReactiveProperty<int>> CheckPointGunBelt { get => _checkPointGunBelt; }
 
+    public int CylinderIndex { get; set; } = 0;
+
+    public void Clear()
+    {
+        _checkPointCylinder = null;
+        _checkPointGunBelt = null;
+        CylinderIndex = 0;
+    }
     /// <summary>
     /// チェックポイント時の弾の数を保存する
     /// </summary>
@@ -59,7 +52,6 @@ public class StageManager
         var cylinderResult = new IStoreableInChamber[cylinder.Length];
         for (int i = 0; i < cylinderResult.Length; i++)
         {
-            Debug.Log(cylinder[i]);
             cylinderResult[i] = cylinder[i];
         }
         _checkPointCylinder = cylinderResult;

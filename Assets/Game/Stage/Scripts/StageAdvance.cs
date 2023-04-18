@@ -17,39 +17,23 @@ public class StageAdvance : MonoBehaviour
     [Header("次のシーンの名前")]
     [SceneName, SerializeField]
     private string _nextSceneName = default;
-    [Header("この面でこのステージは最後かどうか")]
-    [SerializeField]
-    private bool _isCompletedAtThisStage = default;
-    [Header("このステージの番号（ステージクリア時用。\n上記のチェックボックスにチェックがついている時のみ使用する。）")]
-    [SerializeField]
-    private int _stageNumber = default;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // プレイヤーと接触したとき実行する。
-        if (collision.tag == _playerTag) 
+        if (collision.tag == _playerTag)
         {
-            // この面が最後であれば 必要な処理を実行する。
-            if (_isCompletedAtThisStage)
-            {
-                CompletedStage();
-            }
+            GameManager.Instance.StageManager.StageStartMode = StageStartMode.JustBefore;
+            // 弾の残り数を保存する。
+            // （敗北時に直前からやり直すボタンを選択した場合にその値を使用する。）
+            var player = GameObject.FindGameObjectWithTag(_playerTag);
+            var playerController = player.GetComponent<PlayerController>();
+            GameManager.Instance.StageManager.SetCheckPointBulletsCount(
+                playerController.Revolver.Cylinder, playerController.BulletCountManager.BulletCounts);
+            GameManager.Instance.StageManager.CylinderIndex = playerController.Revolver.CurrentChamber;
+
             // シーンを更新する。
             SceneManager.LoadScene(_nextSceneName);
         }
-    }
-    /// <summary>
-    /// ステージクリア時用メソッド
-    /// </summary>
-    public void CompletedStage()
-    {
-        // 余った弾をホームに返す。
-        var player = GameObject.FindGameObjectWithTag(_playerTag);
-        var playerController = player.GetComponent<PlayerController>();
-        playerController.StageComplete();
-        // 完了済みのステージを更新する。
-        GameManager.Instance.CompletedStageManager.SetCompletedStage(_stageNumber);
-        // 状態を保存する。
-        GameManager.Instance.CompletedStageManager.SaveStageCompleteNumber();
     }
 }

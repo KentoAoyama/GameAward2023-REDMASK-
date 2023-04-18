@@ -36,8 +36,14 @@ namespace UI
             // 発砲時シリンダーをアニメーションさせる
             _playerController.Revolver.OnFire += StartCylinderAnimation;
             _playerController.Revolver.OnChamberStateChanged += ChangeChamberState;
+            _playerController.Revolver.OnSetCylinderIndex += SetCylinderRotate;
         }
 
+        private void SetCylinderRotate(int index)
+        {
+            var value = index * -60f;
+            _cylinder.transform.rotation = Quaternion.Euler(0, 0, value);
+        }
         /// <summary> シリンダーアニメーション </summary>
         /// <param name="nextChamberNumber"> 次のチェンバーの位置 </param>
         private void StartCylinderAnimation(int nextChamberNumber)

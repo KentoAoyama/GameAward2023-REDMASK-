@@ -31,6 +31,7 @@ public class TitleContinueButton : MonoBehaviour
     {
         GameManager.Instance.PauseManager.ClearCount();
         DOTween.KillAll();
+        GameManager.Instance.BulletsCountManager.Load();
         SceneManager.LoadScene(_stageSelectButton);
     }
 }

@@ -1,5 +1,6 @@
 // 日本語対応
 using Bullet;
+using System;
 using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
@@ -7,7 +8,8 @@ using UnityEngine;
 /// <summary>
 /// 弾の数を覚えておくクラス
 /// </summary>
-public class BulletsCountManager : ISavable
+[Serializable] // 保存するクラス
+public class BulletsCountManager
 {
     /// <summary>
     /// アジトにある弾の数
@@ -30,6 +32,12 @@ public class BulletsCountManager : ISavable
         BulletType.NotSet, BulletType.NotSet, BulletType.NotSet,
         BulletType.NotSet, BulletType.NotSet, BulletType.NotSet};
 
+    /// <summary>
+    /// 保存するフィールド
+    /// </summary>
+    [SerializeField]
+    private int[] _bulletCountHomeSaveData;
+
     public Dictionary<BulletType, IntReactiveProperty> BulletCountHome => _bulletCountHome;
     public Dictionary<BulletType, IntReactiveProperty> BulletCountStage => _bulletCountStage;
 
@@ -50,15 +58,20 @@ public class BulletsCountManager : ISavable
 
     public void Save()
     {
-        //SaveLoadManager.Save<BulletsCountManager>(this, _saveFileName);
+        _bulletCountHomeSaveData = new int[3];
+        _bulletCountHomeSaveData[0] = _bulletCountHome[BulletType.StandardBullet].Value;
+        _bulletCountHomeSaveData[1] = _bulletCountHome[BulletType.PenetrateBullet].Value;
+        _bulletCountHomeSaveData[2] = _bulletCountHome[BulletType.ReflectBullet].Value;
+        SaveLoadManager.Save<BulletsCountManager>(this, _saveFileName);
     }
     public void Load()
     {
-        //var temp = SaveLoadManager.Load<BulletsCountManager>(_saveFileName);
-        //if (temp == null) return; // 読み込みに失敗した場合は処理しない。
-        //_bulletCountHome = temp._bulletCountHome;
-        //_bulletCountStage = temp._bulletCountStage;
-        //_cylinder = temp._cylinder;
+        var temp = SaveLoadManager.Load<BulletsCountManager>(_saveFileName);
+        if (temp == null || temp._bulletCountHomeSaveData == null) return; // 読み込みに失敗した場合は処理しない。
+        // Debug.Log(temp._bulletCountHomeSaveData == null);
+        _bulletCountHome[BulletType.StandardBullet].Value = temp._bulletCountHomeSaveData[0];
+        _bulletCountHome[BulletType.PenetrateBullet].Value = temp._bulletCountHomeSaveData[1];
+        _bulletCountHome[BulletType.ReflectBullet].Value = temp._bulletCountHomeSaveData[2];
     }
     public void Clear()
     {

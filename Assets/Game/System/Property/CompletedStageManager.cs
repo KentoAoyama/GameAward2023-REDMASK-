@@ -26,7 +26,13 @@ public class CompletedStageManager
     }
     public void SetCompletedStage(int stageNumber)
     {
-        if (_maxCompletedStageNumber < stageNumber)
+        // ステージ4をクリアしたらクリア済みステージ情報を破棄する
+        if (stageNumber == 4)
+        {
+            _maxCompletedStageNumber = 0;
+        }
+        // そうでなければ通常更新する
+        else if (_maxCompletedStageNumber < stageNumber)
         {
             _maxCompletedStageNumber = stageNumber;
         }

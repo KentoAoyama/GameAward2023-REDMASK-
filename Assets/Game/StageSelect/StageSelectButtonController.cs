@@ -15,8 +15,7 @@ public class StageSelectButtonController : MonoBehaviour
         // そうでないステージは 非アクティブにする。
         for (int i = 0; i < _buttons.Length; i++)
         {
-            _buttons[i].SetActive(i <= GameManager.Instance.
-                CompletedStageManager.GetMaxCompletedStageNumber());
+            _buttons[i].SetActive(i == GameManager.Instance.CompletedStageManager.GetMaxCompletedStageNumber());
         }
     }
 }

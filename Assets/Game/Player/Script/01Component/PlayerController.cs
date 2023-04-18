@@ -156,8 +156,12 @@ namespace Player
         /// <summary>ゲームクリア時に呼ぶ、ホームに弾を追加</summary>
         public void StageComplete()
         {
+            // ホームに弾を返す。
             _bulletCountManager.HomeBulletAddEndStage();
+            // GameManagerが持つステージ用弾数,シリンダーの状態をリセット。
             GameManager.Instance.BulletsCountManager.Clear();
+            // GameManager.BulletsCountManagerの情報を保存。
+            GameManager.Instance.BulletsCountManager.Save();
         }
 
 
@@ -180,10 +184,17 @@ namespace Player
                 {
                     _revolver.LoadBullet(_basicBullet, i);
                 }
-            }   //Test用に、Sceneで設定したものを使う
+            } //Test用に、Sceneで設定したものを使う
             else
             {
-                if (GameManager.Instance.StageManager.StageStartMode == StageStartMode.JustBefore)
+                _revolver.SetCylinderIndex(GameManager.Instance.StageManager.CylinderIndex);
+                // 弾の情報が読み込まれるまで待機
+                await UniTask.WaitUntil(() => BulletDataBase.IsInit);
+
+                // プレイヤー死亡時 直前からやり直すを選択した場合の処理
+                // あるいは、面から面へ遷移する際。
+                if (GameManager.Instance.StageManager.StageStartMode == StageStartMode.JustBefore &&
+                    GameManager.Instance.StageManager.CheckPointCylinder != null)
                 {
                     for (int i = 0; i < GameManager.Instance.StageManager.CheckPointCylinder.Length; i++)
                     {
@@ -200,9 +211,10 @@ namespace Player
                 }
                 else
                 {
+                    // プレイヤー死亡時 最初からやり直すを選択した場合の処理
+                    // あるいは、準備シーンからステージへ遷移する際。
                     for (int i = 0; i < _revolver.Cylinder.Length; i++)
                     {
-                        await UniTask.WaitUntil(() => BulletDataBase.IsInit);
                         BulletDataBase.Bullets.TryGetValue(GameManager.Instance.BulletsCountManager.Cylinder[i], out Bullet2 bullet);
                         _revolver.LoadBullet(bullet, i);
                     }
@@ -241,7 +253,6 @@ namespace Player
 
             //カメラの振動一時停止
             _camraControl.Pause();
-
         }
 
         public void Resume()
