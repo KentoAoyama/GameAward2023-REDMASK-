@@ -1,5 +1,6 @@
 // 日本語対応
 using Cysharp.Threading.Tasks;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Playables;
@@ -28,6 +29,8 @@ public class StageTimelineController : MonoBehaviour
     /// <summary> 終了タイムライン検知用フラグ </summary>
     private bool _isThirdTimeLineEnd = false;
 
+    public event Action OnComplete = default;
+
     private async void Awake()
     {
         // 開始 タイムラインを再生する。
@@ -42,6 +45,8 @@ public class StageTimelineController : MonoBehaviour
         _thirdPerformanceEndDirector.Play();
         _thirdPerformanceEndDirector.stopped += _ => _isThirdTimeLineEnd = true;
         await UniTask.WaitUntil(() => _isThirdTimeLineEnd); // 終了タイムラインが終了するのを待つ。
+
+        OnComplete?.Invoke();
 
         // 設定されたシーンを読み込む。
         SceneManager.LoadScene(_nextSceneName);
