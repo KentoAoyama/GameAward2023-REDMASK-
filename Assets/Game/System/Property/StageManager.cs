@@ -1,7 +1,10 @@
 // 日本語対応
 using Bullet;
+using Cysharp.Threading.Tasks;
+using System;
 using System.Collections.Generic;
 using UniRx;
+using UnityEngine;
 
 /// <summary>
 /// このクラスの目的をここに記す。
@@ -25,19 +28,7 @@ public class StageManager
     /// <summary>
     /// チェックポイントのシリンダーの状態を返す
     /// </summary>
-    public IStoreableInChamber[] CheckPointCylinder
-    {
-        get
-        {
-            var result = new IStoreableInChamber[_checkPointCylinder.Length];
-            for (int i = 0; i < result.Length; i++)
-            {
-                result[i] = _checkPointCylinder[i];
-            }
-            return result;
-        }
-
-    }
+    public IStoreableInChamber[] CheckPointCylinder { get => _checkPointCylinder == null ? new IStoreableInChamber[6] : _checkPointCylinder; }
     /// <summary>
     /// チェックポイントのガンベルトの状態を返す
     /// </summary>
@@ -52,7 +43,7 @@ public class StageManager
                 new ReactiveProperty<int>(_checkPointGunBelt[BulletType.PenetrateBullet].Value);
             result[BulletType.ReflectBullet] =
                 new ReactiveProperty<int>(_checkPointGunBelt[BulletType.ReflectBullet].Value);
-            return null;
+            return result;
         }
     }
 
@@ -65,21 +56,22 @@ public class StageManager
         Dictionary<BulletType, IReadOnlyReactiveProperty<int>> gunBelt)
     {
         // シリンダーの状態保存
-        var cylinderResult = new IStoreableInChamber[_checkPointCylinder.Length];
+        var cylinderResult = new IStoreableInChamber[cylinder.Length];
         for (int i = 0; i < cylinderResult.Length; i++)
         {
+            Debug.Log(cylinder[i]);
             cylinderResult[i] = cylinder[i];
         }
         _checkPointCylinder = cylinderResult;
 
         // ガンベルトの状態保存
-        var gunBeltResult = new Dictionary<BulletType, IReadOnlyReactiveProperty<int>>(gunBelt);
-        gunBeltResult[BulletType.StandardBullet] =
-            new ReactiveProperty<int>(gunBelt[BulletType.StandardBullet].Value);
-        gunBeltResult[BulletType.PenetrateBullet] =
-            new ReactiveProperty<int>(gunBelt[BulletType.PenetrateBullet].Value);
-        gunBeltResult[BulletType.ReflectBullet] =
-            new ReactiveProperty<int>(gunBelt[BulletType.ReflectBullet].Value);
+        var gunBeltResult = new Dictionary<BulletType, IReadOnlyReactiveProperty<int>>();
+        gunBeltResult.Add(BulletType.StandardBullet,
+            new ReactiveProperty<int>(gunBelt[BulletType.StandardBullet].Value));
+        gunBeltResult.Add(BulletType.PenetrateBullet,
+            new ReactiveProperty<int>(gunBelt[BulletType.PenetrateBullet].Value));
+        gunBeltResult.Add(BulletType.ReflectBullet,
+            new ReactiveProperty<int>(gunBelt[BulletType.ReflectBullet].Value));
         _checkPointGunBelt = gunBeltResult;
     }
 }

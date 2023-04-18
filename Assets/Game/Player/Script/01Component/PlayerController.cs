@@ -102,6 +102,8 @@ namespace Player
 
         public PlayerBodyAndArmAngleSetting BodyAnglSetteing => _bodyAngleSetting;
 
+        public bool IsSetUp { get; private set; } = false;
+
         private void Start()
         {
             _rigidbody2D = GetComponent<Rigidbody2D>();
@@ -122,7 +124,7 @@ namespace Player
             _camraControl.Init(this);
             _bodyAngleSetting.Init(this);
 
-
+            IsSetUp = true;
 
         }
         private void Update()
@@ -181,11 +183,29 @@ namespace Player
             }   //Test用に、Sceneで設定したものを使う
             else
             {
-                for (int i = 0; i < _revolver.Cylinder.Length; i++)
+                if (GameManager.Instance.StageManager.StageStartMode == StageStartMode.JustBefore)
                 {
-                    await UniTask.WaitUntil(() => BulletDataBase.IsInit);
-                    BulletDataBase.Bullets.TryGetValue(GameManager.Instance.BulletsCountManager.Cylinder[i], out Bullet2 bullet);
-                    _revolver.LoadBullet(bullet, i);
+                    for (int i = 0; i < GameManager.Instance.StageManager.CheckPointCylinder.Length; i++)
+                    {
+                        if (GameManager.Instance.StageManager.CheckPointCylinder[i] == null)
+                        {
+                            _revolver.LoadBullet(null, i);
+                        }
+                        else
+                        {
+                            BulletDataBase.Bullets.TryGetValue(GameManager.Instance.StageManager.CheckPointCylinder[i].Type, out Bullet2 bullet);
+                            _revolver.LoadBullet(bullet, i);
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < _revolver.Cylinder.Length; i++)
+                    {
+                        await UniTask.WaitUntil(() => BulletDataBase.IsInit);
+                        BulletDataBase.Bullets.TryGetValue(GameManager.Instance.BulletsCountManager.Cylinder[i], out Bullet2 bullet);
+                        _revolver.LoadBullet(bullet, i);
+                    }
                 }
             }　//アジトで設定したものを使う
         }
