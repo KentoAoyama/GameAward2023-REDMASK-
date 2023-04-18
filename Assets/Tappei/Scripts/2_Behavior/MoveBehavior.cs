@@ -49,7 +49,7 @@ public class MoveBehavior : MonoBehaviour
     private bool _isPause;
 
     /// <summary>Spriteの左右の向きに合わせた処理をする際に使う</summary>
-    public int SpriteScaleX => (int)_spriteTrans.localScale.x;
+    public int SpriteDirection => (int)Mathf.Sign(_spriteTrans.localScale.x);
 
 #if UNITY_EDITOR
     /// <summary>EnemyControllerでギズモに表示する用途で使っている</summary>
@@ -253,7 +253,8 @@ public class MoveBehavior : MonoBehaviour
     {
         float diff = targetPos.x - _transform.position.x;
         int dir = (int)Mathf.Sign(diff);
-        _spriteTrans.localScale = new Vector3(dir, 1, 1);
+        _spriteTrans.localScale = new Vector3(dir * Mathf.Abs(_spriteTrans.localScale.x), 
+            _spriteTrans.localScale.y, 1);
         
         Vector3 eyePos = _eyeTrans.localPosition;
         eyePos.x = Mathf.Abs(eyePos.x) * dir;
@@ -272,7 +273,7 @@ public class MoveBehavior : MonoBehaviour
     private bool IsDetectedFloor()
     {
         Vector3 rayOrigin = _transform.position + (Vector3)FloorRayOffset;
-        Vector3 dir = ((_transform.right * _spriteTrans.localScale.x) + new Vector3(0, -2f, 0)).normalized;
+        Vector3 dir = ((_transform.right * SpriteDirection) + new Vector3(0, -2f, 0)).normalized;
         RaycastHit2D groundHit = Physics2D.Raycast(rayOrigin, dir, FloorRayDistance, _groundLayerMask);
 
 #if UNITY_EDITOR
@@ -285,9 +286,9 @@ public class MoveBehavior : MonoBehaviour
 
     private bool IsUndetectedEnemy()
     {
-        Vector3 offset = new Vector3(EnemyTypeRayOffset.x * _spriteTrans.localScale.x, EnemyTypeRayOffset.y, 0);
+        Vector3 offset = new Vector3(EnemyTypeRayOffset.x * SpriteDirection, EnemyTypeRayOffset.y, 0);
         Vector3 rayOrigin = _transform.position + offset;
-        Vector3 dir = _transform.right * _spriteTrans.localScale.x;
+        Vector3 dir = _transform.right * SpriteDirection;
         RaycastHit2D enemyHit = Physics2D.Raycast(rayOrigin, dir, EnemyTypeRayDistance, _enemyTypeLayerMask);
 
 #if UNITY_EDITOR
