@@ -56,17 +56,19 @@ namespace Player
             }      //TestPlayなら弾を調整した値にする
             else
             {
-                if (GameManager.Instance.StageManager.StageStartMode == StageStartMode.JustBefore)
+                if (GameManager.Instance.StageManager.StageStartMode == StageStartMode.JustBefore &&
+                    GameManager.Instance.StageManager.CheckPointGunBelt != null)
                 {
-                    BulletCounts = GameManager.Instance.StageManager.CheckPointGunBelt;
-                    return;
+                    _standardBulletCount.Value = GameManager.Instance.StageManager.CheckPointGunBelt[BulletType.StandardBullet].Value;
+                    _penetrateBulletCount.Value = GameManager.Instance.StageManager.CheckPointGunBelt[BulletType.PenetrateBullet].Value;
+                    _reflectBulletCount.Value = GameManager.Instance.StageManager.CheckPointGunBelt[BulletType.ReflectBullet].Value;
                 }
                 else
                 {
                     _standardBulletCount.Value = GameManager.Instance.BulletsCountManager.BulletCountStage[BulletType.StandardBullet].Value;
                     _penetrateBulletCount.Value = GameManager.Instance.BulletsCountManager.BulletCountStage[BulletType.PenetrateBullet].Value;
                     _reflectBulletCount.Value = GameManager.Instance.BulletsCountManager.BulletCountStage[BulletType.ReflectBullet].Value;
-                } //GameManagerの調整した値にする
+                } // 弾の所持数（シリンダーを除く）を準備画面で設定したモノにする。
             }
 
             // 各ReactivePropertyをディクショナリに登録する。
@@ -87,12 +89,12 @@ namespace Player
             GameManager.Instance.BulletsCountManager.BulletCountHome[BulletType.PenetrateBullet].Value += _penetrateBulletCount.Value;
             GameManager.Instance.BulletsCountManager.BulletCountHome[BulletType.ReflectBullet].Value += _reflectBulletCount.Value;
 
-            foreach (var a in _playerController.Revolver.Cylinder)
+            foreach (var cylinderBullet in _playerController.Revolver.Cylinder)
             {
-                if (a == null) continue;
+                if (cylinderBullet == null) continue;
                 try
                 {
-                    GameManager.Instance.BulletsCountManager.BulletCountHome[a.Type].Value++;
+                    GameManager.Instance.BulletsCountManager.BulletCountHome[cylinderBullet.Type].Value++;
                 }
                 catch (KeyNotFoundException)
                 {

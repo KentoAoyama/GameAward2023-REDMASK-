@@ -46,6 +46,7 @@ namespace Player
         /// <summary> 発砲可能かどうかを表す値 </summary>
         public bool CanFire => _canFire;
 
+        public event Action<int> OnSetCylinderIndex = default;
         public event Action<int> OnFire = default;
         public Action<int, BulletType> OnChamberStateChanged = default;
         public bool IsPause { get; set; } = false;
@@ -77,9 +78,11 @@ namespace Player
             }
         }
 
-
-
-
+        public void SetCylinderIndex(int index)
+        {
+            OnSetCylinderIndex?.Invoke(index);
+            _currentChamber = index;
+        }
         /// <summary> 弾を装填する </summary>
         /// <param name="bullet"> 装填する弾 </param>
         /// <param name="chamberNumber"> 装填するチェンバーの位置 </param>
