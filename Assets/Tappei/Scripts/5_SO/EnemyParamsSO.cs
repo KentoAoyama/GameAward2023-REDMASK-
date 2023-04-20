@@ -45,8 +45,8 @@ public class EnemyParamsSO : ScriptableObject
 
     [Header("Entry時の状態")]
     [SerializeField] protected State _entryState;
-    [Header("プレイヤー未発見時は常にSearch状態にする")]
-    [SerializeField] protected bool _isAlwaysSearching;
+    [Header("プレイヤー未発見時は常にIdle状態にする")]
+    [SerializeField] protected bool _isIdleUndiscovered;
 
     public float DiscoverStateTransitionDelay => _discoverAnimClip != null ? _discoverAnimClip.length : 0;
     public float DefeatedStateTransitionDelay => _deadAnimClip != null ? _deadAnimClip.length : 0;
@@ -59,13 +59,13 @@ public class EnemyParamsSO : ScriptableObject
     public bool IsIgnoreObstacle => _isIgnoreObstacle;
     public float AttackRange => _attackRange;
     public float AttackRate => _attackRate;
-    public bool IsAlwaysSearching => _isAlwaysSearching;
+    public bool IsIdleUndiscovered => _isIdleUndiscovered;
     public virtual StateType EntryState
     {
         get
         {
-            // フラグが立っている場合はIdle状態にせず、常にSearch状態となる
-            if (_isAlwaysSearching) return StateType.Search;
+            // フラグが立っている場合はSearch状態にせず、常にIdle状態となる
+            if (_isIdleUndiscovered) return StateType.Idle;
 
             if (_entryState == State.Idle)
             {

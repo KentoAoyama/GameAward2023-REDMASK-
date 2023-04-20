@@ -32,14 +32,14 @@ public class StateTypeMove : StateTypeBase
 
         if (IsMoveCancel())
         {
-            TryChangeState(StateType.Search);
+            TryChangeState(StateType.Idle);
             return;
         }
 
         SightResult result = Controller.IsFindPlayer();
         if (result == SightResult.OutSight)
         {
-            TryChangeState(StateType.Search);
+            TryChangeState(StateType.Idle);
             return;
         }
         else if (result == SightResult.InAttackRange)

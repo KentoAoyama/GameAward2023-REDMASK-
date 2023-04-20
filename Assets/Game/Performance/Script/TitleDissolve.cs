@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 public class TitleDissolve : MonoBehaviour
 {
@@ -10,6 +10,8 @@ public class TitleDissolve : MonoBehaviour
     private Canvas _titleCanvas;
     [SerializeField]
     private TitleController _titleController;
+    [SerializeField, Tooltip("フェードするときのEvent")]
+    private UnityEvent _onFade;
 
     /// <summary>ディゾルブさせるパネル</summary>
     private Image _dissolvePanel;
@@ -48,10 +50,12 @@ public class TitleDissolve : MonoBehaviour
         screenShot.ReadPixels(new Rect(0f, 0f, Screen.width, Screen.height), 0, 0);
         screenShot.Apply();
 
+        _onFade.Invoke();
+
         _dissolvePanel.enabled = true;
         _dissolvePanel.sprite = Sprite.Create(screenShot, new Rect(0f, 0f, screenShot.width, screenShot.height), Vector2.zero);
         _animator.Play("TitleDissolvePlay");
 
-        Destroy(_titleCanvas);
+        Destroy(_titleCanvas.gameObject);
     }
 }
