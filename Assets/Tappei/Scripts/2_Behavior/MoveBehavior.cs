@@ -214,7 +214,7 @@ public class MoveBehavior : MonoBehaviour
         _cts.Token.ThrowIfCancellationRequested();
 
         TurnToMoveDirection(target.position);
-        while (IsDetectedFloor() && IsUndetectedEnemy())
+        while (IsDetectedFloor()/* && IsUndetectedEnemy()*/)
         {
             if (!_isPause)
             {
