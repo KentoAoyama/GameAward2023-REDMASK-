@@ -40,7 +40,7 @@ public class StateTypeAttack : StateTypeBase
         SightResult result = Controller.IsFindPlayer();
         if (result == SightResult.OutSight)
         {
-            TryChangeState(StateType.Search);
+            TryChangeState(StateType.Idle);
             return;
         }
         else if (result == SightResult.InSight)

@@ -48,7 +48,7 @@ public class StateTypeAttackExtend : StateTypeAttack
         SightResult result = Controller.IsFindPlayer();
         if (result == SightResult.OutSight)
         {
-            TryChangeState(StateType.SearchExtend);
+            TryChangeState(StateType.IdleExtend);
             return;
         }
         else if (result == SightResult.InSight)

@@ -11,8 +11,8 @@ public class ShieldEnemyParamsSO : EnemyParamsSO
     {
         get
         {
-            // フラグが立っている場合はIdle状態にせず、常にSearch状態となる
-            if (_isAlwaysSearching) return StateType.SearchExtend;
+            // フラグが立っている場合はSeach状態にせず、常にIdle状態となる
+            if (_isIdleUndiscovered) return StateType.IdleExtend;
 
             if (_entryState == State.Idle)
             {

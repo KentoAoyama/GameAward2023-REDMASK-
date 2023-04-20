@@ -43,7 +43,14 @@ public class StateTypeIdle : StateTypeBase
         _time += timeScale * Time.deltaTime;
         if (_time > _delay)
         {
-            TryChangeState(StateType.Search);
+            if (Controller.Params.IsIdleUndiscovered)
+            {
+                TryChangeState(StateType.Idle);
+            }
+            else
+            {
+                TryChangeState(StateType.Search);
+            }
             return;
         }
     }
