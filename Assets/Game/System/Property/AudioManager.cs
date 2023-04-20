@@ -62,8 +62,6 @@ public class AudioManager
                 _sePlayer[i].Update(_sePlayback[i]);
             }
         });
-
-        CriAtom.AddCueSheet("CueSheet_0", "CueSheet_0.acb", "CueSheet_0.awb");
     }
     // ここに音を鳴らす関数を書いてください
 
