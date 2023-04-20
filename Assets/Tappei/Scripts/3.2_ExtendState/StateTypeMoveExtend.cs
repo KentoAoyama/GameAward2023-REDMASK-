@@ -29,14 +29,14 @@ public class StateTypeMoveExtend : StateTypeMove
 
         if (IsMoveCancel())
         {
-            TryChangeState(StateType.SearchExtend);
+            TryChangeState(StateType.IdleExtend);
             return;
         }
 
         SightResult result = Controller.IsFindPlayer();
         if (result == SightResult.OutSight)
         {
-            TryChangeState(StateType.SearchExtend);
+            TryChangeState(StateType.IdleExtend);
             return;
         }
         else if (result == SightResult.InAttackRange)
