@@ -7,6 +7,36 @@ namespace Player
     [System.Serializable]
     public class PlayerBodyAndArmAngleSetting
     {
+        [Header("======頭の設定======")]
+        [Header("頭のSprite")]
+        [Tooltip("頭のSprite"), SerializeField] private SpriteRenderer _headSprite;
+
+        [Header("頭のイラスト、順番に入れてね")]
+        [Tooltip("頭のイラスト、順番に入れてね"), SerializeField] private List<Sprite> _heads = new List<Sprite>();
+
+        [Header("======上半身の設定======")]
+
+        [Header("上半身(前向き)の設定のSpriteRenderer")]
+        [Tooltip("上半身(前向き)の設定のSprite"), SerializeField] private SpriteRenderer _upperBodySpriteRenderer;
+
+        [Header("上半身(前向き)の設定のSprite")]
+        [Tooltip("上半身(前向き)の設定のSprite"), SerializeField] private Sprite _upperBodySprite;
+
+        [Header("上半身(後ろ向き)の設定のSprite")]
+        [Tooltip("上半身(後ろ向き)の設定のSprite"), SerializeField] private Sprite _upperBodyBackSprite;
+
+        [Header("======下半身の設定======")]
+
+        [Header("下半身(前向き)の設定のSpriteRenderer")]
+        [Tooltip("下半身(前向き)の設定のSpriteRenderer"), SerializeField] private SpriteRenderer _downBodySpriteRenderer;
+
+        [Header("下半身(前向き)の設定のSprite")]
+        [Tooltip("下半身(前向き)の設定のSprite"), SerializeField] private Sprite _downBodySprite;
+
+        [Header("下半身(後ろ向き)の設定のSprite")]
+        [Tooltip("下半身(後ろ向き)の設定のSprite"), SerializeField] private Sprite _downBodyBackSprite;
+
+        [Header("======腕の設定======")]
         [Header("腕のオブジェクト")]
         [Tooltip("腕のオブジェクト"), SerializeField] private GameObject _arm;
 
@@ -116,20 +146,49 @@ namespace Player
                 }
             }
 
-            //腕の角度を取得
+            //360度の角度を取得
             float armAngle = Vector2ToAngle(_playerController.Move.MoveHorizontalDir, _aimingAngle, false);
 
             //腕の角度を変更
             _arm.transform.rotation = Quaternion.Euler(0f, 0f, armAngle);
 
 
+
             //真上を基準とした角度を取得
             float angle = Vector2ToAngle(_playerController.Move.MoveHorizontalDir, _aimingAngle, true);
-
             var i = Mathf.Abs((int)Mathf.Floor(angle / 30));
 
-            //Spriteを変更
+            //頭のSpriteを変更        
+            _headSprite.sprite = _heads[i];
+            //腕のSpriteを変更
             _armSprite.sprite = arms[i];
+
+            if(_playerController.Move.MoveHorizontalDir>0)
+            {
+                if(0<=angle && angle<180)
+                {
+                    _upperBodySpriteRenderer.sprite = _upperBodySprite;
+                    _downBodySpriteRenderer.sprite = _downBodySprite;
+                }
+                else
+                {
+                    _upperBodySpriteRenderer.sprite = _upperBodyBackSprite;
+                    _downBodySpriteRenderer.sprite = _downBodyBackSprite;
+                }
+            }
+            else
+            {
+                if (0 <= angle && angle < 180)
+                {
+                    _upperBodySpriteRenderer.sprite = _upperBodyBackSprite;
+                    _downBodySpriteRenderer.sprite = _downBodyBackSprite;
+                }
+                else
+                {
+                    _upperBodySpriteRenderer.sprite = _upperBodySprite;
+                    _downBodySpriteRenderer.sprite = _downBodySprite;
+                }
+            }
         }
     }
 }
