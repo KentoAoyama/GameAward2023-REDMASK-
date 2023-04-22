@@ -31,7 +31,8 @@ public class GameManager
     private CompletedStageManager _completedStageManager = new CompletedStageManager();
     private StageManager _stageManager = new StageManager();
     private AudioManager _audioManager = new AudioManager();
-    private ShaderPropertyController _shaderPropertyController= new ShaderPropertyController();
+    private ShaderPropertyController _shaderPropertyController = new ShaderPropertyController();
+    private GalleryManager _galleryManager = new GalleryManager();
 
     /// <summary>
     /// ゲームの状態を表現するクラス
@@ -67,4 +68,5 @@ public class GameManager
     /// ShaderのPropertyを管理するクラス
     /// </summary>
     public ShaderPropertyController ShaderPropertyController => _shaderPropertyController;
+    public GalleryManager GalleryManager => _galleryManager;
 }
