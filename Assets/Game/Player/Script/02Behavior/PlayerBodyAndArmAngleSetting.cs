@@ -43,8 +43,12 @@ namespace Player
         [Header("腕のSprite")]
         [Tooltip("腕のSprite"), SerializeField] private SpriteRenderer _armSprite;
 
-        [Header("腕のイラスト、順番に入れてね")]
-        [Tooltip("腕のイラスト、順番に入れてね"), SerializeField] private List<Sprite> arms = new List<Sprite>();
+        [Header("腕、順番に入れてね")]
+        [Tooltip("腕、順番に入れてね"), SerializeField] private List<GameObject> arms = new List<GameObject>();
+
+        private int _nowMuzzleNum;
+
+        public int MuzzleNum => _nowMuzzleNum;
 
         private float _angleRight = default;
 
@@ -66,8 +70,9 @@ namespace Player
 
             var i = Mathf.Abs((int)Mathf.Floor(angle / 30));
 
-            //Spriteを変更
-            _armSprite.sprite = arms[i];
+            arms.ForEach(i => i.SetActive(false));
+            arms[i].SetActive(true);
+            _nowMuzzleNum = i;
         }
 
         /// <summary>ベクトルから角度を求める</summary>
@@ -160,12 +165,16 @@ namespace Player
 
             //頭のSpriteを変更        
             _headSprite.sprite = _heads[i];
-            //腕のSpriteを変更
-            _armSprite.sprite = arms[i];
+            //腕のを変更
+            arms.ForEach(i => i.SetActive(false));
+            arms[i].SetActive(true);
 
-            if(_playerController.Move.MoveHorizontalDir>0)
+            _nowMuzzleNum = i;
+
+
+            if (_playerController.Move.MoveHorizontalDir > 0)
             {
-                if(0<=angle && angle<180)
+                if (0 <= angle && angle < 180)
                 {
                     _upperBodySpriteRenderer.sprite = _upperBodySprite;
                     _downBodySpriteRenderer.sprite = _downBodySprite;

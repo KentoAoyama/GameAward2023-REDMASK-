@@ -8,7 +8,9 @@ namespace Player
     [System.Serializable]
     public class Move
     {
+
         [SerializeField] LayerMask _ground;
+
         [SerializeField] float _rayLong = 1.2f;
 
         [Header("水平移動")]
