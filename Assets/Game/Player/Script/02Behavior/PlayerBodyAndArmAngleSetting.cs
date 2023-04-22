@@ -48,6 +48,9 @@ namespace Player
 
         private int _nowMuzzleNum;
 
+
+        public Transform ArmCenterPos => _arm.transform;
+
         public int MuzzleNum => _nowMuzzleNum;
 
         private float _angleRight = default;
@@ -141,14 +144,11 @@ namespace Player
             else // マウス操作の場合
             {
                 // マウスの座標をワールド座標に変換する
-                var mouseWorldPos = Camera.main.ScreenToWorldPoint(
-                    _playerController.InputManager.GetValue<Vector2>(InputType.LookingMausePos));
-                if (((Vector2)mouseWorldPos - (Vector2)_playerController.transform.position).sqrMagnitude > 0.5f)
-                {
-
-
-                    _aimingAngle = mouseWorldPos - _playerController.transform.position;
-                }
+                Vector3 a = _playerController.InputManager.GetValue<Vector2>(InputType.LookingMausePos);
+                a.z = 10f;
+                var mouseWorldPos = Camera.main.ScreenToWorldPoint(a);
+                Debug.Log($"mouseWorldPos is {mouseWorldPos}");
+                _aimingAngle = mouseWorldPos - _arm.transform.position;
             }
 
             //360度の角度を取得
