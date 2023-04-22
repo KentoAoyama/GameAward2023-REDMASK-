@@ -10,6 +10,10 @@ namespace Player
     [System.Serializable]
     public class Proximity
     {
+        [Header("Test用、攻撃のText")]
+        [SerializeField]
+        private GameObject _testAttackText;
+
         [Header("近接攻撃の実行時間")]
         [Tooltip("近接攻撃の実行時間"), SerializeField]
         private float _attackDoTime = 4f;
@@ -98,6 +102,8 @@ namespace Player
 
         private void AttckStart()
         {
+            _testAttackText.SetActive(true);
+
             Debug.Log("近接攻撃はじめ！");
 
             //試験的に、色を変える    
@@ -126,6 +132,7 @@ namespace Player
 
         public void AttackEnd()
         {
+            _testAttackText.SetActive(false);
 
             Debug.Log("近接攻撃終わり！");
             //試験的に、色を変える    

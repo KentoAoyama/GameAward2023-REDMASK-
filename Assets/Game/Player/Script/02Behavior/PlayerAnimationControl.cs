@@ -84,11 +84,11 @@ namespace Player
             //プレイヤーのイラストの向きによって、左右反転の仕方を変える
             if (_isRightDirOnPictuer)
             {
-                _playerController.Player.transform.localScale = new Vector3(_moveHorizontalDir, 1, 1);
+                _playerController.Player.transform.localScale = new Vector3(_moveHorizontalDir * Mathf.Abs(_playerController.Player.transform.localScale.x), _playerController.Player.transform.localScale.y, _playerController.Player.transform.localScale.z);
             }
             else
             {
-                _playerController.Player.transform.localScale = new Vector3(-_moveHorizontalDir, 1, 1);
+                _playerController.Player.transform.localScale = new Vector3(-_moveHorizontalDir * Mathf.Abs(_playerController.Player.transform.localScale.x), _playerController.Player.transform.localScale.y, _playerController.Player.transform.localScale.z);
             }
         }
 

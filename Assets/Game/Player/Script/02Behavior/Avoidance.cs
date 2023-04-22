@@ -11,6 +11,14 @@ namespace Player
     [System.Serializable]
     public class Avoidance
     {
+        [Header("Test用、回避のText")]
+        [SerializeField]
+        private GameObject _testAvoidText;
+
+        [Header("Test用、時遅いのText")]
+        [SerializeField]
+        private GameObject _testSlowTimeText;
+
         [Tooltip("回避中の時間の速度"), SerializeField]
         private float _timeScale = 0.7f;
 
@@ -105,7 +113,7 @@ namespace Player
         }
 
 
-        public  void Update()
+        public void Update()
         {
             //Pause中は実行しない
             if (IsPause) return;
@@ -146,7 +154,7 @@ namespace Player
 
                 StartThereAvoidance();
             }
-            else if(_isDoAvoidance && !_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX))
+            else if (_isDoAvoidance && !_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX))
             {
                 _isDoAvoidance = false;
             }
@@ -164,23 +172,35 @@ namespace Player
             if (_playerController.InputManager.IsExist[InputType.Avoidance])
             {
                 _countL2Time += Time.deltaTime;
+
+                if (_countL2Time > _doAvoidanceTime)
+                {
+                    if (_isCanSlowTime)
+                    {
+                        _isDoSlowTime = true;
+
+                        _countL2Time = 0;
+
+                        //リロードを中断する
+                        _playerController.RevolverOperator.StopRevolverReLoad();
+                    }
+                }
             }
             else if (_playerController.InputManager.IsReleased[InputType.Avoidance])
             {
                 //押した時間が、回避適用時間より下だったら回避
                 //そうじゃなかったら時を遅くする
-                if (_countL2Time > _doAvoidanceTime)
+                if (_countL2Time <= _doAvoidanceTime)
                 {
-                    if (_isCanSlowTime) _isDoSlowTime = true;
-                }
-                else
-                {
-                    if (_isCanAvoidance) _isDoAvoidance = true;
-                }
-                _countL2Time = 0;
+                    if (_isCanAvoidance)
+                    {
+                        _isDoAvoidance = true;
+                        _countL2Time = 0;
 
-                //リロードを中断する
-                _playerController.RevolverOperator.StopRevolverReLoad();
+                        //リロードを中断する
+                        _playerController.RevolverOperator.StopRevolverReLoad();
+                    }
+                }
             }
         }
         /// <summary>回避、時遅の実行時間を計測する</summary>
@@ -249,6 +269,8 @@ namespace Player
         /// </summary>
         private void StartThereAvoidance()
         {
+            //TestTExT???????????????????///////////////////////////////////////
+            _testAvoidText.SetActive(true);
 
             Debug.Log("その場回避始め！");
             _playerController.LifeController.IsGodMode = true;
@@ -258,6 +280,9 @@ namespace Player
         /// </summary>
         private void EndThereAvoidance()
         {
+            //TestTExT???????????????????///////////////////////////////////////
+            _testAvoidText.SetActive(false);
+
             Debug.Log("その場回避終了！");
             _playerController.LifeController.IsGodMode = false;
 
@@ -269,7 +294,10 @@ namespace Player
 
         private void StartTimeSlow()
         {
-            GameManager.Instance.ShaderPropertyController.MonochromeController.SetMonoBlend(1,0.2f);
+            /////TEST用............
+            _testSlowTimeText.SetActive(true);
+
+            GameManager.Instance.ShaderPropertyController.MonochromeController.SetMonoBlend(1, 0.2f);
 
             Debug.Log("時を遅くする");
             // 時間の速度をゆっくりにする。
@@ -279,6 +307,9 @@ namespace Player
 
         private void EndTimeSlow()
         {
+            /////TEST用............
+            _testSlowTimeText.SetActive(false);
+
             GameManager.Instance.ShaderPropertyController.MonochromeController.SetMonoBlend(0, 0.2f);
 
             Debug.Log("時を戻す");

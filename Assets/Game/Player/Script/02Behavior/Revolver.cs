@@ -17,7 +17,7 @@ namespace Player
         [Tooltip("殻薬莢"), SerializeField]
         private ShellCase _shellCase = default;
         [Tooltip("発射孔"), SerializeField]
-        private Transform _muzzleTransform = default;
+        private Transform[] _muzzleTransform = new Transform[12];
         [Tooltip("弾の発射インターバル"), SerializeField]
         private float _interval = 0.4f;
         [Tooltip("照準描画用のラインレンダラーを割り当ててください"), SerializeField]
@@ -182,7 +182,7 @@ namespace Player
 
                 var bullet = _cylinder[_currentChamber] as Bullet2;
                 // 弾を複製
-                var bulletClone = GameObject.Instantiate(bullet.gameObject, _muzzleTransform.position, Quaternion.identity);
+                var bulletClone = GameObject.Instantiate(bullet.gameObject, _muzzleTransform[_playerController.BodyAnglSetteing.MuzzleNum].position, Quaternion.identity);
                 // 弾のコンポーネントを取得
                 var bulletComponent = bulletClone.GetComponent<Bullet2>();
                 // 移動先のポジションを取得
@@ -240,7 +240,7 @@ namespace Player
         private List<Vector2> GetPositions2ForGuideline(Bullet2 bullet)
         {
             _potisions.Clear(); // リストをクリア
-            _potisions.Add(_muzzleTransform.position); // 原点を追加
+            _potisions.Add(_muzzleTransform[_playerController.BodyAnglSetteing.MuzzleNum].position); // 原点を追加
 
             if (bullet == null) return _potisions;
 
@@ -248,15 +248,15 @@ namespace Player
             {
                 case BulletType.StandardBullet: // 標準弾のガイドラインポジションをリストに追加
                     // 原点から指定の方向にレイを飛ばす。
-                    var hitStd = Physics2D.Raycast(_muzzleTransform.position, _aimingAngle, bullet.GuidelineLength, _guidelineLayerMask);
+                    var hitStd = Physics2D.Raycast(_muzzleTransform[_playerController.BodyAnglSetteing.MuzzleNum].position, _aimingAngle, bullet.GuidelineLength, _guidelineLayerMask);
                     // レイがヒットしたらその位置をリストに追加
                     if (hitStd.collider != null) _potisions.Add(hitStd.point);
                     // ヒットしなかったらレイの先端位置をリストに追加
-                    else _potisions.Add(_muzzleTransform.position + (Vector3)_aimingAngle.normalized * bullet.GuidelineLength);
+                    else _potisions.Add(_muzzleTransform[_playerController.BodyAnglSetteing.MuzzleNum].position + (Vector3)_aimingAngle.normalized * bullet.GuidelineLength);
                     break;
                 case BulletType.PenetrateBullet: // 貫通弾のガイドラインポジションをリストに追加
                     // レイを飛ばす
-                    var hitsPen = Physics2D.RaycastAll(_muzzleTransform.position, _aimingAngle, bullet.GuidelineLength, _guidelineLayerMask);
+                    var hitsPen = Physics2D.RaycastAll(_muzzleTransform[_playerController.BodyAnglSetteing.MuzzleNum].position, _aimingAngle, bullet.GuidelineLength, _guidelineLayerMask);
                     var penetrate = bullet as PenetrateBullet2;
                     var lengthPen = bullet.GuidelineLength; // 半端分用の値
                     bool _isHitGameZone = false;
@@ -280,7 +280,7 @@ namespace Player
                 case BulletType.ReflectBullet: // 反射弾のガイドラインポジションをリストに追加
                     var reflect = bullet as ReflectBullet2; // 本来の型に変換
                     var length = reflect.GuidelineLength;  // 残りの長さ
-                    Vector2 pos = _muzzleTransform.position; // 位置を保存する用の変数。（初期位置は、マズルの位置）
+                    Vector2 pos = _muzzleTransform[_playerController.BodyAnglSetteing.MuzzleNum].position; // 位置を保存する用の変数。（初期位置は、マズルの位置）
                     Vector2 dir = _aimingAngle; // 最初の角度ベクトル。（初期位置は、プレイヤーからマウス座標へのベクトルか右スティックの角度）
                     RaycastHit2D hit; // レイのヒット情報
 
@@ -322,7 +322,7 @@ namespace Player
         private List<Vector2> GetPositions2ForBullet2(Bullet2 bullet)
         {
             _potisions2.Clear(); // リストをクリア
-            _potisions2.Add(_muzzleTransform.position); // 原点を追加
+            _potisions2.Add(_muzzleTransform[_playerController.BodyAnglSetteing.MuzzleNum].position); // 原点を追加
 
             if (bullet == null) return _potisions2;
 
@@ -330,15 +330,15 @@ namespace Player
             {
                 case BulletType.StandardBullet: // 標準弾のガイドラインポジションをリストに追加
                     // 原点から指定の方向にレイを飛ばす。
-                    var hitStd = Physics2D.Raycast(_muzzleTransform.position, _aimingAngle, 1000f, _bulletLayerMask);
+                    var hitStd = Physics2D.Raycast(_muzzleTransform[_playerController.BodyAnglSetteing.MuzzleNum].position, _aimingAngle, 1000f, _bulletLayerMask);
                     // レイがヒットしたらその位置をリストに追加
                     if (hitStd.collider != null) _potisions2.Add(hitStd.point);
                     // ヒットしなかったらレイの先端位置をリストに追加
-                    else _potisions2.Add(_muzzleTransform.position + (Vector3)_aimingAngle.normalized * 1000f);
+                    else _potisions2.Add(_muzzleTransform[_playerController.BodyAnglSetteing.MuzzleNum].position + (Vector3)_aimingAngle.normalized * 1000f);
                     break;
                 case BulletType.PenetrateBullet: // 貫通弾のガイドラインポジションをリストに追加
                     // レイを飛ばす
-                    var hitsPen = Physics2D.RaycastAll(_muzzleTransform.position, _aimingAngle, 1000f, _bulletLayerMask);
+                    var hitsPen = Physics2D.RaycastAll(_muzzleTransform[_playerController.BodyAnglSetteing.MuzzleNum].position, _aimingAngle, 1000f, _bulletLayerMask);
                     var penetrate = bullet as PenetrateBullet2;
                     bool _isHitGameZone = false;
                     // 何かにヒットしていれば貫通して最終的に届く位置まで取得する
@@ -358,7 +358,7 @@ namespace Player
                     break;
                 case BulletType.ReflectBullet: // 反射弾のガイドラインポジションをリストに追加
                     var reflect = bullet as ReflectBullet2; // 本来の型に変換
-                    Vector2 pos = _muzzleTransform.position; // 位置を保存する用の変数。（初期位置は、マズルの位置）
+                    Vector2 pos = _muzzleTransform[_playerController.BodyAnglSetteing.MuzzleNum].position; // 位置を保存する用の変数。（初期位置は、マズルの位置）
                     Vector2 dir = _aimingAngle; // 最初の角度ベクトル。（初期位置は、プレイヤーからマウス座標へのベクトルか右スティックの角度）
                     RaycastHit2D hit; // レイのヒット情報
 
