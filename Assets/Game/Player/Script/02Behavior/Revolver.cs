@@ -68,13 +68,12 @@ namespace Player
             }
             else // マウス操作の場合
             {
-                // マウスの座標をワールド座標に変換する
-                var mouseWorldPos = Camera.main.ScreenToWorldPoint(
-                    _playerController.InputManager.GetValue<Vector2>(InputType.LookingMausePos));
-                if (((Vector2)mouseWorldPos - (Vector2)_playerController.transform.position).sqrMagnitude > 0.5f)
-                {
-                    _aimingAngle = mouseWorldPos - _playerController.transform.position;
-                }
+                    // マウスの座標をワールド座標に変換する
+                    Vector3 a = _playerController.InputManager.GetValue<Vector2>(InputType.LookingMausePos);
+                    a.z = 10f;
+                    var mouseWorldPos = Camera.main.ScreenToWorldPoint(a);
+                    Debug.Log($"mouseWorldPos is {mouseWorldPos}");
+                _aimingAngle = mouseWorldPos - _playerController.BodyAnglSetteing.ArmCenterPos.position; ;
             }
         }
 
