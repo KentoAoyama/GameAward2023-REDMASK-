@@ -344,7 +344,7 @@ Animator:
   m_GameObject: {fileID: 69639550}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6e5484f8fb3b27145a466a5903a86e6c, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -7315,6 +7315,30 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 69639555}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: ManualPanelAnimationIn
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1932570502}
+        m_TargetAssemblyTypeName: MenuCylinder, Assembly-CSharp
+        m_MethodName: set_Selectable
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &597280095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9741,10 +9765,10 @@ RectTransform:
   m_Father: {fileID: 69639554}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 1522, y: 0}
-  m_SizeDelta: {x: -956.88, y: -300}
+  m_SizeDelta: {x: 963.12, y: 780}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1468396228
 MonoBehaviour:
@@ -10091,10 +10115,10 @@ RectTransform:
   m_Father: {fileID: 69639554}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 1522, y: 0}
-  m_SizeDelta: {x: -956.88, y: -300}
+  m_SizeDelta: {x: 963.12, y: 780}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1578256589
 MonoBehaviour:
@@ -10710,6 +10734,30 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 69639555}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: AudioPanelAnimationOnt
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1932570502}
+        m_TargetAssemblyTypeName: MenuCylinder, Assembly-CSharp
+        m_MethodName: set_Selectable
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &1654660894
 MonoBehaviour:
@@ -11705,6 +11753,30 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 69639555}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: AudioPanelAnimationIn
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1932570502}
+        m_TargetAssemblyTypeName: MenuCylinder, Assembly-CSharp
+        m_MethodName: set_Selectable
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1931870790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11947,6 +12019,30 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 69639555}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: ManualPanelAnimationOut
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1932570502}
+        m_TargetAssemblyTypeName: MenuCylinder, Assembly-CSharp
+        m_MethodName: set_Selectable
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &1963924564
 MonoBehaviour:
