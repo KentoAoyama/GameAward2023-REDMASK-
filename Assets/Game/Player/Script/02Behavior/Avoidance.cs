@@ -19,6 +19,7 @@ namespace Player
         [SerializeField]
         private GameObject _testSlowTimeText;
 
+
         [Tooltip("回避中の時間の速度"), SerializeField]
         private float _timeScale = 0.7f;
 
@@ -45,6 +46,11 @@ namespace Player
         [Header("減速値")]
         [Tooltip("減速度（地上）"), SerializeField]
         private float _landDeceleration = 20f;
+
+        [Header("回避した時のレイヤー")]
+        [SerializeField]   private string _avoidLayerName;
+        [Header("最初のレイヤー")]
+        [SerializeField]   private string _defultLayerName;
 
         [Tooltip("現在の速度 : インスペクタで値を追跡する用"), SerializeField]
         private float _currentHorizontalSpeed = 0f;
@@ -77,10 +83,10 @@ namespace Player
         private bool _isDoSlowTime = false;
 
         /// <summary>回避実行可能かどうか</summary>
-        private bool _isCanAvoidance = false;
+        private bool _isCanAvoidance = true;
 
         /// <summary>時遅が実行可能かどうか</summary>
-        private bool _isCanSlowTime = false;
+        private bool _isCanSlowTime = true;
 
         private PlayerController _playerController = null;
 
@@ -273,6 +279,7 @@ namespace Player
             _testAvoidText.SetActive(true);
 
             Debug.Log("その場回避始め！");
+            _playerController.Player.layer = LayerMask.NameToLayer(_avoidLayerName);
             _playerController.LifeController.IsGodMode = true;
         }
         /// <summary>
@@ -285,7 +292,7 @@ namespace Player
 
             Debug.Log("その場回避終了！");
             _playerController.LifeController.IsGodMode = false;
-
+            _playerController.Player.layer = LayerMask.NameToLayer(_defultLayerName);
             //回避が終了したことをMoveクラスに伝える
             _playerController.Move.EndOtherAction();
 
