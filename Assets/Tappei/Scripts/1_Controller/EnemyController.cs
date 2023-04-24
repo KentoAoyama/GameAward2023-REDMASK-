@@ -14,6 +14,7 @@ using DG.Tweening;
 public class EnemyController : MonoBehaviour, IPausable, IDamageable
 {
     private static string AnimationSpeedParam = "Speed";
+    private static string DefeatedTransitionLayerName = "DeathEnemy";
 
     [Header("シーン上に配置されているプレイヤーのタグ")]
     [SerializeField, TagName] private string _playerTagName;
@@ -181,8 +182,11 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     /// <summary>撃破された際は非表示にして画面外に移動させる</summary>
     public void Damage()
     {
+        if (IsDefeated) return;
+
         IsDefeated = true;
         _performanceBehavior.Defeated(_moveBehavior.SpriteDirection);
+        gameObject.layer = LayerMask.NameToLayer(DefeatedTransitionLayerName);
 
         DOVirtual.DelayedCall(Params.DefeatedStateTransitionDelay, () =>
         {
@@ -190,7 +194,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
             gameObject.transform.position = Vector3.one * 100;
         }).SetLink(gameObject);
     }
-
+    
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
