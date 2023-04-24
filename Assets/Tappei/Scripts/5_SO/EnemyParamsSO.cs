@@ -6,6 +6,12 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "EnemyParams_")]
 public class EnemyParamsSO : ScriptableObject
 {
+    /// <summary>
+    /// 死亡した際に死体が消えるまでの追加時間
+    /// 死亡のアニメーションに追加で待つ
+    /// </summary>
+    static readonly float DefeatedStateTransitionDelayAdd = 3.0f;
+
     protected enum State
     {
         Idle,
@@ -49,7 +55,10 @@ public class EnemyParamsSO : ScriptableObject
     [SerializeField] protected bool _isIdleUndiscovered;
 
     public float DiscoverStateTransitionDelay => _discoverAnimClip != null ? _discoverAnimClip.length : 0;
-    public float DefeatedStateTransitionDelay => _deadAnimClip != null ? _deadAnimClip.length : 0;
+    public float DefeatedStateTransitionDelay
+    {
+        get => _deadAnimClip != null ? _deadAnimClip.length + DefeatedStateTransitionDelayAdd : 0;
+    }
     public float WalkSpeed => _walkSpeed;
     public float RunSpeed => _runSpeed;
     public float TurningPoint => _turningPoint;
