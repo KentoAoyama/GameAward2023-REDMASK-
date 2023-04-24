@@ -147,7 +147,6 @@ namespace Player
                 Vector3 a = _playerController.InputManager.GetValue<Vector2>(InputType.LookingMausePos);
                 a.z = 10f;
                 var mouseWorldPos = Camera.main.ScreenToWorldPoint(a);
-                Debug.Log($"mouseWorldPos is {mouseWorldPos}");
                 _aimingAngle = mouseWorldPos - _arm.transform.position;
             }
 
