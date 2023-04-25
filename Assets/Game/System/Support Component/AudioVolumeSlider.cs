@@ -17,12 +17,15 @@ public class AudioVolumeSlider : MonoBehaviour
         switch (_audioType)
         {
             case AudioType.Master:
+                slider.value = GameManager.Instance.AudioManager.MasterVolume.Value;
                 slider.onValueChanged.AddListener(GameManager.Instance.AudioManager.ChangeMasterVolume);
                 break;
             case AudioType.BGM:
+                slider.value = GameManager.Instance.AudioManager.BGMVolume.Value;
                 slider.onValueChanged.AddListener(GameManager.Instance.AudioManager.ChangeBGMVolume);
                 break;
             case AudioType.SE:
+                slider.value = GameManager.Instance.AudioManager.SEVolume.Value;
                 slider.onValueChanged.AddListener(GameManager.Instance.AudioManager.ChangeSEVolume);
                 break;
         }
