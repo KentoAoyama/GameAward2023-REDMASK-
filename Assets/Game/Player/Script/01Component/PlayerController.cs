@@ -27,6 +27,8 @@ namespace Player
         [Tooltip("プレイヤーのオブジェクト"), SerializeField]
         private GameObject _player;
 
+
+
         [Header("プレイヤーのアニメーター")]
         [Tooltip("プレイヤーのアニメーター"), SerializeField]
         private Animator _playerAnim;
