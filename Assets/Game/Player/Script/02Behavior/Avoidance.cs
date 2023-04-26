@@ -48,9 +48,9 @@ namespace Player
         private float _landDeceleration = 20f;
 
         [Header("回避した時のレイヤー")]
-        [SerializeField]   private string _avoidLayerName;
+        [SerializeField] private string _avoidLayerName;
         [Header("最初のレイヤー")]
-        [SerializeField]   private string _defultLayerName;
+        [SerializeField] private string _defultLayerName;
 
         [Tooltip("現在の速度 : インスペクタで値を追跡する用"), SerializeField]
         private float _currentHorizontalSpeed = 0f;
@@ -279,6 +279,8 @@ namespace Player
             _testAvoidText.SetActive(true);
 
             Debug.Log("その場回避始め！");
+
+
             _playerController.Player.layer = LayerMask.NameToLayer(_avoidLayerName);
             _playerController.LifeController.IsGodMode = true;
         }
@@ -292,8 +294,9 @@ namespace Player
 
             Debug.Log("その場回避終了！");
             _playerController.LifeController.IsGodMode = false;
+
             _playerController.Player.layer = LayerMask.NameToLayer(_defultLayerName);
-            //回避が終了したことをMoveクラスに伝える
+            ////回避が終了したことをMoveクラスに伝える
             _playerController.Move.EndOtherAction();
 
             _isAvoidacneNow = false;
