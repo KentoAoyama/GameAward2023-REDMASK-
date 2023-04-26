@@ -2,11 +2,17 @@
 using System.Collections.Generic;
 using UniRx;
 using CriWare;
+using UnityEngine;
+using System;
 
+[Serializable]
 public class AudioManager
 {
+    [SerializeField]
     private FloatReactiveProperty _masterVolume = new FloatReactiveProperty(1f);
+    [SerializeField]
     private FloatReactiveProperty _bgmVolume = new FloatReactiveProperty(1f);
+    [SerializeField]
     private FloatReactiveProperty _seVolume = new FloatReactiveProperty(1f);
 
     private CriAtomExPlayer _bgmPlayer = new CriAtomExPlayer();
@@ -20,6 +26,20 @@ public class AudioManager
     public IReadOnlyReactiveProperty<float> MasterVolume => _masterVolume;
     public IReadOnlyReactiveProperty<float> BGMVolume => _bgmVolume;
     public IReadOnlyReactiveProperty<float> SEVolume => _seVolume;
+
+    private const string SaveFileName = "AudioVolume";
+
+    public void Save()
+    {
+        SaveLoadManager.Save<AudioManager>(this, SaveFileName);
+    }
+    public void Load()
+    {
+        var tmp = SaveLoadManager.Load<AudioManager>(SaveFileName);
+        this._masterVolume.Value = tmp._masterVolume.Value;
+        this._bgmVolume.Value = tmp._bgmVolume.Value;
+        this._seVolume.Value = tmp._seVolume.Value;
+    }
 
     public void ChangeMasterVolume(float volume)
     {
@@ -48,7 +68,7 @@ public class AudioManager
             }
         });
 
-        BGMVolume.Subscribe(_ => 
+        BGMVolume.Subscribe(_ =>
         {
             _bgmPlayer.SetVolume(_masterVolume.Value * _bgmVolume.Value);
             _bgmPlayer.Update(_bgmPlayback);
@@ -56,7 +76,7 @@ public class AudioManager
 
         SEVolume.Subscribe(_ =>
         {
-            for(int i = 0; i < _sePlayer.Count; i++)
+            for (int i = 0; i < _sePlayer.Count; i++)
             {
                 _sePlayer[i].SetVolume(_masterVolume.Value * _seVolume.Value);
                 _sePlayer[i].Update(_sePlayback[i]);
@@ -104,7 +124,7 @@ public class AudioManager
     {
 
 
-        for(int i = 0; i < _sePlayer.Count; i++)
+        for (int i = 0; i < _sePlayer.Count; i++)
         {
             if (_sePlayer[i].GetStatus() != CriAtomExPlayer.Status.Playing)
             {
@@ -144,7 +164,7 @@ public class AudioManager
     {
         if (_sePlayer[index].GetStatus() != CriAtomExPlayer.Status.Playing)
         {
-            return ;
+            return;
         }
 
         _sePlayer[index].Stop();
