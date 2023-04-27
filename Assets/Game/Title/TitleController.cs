@@ -20,6 +20,7 @@ public class TitleController : MonoBehaviour
 
     private void Start()
     {
+        GameManager.Instance.AudioManager.Load();
         Setup();
     }
 
