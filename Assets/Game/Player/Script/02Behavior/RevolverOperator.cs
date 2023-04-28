@@ -138,6 +138,9 @@ namespace Player
                     /////////////////////////////////TEST用!!!!!!!!!!!!!!!!//////////////////////////
                     _setBulletText.SetActive(false);
 
+                    //音を鳴らす
+                    GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Reroad");
+
                     // 空いているチャンバーを検索する。
                     var index = FindEmptyChamber();
 

@@ -278,6 +278,9 @@ namespace Player
             //死体撃ちで、2回呼ばれないようにする
             if (!_isDead)
             {
+                //音を鳴らす
+                GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Damage");
+
                 //死亡した
                 _isDead = true;
 
