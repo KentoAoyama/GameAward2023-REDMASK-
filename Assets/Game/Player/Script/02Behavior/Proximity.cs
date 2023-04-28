@@ -102,6 +102,12 @@ namespace Player
 
         private void AttckStart()
         {
+            //時遅を強制解除
+            _playerController.GunSetUp.EmergencyStopSlowTime();
+
+            //構えはじめている最中は、構えはじめを解除
+            _playerController.GunSetUp.CanselSetUpping();
+
             _testAttackText.SetActive(true);
 
             //攻撃の音

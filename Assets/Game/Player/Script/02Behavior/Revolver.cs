@@ -177,7 +177,7 @@ namespace Player
             else if (_cylinder[_currentChamber] is Bullet2)
             {
                 //音を鳴らす
-                if (_playerController.Avoidance.IsSlowTimeNow)
+                if (_playerController.GunSetUp.IsSlowTimeNow)
                 {
                     GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Gun_Attack_Slow");
                 }
