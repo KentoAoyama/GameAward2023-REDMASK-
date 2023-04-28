@@ -16,8 +16,9 @@ public class StageController2 : MonoBehaviour
     [SceneName, SerializeField]
     private string _firstStageSceneName = default;
 
-    private void Awake()
+    private void Start()
     {
+        GameManager.Instance.AudioManager.Load();
         GameManager.Instance.AudioManager.PlayBGM("CueSheet_Gun", "BGM_Ingame");
     }
     /// <summary>
