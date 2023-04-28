@@ -104,6 +104,9 @@ namespace Player
         {
             _testAttackText.SetActive(true);
 
+            //攻撃の音
+            GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Attack_Knife");
+
             Debug.Log("近接攻撃はじめ！");
 
             //試験的に、色を変える    

@@ -265,6 +265,9 @@ namespace Player
                 if (_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX) &&
                     _playerController.InputManager.IsPressed[InputType.Jump])
                 {
+                    //音を鳴らす
+                    GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Jump");
+
                     _playerController.Rigidbody2D.velocity =
                     new Vector2(
                         _playerController.Rigidbody2D.velocity.x,

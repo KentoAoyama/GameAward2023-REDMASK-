@@ -106,6 +106,7 @@ namespace Player
                     {
                         OnChamberStateChanged?.Invoke(chamberNumber, bullet.Type);
                     }
+
                     _cylinder[chamberNumber] = bullet;
                     return true;
                 }
@@ -176,7 +177,15 @@ namespace Player
             else if (_cylinder[_currentChamber] is Bullet2)
             {
                 //音を鳴らす
-                GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Attack_Gun");
+                if (_playerController.Avoidance.IsSlowTimeNow)
+                {
+                    GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Gun_Attack_Slow");
+                }
+                else
+                {
+                    GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Attack_Gun");
+                }
+
 
                 var bullet = _cylinder[_currentChamber] as Bullet2;
                 // 弾を複製

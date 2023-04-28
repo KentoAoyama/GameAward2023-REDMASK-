@@ -94,6 +94,8 @@ namespace Player
 
         public bool IsDoAvoidance => _isDoAvoidance;
 
+        public bool IsSlowTimeNow => _isSlowTimeNow;
+
         public bool IsPause { get; private set; } = false;
 
 
@@ -278,8 +280,8 @@ namespace Player
             //TestTExT???????????????????///////////////////////////////////////
             _testAvoidText.SetActive(true);
 
-            Debug.Log("その場回避始め！");
-
+            //回避の音
+            GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Evade");
 
             _playerController.Player.layer = LayerMask.NameToLayer(_avoidLayerName);
             _playerController.LifeController.IsGodMode = true;
@@ -292,7 +294,7 @@ namespace Player
             //TestTExT???????????????????///////////////////////////////////////
             _testAvoidText.SetActive(false);
 
-            Debug.Log("その場回避終了！");
+
             _playerController.LifeController.IsGodMode = false;
 
             _playerController.Player.layer = LayerMask.NameToLayer(_defultLayerName);
@@ -307,6 +309,9 @@ namespace Player
             /////TEST用............
             _testSlowTimeText.SetActive(true);
 
+            //遅くする時の音
+            GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Slow");
+
             GameManager.Instance.ShaderPropertyController.MonochromeController.SetMonoBlend(1, 0.2f);
 
             Debug.Log("時を遅くする");
@@ -319,6 +324,9 @@ namespace Player
         {
             /////TEST用............
             _testSlowTimeText.SetActive(false);
+
+            //遅くする時の音
+            GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_SlowFinish");
 
             GameManager.Instance.ShaderPropertyController.MonochromeController.SetMonoBlend(0, 0.2f);
 
