@@ -148,7 +148,8 @@ namespace Player
         public void Update()
         {
             //回避中は移動不可、の条件を追加した
-            if (IsPause || _playerController.Avoidance.IsAvoidanceNow || _playerController.Proximity.IsProximityNow)
+            if (IsPause || _playerController.Avoidance.IsAvoidanceNow || _playerController.Proximity.IsProximityNow
+                || _playerController.GunSetUp.IsGunSetUp || _playerController.GunSetUp.IsGunSetUpping)
             {
                 return;
             }

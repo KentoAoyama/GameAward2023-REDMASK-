@@ -116,6 +116,15 @@ public partial class @GameController : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SetUp"",
+                    ""type"": ""Button"",
+                    ""id"": ""6e928174-d129-4440-9267-847f1212e3af"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -210,7 +219,7 @@ public partial class @GameController : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""3f359765-e68b-4752-a84f-120799c6677a"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
@@ -441,11 +450,22 @@ public partial class @GameController : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""6f36b03e-9516-4b27-b8b8-31630270caf3"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Proximity"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""02424e01-0252-4986-b51e-c0b8d4737714"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SetUp"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1043,6 +1063,7 @@ public partial class @GameController : IInputActionCollection2, IDisposable
         m_Player_CrossButtonHorizontal = m_Player.FindAction("Cross Button Horizontal", throwIfNotFound: true);
         m_Player_LoadBullet = m_Player.FindAction("LoadBullet", throwIfNotFound: true);
         m_Player_Proximity = m_Player.FindAction("Proximity", throwIfNotFound: true);
+        m_Player_SetUp = m_Player.FindAction("SetUp", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1124,6 +1145,7 @@ public partial class @GameController : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_CrossButtonHorizontal;
     private readonly InputAction m_Player_LoadBullet;
     private readonly InputAction m_Player_Proximity;
+    private readonly InputAction m_Player_SetUp;
     public struct PlayerActions
     {
         private @GameController m_Wrapper;
@@ -1138,6 +1160,7 @@ public partial class @GameController : IInputActionCollection2, IDisposable
         public InputAction @CrossButtonHorizontal => m_Wrapper.m_Player_CrossButtonHorizontal;
         public InputAction @LoadBullet => m_Wrapper.m_Player_LoadBullet;
         public InputAction @Proximity => m_Wrapper.m_Player_Proximity;
+        public InputAction @SetUp => m_Wrapper.m_Player_SetUp;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1177,6 +1200,9 @@ public partial class @GameController : IInputActionCollection2, IDisposable
                 @Proximity.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnProximity;
                 @Proximity.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnProximity;
                 @Proximity.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnProximity;
+                @SetUp.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSetUp;
+                @SetUp.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSetUp;
+                @SetUp.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSetUp;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1211,6 +1237,9 @@ public partial class @GameController : IInputActionCollection2, IDisposable
                 @Proximity.started += instance.OnProximity;
                 @Proximity.performed += instance.OnProximity;
                 @Proximity.canceled += instance.OnProximity;
+                @SetUp.started += instance.OnSetUp;
+                @SetUp.performed += instance.OnSetUp;
+                @SetUp.canceled += instance.OnSetUp;
             }
         }
     }
@@ -1377,6 +1406,7 @@ public partial class @GameController : IInputActionCollection2, IDisposable
         void OnCrossButtonHorizontal(InputAction.CallbackContext context);
         void OnLoadBullet(InputAction.CallbackContext context);
         void OnProximity(InputAction.CallbackContext context);
+        void OnSetUp(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

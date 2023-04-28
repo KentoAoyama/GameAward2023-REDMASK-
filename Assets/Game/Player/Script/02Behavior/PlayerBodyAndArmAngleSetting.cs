@@ -131,6 +131,13 @@ namespace Player
 
         public void Update()
         {
+            if(!_playerController.GunSetUp.IsGunSetUp)
+            {
+
+
+                return;
+            }
+
             Vector2 _aimingAngle = default;
 
             // 撃つ方向を保存する

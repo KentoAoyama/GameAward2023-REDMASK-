@@ -15,11 +15,6 @@ namespace Player
         [SerializeField]
         private GameObject _testAvoidText;
 
-        [Header("Test用、時遅いのText")]
-        [SerializeField]
-        private GameObject _testSlowTimeText;
-
-
         [Tooltip("回避中の時間の速度"), SerializeField]
         private float _timeScale = 0.7f;
 
@@ -73,28 +68,14 @@ namespace Player
         /// <summary>現在、回避をしているかどうかを示す</summary>
         private bool _isAvoidacneNow = false;
 
-        /// <summary>現在、時遅をしているかどうかを示す</summary>
-        private bool _isSlowTimeNow = false;
 
-        /// <summary>回避実行可能かどうか</summary>
-        private bool _isDoAvoidance = false;
-
-        /// <summary>時遅が実行可能かどうか</summary>
-        private bool _isDoSlowTime = false;
 
         /// <summary>回避実行可能かどうか</summary>
         private bool _isCanAvoidance = true;
 
-        /// <summary>時遅が実行可能かどうか</summary>
-        private bool _isCanSlowTime = true;
-
         private PlayerController _playerController = null;
 
         public bool IsAvoidanceNow => _isAvoidacneNow;
-
-        public bool IsDoAvoidance => _isDoAvoidance;
-
-        public bool IsSlowTimeNow => _isSlowTimeNow;
 
         public bool IsPause { get; private set; } = false;
 
@@ -129,43 +110,26 @@ namespace Player
             //近接攻撃中は出来ない
             if (_playerController.Proximity.IsProximityNow) return;
 
-
-            //ボタンの押し込み時間を計測
-            CheckInputButtun();
-            //クールタイムを数える
-            CountCoolTime();
-
-            //時間を遅くする処理を実行
-            if (_isDoSlowTime)
+            //入力を受けた
+            if (_playerController.InputManager.IsPressed[InputType.Avoidance])
             {
-                _isDoSlowTime = false;
-                _isCanSlowTime = false;
-                StartTimeSlow();
-            }
-
-            // 回避入力が発生したときに処理を実行する
-            if (!_isAvoidacneNow &&
-                _isDoAvoidance
-                && _playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX))
-            {
+                //( 回避が不可能　||　回避実行中 )には実行しない
+                if (!_isCanAvoidance || _isAvoidacneNow) return;
                 //ジャンプ入力と同フレームで入力した際に、上昇しながら回避に入る問題を防ぐための処理
-                if (_playerController.Rigidbody2D.velocity.y > 0f)
-                {
-                    return;
-                }
+                if (_playerController.Rigidbody2D.velocity.y > 0f) return;
+                //空中では実行できない
+                if (!_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX)) return;
 
-                _isDoAvoidance = false;
 
-                _isAvoidacneNow = true;
+                //リロードを中断する
+                _playerController.RevolverOperator.StopRevolverReLoad();
 
-                _isCanAvoidance = false;
-
+                //回避実行
                 StartThereAvoidance();
             }
-            else if (_isDoAvoidance && !_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX))
-            {
-                _isDoAvoidance = false;
-            }
+
+            //クールタイムを数える
+            CountCoolTime();
 
             //回避、時遅、の実行時間を計測
             CountDoTime();
@@ -174,43 +138,6 @@ namespace Player
             VelocityDeceleration();
         }
 
-        /// <summary>ボタンの押し込み時間を計算する</summary>
-        private void CheckInputButtun()
-        {
-            if (_playerController.InputManager.IsExist[InputType.Avoidance])
-            {
-                _countL2Time += Time.deltaTime;
-
-                if (_countL2Time > _doAvoidanceTime)
-                {
-                    if (_isCanSlowTime)
-                    {
-                        _isDoSlowTime = true;
-
-                        _countL2Time = 0;
-
-                        //リロードを中断する
-                        _playerController.RevolverOperator.StopRevolverReLoad();
-                    }
-                }
-            }
-            else if (_playerController.InputManager.IsReleased[InputType.Avoidance])
-            {
-                //押した時間が、回避適用時間より下だったら回避
-                //そうじゃなかったら時を遅くする
-                if (_countL2Time <= _doAvoidanceTime)
-                {
-                    if (_isCanAvoidance)
-                    {
-                        _isDoAvoidance = true;
-                        _countL2Time = 0;
-
-                        //リロードを中断する
-                        _playerController.RevolverOperator.StopRevolverReLoad();
-                    }
-                }
-            }
-        }
         /// <summary>回避、時遅の実行時間を計測する</summary>
         private void CountDoTime()
         {
@@ -221,37 +148,17 @@ namespace Player
 
                 if (_avoidanceDoTimeCount >= _avoidanceDoTime)
                 {
+                    _isAvoidacneNow = false;
+
                     _avoidanceDoTimeCount = 0;
                     EndThereAvoidance();
                 }
             }
-
-            if (_isSlowTimeNow)
-            {
-                _slowTimeDoTimeCount += Time.deltaTime;
-
-                if (_slowTimeDoTimeCount > _slowTimeDoTime)
-                {
-                    _slowTimeDoTimeCount = 0;
-                    EndTimeSlow();
-                }
-            }
-
         }
 
         /// <summary>回避、時遅のクールタイムを数える</summary>
         private void CountCoolTime()
         {
-            if (!_isCanSlowTime && !_isSlowTimeNow)
-            {
-                _slowTimeCoolTimeCount += Time.deltaTime;
-                if (_slowTimeCoolTimeCount > _slowTimeCoolTime)
-                {
-                    _isCanSlowTime = true;
-                    _slowTimeCoolTimeCount = 0;
-                }
-            }
-
             if (!_isCanAvoidance && !_isAvoidacneNow)
             {
                 _avoidanceCoolTimeCount += Time.deltaTime;
@@ -280,6 +187,12 @@ namespace Player
             //TestTExT???????????????????///////////////////////////////////////
             _testAvoidText.SetActive(true);
 
+            //時遅を強制解除
+            _playerController.GunSetUp.EmergencyStopSlowTime();
+
+            //構えはじめている最中は、構えはじめを解除
+            _playerController.GunSetUp.CanselSetUpping();
+
             //回避の音
             GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Evade");
 
@@ -302,38 +215,6 @@ namespace Player
             _playerController.Move.EndOtherAction();
 
             _isAvoidacneNow = false;
-        }
-
-        private void StartTimeSlow()
-        {
-            /////TEST用............
-            _testSlowTimeText.SetActive(true);
-
-            //遅くする時の音
-            GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Slow");
-
-            GameManager.Instance.ShaderPropertyController.MonochromeController.SetMonoBlend(1, 0.2f);
-
-            Debug.Log("時を遅くする");
-            // 時間の速度をゆっくりにする。
-            GameManager.Instance.TimeController.ChangeTimeSpeed(true);
-            _isSlowTimeNow = true;
-        }
-
-        private void EndTimeSlow()
-        {
-            /////TEST用............
-            _testSlowTimeText.SetActive(false);
-
-            //遅くする時の音
-            GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_SlowFinish");
-
-            GameManager.Instance.ShaderPropertyController.MonochromeController.SetMonoBlend(0, 0.2f);
-
-            Debug.Log("時を戻す");
-            // 時間の速度をもとの状態に戻す。
-            GameManager.Instance.TimeController.ChangeTimeSpeed(false);
-            _isSlowTimeNow = false;
         }
     }
 }
