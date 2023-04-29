@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-[SerializeField]
+[Serializable]
 public class PerformanceEvent
 {
     [SerializeField]
