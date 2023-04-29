@@ -36,7 +36,7 @@ public class AudioManager
     public void Load()
     {
         var tmp = SaveLoadManager.Load<AudioManager>(SaveFileName);
-        if (tmp!= null)
+        if (tmp == null)
         {
             return;
         }
@@ -86,6 +86,8 @@ public class AudioManager
                 _sePlayer[i].Update(_sePlayback[i]);
             }
         });
+
+        
     }
     // ここに音を鳴らす関数を書いてください
 
