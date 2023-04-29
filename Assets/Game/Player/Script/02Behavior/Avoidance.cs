@@ -26,17 +26,9 @@ namespace Player
         [Tooltip("回避を行う時間"), SerializeField]
         private float _avoidanceDoTime = 1f;
 
-        [Header("時遅を行う時間")]
-        [Tooltip("時遅を行う時間"), SerializeField]
-        private float _slowTimeDoTime = 5f;
-
         [Header("回避のクールタイム")]
         [Tooltip("回避のクールタイム"), SerializeField]
         private float _avoidanceCoolTime = 4f;
-
-        [Header("時遅のクールタイム")]
-        [Tooltip("時遅のクールタイム"), SerializeField]
-        private float _slowTimeCoolTime = 10f;
 
         [Header("減速値")]
         [Tooltip("減速度（地上）"), SerializeField]
@@ -51,24 +43,13 @@ namespace Player
         private float _currentHorizontalSpeed = 0f;
         /// <summary>回避、の実行時間の計測用</summary>
         private float _avoidanceDoTimeCount = 0f;
-        /// <summary>時遅、の実行時間の計測用</summary>
-        private float _slowTimeDoTimeCount = 0f;
 
         /// <summary>回避、のクールタイムの計測用</summary>
         private float _avoidanceCoolTimeCount = 0f;
         /// <summary>時遅、のクールタイムの計測用</summary>
-        private float _slowTimeCoolTimeCount = 0f;
-        /// <summary>L2ボタンを押している時間の計測用</summary>
-        private float _countL2Time = 0;
-
-        private int _myLayerIndex = default;
-
-        private int _ignoreLayerIndex = default;
-
+        /// 
         /// <summary>現在、回避をしているかどうかを示す</summary>
         private bool _isAvoidacneNow = false;
-
-
 
         /// <summary>回避実行可能かどうか</summary>
         private bool _isCanAvoidance = true;
@@ -97,8 +78,6 @@ namespace Player
         {
             _playerController = playerController;
             // 自分と無視するレイヤーのインデックスを取得
-            _ignoreLayerIndex = LayerMask.NameToLayer("EnemyBullet"); // ここの文字列を消したい
-            _myLayerIndex = LayerMask.NameToLayer("Player"); // ここの文字列を消したい
         }
 
 
@@ -187,6 +166,10 @@ namespace Player
             //TestTExT???????????????????///////////////////////////////////////
             _testAvoidText.SetActive(true);
 
+            _isCanAvoidance = false;
+
+            _isAvoidacneNow = true;
+
             //時遅を強制解除
             _playerController.GunSetUp.EmergencyStopSlowTime();
 
@@ -207,6 +190,7 @@ namespace Player
             //TestTExT???????????????????///////////////////////////////////////
             _testAvoidText.SetActive(false);
 
+            _isAvoidacneNow = false;
 
             _playerController.LifeController.IsGodMode = false;
 
