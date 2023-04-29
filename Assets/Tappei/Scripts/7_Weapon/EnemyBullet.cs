@@ -5,7 +5,7 @@ using UnityEngine;
 /// 指定した方向にまっすぐ飛ぶ敵弾のクラス
 /// EnemyRifleクラスにプールされており、発射する際にアクティブになる
 /// </summary>
-public class EnemyBullet : MonoBehaviour, IPausable
+public class EnemyBullet : MonoBehaviour, IPausable, IDamageable
 {
     /// <summary>途中で消えて違和感あるようだったらこの値を大きくする</summary>
     private static float LifeTime = 3.0f;
@@ -64,10 +64,7 @@ public class EnemyBullet : MonoBehaviour, IPausable
         }
     }
 
-    /// <summary>
-    /// プールに戻す
-    /// 発射されてから一定時間後、もしくはプレイヤーにヒットした際に呼ばれる
-    /// </summary>
+    /// <summary>このメソッドを呼ぶことでプールに戻す</summary>
     private void ReturnPool()
     {
         _timer = 0;
@@ -88,4 +85,6 @@ public class EnemyBullet : MonoBehaviour, IPausable
             ReturnPool();
         }
     }
+
+    public void Damage() => ReturnPool();
 }
