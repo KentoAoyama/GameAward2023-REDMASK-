@@ -69,7 +69,8 @@ namespace Player
         private Proximity _proximity = default;
         [Tooltip("カメラ制御"), SerializeField]
         private CameraShake _camraControl = default;
-
+        [Tooltip("構え"), SerializeField]
+        private GunSetUp _gunSetUp = default;
         [Tooltip("腕のアニメーション"), SerializeField]
         private PlayerBodyAndArmAngleSetting _bodyAngleSetting = default;
 
@@ -102,6 +103,7 @@ namespace Player
 
         public CameraShake CameraControl => _camraControl;
 
+        public GunSetUp GunSetUp => _gunSetUp;
         public PlayerBodyAndArmAngleSetting BodyAnglSetteing => _bodyAngleSetting;
 
         public bool IsSetUp { get; private set; } = false;
@@ -125,6 +127,7 @@ namespace Player
             _proximityHitChecker.Init(transform);
             _camraControl.Init(this);
             _bodyAngleSetting.Init(this);
+            _gunSetUp.Init(this);
 
             IsSetUp = true;
 
@@ -142,6 +145,8 @@ namespace Player
                 _revolver.OnDrawAimingLine(); // 照準描画処理（カメラの更新タイミングと合わせる必要有り）
                 _avoidance.Update();          // 回避制御
                 _proximity.Update();          //近接攻撃
+
+                _gunSetUp.UpData();
 
                 //_camraControl.CameraShakeSpeed(); //カメラの再生速度
 

@@ -44,18 +44,22 @@ namespace Player
                 return;
             } // ポーズ中は何もできない
 
-            if (_playerController.Avoidance.IsAvoidanceNow)
+            if (_playerController.Avoidance.IsAvoidanceNow || _playerController.Proximity.IsProximityNow)
             {
                 return;
             } //回避中はできない
 
-            // 撃てる状態かつ、撃つ入力が発生したとき 銃を撃つ
-            if (_playerController.InputManager.GetValue<float>(InputType.Fire1) > 0.49f &&
-                _playerController.Revolver.CanFire)
-            {
-                _playerController.Revolver.Fire();
 
-                StopRevolverReLoad();
+            if (_playerController.GunSetUp.IsGunSetUp)
+            {
+                // 撃てる状態かつ、撃つ入力が発生したとき 銃を撃つ
+                if (_playerController.InputManager.GetValue<float>(InputType.Fire1) > 0.49f &&
+                    _playerController.Revolver.CanFire)
+                {
+                    _playerController.Revolver.Fire();
+
+                    StopRevolverReLoad();
+                }
             }
 
             // リロード処理
@@ -63,6 +67,12 @@ namespace Player
             {
                 //排出、弾を籠めている最中に押して何度も呼ばれないようにする
                 if (_isExcretedPods || _isSetBullet) return;
+
+                //時遅を強制解除
+                _playerController.GunSetUp.EmergencyStopSlowTime();
+
+                //構えはじめている最中は、構えはじめを解除
+                _playerController.GunSetUp.CanselSetUpping();
 
                 bool isShallCase = false;
 
