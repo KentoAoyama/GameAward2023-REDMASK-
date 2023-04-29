@@ -9,7 +9,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class PerformanceEvent : MonoBehaviour
+[SerializeField]
+public class PerformanceEvent
 {
     [SerializeField]
     private bool _isWaitFireInput = default;
