@@ -180,8 +180,10 @@ namespace Player
             GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Evade");
 
             _playerController.Player.layer = LayerMask.NameToLayer(_avoidLayerName);
-            _playerController.LifeController.IsGodMode = true;
+            _playerController.LifeController.IsAvoid = true;
         }
+        
+
         /// <summary>
         /// その場回避終了処理
         /// </summary>
@@ -192,7 +194,7 @@ namespace Player
 
             _isAvoidacneNow = false;
 
-            _playerController.LifeController.IsGodMode = false;
+            _playerController.LifeController.IsAvoid = false;
 
             _playerController.Player.layer = LayerMask.NameToLayer(_defultLayerName);
             ////回避が終了したことをMoveクラスに伝える
