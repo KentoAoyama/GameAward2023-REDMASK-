@@ -44,10 +44,10 @@ namespace Player
                 return;
             } // ポーズ中は何もできない
 
-            if (_playerController.Avoidance.IsAvoidanceNow || _playerController.Proximity.IsProximityNow)
+            if ( _playerController.Proximity.IsProximityNow)
             {
                 return;
-            } //回避中はできない
+            }//近接攻撃中はできない
 
 
             if (_playerController.GunSetUp.IsGunSetUp)
@@ -61,6 +61,11 @@ namespace Player
                     StopRevolverReLoad();
                 }
             }
+
+            if(_playerController.Avoidance.IsAvoidanceNow)
+            {
+                return;
+            } //回避中はできない
 
             // リロード処理
             if (_playerController.InputManager.IsPressed[InputType.LoadBullet])
