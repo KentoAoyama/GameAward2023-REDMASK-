@@ -208,7 +208,7 @@ public partial class @GameController : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""aa9b8ecf-9735-490b-a762-cdd4d6a70e91"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
@@ -465,6 +465,17 @@ public partial class @GameController : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
+                    ""action"": ""SetUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cae2dd77-a056-437f-83e6-a0f11726d84d"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""SetUp"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
