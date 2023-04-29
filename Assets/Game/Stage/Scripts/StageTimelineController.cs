@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using Cinemachine;
 
 /// <summary>
 /// ステージのタイムラインを制御する用のコンポーネント
@@ -40,6 +42,7 @@ public class StageTimelineController : MonoBehaviour
         // 会話タイムラインを再生する。
         _secondPerformanceEndDirector.Play();
         await UniTask.WaitUntil(() => WaitInput());  // 発砲ボタン入力を待つ。
+
         _secondPerformanceEndDirector.Stop();
         // 終了タイムラインを再生する。
         _thirdPerformanceEndDirector.Play();

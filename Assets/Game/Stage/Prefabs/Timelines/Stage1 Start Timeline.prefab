@@ -42,12 +42,12 @@ PlayableDirector:
   m_Enabled: 1
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: f664902c70da5274c9fce9e330a36c3f, type: 2}
-  m_InitialState: 1
+  m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
   m_SceneBindings:
-  - key: {fileID: -188956785845269802, guid: f664902c70da5274c9fce9e330a36c3f, type: 2}
+  - key: {fileID: 1632410379257599980, guid: f664902c70da5274c9fce9e330a36c3f, type: 2}
     value: {fileID: 0}
   m_ExposedReferences:
     m_References: []
@@ -135,6 +135,18 @@ PlayableDirector:
   m_SceneBindings:
   - key: {fileID: 7064211489163703807, guid: 3994b79287a4435428c4d68a05cd51e2, type: 2}
     value: {fileID: 0}
+  - key: {fileID: 0}
+    value: {fileID: 0}
+  - key: {fileID: 0}
+    value: {fileID: 0}
+  - key: {fileID: 0}
+    value: {fileID: 0}
+  - key: {fileID: -3946187210804002095, guid: 3994b79287a4435428c4d68a05cd51e2, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: -7057213503421908257, guid: 3994b79287a4435428c4d68a05cd51e2, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: 2813844326032591972, guid: 3994b79287a4435428c4d68a05cd51e2, type: 2}
+    value: {fileID: 0}
   m_ExposedReferences:
     m_References: []
 --- !u!1 &2887129556379474599
@@ -179,12 +191,18 @@ PlayableDirector:
   m_Enabled: 1
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: 4efc00e4a312aed44bc1f186c3586a11, type: 2}
-  m_InitialState: 1
+  m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
   m_SceneBindings:
   - key: {fileID: -7308184154992534422, guid: 4efc00e4a312aed44bc1f186c3586a11, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: -284144383262972032, guid: 4efc00e4a312aed44bc1f186c3586a11, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: 7880959411314766222, guid: 4efc00e4a312aed44bc1f186c3586a11, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: -427434834967820686, guid: 4efc00e4a312aed44bc1f186c3586a11, type: 2}
     value: {fileID: 0}
   m_ExposedReferences:
     m_References: []
@@ -198,6 +216,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2887129556439874871}
   - component: {fileID: 2887129556439874868}
+  - component: {fileID: 1651899410}
   m_Layer: 0
   m_Name: Timeline controller
   m_TagString: Untagged
@@ -232,7 +251,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5475c8349969ba14796eb5ac7d49991d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextSceneName: StageSelect
+  _nextSceneName: Stage1_InGame1
   _firstPerformanceDirector: {fileID: 2887129555996651546}
   _secondPerformanceEndDirector: {fileID: 2887129556379474597}
   _thirdPerformanceEndDirector: {fileID: 2887129554870091024}
+  _impulse: {fileID: 0}
+--- !u!114 &1651899410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2887129556439874870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c78507d3f39f1840b6e200dce06a46e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -36,6 +36,10 @@ public class AudioManager
     public void Load()
     {
         var tmp = SaveLoadManager.Load<AudioManager>(SaveFileName);
+        if (tmp == null)
+        {
+            return;
+        }
         this._masterVolume.Value = tmp._masterVolume.Value;
         this._bgmVolume.Value = tmp._bgmVolume.Value;
         this._seVolume.Value = tmp._seVolume.Value;
@@ -82,6 +86,8 @@ public class AudioManager
                 _sePlayer[i].Update(_sePlayback[i]);
             }
         });
+
+        
     }
     // ここに音を鳴らす関数を書いてください
 
