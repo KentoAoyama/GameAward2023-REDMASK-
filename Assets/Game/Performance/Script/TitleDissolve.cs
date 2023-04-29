@@ -6,16 +6,18 @@ using UnityEngine.Events;
 
 public class TitleDissolve : MonoBehaviour
 {
-    [SerializeField, Tooltip("ƒ^ƒCƒgƒ‹‚ÌCanvas")]
+    [SerializeField, Tooltip("ï¿½^ï¿½Cï¿½gï¿½ï¿½ï¿½ï¿½Canvas")]
     private Canvas _titleCanvas;
     [SerializeField]
     private TitleController _titleController;
-    [SerializeField, Tooltip("ƒtƒF[ƒh‚·‚é‚Æ‚«‚ÌEvent")]
+    [SerializeField, Tooltip("ï¿½tï¿½Fï¿½[ï¿½hï¿½ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½ï¿½Event")]
     private UnityEvent _onFade;
+    [SerializeField, Tooltip("DissolveãŒçµ‚ã‚ã£ãŸæ™‚ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯")]
+    private UnityEvent _fadeCollback;
 
-    /// <summary>ƒfƒBƒ]ƒ‹ƒu‚³‚¹‚éƒpƒlƒ‹</summary>
+    /// <summary>ï¿½fï¿½Bï¿½]ï¿½ï¿½ï¿½uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½pï¿½lï¿½ï¿½</summary>
     private Image _dissolvePanel;
-    /// <summary>ƒfƒBƒ]ƒ‹ƒu‚ÌƒAƒjƒ[ƒVƒ‡ƒ“</summary>
+    /// <summary>ï¿½fï¿½Bï¿½]ï¿½ï¿½ï¿½uï¿½ÌƒAï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½</summary>
     private Animator _animator;
 
     private void Awake()
@@ -33,14 +35,15 @@ public class TitleDissolve : MonoBehaviour
         }
     }
 
-    /// <summary>eƒIƒuƒWƒFƒNƒg‚àŠÜ‚ß‚Ä”j‰ó‚·‚é</summary>
+    /// <summary>ï¿½eï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½ï¿½ï¿½Ü‚ß‚Ä”jï¿½ó‚·‚ï¿½</summary>
     private void DestroyPanel()
     {
         _titleController.CurrentState = TitleController.TitleState.Menu;
         Destroy(this.transform.root.gameObject);
+        _fadeCollback.Invoke();
     }
 
-    /// <summary>ƒXƒNƒŠ[ƒ“ƒVƒ‡ƒbƒg‚ğæ‚Á‚ÄƒAƒjƒ[ƒVƒ‡ƒ“‚ğŒÄ‚ñ‚Å‚¢‚é</summary>
+    /// <summary>ï¿½Xï¿½Nï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½Vï¿½ï¿½ï¿½bï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÄƒAï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½Å‚ï¿½ï¿½ï¿½</summary>
     /// <returns></returns>
     private IEnumerator Fade()
     {

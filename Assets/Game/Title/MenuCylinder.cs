@@ -12,6 +12,17 @@ public class MenuCylinder : MonoBehaviour
     private Transform _cylinderImage;
     [SerializeField]
     private TitleController _titleController;
+    [SerializeField, Tooltip("ã‚·ãƒªãƒ³ãƒ€ãƒ¼ãŒå›ã‚‹ã‹ã©ã†ã‹")]
+    private bool _sylinderEnabled = false;
+
+    public bool SylinderEnabled
+    {
+        set 
+        {
+            _sylinderEnabled = value;
+            Debug.Log($"_sylinder = {_sylinderEnabled}");
+        }
+    }
 
     private float _currentAngle = 0.0f;
     private bool _selectable = true;
@@ -23,13 +34,18 @@ public class MenuCylinder : MonoBehaviour
         set => _selectable = value;
     }
 
+    private void Awake()
+    {
+        _sylinderEnabled = false;
+    }
+
     private void Update()
     {
         
-        if (Keyboard.current.aKey.wasPressedThisFrame)
+        if (Keyboard.current.aKey.wasPressedThisFrame && _sylinderEnabled)
         {
             if (_isRotating || !_selectable) return;
-            Debug.Log("AƒL[‚ª‰Ÿ‰º‚³‚ê‚Ü‚µ‚½");
+            Debug.Log("Aï¿½Lï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½");
             RotateCylinder(-60f);
 
             GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Reroad");
@@ -39,11 +55,11 @@ public class MenuCylinder : MonoBehaviour
             _circleDeploy.SelectButtons[_currentButtonIndex].Select();
         }
 
-        if (Keyboard.current.dKey.wasPressedThisFrame)
+        if (Keyboard.current.dKey.wasPressedThisFrame && _sylinderEnabled)
         {
             if (_isRotating || !_selectable) return;
             RotateCylinder(60f);
-            Debug.Log("DƒL[‚ª‰Ÿ‰º‚³‚ê‚Ü‚µ‚½");
+            Debug.Log("Dï¿½Lï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½");
 
             GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Reroad");
 
