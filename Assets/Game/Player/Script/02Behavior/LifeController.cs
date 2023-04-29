@@ -15,9 +15,13 @@ namespace Player
         public event Action OnDeath = default;
         public bool IsGodMode { get => _isGodMode; set => _isGodMode = value; }
 
+        private bool _isAvoid = false;
+
+        public bool IsAvoid { get => _isAvoid; set => _isAvoid = value; }
+
         public void Damage(float value)
         {
-            if (!_isGodMode)
+            if (!_isGodMode && !_isAvoid)
             {
                 _life -= value;
                 if (_life < 1)
