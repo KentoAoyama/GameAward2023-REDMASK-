@@ -6,7 +6,20 @@ using UnityEngine;
 /// </summary>
 public class StateTypeAttackExtend : StateTypeAttack
 {
+    /// <summary>
+    /// 間合いを詰めてくる時間を計算するために攻撃範囲に定数をかける
+    /// </summary>
+    private static readonly float MovingDistanceMag = 15.0f;
+    /// <summary>
+    /// 次の攻撃までの待ち時間は攻撃モーションを考慮してマイナスの値を設定する
+    /// </summary>
+    private static readonly float NextAttackDelay = -80.0f;
+
     private ShieldEnemyController _shieldController;
+    /// <summary>
+    /// 間合いを詰めてくる動作中かどうかのフラグ
+    /// </summary>
+    private bool _isApproaching;
 
     public StateTypeAttackExtend(EnemyController controller, StateType stateType)
     : base(controller, stateType) 
@@ -16,7 +29,8 @@ public class StateTypeAttackExtend : StateTypeAttack
 
     protected override void Enter()
     {
-        // このステートに入るたびに攻撃をする
+        _time = Controller.Params.AttackRate;
+        _shieldController.PlayAnimation(AnimationName.Idle);
     }
 
     protected override void Stay()
@@ -34,15 +48,20 @@ public class StateTypeAttackExtend : StateTypeAttack
             return;
         }
 
-        // 攻撃するために移動する
-        // 攻撃するたびにアニメーションを最初から再生する必要がある
-        // ↑攻撃とアニメーションの再生タイミングが合っていないとおかしい
         _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime * AttackTimerMag;
-        if (_time > Controller.Params.AttackRate)
+        if (_time > Controller.Params.AttackRate && !_isApproaching)
         {
-            _time = 0;
-            // 攻撃範囲の分だけ移動しつつ攻撃する
+            _isApproaching = true;
+            _shieldController.MoveForward();
+            _shieldController.PlayAnimation(AnimationName.Move);
+        }
+        if(_time > Controller.Params.AttackRate + MovingDistanceMag * Controller.Params.AttackRange)
+        {
+            _time = NextAttackDelay;
+            _isApproaching = false;
+            _shieldController.CancelMoving();
             _shieldController.Attack();
+            _shieldController.PlayAnimation(AnimationName.Attack);
         }
 
         SightResult result = Controller.IsFindPlayer();
@@ -56,5 +75,11 @@ public class StateTypeAttackExtend : StateTypeAttack
             TryChangeState(StateType.MoveExtend);
             return;
         }
+    }
+
+    protected override void Exit()
+    {
+        _time = 0;
+        _isApproaching = false;
     }
 }
