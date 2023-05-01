@@ -56,6 +56,9 @@ namespace Player
                 if (_playerController.InputManager.GetValue<float>(InputType.Fire1) > 0.49f &&
                     _playerController.Revolver.CanFire)
                 {
+                    //アニメーションの再生
+                    _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.Fire);
+
                     _playerController.Revolver.Fire();
 
                     StopRevolverReLoad();
