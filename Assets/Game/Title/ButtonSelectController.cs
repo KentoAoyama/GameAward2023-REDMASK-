@@ -24,7 +24,6 @@ public class ButtonSelectController : MonoBehaviour
         if (EventSystem.current.currentSelectedGameObject == this.gameObject)
         {
             _buttonText.color = _selectedColor;
-            Debug.Log(_selectedColor);
         }
         else
         {
