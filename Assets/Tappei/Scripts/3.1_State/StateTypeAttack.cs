@@ -5,11 +5,14 @@ using UnityEngine;
 /// </summary>
 public class StateTypeAttack : StateTypeBase
 {
-    /// <summary>遷移するまでの間隔を調整するために使用する値</summary>
+    /// <summary>
+    /// 攻撃するまでのタイマーのカウントの倍率
+    /// deltaTimeとの乗算で攻撃までの間隔を調整する
+    /// </summary>
     protected static readonly int AttackTimerMag = 60;
     /// <summary>
     /// 遷移を繰り返すことでの連射対策として
-    /// この値は状態の遷移をしても初期化されない
+    /// StateTypeAttackクラスではこの値は状態の遷移をしても初期化されない
     /// </summary>
     protected float _time;
 
