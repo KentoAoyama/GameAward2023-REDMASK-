@@ -158,8 +158,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 1
-    m_ConditionEvent: ManualPanelAnimationOut
+  - m_ConditionMode: 2
+    m_ConditionEvent: ManualPanelAnimation
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 4381080583403214121}
@@ -184,31 +184,19 @@ AnimatorController:
   m_Name: TitleMainCanvas
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: AudioPanelAnimationIn
-    m_Type: 9
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
-  - m_Name: AudioPanelAnimationOnt
-    m_Type: 9
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
-  - m_Name: ManualPanelAnimationIn
-    m_Type: 9
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
-  - m_Name: ManualPanelAnimationOut
-    m_Type: 9
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
   - m_Name: GallaryPanelAnimation
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: AudioPanelAnimation
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: ManualPanelAnimation
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -344,7 +332,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: ManualPanelAnimationIn
+    m_ConditionEvent: ManualPanelAnimation
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 7837943324915381369}
   m_DstState: {fileID: 0}
@@ -500,8 +488,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 1
-    m_ConditionEvent: AudioPanelAnimationOnt
+  - m_ConditionMode: 2
+    m_ConditionEvent: AudioPanelAnimation
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -5866360572763068878}
@@ -526,7 +514,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: AudioPanelAnimationIn
+    m_ConditionEvent: AudioPanelAnimation
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 7904618618143092472}
   m_DstState: {fileID: 0}

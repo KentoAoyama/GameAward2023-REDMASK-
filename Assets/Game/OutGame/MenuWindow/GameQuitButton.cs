@@ -4,12 +4,12 @@ using UnityEngine.UI;
 
 public class GameQuitButton : MonoBehaviour
 {
-    [SerializeField]
     private Button _button = default;
 
     private void Awake()
     {
-        _button.onClick.AddListener(GameQuit);
+        _button = GetComponent<Button>();
+        _button?.onClick.AddListener(GameQuit);
     }
     private void GameQuit()
     {
