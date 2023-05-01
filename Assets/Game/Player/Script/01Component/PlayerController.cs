@@ -43,6 +43,11 @@ namespace Player
 
         [Tooltip("プレイヤーのUIを管理するクラス"), SerializeField]
         private UIController _uIController;
+
+        [Tooltip("アニメーター制御"), SerializeField]
+        private PlayerAnimationControl _playerAnimatorControl = default;
+        [Tooltip("腕のアニメーション"), SerializeField]
+        private PlayerBodyAndArmAngleSetting _bodyAngleSetting = default;
         [Tooltip("移動制御"), SerializeField]
         private Move _move = default;
         [Tooltip("接地判定"), SerializeField]
@@ -61,8 +66,7 @@ namespace Player
         private LifeController _lifeController = default;
         [Tooltip("回避制御"), SerializeField]
         private Avoidance _avoidance = default;
-        [Tooltip("アニメーター制御"), SerializeField]
-        private PlayerAnimationControl _playerAnimatorControl = default;
+
         [Tooltip("攻撃当たり判定"), SerializeField]
         private OverlapBox2D _proximityHitChecker = default;
         [Tooltip("近接攻撃"), SerializeField]
@@ -71,8 +75,7 @@ namespace Player
         private CameraShake _camraControl = default;
         [Tooltip("構え"), SerializeField]
         private GunSetUp _gunSetUp = default;
-        [Tooltip("腕のアニメーション"), SerializeField]
-        private PlayerBodyAndArmAngleSetting _bodyAngleSetting = default;
+
 
         private Rigidbody2D _rigidbody2D = null;
 

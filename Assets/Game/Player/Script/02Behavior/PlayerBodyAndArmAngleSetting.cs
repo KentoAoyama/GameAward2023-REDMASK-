@@ -131,10 +131,8 @@ namespace Player
 
         public void Update()
         {
-            if(!_playerController.GunSetUp.IsGunSetUp)
+            if(!_playerController.GunSetUp.IsGunSetUp || _playerController.PlayerAnimatorControl.IsAnimationNow)
             {
-
-
                 return;
             }
 
