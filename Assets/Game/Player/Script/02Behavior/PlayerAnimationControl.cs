@@ -15,9 +15,19 @@ namespace Player
 
         [Header("Animatorのパラメータ名")]
 
+        [Header("通常のオブジェクト")]
+        [SerializeField] private List<GameObject> _nomalAnim = new List<GameObject>();
+
+        [Header("近接攻撃のオブジェクト")]
+        [SerializeField] private GameObject _proximityAnim;
+
+        [Header("発砲のオブジェクト")]
+        [SerializeField] private GameObject _fireAnim;
+
+
+
         [Header("走り_float")]
         private string _xVelocityParameta = "";
-
 
         [Header("設置判定_bool")]
         private bool _isGroundParameta = false;
@@ -31,18 +41,20 @@ namespace Player
         private float _moveHorizontalDir = 1;
 
 
-
-
-
-
-
-        public float MoveDir { get => _moveHorizontalDir; set => _moveHorizontalDir = value; }
-
-
-        public bool IsPause { get; private set; } = false;
-
+        private bool _isAnimationNow = false;
         private PlayerController _playerController;
 
+        public bool IsAnimationNow => _isAnimationNow;
+        public float MoveDir { get => _moveHorizontalDir; set => _moveHorizontalDir = value; }
+        public bool IsPause { get; private set; } = false;
+
+        public enum AnimaKind
+        {
+            /// <summary>発砲</summary>
+            Fire,
+            /// <summary>近接攻撃 </summary>
+            Proximity,
+        }
 
         public void Init(PlayerController playerController)
         {
@@ -70,6 +82,30 @@ namespace Player
                 _playerController.PlayerAnim.speed = 1;
             }
         }
+
+        public void PlayAnimation(PlayerAnimationControl.AnimaKind animationKind)
+        {
+            _isAnimationNow = true;
+
+            _nomalAnim.ForEach(i => i.SetActive(false));
+
+            if (animationKind == AnimaKind.Fire)
+            {
+                _fireAnim.SetActive(true);
+            }
+            else if (animationKind == AnimaKind.Proximity)
+            {
+                _proximityAnim.SetActive(true);
+            }
+        }
+
+        public void EndAnimation()
+        {
+            _isAnimationNow = false;
+
+            _nomalAnim.ForEach(i => i.SetActive(true));
+        }
+
 
 
         /// <summary>プレイヤーの絵の方向を、変える
