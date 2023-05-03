@@ -269,6 +269,9 @@ namespace Player
                     //音を鳴らす
                     GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Jump");
 
+                    //ジャンプのアニメーション
+                    _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.Jump);
+
                     _playerController.Rigidbody2D.velocity =
                     new Vector2(
                         _playerController.Rigidbody2D.velocity.x,

@@ -192,6 +192,9 @@ namespace Player
             //TestTExT???????????????????///////////////////////////////////////
             _testAvoidText.SetActive(false);
 
+            //特定行動中に構えを解除していないかどうかを確認する
+            _playerController.GunSetUp.CheckRelesedSetUp();
+
             _isAvoidacneNow = false;
 
             _playerController.LifeController.IsAvoid = false;

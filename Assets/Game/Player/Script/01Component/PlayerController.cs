@@ -154,6 +154,8 @@ namespace Player
                 //_camraControl.CameraShakeSpeed(); //カメラの再生速度
 
                 _bodyAngleSetting.Update();
+
+                _playerAnimatorControl.SetAnimatorParameters();
             }
         }
         private void OnDrawGizmosSelected()

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
+using System;
+
 
 namespace Player
 {
@@ -13,24 +15,40 @@ namespace Player
         [Tooltip("絵が右向きならTrueに"), SerializeField]
         private bool _isRightDirOnPictuer = true;
 
-        [Header("Animatorのパラメータ名")]
 
-        [Header("通常のオブジェクト")]
+
+        [Header("構えのオブジェクト")]
         [SerializeField] private List<GameObject> _nomalAnim = new List<GameObject>();
 
-        [Header("近接攻撃のオブジェクト")]
-        [SerializeField] private GameObject _proximityAnim;
-
-        [Header("発砲のオブジェクト")]
+        [Header("通常のオブジェクト")]
         [SerializeField] private GameObject _fireAnim;
 
+        [Header("Animation名")]
 
 
-        [Header("走り_float")]
-        private string _xVelocityParameta = "";
 
-        [Header("設置判定_bool")]
-        private bool _isGroundParameta = false;
+        [Header("ジャンプ")]
+        private string _animJump = "Player_JumpStart";
+        [Header("発砲")]
+        private string _animFire = "Player_Fire";
+        [Header("リロードはじめ")]
+        private string _animReLoadStart = "Player_ReLoadStart";
+        [Header("リロード、弾を籠める")]
+        private string _animReLoadNow = "Player_ReLoadNow";
+        [Header("リロード、終わり")]
+        private string _animReLoadEnd = "Player_ReLoadEnd";
+        [Header("近接攻撃")]
+        private string _animProximity = "Player_Proximity";
+
+
+        [Header("Animatorのパラメータ名")]
+        [Header("速度X")]
+        private string _xVelocityParameta = "SpeedX";
+
+        [Header("速度Y")]
+        private string _yVelocityParameta = "SpeedY";
+        [Header("設置")]
+        private string _isGroundParameta = "IsGround";
 
         [Header("死亡アニメーション。Animatorの名前")]
         [Tooltip("絵が右向きならTrueに"), SerializeField]
@@ -40,6 +58,7 @@ namespace Player
         /// <summary>現在のキャラの移動の入力の向き</summary>
         private float _moveHorizontalDir = 1;
 
+        private bool _isFire = false;
 
         private bool _isAnimationNow = false;
         private PlayerController _playerController;
@@ -54,6 +73,12 @@ namespace Player
             Fire,
             /// <summary>近接攻撃 </summary>
             Proximity,
+            /// <summary>ジャンプ</summary>
+            Jump,
+
+            ReLoadStart,
+            ReLoad,
+            ReLoadEnd,
         }
 
         public void Init(PlayerController playerController)
@@ -83,27 +108,89 @@ namespace Player
             }
         }
 
+
+        public void SetAnimatorParameters()
+        {
+            float x = Mathf.Abs(_playerController.Rigidbody2D.velocity.x);
+            _playerController.PlayerAnim.SetFloat(_xVelocityParameta, x);
+
+            float y = Mathf.Abs(_playerController.Rigidbody2D.velocity.y);
+            _playerController.PlayerAnim.SetFloat(_yVelocityParameta, y);
+
+            _playerController.PlayerAnim.SetBool(_isGroundParameta, _playerController.GroungChecker.IsHit(_playerController.Move.MoveHorizontalDir));
+        }
+
+        public void GunSet()
+        {
+
+            _fireAnim.SetActive(false);
+            if (_playerController.GunSetUp.IsGunSetUp)
+            {
+                _nomalAnim.ForEach(i => i.SetActive(true));
+            }
+        }
+
+        public void GunSetEnd()
+        {
+
+            _fireAnim.SetActive(true);
+            if (_playerController.GunSetUp.IsGunSetUp)
+            {
+                _nomalAnim.ForEach(i => i.SetActive(false));
+            }
+        }
+
+
         public void PlayAnimation(PlayerAnimationControl.AnimaKind animationKind)
         {
             _isAnimationNow = true;
+            _fireAnim.SetActive(true);
+
 
             _nomalAnim.ForEach(i => i.SetActive(false));
 
             if (animationKind == AnimaKind.Fire)
             {
-                _fireAnim.SetActive(true);
+                _playerController.PlayerAnim.Play(_animFire);
+                _isFire = true;
             }
             else if (animationKind == AnimaKind.Proximity)
             {
-                _proximityAnim.SetActive(true);
+                _playerController.PlayerAnim.Play(_animProximity);
+            }
+            else if (animationKind == AnimaKind.Jump)
+            {
+                Debug.Log("Dd");
+                _playerController.PlayerAnim.Play(_animJump);
+                _isAnimationNow = false;
+            }
+            else if (animationKind == AnimaKind.ReLoadStart)
+            {
+                _playerController.PlayerAnim.Play(_animReLoadStart);
+                _isAnimationNow = false;
+            }
+            else if (animationKind == AnimaKind.ReLoad)
+            {
+                _playerController.PlayerAnim.Play(_animReLoadNow);
+                _isAnimationNow = false;
+            }
+            else if (animationKind == AnimaKind.ReLoadEnd)
+            {
+                if (_isFire) return;
+
+                _playerController.PlayerAnim.Play(_animReLoadEnd);
+                _isAnimationNow = false;
             }
         }
 
         public void EndAnimation()
         {
+            if (_playerController.GunSetUp.IsGunSetUp)
+            {
+                _nomalAnim.ForEach(i => i.SetActive(true));
+            }
             _isAnimationNow = false;
-
-            _nomalAnim.ForEach(i => i.SetActive(true));
+            _isFire = false;
         }
 
 
