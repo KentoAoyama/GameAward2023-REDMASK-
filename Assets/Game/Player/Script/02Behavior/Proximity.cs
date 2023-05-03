@@ -146,6 +146,9 @@ namespace Player
         {
             _testAttackText.SetActive(false);
 
+            //特定行動中に構えを解除していないかどうかを確認する
+            _playerController.GunSetUp.CheckRelesedSetUp();
+
             Debug.Log("近接攻撃終わり！");
             //試験的に、色を変える    
             _spriteRenderer.color = Color.white;

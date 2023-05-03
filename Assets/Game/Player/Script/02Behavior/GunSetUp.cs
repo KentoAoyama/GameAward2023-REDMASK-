@@ -66,9 +66,18 @@ namespace Player
 
         public void UpData()
         {
+            if(!_playerController.GroungChecker.IsHit(_playerController.Move.MoveHorizontalDir))
+            {
+                return;
+            }   //空中では出来ない
+
+            if (_playerController.Proximity.IsProximityNow || _playerController.Avoidance.IsAvoidanceNow) return;
+
 
             if (_playerController.InputManager.IsReleased[InputType.GunSetUp])
             {
+                _playerController.PlayerAnimatorControl.GunSetEnd();
+
                 _isGunSetUp = false;
 
                 _isGunSetUping = false;
@@ -111,6 +120,8 @@ namespace Player
                     if (_nowGage > 0)
                     {
                         DoSlow();
+                        _playerController.PlayerAnimatorControl.GunSet();
+
                         _isNoGage = false;
                     }
                 }
@@ -162,6 +173,35 @@ namespace Player
             }
         }
 
+
+        public void CheckRelesedSetUp()
+        {
+            if (!_playerController.InputManager.IsExist[InputType.GunSetUp])
+            {
+                if (_isGunSetUp)
+                {
+                    _playerController.PlayerAnimatorControl.GunSetEnd();
+
+                    _isGunSetUp = false;
+
+                    _isGunSetUping = false;
+
+                    _setUpTimeCount = 0;
+
+                    _gageHealWaitTimeCount = 0;
+
+                    if (_nowGage > 0)
+                    {
+                        EndSlowTime();
+                    }
+
+                    _isEmergencyStopSlowTime = false;
+                    _isCanselSutUping = false;
+                }
+
+            }     //構えボタンを離したら構えを解除
+        }
+
         public void DoSlow()
         {
             /////TEST用............
@@ -181,7 +221,7 @@ namespace Player
 
         public void EndSlowTime()
         {
-            if (_isEmergencyStopSlowTime) return;
+            if (_isEmergencyStopSlowTime ||!_isGunSetUp) return;
 
             /////TEST用............
             _testSlowTimeText.SetActive(false);

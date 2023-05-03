@@ -33,6 +33,9 @@ namespace Player
         private bool _isExcretedPods = false;
         private bool _isSetBullet = false;
 
+
+        private bool _isReLoadNow = false;
+
         public void Init(PlayerController playerController)
         {
             _playerController = playerController;
@@ -62,6 +65,11 @@ namespace Player
                     _playerController.Revolver.Fire();
 
                     StopRevolverReLoad();
+
+                    //特定行動中に構えを解除していないかどうかを確認する
+                    _playerController.GunSetUp.CheckRelesedSetUp();
+
+                    return;
                 }
             }
 
@@ -75,6 +83,10 @@ namespace Player
             {
                 //排出、弾を籠めている最中に押して何度も呼ばれないようにする
                 if (_isExcretedPods || _isSetBullet) return;
+
+                _playerController.Revolver.OffDrawAimingLine(false);
+
+                _isReLoadNow = true;
 
                 //時遅を強制解除
                 _playerController.GunSetUp.EmergencyStopSlowTime();
@@ -125,6 +137,9 @@ namespace Player
                 /////////////////////////////////TEST用!!!!!!!!!!!!!!!!//////////////////////////
                 _excretedText.SetActive(true);
 
+                //排莢のアニメーション
+                _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.ReLoadStart);
+
                 _countExcretedPodsTime += Time.deltaTime;
                 if (_excretedPodsTime < _countExcretedPodsTime)
                 {
@@ -150,17 +165,34 @@ namespace Player
                 /////////////////////////////////TEST用!!!!!!!!!!!!!!!!//////////////////////////
                 _setBulletText.SetActive(true);
 
+
+                Debug.Log("F");
+
                 _countSetBulletTime += Time.deltaTime;
                 if (_setBulletTime < _countSetBulletTime)
                 {
                     /////////////////////////////////TEST用!!!!!!!!!!!!!!!!//////////////////////////
                     _setBulletText.SetActive(false);
 
+                //弾を籠めるアニメーション
+                _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.ReLoad);
+                    Debug.Log("N");
+
+                    //特定行動中に構えを解除していないかどうかを確認する
+                    _playerController.GunSetUp.CheckRelesedSetUp();
+
                     //音を鳴らす
                     GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Reroad");
 
                     // 空いているチャンバーを検索する。
                     var index = FindEmptyChamber();
+
+
+                    //最大まで弾を居れたら強制的に構えに戻す
+                    if(index==5 && _playerController.GunSetUp.IsGunSetUp)
+                    {
+                        _playerController.PlayerAnimatorControl.GunSet();
+                    }
 
                     // UIで現在選択している弾を装填する
                     if (_playerController.BulletDataBase.Bullets.TryGetValue(
@@ -201,6 +233,13 @@ namespace Player
             _excretedText.SetActive(false);
             _setBulletText.SetActive(false);
 
+            if (_isReLoadNow)
+            {
+                //弾を籠めるアニメーション
+                _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.ReLoadEnd);
+            }
+            Debug.Log("END");
+            _isReLoadNow = false;
             _isExcretedPods = false;
             _isSetBullet = false;
             _countSetBulletTime = 0;
