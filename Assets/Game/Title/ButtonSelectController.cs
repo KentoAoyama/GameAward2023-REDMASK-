@@ -13,10 +13,12 @@ public class ButtonSelectController : MonoBehaviour
     Color _selectedColor = Color.red;
     
     private Color _defaultColor = new Color();
+    private Outline _textOutline = default;
 
     private void Awake()
     {
         _defaultColor = _buttonText.color;
+        _textOutline = _buttonText.gameObject.GetComponent<Outline>();
     }
 
     private void Update()
@@ -24,10 +26,12 @@ public class ButtonSelectController : MonoBehaviour
         if (EventSystem.current.currentSelectedGameObject == this.gameObject)
         {
             _buttonText.color = _selectedColor;
+            _textOutline.enabled = true;
         }
         else
         {
             _buttonText.color = _defaultColor;
+            _textOutline.enabled = false;
         }
     }
 }
