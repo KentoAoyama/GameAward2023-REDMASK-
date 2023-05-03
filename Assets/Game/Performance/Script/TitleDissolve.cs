@@ -20,6 +20,7 @@ public class TitleDissolve : MonoBehaviour
     /// <summary>�f�B�]���u�̃A�j���[�V����</summary>
     private Animator _animator;
 
+    private bool _isFading = false;
     private void Awake()
     {
         _dissolvePanel = GetComponent<Image>();
@@ -47,6 +48,13 @@ public class TitleDissolve : MonoBehaviour
     /// <returns></returns>
     private IEnumerator Fade()
     {
+        if (_isFading)
+        {
+            yield break;
+        }
+
+        _isFading = true;
+
         yield return new WaitForEndOfFrame();
 
         Texture2D screenShot = new Texture2D(Screen.width, Screen.height);
