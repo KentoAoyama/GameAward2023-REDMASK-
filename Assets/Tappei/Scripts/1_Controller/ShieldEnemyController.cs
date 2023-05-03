@@ -9,7 +9,7 @@ using UnityEngine;
 public class ShieldEnemyController : EnemyController
 {
     [Header("盾のコライダーが付いたオブジェクト")]
-    [SerializeField] GameObject _shield;
+    [SerializeField] Sield _shield;
 
     /// <summary>
     /// 現在の状態からReflection状態に遷移する事が決定した時に各ステートによって更新される
@@ -27,13 +27,13 @@ public class ShieldEnemyController : EnemyController
     }
 
     /// <summary>
-    /// 盾が非表示になった場合、フラグが立ってReflectionに遷移する
     /// 現状このフラグが立ったかどうかでReflectionに遷移しているので
     /// 一定周期でこのフラグを立てれば大丈夫？
     /// </summary>
     private void InitSubscribeShield()
     {
-        _shield.OnDisableAsObservable().Subscribe(_ => IsReflect = true);
+        // 間に合わせ、きちんと処理の登録を解除するように変更すること
+        _shield.OnDamaged += () => IsReflect = true;
     }
 
     /// <summary>
@@ -59,5 +59,14 @@ public class ShieldEnemyController : EnemyController
     public void MoveForward()
     {
         _moveBehavior.StartMoveForward(Params.AttackRange, Params.RunSpeed);
+    }
+
+    /// <summary>
+    /// Reflection状態で一定時間たったらこのメソッドを呼ぶことでもう一度盾弾かれが出来る
+    /// </summary>
+    public void RecoverShield()
+    {
+        IsReflect = false;
+        _shield.Recover();
     }
 }

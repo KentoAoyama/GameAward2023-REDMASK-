@@ -51,6 +51,7 @@ public class StateTypeReflection : StateTypeBase
         _time = 0;
         _delay = 0;
         _isPostured = false;
+        _shieldController.RecoverShield();
         //Debug.Log("ƒpƒŠƒB‚¨‚í‚è");
     }
 }
