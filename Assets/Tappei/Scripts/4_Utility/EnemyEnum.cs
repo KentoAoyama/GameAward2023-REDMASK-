@@ -43,4 +43,5 @@ public enum AnimationName
     Attack,
     Dead,
     Reflection,
+    Posture,
 }
