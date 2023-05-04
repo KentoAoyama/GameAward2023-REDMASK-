@@ -10,8 +10,7 @@ public class Sield : MonoBehaviour, IDamageable
     private Collider2D _collider;
 
     /// <summary>
-    /// 盾にプレイヤーの弾がヒットしたときの処理
-    /// このコールバックが呼ばれる度にRef
+    /// 盾にプレイヤーの弾がヒットしたときのコールバック
     /// </summary>
     public UnityAction OnDamaged;
 
@@ -23,8 +22,11 @@ public class Sield : MonoBehaviour, IDamageable
     public void Damage()
     {
         _collider.enabled = false;
-        OnDamaged.Invoke();
+        OnDamaged?.Invoke();
     }
 
+    /// <summary>
+    /// 外部からこのメソッドを呼ぶことで盾が有効化される
+    /// </summary>
     public void Recover() => _collider.enabled = true;
 }
