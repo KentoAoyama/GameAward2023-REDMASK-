@@ -249,7 +249,7 @@ namespace Player
 
             // 速度を割り当てる。
 
-            if (CheckMoveDir(_moveHorizontalDir))
+            if (CheckMoveDir(_moveHorizontalDir) )
             {
                 _playerController.Rigidbody2D.velocity = Mathf.Abs(_currentHorizontalSpeed) * dir;
             }
