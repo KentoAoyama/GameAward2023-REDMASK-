@@ -1,4 +1,5 @@
 using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 
 /// <summary>
@@ -15,37 +16,13 @@ public class ShieldEnemyController : EnemyController
     /// Reflection状態から戻ってくる際に直前の状態が何なのかの情報が必要
     /// </summary>
     public StateType LastStateType { get; set; }
-    public bool IsReflect { get; private set; }
+    /// <summary>
+    /// 盾持ちの敵用のプロパティを参照する場合にキャストして使う必要がある
+    /// </summary>
     public ShieldEnemyParamsSO ShieldParams => _enemyParamsSO as ShieldEnemyParamsSO;
+    public bool IsReflect { get; private set; }
 
-    protected override void Awake()
-    {
-        // 各種必要なコンポーネントの取得＆ステートマシンの設定を行う
-        base.Awake();
-        InitSubscribeShield();
-        InitSubscribeReflectionState();
-    }
-
-    /// <summary>
-    /// 現状このフラグが立ったかどうかでReflectionに遷移しているので
-    /// 一定周期でこのフラグを立てれば大丈夫？
-    /// </summary>
-    private void InitSubscribeShield()
-    {
-        // 間に合わせ、きちんと処理の登録を解除するように変更すること
-        _shield.OnDamaged += () => IsReflect = true;
-    }
-
-    /// <summary>
-    /// Reflectionに遷移した場合、フラグが折れるのでもう一度フラグが立てばReflectionに遷移可能
-    /// </summary>
-    private void InitSubscribeReflectionState()
-    {
-        _currentState.Skip(1).Where(state => state.Type == StateType.Reflection)
-            .Subscribe(_ => IsReflect = false).AddTo(this);
-    }
-
-    protected override void InitStateMachine()
+    protected override void InitOnAwake()
     {
         _stateRegister.Register(StateType.IdleExtend, this);
         _stateRegister.Register(StateType.SearchExtend, this);
@@ -54,8 +31,11 @@ public class ShieldEnemyController : EnemyController
         _stateRegister.Register(StateType.AttackExtend, this);
         _stateRegister.Register(StateType.Defeated, this);
         _stateRegister.Register(StateType.Reflection, this);
-
         _currentState.Value = _stateRegister.GetState(StateType.IdleExtend);
+
+        // 盾に弾がヒットしたらReflection状態に遷移するフラグを立てる
+        _shield.OnDamaged += () => IsReflect = true;
+        this.OnDisableAsObservable().Subscribe(_ => _shield.OnDamaged -= () => IsReflect = true);
     }
 
     public void MoveForward()

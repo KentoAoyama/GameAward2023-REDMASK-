@@ -70,6 +70,6 @@ public class StateTypeMove : StateTypeBase
         }
         _prevPos = Controller.transform.position;
 
-        return _timer > Controller.Params.MoveCancelTimerThreshold;
+        return _timer > EnemyParamsSO.MoveCancelTimeThreshold;
     }
 }

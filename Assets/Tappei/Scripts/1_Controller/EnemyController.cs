@@ -1,4 +1,5 @@
 using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
@@ -38,20 +39,19 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     private AttackBehavior _attackBehavior;
     private PerformanceBehavior _performanceBehavior;
     private Animator _animator;
-
-    public EnemyParamsSO Params => _enemyParamsSO;
-
-    /// <summary>Pause()が呼ばれるとtrueにResume()が呼ばれるとfalseになる</summary>
+    /// <summary>
+    /// Pause()が呼ばれるとtrueにResume()が呼ばれるとfalseになる
+    /// </summary>
     private bool _isPause;
 
+    public EnemyParamsSO Params => _enemyParamsSO;
     /// <summary>
-    /// 撃破された際にtrueになるフラグ
-    /// このフラグが立ったらDefeated状態に遷移する
+    /// 撃破された際にtrueになりDefeated状態に遷移する
     /// </summary>
     public bool IsDefeated { get; private set; }
     public bool IdleWhenUndiscover => _idleWhenUndiscover;
 
-    protected virtual void Awake()
+    private void Awake()
     {
         _sightSensor = GetComponent<SightSensor>();
         _moveBehavior = GetComponent<MoveBehavior>();
@@ -59,37 +59,35 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         _performanceBehavior = GetComponent<PerformanceBehavior>();
         _animator = GetComponentInChildren<Animator>();
 
-        InitStateMachine();
+        InitOnAwake();
     }
 
     private void Start()
     {
+        InitOnStart();
+    }
+
+    private void InitOnStart()
+    {
         _player = GameObject.FindGameObjectWithTag(_playerTagName).transform;
-        GameManager.Instance.PauseManager.Register(this);
-
         if (_placedFacingLeft) _moveBehavior.TurnLeft();
-    }
 
-    private void OnDisable()
-    {
-        GameManager.Instance.PauseManager.Lift(this);
-    }
+        GameManager.Instance.PauseManager.Register(this);
+        this.OnDisableAsObservable().Subscribe(_ => GameManager.Instance.PauseManager.Lift(this));
 
-    private void Update()
-    {
-        if (_isPause) return;
+        this.UpdateAsObservable().Where(_ => !_isPause).Subscribe(_ =>
+        {
+            _currentState.Value = _currentState.Value.Execute();
+            _animator.SetFloat(AnimationSpeedParam, GameManager.Instance.TimeController.EnemyTime);
+        });
 
-        _currentState.Value = _currentState.Value.Execute();
-        _animator.SetFloat(AnimationSpeedParam, GameManager.Instance.TimeController.EnemyTime);
-
-        // デバッグ用
-        if (_text != null)
+        this.UpdateAsObservable().Where(_ => _text != null).Subscribe(_ =>
         {
             _text.text = _currentState.Value.ToString();
-        }
+        });
     }
 
-    protected virtual void InitStateMachine()
+    protected virtual void InitOnAwake()
     {
         _stateRegister.Register(StateType.Idle, this);
         _stateRegister.Register(StateType.Search, this);
@@ -97,7 +95,6 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         _stateRegister.Register(StateType.Move, this);
         _stateRegister.Register(StateType.Attack, this);
         _stateRegister.Register(StateType.Defeated, this);
-
         _currentState.Value = _stateRegister.GetState(StateType.Idle);
     }
 
@@ -160,7 +157,6 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     /// <summary>各ステートが再生するアニメーションを呼び出す</summary>
     public void PlayAnimation(AnimationName name) => _animator.Play(Params.GetAnimationHash(name));
 
-    //public void DefeatedPerformance() => _performanceBehavior.Defeated();
     public void DiscoverPerformance() => _performanceBehavior.Discover();
 
     /// <summary>
