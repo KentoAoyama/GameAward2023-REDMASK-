@@ -6,6 +6,7 @@ using DG.Tweening.Plugins.Options;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UniRx;
 
 public class PrepareImageSlideController : MonoBehaviour
 {
@@ -23,13 +24,16 @@ public class PrepareImageSlideController : MonoBehaviour
     private Image _behindObjDontTouchiImage = default;
 
     /// <summary> 現在表示している場所 </summary>
-    private ScreenArea _currentScreenArea = ScreenArea.Left;
+    private ReactiveProperty<ScreenArea> _currentScreenArea = new ReactiveProperty<ScreenArea>(ScreenArea.Left);
     /// <summary> 入力を無効にするかどうか </summary>
     private bool _canScroll = true;
     /// <summary> 自身のRectTransform </summary>
     private RectTransform _rectTransform = null;
     /// <summary> DOTween保存用 </summary>
     private TweenerCore<Vector3, Vector3, VectorOptions> _slidingAnim = default;
+
+    public bool IsAnimationNow { get => !_canScroll; }
+    public IReadOnlyReactiveProperty<ScreenArea> CurrentScreenArea => _currentScreenArea;
 
     private void Awake()
     {
@@ -39,11 +43,14 @@ public class PrepareImageSlideController : MonoBehaviour
     private async void OnEnable()
     {
         await UniTask.WaitUntil(() => _prepareInputManager != null);
-        _prepareInputManager.PrepareInputController.UI.Navigate.performed += InputTracking;
+
+        _prepareInputManager.PrepareInputController.Prepare.LeftScroll.started += LeftScroll;
+        _prepareInputManager.PrepareInputController.Prepare.RightScroll.started += RightScroll;
     }
     private void OnDisable()
     {
-        _prepareInputManager.PrepareInputController.UI.Navigate.performed -= InputTracking;
+        _prepareInputManager.PrepareInputController.Prepare.LeftScroll.started -= LeftScroll;
+        _prepareInputManager.PrepareInputController.Prepare.RightScroll.started -= RightScroll;
     }
     private void OnDestroy()
     {
@@ -51,43 +58,42 @@ public class PrepareImageSlideController : MonoBehaviour
         // （警告を発生させない為の処理）
         _slidingAnim?.Kill();
     }
-    /// <summary>
-    /// 入力を追跡し、条件に応じて
-    /// </summary>
-    /// <param name="action"></param>
-    private void InputTracking(InputAction.CallbackContext action)
+    private void RightScroll(InputAction.CallbackContext action)
     {
+        // スクロール中は無視
         if (!_canScroll) return;
-        float value;
-        if (Mathf.Abs(value = action.ReadValue<float>()) > 0.5f)
-        {
-            if (value > 0f && _currentScreenArea == ScreenArea.Left)
-            {
-                AnimStart();
-                _currentScreenArea = ScreenArea.Right;
-                _slidingAnim = _rectTransform.DOLocalMoveX(_rightAreaPos, _duration).
-                    SetEase(_slidingEasing).
-                    OnComplete(AnimEnd);
-            }
-            else if (value < 0f && _currentScreenArea == ScreenArea.Right)
-            {
-                AnimStart();
-                _currentScreenArea = ScreenArea.Left;
-                _slidingAnim = _rectTransform.DOLocalMoveX(_leftAreaPos, _duration).
-                    SetEase(_slidingEasing).
-                    OnComplete(AnimEnd);
-            }
-        }
-        void AnimStart()
-        {
-            _canScroll = false;
-            _behindObjDontTouchiImage.gameObject.SetActive(true);
-        }
-        void AnimEnd()
-        {
-            _canScroll = true;
-            _behindObjDontTouchiImage.gameObject.SetActive(false);
-        }
+        // 現在既に右の場合も無視。
+        if (_currentScreenArea.Value == ScreenArea.Right) return;
+
+        AnimStart();
+        _currentScreenArea.Value = ScreenArea.Right;
+        _slidingAnim = _rectTransform.DOLocalMoveX(_rightAreaPos, _duration).
+            SetEase(_slidingEasing).
+            OnComplete(AnimEnd);
+    }
+    private void LeftScroll(InputAction.CallbackContext action)
+    {
+        // スクロール中は無視
+        if (!_canScroll) return;
+        // 現在既に左の場合も無視。
+        if (_currentScreenArea.Value == ScreenArea.Left) return;
+
+        AnimStart();
+        _currentScreenArea.Value = ScreenArea.Left;
+        _slidingAnim = _rectTransform.DOLocalMoveX(_leftAreaPos, _duration).
+            SetEase(_slidingEasing).
+            OnComplete(AnimEnd);
+    }
+
+    private void AnimStart()
+    {
+        _canScroll = false;
+        _behindObjDontTouchiImage.gameObject.SetActive(true);
+    }
+    private void AnimEnd()
+    {
+        _canScroll = true;
+        _behindObjDontTouchiImage.gameObject.SetActive(false);
     }
     public enum ScreenArea
     {
