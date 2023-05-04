@@ -1,4 +1,5 @@
 using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
@@ -38,11 +39,10 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     private AttackBehavior _attackBehavior;
     private PerformanceBehavior _performanceBehavior;
     private Animator _animator;
-
-    public EnemyParamsSO Params => _enemyParamsSO;
-
     /// <summary>Pause()が呼ばれるとtrueにResume()が呼ばれるとfalseになる</summary>
     private bool _isPause;
+
+    public EnemyParamsSO Params => _enemyParamsSO;
 
     /// <summary>
     /// 撃破された際にtrueになるフラグ
@@ -51,7 +51,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     public bool IsDefeated { get; private set; }
     public bool IdleWhenUndiscover => _idleWhenUndiscover;
 
-    protected virtual void Awake()
+    private void Awake()
     {
         _sightSensor = GetComponent<SightSensor>();
         _moveBehavior = GetComponent<MoveBehavior>();
@@ -60,34 +60,30 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         _animator = GetComponentInChildren<Animator>();
 
         InitStateMachine();
+        OnAwake();
     }
 
     private void Start()
     {
         _player = GameObject.FindGameObjectWithTag(_playerTagName).transform;
-        GameManager.Instance.PauseManager.Register(this);
-
         if (_placedFacingLeft) _moveBehavior.TurnLeft();
-    }
 
-    private void OnDisable()
-    {
-        GameManager.Instance.PauseManager.Lift(this);
-    }
+        GameManager.Instance.PauseManager.Register(this);
+        this.OnDisableAsObservable().Subscribe(_ => GameManager.Instance.PauseManager.Lift(this));
 
-    private void Update()
-    {
-        if (_isPause) return;
+        this.UpdateAsObservable().Where(_ => !_isPause).Subscribe(_ => 
+        {
+            _currentState.Value = _currentState.Value.Execute();
+            _animator.SetFloat(AnimationSpeedParam, GameManager.Instance.TimeController.EnemyTime);
+        });
 
-        _currentState.Value = _currentState.Value.Execute();
-        _animator.SetFloat(AnimationSpeedParam, GameManager.Instance.TimeController.EnemyTime);
-
-        // デバッグ用
-        if (_text != null)
+        this.UpdateAsObservable().Where(_ => _text != null).Subscribe(_ => 
         {
             _text.text = _currentState.Value.ToString();
-        }
+        });
     }
+
+    protected virtual void OnAwake() { }
 
     protected virtual void InitStateMachine()
     {
@@ -160,7 +156,6 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     /// <summary>各ステートが再生するアニメーションを呼び出す</summary>
     public void PlayAnimation(AnimationName name) => _animator.Play(Params.GetAnimationHash(name));
 
-    //public void DefeatedPerformance() => _performanceBehavior.Defeated();
     public void DiscoverPerformance() => _performanceBehavior.Discover();
 
     /// <summary>

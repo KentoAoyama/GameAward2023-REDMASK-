@@ -18,10 +18,8 @@ public class ShieldEnemyController : EnemyController
     public bool IsReflect { get; private set; }
     public ShieldEnemyParamsSO ShieldParams => _enemyParamsSO as ShieldEnemyParamsSO;
 
-    protected override void Awake()
+    protected override void OnAwake()
     {
-        // 各種必要なコンポーネントの取得＆ステートマシンの設定を行う
-        base.Awake();
         InitSubscribeShield();
         InitSubscribeReflectionState();
     }
