@@ -43,14 +43,7 @@ public class StateTypeIdleExtend : StateTypeIdle
         _time += timeScale * Time.deltaTime;
         if (_time > _delay)
         {
-            if (Controller.Params.IsIdleUndiscovered)
-            {
-                TryChangeState(StateType.IdleExtend);
-            }
-            else
-            {
-                TryChangeState(StateType.SearchExtend);
-            }
+            TryChangeState(Controller.IdleWhenUndiscover ? StateType.IdleExtend : StateType.SearchExtend);
             return;
         }
     }

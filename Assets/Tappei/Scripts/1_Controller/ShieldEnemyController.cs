@@ -1,5 +1,4 @@
 using UniRx;
-using UniRx.Triggers;
 using UnityEngine;
 
 /// <summary>
@@ -46,7 +45,7 @@ public class ShieldEnemyController : EnemyController
             .Subscribe(_ => IsReflect = false).AddTo(this);
     }
 
-    protected override void InitStateRegister()
+    protected override void InitStateMachine()
     {
         _stateRegister.Register(StateType.IdleExtend, this);
         _stateRegister.Register(StateType.SearchExtend, this);
@@ -55,6 +54,8 @@ public class ShieldEnemyController : EnemyController
         _stateRegister.Register(StateType.AttackExtend, this);
         _stateRegister.Register(StateType.Defeated, this);
         _stateRegister.Register(StateType.Reflection, this);
+
+        _currentState.Value = _stateRegister.GetState(StateType.IdleExtend);
     }
 
     public void MoveForward()

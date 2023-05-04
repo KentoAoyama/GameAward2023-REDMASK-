@@ -51,8 +51,6 @@ public class EnemyParamsSO : ScriptableObject
 
     [Header("Entry時の状態")]
     [SerializeField] protected State _entryState;
-    [Header("プレイヤー未発見時は常にIdle状態にする")]
-    [SerializeField] protected bool _isIdleUndiscovered;
 
     public float DiscoverStateTransitionDelay => _discoverAnimClip != null ? _discoverAnimClip.length : 0;
     public float DefeatedStateTransitionDelay
@@ -68,24 +66,6 @@ public class EnemyParamsSO : ScriptableObject
     public bool IsIgnoreObstacle => _isIgnoreObstacle;
     public float AttackRange => _attackRange;
     public float AttackRate => _attackRate;
-    public bool IsIdleUndiscovered => _isIdleUndiscovered;
-    public virtual StateType EntryState
-    {
-        get
-        {
-            // フラグが立っている場合はSearch状態にせず、常にIdle状態となる
-            if (_isIdleUndiscovered) return StateType.Idle;
-
-            if (_entryState == State.Idle)
-            {
-                return StateType.Idle;
-            }
-            else
-            {
-                return StateType.Search;
-            }
-        }
-    }
 
     // ここから下はプランナーに弄らせない値
     // ただし、要望があった際にはインスペクターで割り当てられるように変更可能
