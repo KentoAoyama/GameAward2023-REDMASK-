@@ -24,6 +24,8 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     [Header("左向きに配置する")]
     [Tooltip("既存のオブジェクトを反転させる場合は子のEditorViewオブジェクトも反転させると見た目が合う")]
     [SerializeField] private bool _placedFacingLeft;
+    [Header("プレイヤー未発見時は常にIdle状態にする")]
+    [SerializeField] private bool _idleWhenUndiscover;
 
     [Header("デバッグ用:現在の状態を表示するText")]
     [SerializeField] private Text _text;
@@ -47,6 +49,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     /// このフラグが立ったらDefeated状態に遷移する
     /// </summary>
     public bool IsDefeated { get; private set; }
+    public bool IdleWhenUndiscover => _idleWhenUndiscover;
 
     protected virtual void Awake()
     {
@@ -56,8 +59,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         _performanceBehavior = GetComponent<PerformanceBehavior>();
         _animator = GetComponentInChildren<Animator>();
 
-        InitStateRegister();
-        _currentState.Value = _stateRegister.GetState(Params.EntryState);
+        InitStateMachine();
     }
 
     private void Start()
@@ -87,7 +89,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         }
     }
 
-    protected virtual void InitStateRegister()
+    protected virtual void InitStateMachine()
     {
         _stateRegister.Register(StateType.Idle, this);
         _stateRegister.Register(StateType.Search, this);
@@ -95,6 +97,8 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         _stateRegister.Register(StateType.Move, this);
         _stateRegister.Register(StateType.Attack, this);
         _stateRegister.Register(StateType.Defeated, this);
+
+        _currentState.Value = _stateRegister.GetState(StateType.Idle);
     }
 
     /// <summary>その場で攻撃する。Attack状態の時、一定間隔で呼ばれる</summary>
