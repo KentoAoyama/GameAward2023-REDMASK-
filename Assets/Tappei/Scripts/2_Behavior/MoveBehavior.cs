@@ -41,6 +41,8 @@ public class MoveBehavior : MonoBehaviour
     private GameObject _searchDestination;
     private GameObject _forwardDestination;
 
+    private TurnModule _turnModule;
+
     /// <summary>ポーズしたときにVelocityを一旦保存しておくための変数</summary>
     private Vector3 _tempVelocity;
     /// <summary>この座標を基準にしてSearch状態の移動を行うsummary>
@@ -58,6 +60,8 @@ public class MoveBehavior : MonoBehaviour
 
     private void Awake()
     {
+        _turnModule = new(transform, _spriteTrans, _eyeTrans, _weaponTrans);
+
         _transform = GetComponent<Transform>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _searchDestination = new GameObject("SearchDestination");
@@ -192,6 +196,14 @@ public class MoveBehavior : MonoBehaviour
 #endif
     }
 
+    /// <summary>キャラクターを左向きに配置する際に使用する</summary>
+    public void TurnLeft()
+    {
+        Vector3 dir = _transform.position;
+        dir.x += -int.MaxValue;
+        _turnModule.TurnTowardsTarget(dir);
+    }
+
     /// <summary>
     /// このメソッドを外部から呼ぶことで移動を行う
     /// 移動を行う際は必ずCancelMoving()を呼んで現在の移動をキャンセルしてから行うこと
@@ -213,13 +225,13 @@ public class MoveBehavior : MonoBehaviour
     {
         _cts.Token.ThrowIfCancellationRequested();
 
-        TurnToMoveDirection(target.position);
+        _turnModule.TurnTowardsTarget(target.position);
         while (IsDetectedFloor()/* && IsUndetectedEnemy()*/)
         {
             if (!_isPause)
             {
                 SetVelocityToTarget(target.position, moveSpeed);
-                TurnToMoveDirection(target.position);
+                _turnModule.TurnTowardsTarget(target.position);
             }
 
             await UniTask.Yield(PlayerLoopTiming.FixedUpdate, _cts.Token);
@@ -247,35 +259,6 @@ public class MoveBehavior : MonoBehaviour
 
         velo.y = _rigidbody.velocity.y;
         _rigidbody.velocity = velo * TimeScale;
-    }
-
-    /// <summary>キャラクターを左向きに配置する際に使用する</summary>
-    public void TurnLeft()
-    {
-        Vector3 dir = transform.position;
-        dir.x += -int.MaxValue;
-        TurnToMoveDirection(dir);
-    }
-
-    private void TurnToMoveDirection(Vector3 targetPos)
-    {
-        float diff = targetPos.x - _transform.position.x;
-        int dir = (int)Mathf.Sign(diff);
-        _spriteTrans.localScale = new Vector3(dir * Mathf.Abs(_spriteTrans.localScale.x), 
-            _spriteTrans.localScale.y, 1);
-        
-        Vector3 eyePos = _eyeTrans.localPosition;
-        eyePos.x = Mathf.Abs(eyePos.x) * dir;
-        _eyeTrans.localPosition = eyePos;
-
-        int angle = dir == 1 ? 0 : 180;
-        _eyeTrans.eulerAngles = new Vector3(0, 0, angle);
-
-        Vector3 weaponPos = _weaponTrans.localPosition;
-        weaponPos.x = Mathf.Abs(weaponPos.x) * dir;
-        _weaponTrans.localPosition = weaponPos;
-
-        _weaponTrans.localScale = new Vector3(dir, 1, 1);
     }
 
     private bool IsDetectedFloor()
