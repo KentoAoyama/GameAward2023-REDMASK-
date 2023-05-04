@@ -5,7 +5,7 @@ using UnityEngine;
 /// </summary>
 public class EnemyEditorViewSprite : MonoBehaviour
 {
-    void Start()
+    private void Start()
     {
         transform.localScale = Vector3.zero;
     }

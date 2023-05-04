@@ -20,7 +20,11 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     [SerializeField, TagName] private string _playerTagName;
     [Header("敵の各種パラメーターを設定したSO")]
     [Tooltip("各振る舞いのクラスはこのSO内の値を参照して機能する")]
-    [SerializeField] protected EnemyParamsSO _enemyParamsSO; 
+    [SerializeField] protected EnemyParamsSO _enemyParamsSO;
+    [Header("左向きに配置する")]
+    [Tooltip("既存のオブジェクトを反転させる場合は子のEditorViewオブジェクトも反転させると見た目が合う")]
+    [SerializeField] private bool _placedFacingLeft;
+
     [Header("デバッグ用:現在の状態を表示するText")]
     [SerializeField] private Text _text;
 
@@ -51,14 +55,17 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         _attackBehavior = GetComponent<AttackBehavior>();
         _performanceBehavior = GetComponent<PerformanceBehavior>();
         _animator = GetComponentInChildren<Animator>();
+
         InitStateRegister();
-        InitCurrentState();
+        _currentState.Value = _stateRegister.GetState(Params.EntryState);
     }
 
     private void Start()
     {
         _player = GameObject.FindGameObjectWithTag(_playerTagName).transform;
         GameManager.Instance.PauseManager.Register(this);
+
+        if (_placedFacingLeft) _moveBehavior.TurnLeft();
     }
 
     private void OnDisable()
@@ -88,12 +95,6 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         _stateRegister.Register(StateType.Move, this);
         _stateRegister.Register(StateType.Attack, this);
         _stateRegister.Register(StateType.Defeated, this);
-    }
-
-    private void InitCurrentState()
-    {
-        StateType state = Params.EntryState;
-        _currentState.Value = _stateRegister.GetState(state);
     }
 
     /// <summary>その場で攻撃する。Attack状態の時、一定間隔で呼ばれる</summary>

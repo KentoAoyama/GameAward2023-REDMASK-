@@ -21,9 +21,10 @@ public class ShieldEnemyController : EnemyController
 
     protected override void Awake()
     {
+        // 各種必要なコンポーネントの取得＆ステートマシンの設定を行う
+        base.Awake();
         InitSubscribeShield();
         InitSubscribeReflectionState();
-        base.Awake();
     }
 
     /// <summary>

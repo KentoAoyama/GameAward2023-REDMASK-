@@ -249,6 +249,14 @@ public class MoveBehavior : MonoBehaviour
         _rigidbody.velocity = velo * TimeScale;
     }
 
+    /// <summary>キャラクターを左向きに配置する際に使用する</summary>
+    public void TurnLeft()
+    {
+        Vector3 dir = transform.position;
+        dir.x += -int.MaxValue;
+        TurnToMoveDirection(dir);
+    }
+
     private void TurnToMoveDirection(Vector3 targetPos)
     {
         float diff = targetPos.x - _transform.position.x;
