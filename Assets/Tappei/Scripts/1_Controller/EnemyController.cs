@@ -39,14 +39,14 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     private AttackBehavior _attackBehavior;
     private PerformanceBehavior _performanceBehavior;
     private Animator _animator;
-    /// <summary>Pause()‚ªŒÄ‚Î‚ê‚é‚Ætrue‚ÉResume()‚ªŒÄ‚Î‚ê‚é‚Æfalse‚É‚È‚é</summary>
+    /// <summary>
+    /// Pause()‚ªŒÄ‚Î‚ê‚é‚Ætrue‚ÉResume()‚ªŒÄ‚Î‚ê‚é‚Æfalse‚É‚È‚é
+    /// </summary>
     private bool _isPause;
 
     public EnemyParamsSO Params => _enemyParamsSO;
-
     /// <summary>
-    /// Œ‚”j‚³‚ê‚½Û‚Étrue‚É‚È‚éƒtƒ‰ƒO
-    /// ‚±‚Ìƒtƒ‰ƒO‚ª—§‚Á‚½‚çDefeatedó‘Ô‚É‘JˆÚ‚·‚é
+    /// Œ‚”j‚³‚ê‚½Û‚Étrue‚É‚È‚èDefeatedó‘Ô‚É‘JˆÚ‚·‚é
     /// </summary>
     public bool IsDefeated { get; private set; }
     public bool IdleWhenUndiscover => _idleWhenUndiscover;
@@ -59,11 +59,15 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         _performanceBehavior = GetComponent<PerformanceBehavior>();
         _animator = GetComponentInChildren<Animator>();
 
-        InitStateMachine();
-        OnAwake();
+        InitOnAwake();
     }
 
     private void Start()
+    {
+        InitOnStart();
+    }
+
+    private void InitOnStart()
     {
         _player = GameObject.FindGameObjectWithTag(_playerTagName).transform;
         if (_placedFacingLeft) _moveBehavior.TurnLeft();
@@ -71,21 +75,19 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         GameManager.Instance.PauseManager.Register(this);
         this.OnDisableAsObservable().Subscribe(_ => GameManager.Instance.PauseManager.Lift(this));
 
-        this.UpdateAsObservable().Where(_ => !_isPause).Subscribe(_ => 
+        this.UpdateAsObservable().Where(_ => !_isPause).Subscribe(_ =>
         {
             _currentState.Value = _currentState.Value.Execute();
             _animator.SetFloat(AnimationSpeedParam, GameManager.Instance.TimeController.EnemyTime);
         });
 
-        this.UpdateAsObservable().Where(_ => _text != null).Subscribe(_ => 
+        this.UpdateAsObservable().Where(_ => _text != null).Subscribe(_ =>
         {
             _text.text = _currentState.Value.ToString();
         });
     }
 
-    protected virtual void OnAwake() { }
-
-    protected virtual void InitStateMachine()
+    protected virtual void InitOnAwake()
     {
         _stateRegister.Register(StateType.Idle, this);
         _stateRegister.Register(StateType.Search, this);
@@ -93,7 +95,6 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         _stateRegister.Register(StateType.Move, this);
         _stateRegister.Register(StateType.Attack, this);
         _stateRegister.Register(StateType.Defeated, this);
-
         _currentState.Value = _stateRegister.GetState(StateType.Idle);
     }
 
