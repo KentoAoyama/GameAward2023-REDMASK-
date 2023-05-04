@@ -6,17 +6,22 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "EnemyParams_")]
 public class EnemyParamsSO : ScriptableObject
 {
-    /// <summary>
-    /// 死亡した際に死体が消えるまでの追加時間
-    /// 死亡のアニメーションに追加で待つ
-    /// </summary>
-    static readonly float DefeatedStateTransitionDelayAdd = 3.0f;
-
     protected enum State
     {
         Idle,
         Search,
     }
+
+    /// <summary>
+    /// 死亡した際に死体が消えるまでの追加時間
+    /// 死亡のアニメーションに追加で待つ
+    /// </summary>
+    static readonly float DefeatedStateTransitionDelayAdd = 3.0f;
+    /// <summary>
+    /// 移動量が0の状態が続いた際にIdle状態に遷移させるまでの時間
+    /// Move状態でしか使われないが、State内に設定する値を持たせたくないのでSO内に持つ
+    /// </summary>
+    public static readonly float MoveCancelTimeThreshold = 0.25f;
 
     [Tooltip("Discover状態のAnimationClipを割り当てる")]
     [SerializeField] private AnimationClip _discoverAnimClip;
@@ -49,8 +54,9 @@ public class EnemyParamsSO : ScriptableObject
     [Tooltip("攻撃の間隔(秒)")]
     [SerializeField] private float _attackRate = 2.0f;
 
-    [Header("Entry時の状態")]
-    [SerializeField] protected State _entryState;
+    [Header("IdleからSearchに状態が遷移するまでの時間")]
+    [SerializeField] private float _minIdleStateTimer = 1.0f;
+    [SerializeField] private float _maxIdleStateTimer = 2.0f;
 
     public float DiscoverStateTransitionDelay => _discoverAnimClip != null ? _discoverAnimClip.length : 0;
     public float DefeatedStateTransitionDelay
@@ -67,11 +73,6 @@ public class EnemyParamsSO : ScriptableObject
     public float AttackRange => _attackRange;
     public float AttackRate => _attackRate;
 
-    // ここから下はプランナーに弄らせない値
-    // ただし、要望があった際にはインスペクターで割り当てられるように変更可能
-    public float MinTransitionTimeElapsed => 1.0f;
-    public float MaxTransitionTimeElapsed => 2.0f;
-    public float MoveCancelTimerThreshold => 0.25f;
-
     public int GetAnimationHash(AnimationName name) => Animator.StringToHash(name.ToString());
+    public float GetRandomIdleStateTimer() => Random.Range(_minIdleStateTimer, _maxIdleStateTimer);
 }

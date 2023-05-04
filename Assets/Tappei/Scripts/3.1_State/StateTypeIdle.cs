@@ -17,9 +17,7 @@ public class StateTypeIdle : StateTypeBase
         Controller.PlayAnimation(AnimationName.Idle);
 
         // ƒ‰ƒ“ƒ_ƒ€‚ÈŠÔ‚Å‘JˆÚ‚·‚é‚æ‚¤‚Éİ’è‚·‚é
-        float min = Controller.Params.MinTransitionTimeElapsed;
-        float max = Controller.Params.MaxTransitionTimeElapsed;
-        _delay = Random.Range(min, max);
+        _delay = Controller.Params.GetRandomIdleStateTimer();
     }
 
     protected override void Stay()
