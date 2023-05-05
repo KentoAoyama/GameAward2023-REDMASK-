@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using System;
 
 public class PerformanceEventController : MonoBehaviour
 {
@@ -14,9 +15,10 @@ public class PerformanceEventController : MonoBehaviour
     [SceneName, SerializeField]
     private string _nextSceneName = default;
 
-    private bool _isWaitFireInput;
     private int _currentIndex = 0;
     private bool _isAfter = false;
+
+    public event Action OnComplete = default;
 
     private async void Awake()
     {
@@ -30,6 +32,9 @@ public class PerformanceEventController : MonoBehaviour
         {
             await _afterFirePerformanceEvents[_currentIndex].Execute();
         }
+
+        OnComplete?.Invoke();
+
         SceneManager.LoadScene(_nextSceneName);
     }
 
