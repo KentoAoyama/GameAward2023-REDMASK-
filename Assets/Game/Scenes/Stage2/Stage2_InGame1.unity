@@ -631,7 +631,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 328675651, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.5
+      value: 2.0000002
       objectReference: {fileID: 0}
     - target: {fileID: 328675651, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -645,13 +645,21 @@ PrefabInstance:
       propertyPath: _stageController2
       value: 
       objectReference: {fileID: 491379047}
+    - target: {fileID: 1622929108, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1892249080, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: m_SortingOrder
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 2030569643, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2109781610, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: m_FollowOffset.x
-      value: 5.5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2109781610, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: m_FollowOffset.y
@@ -671,7 +679,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4514520410212876857, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.29
+      value: -2.01
       objectReference: {fileID: 0}
     - target: {fileID: 4514520410212876857, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1416,7 +1424,7 @@ GameObject:
   - component: {fileID: 894621483}
   - component: {fileID: 894621485}
   - component: {fileID: 894621484}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: zimen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1451,7 +1459,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.026127815, y: 0}
+  m_Offset: {x: 0.026127815, y: -0.03866601}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -1462,7 +1470,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 25.68294, y: 1.12}
+  m_Size: {x: 25.68294, y: 1.0426679}
   m_EdgeRadius: 0
 --- !u!212 &894621485
 SpriteRenderer:
@@ -1526,7 +1534,7 @@ GameObject:
   m_Component:
   - component: {fileID: 900566414}
   - component: {fileID: 900566415}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Kaidan Collider (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1823,7 +1831,7 @@ GameObject:
   - component: {fileID: 1048824741}
   - component: {fileID: 1048824743}
   - component: {fileID: 1048824742}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: zimen (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1858,7 +1866,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.17102814, y: 0}
+  m_Offset: {x: -0.17102814, y: -0.02534175}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -1869,7 +1877,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 71.97557, y: 1.12}
+  m_Size: {x: 71.97557, y: 1.0693164}
   m_EdgeRadius: 0
 --- !u!212 &1048824743
 SpriteRenderer:
@@ -2807,11 +2815,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 361925564566498032, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.6400003
+      value: 4.1400003
       objectReference: {fileID: 0}
     - target: {fileID: 361925564566498032, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.21
+      value: 1.49
       objectReference: {fileID: 0}
     - target: {fileID: 361925564566498032, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3222,7 +3230,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1956913766}
   - component: {fileID: 1956913767}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Kaidan Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3376,7 +3384,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2036496094
 Transform:
   m_ObjectHideFlags: 0
