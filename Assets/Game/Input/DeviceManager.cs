@@ -51,11 +51,12 @@ namespace Input
                 // キーボード
                 Keyboard.current.anyKey.wasPressedThisFrame ||
                 // マウス
+                Mouse.current != null && (
                 Mouse.current.leftButton.wasPressedThisFrame ||
                 Mouse.current.rightButton.wasPressedThisFrame ||
                 Mouse.current.middleButton.wasPressedThisFrame ||
                 Mouse.current.forwardButton.wasPressedThisFrame ||
-                Mouse.current.backButton.wasPressedThisFrame;
+                Mouse.current.backButton.wasPressedThisFrame);
         }
         /// <summary>
         /// ゲームパッドのいずれかのボタンが押下されたときtrueを返す
