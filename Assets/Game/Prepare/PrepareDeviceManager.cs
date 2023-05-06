@@ -28,7 +28,8 @@ public class PrepareDeviceManager : MonoBehaviour
         {
             return PrepareDevice.KeyboardAndMouse;
         }
-        if (// 〇△□×,ABCDボタン
+        if (Gamepad.current != null && (
+            // 〇△□×,ABCDボタン
             Gamepad.current.buttonSouth.wasPressedThisFrame ||
             Gamepad.current.buttonNorth.wasPressedThisFrame ||
             Gamepad.current.buttonWest.wasPressedThisFrame ||
@@ -51,7 +52,7 @@ public class PrepareDeviceManager : MonoBehaviour
             Gamepad.current.leftTrigger.wasPressedThisFrame ||
 
             Gamepad.current.leftStick.ReadValue().sqrMagnitude > 0.8f ||
-            Gamepad.current.rightStick.ReadValue().sqrMagnitude > 0.8f)
+            Gamepad.current.rightStick.ReadValue().sqrMagnitude > 0.8f))
         {
             return PrepareDevice.GamePad;
         }
