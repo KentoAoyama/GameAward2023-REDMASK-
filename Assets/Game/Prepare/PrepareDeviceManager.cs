@@ -19,11 +19,12 @@ public class PrepareDeviceManager : MonoBehaviour
     private PrepareDevice MonitorInput()
     {
         if (Keyboard.current.anyKey.wasPressedThisFrame ||
+            Mouse.current != null && (
             Mouse.current.leftButton.wasPressedThisFrame ||
             Mouse.current.rightButton.wasPressedThisFrame ||
             Mouse.current.middleButton.wasPressedThisFrame ||
             Mouse.current.forwardButton.wasPressedThisFrame ||
-            Mouse.current.backButton.wasPressedThisFrame)
+            Mouse.current.backButton.wasPressedThisFrame))
         {
             return PrepareDevice.KeyboardAndMouse;
         }
