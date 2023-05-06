@@ -21,6 +21,7 @@ public class TitleController : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.AudioManager.Load();
+        GameManager.Instance.AudioManager.PlayBGM("CueSheet_Gun", "BGM_Title");
         Setup();
     }
 
