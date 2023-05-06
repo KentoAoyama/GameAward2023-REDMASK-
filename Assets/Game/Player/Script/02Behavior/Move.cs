@@ -134,7 +134,8 @@ namespace Player
             }
             else
             {
-                Debug.DrawRay(_playerController.Player.transform.position, dir * _rayLong, Color.blue);
+                Debug.Log("HITCOLLIDER");
+                Debug.DrawRay(_playerController.Player.transform.position, dir * _rayLong, Color.red);
                 return true;
             }
         }
