@@ -2,6 +2,7 @@ using Cinemachine;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,6 +17,14 @@ public class PerformanceUtility : MonoBehaviour
     private Text _text;
     [SerializeField]
     private Image _fadePanel;
+
+    [Header("ÉJÉÅÉâÇÃêUìÆä÷åW")]
+    [SerializeField]
+    private Transform _cameraPos;
+    [SerializeField]
+    private float _shakePower = 0.1f;
+    [SerializeField]
+    private int _shakeNumber = 50;
 
     private void Start()
     {
@@ -42,7 +51,7 @@ public class PerformanceUtility : MonoBehaviour
     public void GunShoot(float interval)
     {
         Debug.Log("éÀåÇ");
-        Impulse();
+        Impulse(0.2f);
         GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Attack_Gun");
 
         StartCoroutine(Shoot(interval));
@@ -56,9 +65,9 @@ public class PerformanceUtility : MonoBehaviour
         _line.enabled = false;
     }
 
-    public void Impulse()
+    public void Impulse(float shakeTime)
     {
-        _impulse?.GenerateImpulse();
+        _cameraPos.DOShakePosition(shakeTime, _shakePower, _shakeNumber, 90, false);
     }
 
     public void FadeInText(float duration)
