@@ -1243,7 +1243,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1319352870
 Transform:
   m_ObjectHideFlags: 0
@@ -2024,9 +2024,17 @@ PrefabInstance:
       propertyPath: _stageController2
       value: 
       objectReference: {fileID: 5524505501469879951}
+    - target: {fileID: 1622929108, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1892249080, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: m_SortingOrder
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2030569643, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2109781610, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: m_FollowOffset.x
@@ -2105,6 +2113,8 @@ MonoBehaviour:
   _stageController2: {fileID: 5524505501469879951}
   _playerTag: Player
   _nextSceneName: Stage2_CompletePerformance
+  _isFinal: 1
+  _currentStageNumberForFinal: 2
 --- !u!1 &5524505501345446526
 GameObject:
   m_ObjectHideFlags: 0
