@@ -79,4 +79,14 @@ public class PerformanceUtility : MonoBehaviour
     {
         _text.DOFade(0f, duration);
     }
+
+    public void BGMPlay(string BGMName)
+    {
+        GameManager.Instance.AudioManager.PlayBGM("CueSheet_Gun", BGMName);
+    }
+
+    public void TrueEnding()
+    {
+        Debug.Log("TrueEnding!!");
+    }
 }
