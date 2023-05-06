@@ -11,7 +11,7 @@ public class StageComplete : MonoBehaviour
     [SerializeField]
     private PlayerController _playerController = default;
     [SerializeField]
-    private StageTimelineController timelineController = default;
+    private PerformanceEventController _performanceController = default;
     [Header("このステージの番号")]
     [SerializeField]
     private int _stageNumber = 0;
@@ -20,7 +20,7 @@ public class StageComplete : MonoBehaviour
     {
         await UniTask.WaitUntil(() => _playerController.IsSetUp);
         _playerController.gameObject.SetActive(false);
-        timelineController.OnComplete += Save;
+        _performanceController.OnComplete += Save;
     }
 
     public void Save()
