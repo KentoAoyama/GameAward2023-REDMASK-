@@ -18,6 +18,12 @@ public class StageAdvance : MonoBehaviour
     [SceneName, SerializeField]
     private string _nextSceneName = default;
 
+    [Header("ステージクリア用")]
+    [SerializeField]
+    private bool _isFinal = false;
+    [SerializeField]
+    private int _currentStageNumberForFinal = 0;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // プレイヤーと接触したとき実行する。
@@ -34,6 +40,11 @@ public class StageAdvance : MonoBehaviour
 
             // シーンを更新する。
             SceneManager.LoadScene(_nextSceneName);
+
+            if (_isFinal)
+            {
+                GameManager.Instance.CompletedStageManager.SetCompletedStage(_currentStageNumberForFinal);
+            }
         }
     }
 }
