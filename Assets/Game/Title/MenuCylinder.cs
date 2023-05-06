@@ -41,8 +41,10 @@ public class MenuCylinder : MonoBehaviour
 
     private void Update()
     {
-        
-        if (Keyboard.current.aKey.wasPressedThisFrame && _sylinderEnabled)
+        if ((Keyboard.current.aKey.wasPressedThisFrame ||
+            Gamepad.current.dpad.left.isPressed ||
+            Gamepad.current.leftStick.ReadValue().x < -0.1) &&
+            _sylinderEnabled)
         {
             if (_isRotating || !_selectable) return;
             Debug.Log("A�L�[����������܂���");
@@ -55,7 +57,10 @@ public class MenuCylinder : MonoBehaviour
             _circleDeploy.SelectButtons[_currentButtonIndex].Select();
         }
 
-        if (Keyboard.current.dKey.wasPressedThisFrame && _sylinderEnabled)
+        if ((Keyboard.current.dKey.wasPressedThisFrame ||
+            Gamepad.current.dpad.right.isPressed ||
+            Gamepad.current.leftStick.ReadValue().x > 0.1) &&
+            _sylinderEnabled)
         {
             if (_isRotating || !_selectable) return;
             RotateCylinder(60f);
