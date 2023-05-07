@@ -127,6 +127,9 @@ namespace Player
 
                 if (_setUpTimeCount >= _setUpTime)
                 {
+                    //èdóÕÇñﬂÇ∑
+                    _playerController.Rigidbody2D.gravityScale = 1f;
+
                     _isGunSetUp = true;
                     _isGunSetUping = false;
 

@@ -238,7 +238,6 @@ namespace Player
                 //弾を籠めるアニメーション
                 _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.ReLoadEnd);
             }
-            Debug.Log("END");
             _isReLoadNow = false;
             _isExcretedPods = false;
             _isSetBullet = false;
