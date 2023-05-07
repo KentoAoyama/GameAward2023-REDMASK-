@@ -28,7 +28,7 @@ public class StateTypeSearch : StateTypeBase
             return;
         }
 
-        SightResult result = Controller.IsFindPlayer();
+        SightResult result = Controller.LookForPlayerInSight();
         if (result == SightResult.InSight || result == SightResult.InAttackRange)
         {
             TryChangeState(StateType.Discover);

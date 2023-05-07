@@ -55,8 +55,8 @@ public abstract class StateTypeBase
     protected virtual void Stay() { }
     protected virtual void Exit() { }
 
-    public virtual void Pause() { }
-    public virtual void Resume() { }
+    public virtual void OnPause() { }
+    public virtual void OnResume() { }
 
     /// <summary>
     /// Enter()が呼ばれてかつ、ステートの遷移処理を呼んでいない場合のみ遷移可能
