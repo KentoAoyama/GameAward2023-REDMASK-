@@ -11,6 +11,8 @@ public class ButtonSelectController : MonoBehaviour
     Text _buttonText = default;
     [SerializeField]
     Color _selectedColor = Color.red;
+
+    private Button _button;
     
     private Color _defaultColor = new Color();
     private Outline _textOutline = default;
@@ -19,10 +21,13 @@ public class ButtonSelectController : MonoBehaviour
     {
         _defaultColor = _buttonText.color;
         _textOutline = _buttonText.gameObject.GetComponent<Outline>();
+        _button = GetComponent<Button>();
     }
 
     private void Update()
     {
+        if (!_button.enabled) return;
+        
         if (EventSystem.current.currentSelectedGameObject == this.gameObject)
         {
             _buttonText.color = _selectedColor;
