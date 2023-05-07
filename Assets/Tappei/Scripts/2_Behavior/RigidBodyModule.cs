@@ -48,6 +48,24 @@ public class RigidBodyModule
     }
 
     /// <summary>
+    /// 坂道で静止している際の滑り止めを行う処理
+    /// 移動開始時にもisKinematicの有効化のために呼ばれる
+    /// </summary>
+    public void UpdateKinematic(bool isKinematic)
+    {
+        if (isKinematic)
+        {
+            _rigidbody.velocity = Vector3.zero;
+        }
+        else
+        {
+            SetFallVelocity();
+        }
+
+        _rigidbody.isKinematic = isKinematic;
+    }
+
+    /// <summary>
     /// ポーズ時に速度を一時的に保存する
     /// </summary>
     public void SaveVelocity()

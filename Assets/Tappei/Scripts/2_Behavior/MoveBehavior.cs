@@ -20,7 +20,9 @@ public class MoveBehavior : MonoBehaviour
     [Tooltip("Spriteの左右に応じた処理をしたいので参照が必要")]
     [SerializeField] private Transform _sprite;
 
-    /// <summary>Pause()が呼ばれるとtrueにResume()が呼ばれるとfalseになる</summary>
+    /// <summary>
+    /// Pause()が呼ばれるとtrueにResume()が呼ばれるとfalseになる
+    /// </summary>
     private bool _isPause;
 
     /// <summary>
@@ -68,7 +70,7 @@ public class MoveBehavior : MonoBehaviour
             .ThrottleFirst(System.TimeSpan.FromSeconds(updateFootPosInterval))
             .Subscribe(_ => 
             {
-                if(_detectorModule.DetectFootPos(_transform, out Vector3 hitPos))
+                if (_detectorModule.DetectFootPos(_transform.position, out Vector3 hitPos))
                 {
                     _waypointModule.UpdateFootPos(hitPos);
                 }
@@ -112,6 +114,7 @@ public class MoveBehavior : MonoBehaviour
     {
         _cts.Token.ThrowIfCancellationRequested();
 
+        _rigidbodyModule.UpdateKinematic(false);
         _turnModule.TurnTowardsTarget(target.position, _transform);
         while (_detectorModule.DetectFloorInFront(SpriteDir, _transform))
         {
@@ -144,16 +147,7 @@ public class MoveBehavior : MonoBehaviour
     {
         if (_isPause) return;
 
-        // この処理を書き換えてIdle状態のときに坂道を滑っていかないようにする
-
-        //RaycastHit2D groundHit = Physics2D.Raycast(_transform.position, Vector3.down, 0.25f/*, _groundLayerMask*/);
-        //RaycastHit2D groundHit = 
-        //if(groundHit) _transform.position = groundHit.point;
-        //_rigidbodyModule.SetIdleStateVelocity(groundHit);
-
-        //if (_detectorModule.DetectFootPos(_transform, out Vector3 hitPos))
-        //{
-
-        //}
+        bool onGround = _detectorModule.DetectOnGroundIdle(_transform.position, out Vector3 hitPos);
+        _rigidbodyModule.UpdateKinematic(onGround);
     }
 }
