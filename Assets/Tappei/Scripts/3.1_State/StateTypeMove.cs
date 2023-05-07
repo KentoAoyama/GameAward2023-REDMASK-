@@ -9,6 +9,7 @@ public class StateTypeMove : StateTypeBase
     // ˆê’èŠÔŒã‚É‘JˆÚ‚³‚¹‚éˆ—‚É•K—v‚È•Ï”
     private Vector3 _prevPos;
     private float _timer;
+    private int _cachedSEIndex;
 
     public StateTypeMove(EnemyController controller, StateType stateType)
         : base(controller, stateType) { }
@@ -21,7 +22,7 @@ public class StateTypeMove : StateTypeBase
         _prevPos = Vector3.one * -1000;
         _timer = 0;
 
-        GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", Controller.Params.RunSEName);
+        _cachedSEIndex = GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", Controller.Params.RunSEName);
     }
 
     protected override void Stay()
@@ -54,6 +55,7 @@ public class StateTypeMove : StateTypeBase
     protected override void Exit()
     {
         Controller.CancelMoving();
+        GameManager.Instance.AudioManager.StopSE(_cachedSEIndex);
     }
 
     /// <summary>
