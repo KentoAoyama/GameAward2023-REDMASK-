@@ -127,7 +127,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     /// <summary>
     /// 遷移する際に現在の移動をキャンセルする場合にステートから呼ばれる
     /// </summary>
-    public void CancelMoving() => _moveBehavior.CancelMoveToTarget();
+    public void CancelMoveToTarget() => _moveBehavior.CancelMoveToTarget();
 
     /// <summary>
     /// 視界に対してプレイヤーがどの位置にいるのかを判定する
