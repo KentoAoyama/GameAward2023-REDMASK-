@@ -144,7 +144,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     /// <summary>
     /// 各ステートから再生するアニメーションを呼び出す
     /// </summary>
-    public void PlayAnimation(AnimationName name) => _animator.Play(Params.GetAnimationHash(name));
+    public void PlayAnimation(AnimationName name) => _animator.Play(Params.GetAnimationHash(name), 0, 0);
 
     /// <summary>
     /// 発見時の演出を行う

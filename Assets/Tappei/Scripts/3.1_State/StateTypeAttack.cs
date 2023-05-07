@@ -11,11 +11,15 @@ public class StateTypeAttack : StateTypeBase
     private float _time;
 
     public StateTypeAttack(EnemyController controller, StateType stateType)
-        : base(controller, stateType) { }
+        : base(controller, stateType) 
+    {
+        _time = controller.Params.AttackRate;
+    }
 
     protected override void Enter()
     {
-        Controller.PlayAnimation(AnimationName.Attack);
+        // 攻撃までの間、遷移元のアニメーションが再生され続けないように一度Idle状態のアニメーションを再生する
+        Controller.PlayAnimation(AnimationName.Idle);
     }
 
     protected override void Stay()
@@ -35,6 +39,7 @@ public class StateTypeAttack : StateTypeBase
         {
             _time = 0;
             Controller.Attack();
+            Controller.PlayAnimation(AnimationName.Attack);
         }
     }
 
