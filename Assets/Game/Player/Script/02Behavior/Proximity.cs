@@ -34,7 +34,7 @@ namespace Player
         /// <summaryクールタイムの計測用</summary>
         private float _attackCoolTimeCount = 0;
         /// <summary>攻撃可能かどうか</summary>
-        private bool _isCanAttack = false;
+        private bool _isCanAttack = true;
         /// <summary>攻撃実行中かどうか</summary>
         private bool _isAttackNow = false;
         public bool IsProximityNow => _isAttackNow;
