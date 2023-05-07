@@ -127,7 +127,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     /// <summary>
     /// 遷移する際に現在の移動をキャンセルする場合にステートから呼ばれる
     /// </summary>
-    public void CancelMoving() => _moveBehavior.CancelMoveToTarget();
+    public void CancelMoveToTarget() => _moveBehavior.CancelMoveToTarget();
 
     /// <summary>
     /// 視界に対してプレイヤーがどの位置にいるのかを判定する
@@ -144,7 +144,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     /// <summary>
     /// 各ステートから再生するアニメーションを呼び出す
     /// </summary>
-    public void PlayAnimation(AnimationName name) => _animator.Play(Params.GetAnimationHash(name));
+    public void PlayAnimation(AnimationName name) => _animator.Play(Params.GetAnimationHash(name), 0, 0);
 
     /// <summary>
     /// 発見時の演出を行う

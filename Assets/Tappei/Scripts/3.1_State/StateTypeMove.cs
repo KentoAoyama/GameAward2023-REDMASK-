@@ -27,35 +27,49 @@ public class StateTypeMove : StateTypeBase
 
     protected override void Stay()
     {
-        if (Controller.IsDefeated)
-        {
-            TryChangeState(StateType.Defeated);
-            return;
-        }
-
-        if (IsMoveCancel())
-        {
-            TryChangeState(StateType.Idle);
-            return;
-        }
-
-        SightResult result = Controller.LookForPlayerInSight();
-        if (result == SightResult.OutSight)
-        {
-            TryChangeState(StateType.Idle);
-            return;
-        }
-        else if (result == SightResult.InAttackRange)
-        {
-            TryChangeState(StateType.Attack);
-            return;
-        }
+        if (TransitionDefeated()) return;
+        if (Transition()) return;
+        if (TransitionAtMoveCancel()) return;
     }
 
     protected override void Exit()
     {
-        Controller.CancelMoving();
+        Controller.CancelMoveToTarget();
         GameManager.Instance.AudioManager.StopSE(_cachedSEIndex);
+    }
+
+    /// <summary>
+    /// ˆÚ“®‚ªƒLƒƒƒ“ƒZƒ‹‚³‚ê‚½ê‡‚ÍIdleó‘Ô‚É‘JˆÚ‚·‚é
+    /// </summary>
+    private bool TransitionAtMoveCancel()
+    {
+        if (IsMoveCancel())
+        {
+            TryChangeState(StateType.Idle);
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// ‹ŠE‚©‚çŠO‚ê‚½‚çIdleó‘Ô‚ÉAUŒ‚”ÍˆÍ“à‚É“ü‚Á‚½‚çAttackó‘Ô‚É‘JˆÚ‚·‚é
+    /// </summary>
+    private bool Transition()
+    {
+        SightResult result = Controller.LookForPlayerInSight();
+        if (result == SightResult.OutSight)
+        {
+            TryChangeState(StateType.Idle);
+            return true;
+        }
+        else if (result == SightResult.InAttackRange)
+        {
+            TryChangeState(StateType.Attack);
+            return true;
+        }
+
+        return false;
     }
 
     /// <summary>

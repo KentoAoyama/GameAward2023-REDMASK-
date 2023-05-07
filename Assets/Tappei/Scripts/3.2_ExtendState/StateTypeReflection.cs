@@ -27,23 +27,8 @@ public class StateTypeReflection : StateTypeBase
 
     protected override void Stay()
     {
-        if (Controller.IsDefeated)
-        {
-            TryChangeState(StateType.Defeated);
-            return;
-        }
-
-        float timeScale = GameManager.Instance.TimeController.EnemyTime;
-        _time += timeScale * Time.deltaTime;
-        if (_time > _delay - 1.0f && !_isPostured)
-        {
-            _isPostured = true;
-            Controller.PlayAnimation(AnimationName.Posture);
-        }
-        else if (_time > _delay)
-        {
-            TryChangeState(_shieldController.LastStateType);
-        }
+        if (TransitionDefeated()) return;
+        if (RecoverProcess()) return;
     }
 
     protected override void Exit()
@@ -52,5 +37,26 @@ public class StateTypeReflection : StateTypeBase
         _delay = 0;
         _isPostured = false;
         _shieldController.RecoverShield();
+    }
+
+    /// <summary>
+    /// 時間経過で盾を構え直すアニメーションを再生する
+    /// アニメーションの再生後、最後の状態に遷移する
+    /// </summary>
+    private bool RecoverProcess()
+    {
+        _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime;
+        if (_time > _delay - 1.0f && !_isPostured)
+        {
+            _isPostured = true;
+            Controller.PlayAnimation(AnimationName.Posture);
+        }
+        else if (_time > _delay)
+        {
+            TryChangeState(_shieldController.LastStateType);
+            return true;
+        }
+
+        return false;
     }
 }

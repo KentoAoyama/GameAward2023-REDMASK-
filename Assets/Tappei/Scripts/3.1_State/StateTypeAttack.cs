@@ -6,50 +6,60 @@ using UnityEngine;
 public class StateTypeAttack : StateTypeBase
 {
     /// <summary>
-    /// 攻撃するまでのタイマーのカウントの倍率
-    /// deltaTimeとの乗算で攻撃までの間隔を調整する
+    /// 遷移を繰り返すことでの連射対策として、この値は状態の遷移をしても初期化されない
     /// </summary>
-    protected static readonly int AttackTimerMag = 60;
-    /// <summary>
-    /// 遷移を繰り返すことでの連射対策として
-    /// StateTypeAttackクラスではこの値は状態の遷移をしても初期化されない
-    /// </summary>
-    protected float _time;
+    private float _time;
 
     public StateTypeAttack(EnemyController controller, StateType stateType)
-        : base(controller, stateType) { }
+        : base(controller, stateType) 
+    {
+        _time = controller.Params.AttackRate;
+    }
 
     protected override void Enter()
     {
-        Controller.PlayAnimation(AnimationName.Attack);
-        //Controller.MoveToPlayer();
+        // 攻撃までの間、遷移元のアニメーションが再生され続けないように一度Idle状態のアニメーションを再生する
+        Controller.PlayAnimation(AnimationName.Idle);
     }
 
     protected override void Stay()
     {
-        _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime * AttackTimerMag;
+        if (TransitionDefeated()) return;
+        AttackAtInterval();
+        if (Transition()) return;
+    }
+
+    /// <summary>
+    /// 一定間隔で攻撃する
+    /// </summary>
+    private void AttackAtInterval()
+    {
+        _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime;
         if (_time > Controller.Params.AttackRate)
         {
             _time = 0;
             Controller.Attack();
+            Controller.PlayAnimation(AnimationName.Attack);
         }
+    }
 
-        if (Controller.IsDefeated)
-        {
-            TryChangeState(StateType.Defeated);
-            return;
-        }
-
+    /// <summary>
+    /// 視界から外れたらIdle状態に、攻撃範囲から外れたらMove状態に遷移する
+    /// </summary>
+    private bool Transition()
+    {
         SightResult result = Controller.LookForPlayerInSight();
         if (result == SightResult.OutSight)
         {
             TryChangeState(StateType.Idle);
-            return;
+            return true;
         }
         else if (result == SightResult.InSight)
         {
             TryChangeState(StateType.Move);
-            return;
+            return true;
         }
+
+        return false;
     }
 }

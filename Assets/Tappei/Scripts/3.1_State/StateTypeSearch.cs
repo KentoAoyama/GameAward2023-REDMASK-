@@ -22,34 +22,47 @@ public class StateTypeSearch : StateTypeBase
 
     protected override void Stay()
     {
-        if (Controller.IsDefeated)
-        {
-            TryChangeState(StateType.Defeated);
-            return;
-        }
+        if (TransitionDefeated()) return;
+        if (Transition()) return;
+        if (TransitionAtTimeElapsed()) return;
+    }
 
+    protected override void Exit()
+    {
+        _time = 0;
+        Controller.CancelMoveToTarget();
+        GameManager.Instance.AudioManager.StopSE(_cachedSEIndex);
+    }
+
+    /// <summary>
+    /// ‹ŠE“à/UŒ‚”ÍˆÍ“à‚É“ü‚Á‚½‚çDiscoveró‘Ô‚É‘JˆÚ‚·‚é
+    /// </summary>
+    private bool Transition()
+    {
         SightResult result = Controller.LookForPlayerInSight();
         if (result == SightResult.InSight || result == SightResult.InAttackRange)
         {
             TryChangeState(StateType.Discover);
-            return;
+            return true;
         }
 
-        // ˆÚ“®‚ğs‚¤ƒƒ\ƒbƒh‚ğŒÄ‚Ño‚µ‚ÄŠÔŒo‰ß‚ÅIdle‚É‘JˆÚ‚·‚é
-        // ‚ğŒJ‚è•Ô‚µ‚ÄüˆÍ‚ğ’Tõ‚³‚¹‚é
+        return false;
+    }
+
+    /// <summary>
+    /// ŠÔŒo‰ß‚ÅIdleó‘Ô‚É‘JˆÚ‚·‚é
+    /// </summary>
+    private bool TransitionAtTimeElapsed()
+    {
         _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime;
         float interval = Controller.Params.TurningPoint / Controller.Params.WalkSpeed;
         if (_time > interval)
         {
             _time = 0;
             TryChangeState(StateType.Idle);
+            return true;
         }
-    }
 
-    protected override void Exit()
-    {
-        _time = 0;
-        Controller.CancelMoving();
-        GameManager.Instance.AudioManager.StopSE(_cachedSEIndex);
+        return false;
     }
 }

@@ -1,7 +1,6 @@
 using UnityEngine;
 
 /// <summary>
-/// 各ステートは必ずこのクラスを継承する必要がある。
 /// StateRegisterクラスから生成するので、継承したステートの
 /// コンストラクタはこのステートと同じである必要がある
 /// </summary>
@@ -55,8 +54,24 @@ public abstract class StateTypeBase
     protected virtual void Stay() { }
     protected virtual void Exit() { }
 
+    /// <summary>
+    /// 撃破された場合の処理はDefeated状態以外は共通処理なので基底クラスに実装してある
+    /// 遷移する場合はtrueが返る
+    /// </summary>
+    protected bool TransitionDefeated()
+    {
+        if (Controller.IsDefeated)
+        {
+            TryChangeState(StateType.Defeated);
+            return true;
+        }
+
+        return false;
+    }
+
     public virtual void OnPause() { }
     public virtual void OnResume() { }
+
 
     /// <summary>
     /// Enter()が呼ばれてかつ、ステートの遷移処理を呼んでいない場合のみ遷移可能
