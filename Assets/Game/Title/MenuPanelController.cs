@@ -60,6 +60,7 @@ public class MenuPanelController : MonoBehaviour
 
         _canvasAnimator.SetBool(_animationParameterName, false);
         EventSystem.current.SetSelectedGameObject(null);
+        GameManager.Instance.AudioManager.Save();
         _panelEnabled = false;
         _particleAnim.AnimPlay();
     }
