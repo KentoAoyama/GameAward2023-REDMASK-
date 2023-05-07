@@ -23,6 +23,8 @@ public class StateTypeDiscover : StateTypeBase
 
         float delay = Controller.Params.DiscoverStateTransitionDelay;
         _tween = DOVirtual.DelayedCall(delay, () => _isTransitionable = true);
+
+        GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Enemy_Discover");
     }
 
     protected override void Stay()

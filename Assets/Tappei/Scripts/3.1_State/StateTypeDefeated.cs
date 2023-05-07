@@ -10,5 +10,6 @@ public class StateTypeDefeated : StateTypeBase
     protected override void Enter()
     {
         Controller.PlayAnimation(AnimationName.Dead);
+        GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Enemy_Damage");
     }
 }

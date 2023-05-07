@@ -14,7 +14,9 @@ public class StateTypeSearch : StateTypeBase
     protected override void Enter()
     {
         Controller.PlayAnimation(AnimationName.Search);
-        Controller.SearchMoving();
+        Controller.MoveSeachForPlayer();
+
+        GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", Controller.Params.WalkSEName);
     }
 
     protected override void Stay()
