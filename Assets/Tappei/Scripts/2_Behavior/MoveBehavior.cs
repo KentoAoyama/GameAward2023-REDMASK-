@@ -1,96 +1,57 @@
 using Cysharp.Threading.Tasks;
 using System.Threading;
-using UnityEngine;
-using UniRx.Triggers;
 using UniRx;
+using UniRx.Triggers;
+using UnityEngine;
 
 /// <summary>
 /// 各状態において移動する際に使用するクラス
+/// 必要な各Moduleのクラスを制御する
 /// </summary>
 public class MoveBehavior : MonoBehaviour
 {
-    /// <summary>
-    /// 移動先に到着した際にぷるぷるしないようにする為の値
-    /// 値を大きくすればより正確に移動先にたどり着くが、速度次第ではぷるぷるしてしまう
-    /// </summary>
-    private static readonly float ArrivalTolerance = 500.0f;
-    /// <summary>
-    /// 毎フレームRayを飛ばさないように、Search状態での移動範囲を更新する間隔を設定する
-    /// </summary>
-    private static readonly float UpdateFootPosInterval = 0.15f;
-
-    private static readonly float FootPosRayDistance = 1.0f;
-    private static readonly float FloorRayDistance = 6.0f;
-    private static readonly float EnemyTypeRayDistance = 1.1f;
-    private static readonly Vector2 FootPosRayOffset = new Vector2(0, 0.5f);
-    private static readonly Vector2 FloorRayOffset = new Vector2(0, 1.5f);
-
-    [Header("移動方向に向けるオブジェクトの設定")]
-    [SerializeField] private Transform _spriteTrans;
-    [SerializeField] private Transform _eyeTrans;
-    [SerializeField] private Transform _weaponTrans;
-    [Header("移動時に検知するためのRayの設定")]
-    [SerializeField] private LayerMask _groundLayerMask;
-    [SerializeField] private LayerMask _enemyTypeLayerMask;
-    [Tooltip("自身のコライダーとぶつからないように設定する")]
-    [SerializeField] private Vector2 EnemyTypeRayOffset = new Vector2(1.25f, 0.5f);
-
-    private CancellationTokenSource _cts;
     private Transform _transform;
-    private Rigidbody2D _rigidbody;
-    private GameObject _searchDestination;
-    private GameObject _forwardDestination;
+    private CancellationTokenSource _cts;
 
-    private TurnModule _turnModule;
+    [SerializeField] private TurnModule _turnModule;
+    [SerializeField] private DetectorModule _detectorModule;
+    [SerializeField] private RigidBodyModule _rigidbodyModule;
+    [SerializeField] private WaypointModule _waypointModule;
+    [Tooltip("Spriteの左右に応じた処理をしたいので参照が必要")]
+    [SerializeField] private Transform _sprite;
 
-    /// <summary>ポーズしたときにVelocityを一旦保存しておくための変数</summary>
-    private Vector3 _tempVelocity;
-    /// <summary>この座標を基準にしてSearch状態の移動を行うsummary>
-    private Vector3 _footPos;
     /// <summary>Pause()が呼ばれるとtrueにResume()が呼ばれるとfalseになる</summary>
     private bool _isPause;
 
-    /// <summary>Spriteの左右の向きに合わせた処理をする際に使う</summary>
-    public int SpriteDirection => (int)Mathf.Sign(_spriteTrans.localScale.x);
-
-#if UNITY_EDITOR
-    /// <summary>EnemyControllerでギズモに表示する用途で使っている</summary>
-    public Vector3 FootPos => _footPos;
-#endif
+    /// <summary>
+    /// Spriteの左右の向きに合わせた処理をする際に使う
+    /// 右向き: 1 左向き: -1
+    /// </summary>
+    public int SpriteDir => (int)Mathf.Sign(_sprite.localScale.x);
 
     private void Awake()
     {
-        _turnModule = new(transform, _spriteTrans, _eyeTrans, _weaponTrans);
-
         _transform = GetComponent<Transform>();
-        _rigidbody = GetComponent<Rigidbody2D>();
-        _searchDestination = new GameObject("SearchDestination");
-        _forwardDestination = new GameObject("ForwardDestination");
-    }
+        _waypointModule.InitOnAwake();
 
-    private void Start()
-    {
         FootPosUpdateStart();
     }
 
     private void OnDisable()
     {
-        CancelMoving();
+        CancelMoveToTarget();
     }
 
-    public void Pause()
+    public void OnPause()
     {
         _isPause = true;
-        _rigidbody.isKinematic = true;
-        _tempVelocity = _rigidbody.velocity;
-        _rigidbody.velocity = Vector3.zero;
+        _rigidbodyModule.SaveVelocity();
     }
 
-    public void Resume()
+    public void OnResume()
     {
         _isPause = false;
-        _rigidbody.isKinematic = false;
-        _rigidbody.velocity = _tempVelocity;
+        _rigidbodyModule.LoadVelocity();
     }
 
     /// <summary>
@@ -100,50 +61,79 @@ public class MoveBehavior : MonoBehaviour
     /// </summary>
     private void FootPosUpdateStart()
     {
+        // 毎フレームRayを飛ばさないように、Search状態での移動範囲を更新する間隔を設定する
+        float updateFootPosInterval = 0.15f;
+
         this.UpdateAsObservable()
-            .ThrottleFirst(System.TimeSpan.FromSeconds(UpdateFootPosInterval))
-            .Subscribe(_ => UpdateFootPos())
+            .ThrottleFirst(System.TimeSpan.FromSeconds(updateFootPosInterval))
+            .Subscribe(_ => 
+            {
+                if(_detectorModule.DetectFootPos(_transform, out Vector3 hitPos))
+                {
+                    _waypointModule.UpdateFootPos(hitPos);
+                }
+            })
             .AddTo(this);
     }
 
-    private void UpdateFootPos()
+    /// <summary>
+    /// キャラクターを左向きに配置する際に使用する
+    /// </summary>
+    public void TurnLeft()
     {
-        Vector3 rayOrigin = _transform.position + (Vector3)FootPosRayOffset;
-        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector3.down, FootPosRayDistance, _groundLayerMask);
+        Vector3 dir = _transform.position;
+        dir.x += -int.MaxValue;
+        _turnModule.TurnTowardsTarget(dir, _transform);
+    }
 
-        if (hit.collider) _footPos = hit.point;
+    public void StartMoveSearchForPlayer(float moveSpeed, float distance, bool useRandomDistance)
+    {
+        Transform waypoint = _waypointModule.GetSearchWaypoint(distance, useRandomDistance);
+        StartMoveToTarget(waypoint, moveSpeed);
+    }
+
+    public void StartMoveForward(float distance, float moveSpeed)
+    {
+        Transform forwardWaypoint = _waypointModule.GetForwardWaypoint(SpriteDir * distance);
+        StartMoveToTarget(forwardWaypoint, moveSpeed);
     }
 
     /// <summary>
-    /// Search状態の移動をする際に呼ばれる
-    /// 移動先の座標をSearchDestinationのPositionにセットして
-    /// 返すことで移動中に移動先を動かすことが出来る
+    /// ターゲットに向けて移動する
+    /// 基本はこのメソッドを呼ぶことでターゲットを追いかける
     /// </summary>
-    public Transform GetSearchDestination(float distance, bool useRandomDistance)
+    public void StartMoveToTarget(Transform target, float moveSpeed)
     {
-        // 左右どちらかに足元から第一引数の距離だけ離れた位置に移動先を設定する
-        // ○<----★---->○
-        Vector3 dir = Random.value > 0.5f ? Vector3.left : Vector3.right;
-        float percentage = useRandomDistance ? Random.value : 1;
-        Vector3 targetPos = _footPos + dir * distance * percentage;
+        _cts = new CancellationTokenSource();
+        MoveToTargetAsync(target, moveSpeed).Forget();
+    }
 
-        _searchDestination.transform.position = targetPos;
+    private async UniTaskVoid MoveToTargetAsync(Transform target, float moveSpeed)
+    {
+        _cts.Token.ThrowIfCancellationRequested();
 
-#if UNITY_EDITOR
-        Debug.DrawLine(targetPos + Vector3.up, targetPos + Vector3.down, Color.yellow, 1.0f);
-#endif
+        _turnModule.TurnTowardsTarget(target.position, _transform);
+        while (_detectorModule.DetectFloorInFront(SpriteDir, _transform))
+        {
+            if (!_isPause)
+            {
+                _rigidbodyModule.SetVelocityToTarget(target.position, moveSpeed, _transform);
+                _turnModule.TurnTowardsTarget(target.position, _transform);
+            }
 
-        return _searchDestination.transform;
+            await UniTask.Yield(PlayerLoopTiming.FixedUpdate, _cts.Token);
+        }
+        CancelMoveToTarget();
     }
 
     /// <summary>
     /// 現在の移動をキャンセルしてその場に留まる
     /// 別の移動先に向かう際はこのメソッドを呼んで現在の移動をキャンセルすること
     /// </summary>
-    public void CancelMoving()
+    public void CancelMoveToTarget()
     {
         _cts?.Cancel();
-        DropVertically();
+        _rigidbodyModule.SetFallVelocity();
     }
 
     /// <summary>
@@ -154,139 +144,16 @@ public class MoveBehavior : MonoBehaviour
     {
         if (_isPause) return;
 
-        RaycastHit2D groundHit = Physics2D.Raycast(_transform.position, Vector3.down, 0.25f, _groundLayerMask);
-        if (groundHit)
-        {
-            _rigidbody.velocity = Vector3.zero;
-            _transform.position = groundHit.point;
-        }
-        else
-        {
-            DropVertically();
-        }
+        // この処理を書き換えてIdle状態のときに坂道を滑っていかないようにする
 
-        _rigidbody.isKinematic = groundHit;
+        //RaycastHit2D groundHit = Physics2D.Raycast(_transform.position, Vector3.down, 0.25f/*, _groundLayerMask*/);
+        //RaycastHit2D groundHit = 
+        //if(groundHit) _transform.position = groundHit.point;
+        //_rigidbodyModule.SetIdleStateVelocity(groundHit);
 
-#if UNITY_EDITOR
-        Color c = groundHit ? Color.blue : Color.red;
-        Debug.DrawRay(_transform.position, Vector3.down * 0.5f, c, 0.016f);
-#endif
-    }
+        //if (_detectorModule.DetectFootPos(_transform, out Vector3 hitPos))
+        //{
 
-    /// <summary>左右の移動をキャンセルして垂直落下させる</summary>
-    private void DropVertically()
-    {
-        Vector3 velo = _rigidbody.velocity;
-        velo.x = 0;
-        velo.z = 0;
-        _rigidbody.velocity = velo;
-    }
-
-    /// <summary>前方に任意の距離だけ移動する</summary>
-    public void StartMoveForward(float distance, float moveSpeed)
-    {
-        // 指定した位置にforwardDestinationを移動させてそこに向かって移動する
-        Vector3 pos = transform.position;
-        pos.x += _spriteTrans.localScale.x * distance;
-        _forwardDestination.transform.position = pos;
-        StartMoveToTarget(_forwardDestination.transform, moveSpeed * 2);
-
-#if UNITY_EDITOR
-        Debug.DrawRay(pos, Vector3.up * 5, Color.magenta, 3.0f);
-#endif
-    }
-
-    /// <summary>キャラクターを左向きに配置する際に使用する</summary>
-    public void TurnLeft()
-    {
-        Vector3 dir = _transform.position;
-        dir.x += -int.MaxValue;
-        _turnModule.TurnTowardsTarget(dir);
-    }
-
-    /// <summary>
-    /// このメソッドを外部から呼ぶことで移動を行う
-    /// 移動を行う際は必ずCancelMoving()を呼んで現在の移動をキャンセルしてから行うこと
-    /// </summary>
-    public void StartMoveToTarget(Transform target, float moveSpeed)
-    {
-        // アイドル状態で無効化しているので移動する際は再度物理演算を有効にする
-        _rigidbody.isKinematic = false;
-
-        _cts = new CancellationTokenSource();
-        MoveToTargetAsync(target, moveSpeed).Forget();
-    }
-
-    /// <summary>
-    /// FixedUpdate()のタイミングでターゲットに向かって1フレーム分だけ移動する事によって
-    /// ターゲットへの移動を行う。引数がTransformのためターゲットが動いていても追従する
-    /// </summary>
-    private async UniTask MoveToTargetAsync(Transform target, float moveSpeed)
-    {
-        _cts.Token.ThrowIfCancellationRequested();
-
-        _turnModule.TurnTowardsTarget(target.position);
-        while (IsDetectedFloor()/* && IsUndetectedEnemy()*/)
-        {
-            if (!_isPause)
-            {
-                SetVelocityToTarget(target.position, moveSpeed);
-                _turnModule.TurnTowardsTarget(target.position);
-            }
-
-            await UniTask.Yield(PlayerLoopTiming.FixedUpdate, _cts.Token);
-        }
-        CancelMoving();
-    }
-
-    /// <summary>
-    /// Velocityをターゲットの方向に向けることでターゲットへの移動を行う
-    /// スローモーションとポーズに対応している
-    /// </summary>
-    private void SetVelocityToTarget(Vector3 targetPos, float moveSpeed)
-    {
-        Vector3 velo = targetPos - _transform.position;
-        float TimeScale = GameManager.Instance.TimeController.EnemyTime;
-
-        if (velo.sqrMagnitude < moveSpeed / ArrivalTolerance)
-        {
-            velo = Vector3.zero;
-        }
-        else
-        {
-            velo = Vector3.Normalize(velo) * moveSpeed;
-        }
-
-        velo.y = _rigidbody.velocity.y;
-        _rigidbody.velocity = velo * TimeScale;
-    }
-
-    private bool IsDetectedFloor()
-    {
-        Vector3 rayOrigin = _transform.position + (Vector3)FloorRayOffset;
-        Vector3 dir = ((_transform.right * SpriteDirection) + new Vector3(0, -2f, 0)).normalized;
-        RaycastHit2D groundHit = Physics2D.Raycast(rayOrigin, dir, FloorRayDistance, _groundLayerMask);
-
-#if UNITY_EDITOR
-        Color c = groundHit ? Color.blue : Color.red;
-        Debug.DrawRay(rayOrigin, dir * FloorRayDistance, c, 0.016f);
-#endif
-
-        return groundHit;
-    }
-
-    private bool IsUndetectedEnemy()
-    {
-        Vector3 offset = new Vector3(EnemyTypeRayOffset.x * SpriteDirection, EnemyTypeRayOffset.y, 0);
-        Vector3 rayOrigin = _transform.position + offset;
-        Vector3 dir = _transform.right * SpriteDirection;
-        RaycastHit2D enemyHit = Physics2D.Raycast(rayOrigin, dir, EnemyTypeRayDistance, _enemyTypeLayerMask);
-
-#if UNITY_EDITOR
-        Color c = !enemyHit ? Color.blue : Color.red;
-        Debug.DrawRay(rayOrigin, dir * EnemyTypeRayDistance, c, 0.016f);
-#endif
-
-        return !enemyHit;
+        //}
     }
 }
