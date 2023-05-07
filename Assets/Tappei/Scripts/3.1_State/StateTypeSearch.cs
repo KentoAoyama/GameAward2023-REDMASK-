@@ -7,6 +7,7 @@ using UnityEngine;
 public class StateTypeSearch : StateTypeBase
 {
     protected float _time;
+    private int _cachedSEIndex;
 
     public StateTypeSearch(EnemyController controller, StateType stateType)
         : base(controller, stateType) { }
@@ -16,7 +17,7 @@ public class StateTypeSearch : StateTypeBase
         Controller.PlayAnimation(AnimationName.Search);
         Controller.MoveSeachForPlayer();
 
-        GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", Controller.Params.WalkSEName);
+        _cachedSEIndex = GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", Controller.Params.WalkSEName);
     }
 
     protected override void Stay()
@@ -49,5 +50,6 @@ public class StateTypeSearch : StateTypeBase
     {
         _time = 0;
         Controller.CancelMoving();
+        GameManager.Instance.AudioManager.StopSE(_cachedSEIndex);
     }
 }
