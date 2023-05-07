@@ -8,7 +8,7 @@ public class AttackBehavior : MonoBehaviour
     [Header("武器のオブジェクト")]
     [SerializeField] private MonoBehaviour _weapon;
 
-    IEnemyWeapon _enemyWeapon;
+    private IEnemyWeapon _enemyWeapon;
 
     private void Awake()
     {
@@ -18,5 +18,10 @@ public class AttackBehavior : MonoBehaviour
         }
     }
 
-    public void Attack() => _enemyWeapon.Attack();
+    public void Attack()
+    {
+        // TODO:攻撃の判定が出るまでディレイが欲しい
+
+        _enemyWeapon.Attack();
+    }
 }

@@ -35,11 +35,10 @@ public class EnemyDroneRifle : EnemyRifle
 
     private void Update()
     {
-        float result = _sightSensor.TryGetDistanceToPlayer(_sightRadius, _maxAngle);
-        if (result > SightSensor.PlayerOutSight)
-        {
-            TurnToPlayer();
-        }
+        SightResult result = _sightSensor.LookForPlayerInSight(_sightRadius,_maxAngle,_sightRadius);
+        if (result == SightResult.OutSight) return;
+
+        TurnToPlayer();
     }
 
     void TurnToPlayer()

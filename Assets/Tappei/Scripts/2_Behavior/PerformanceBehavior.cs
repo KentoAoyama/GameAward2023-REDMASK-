@@ -27,11 +27,31 @@ public class PerformanceBehavior : MonoBehaviour
     [Header("調整用:生成した際にエフェクトを表示する")]
     [SerializeField] private bool _initActive;
 
+    /// <summary>
+    /// 発見時のエフェクトは使いまわすのでメンバとして保持しておく
+    /// </summary>
     private GameObject _discoverEffect;
 
     private void Awake()
     {
         _discoverEffect = Instantiate(_discoverEffectSettings);
+    }
+
+    public void Discover() => _discoverEffect.SetActive(true);
+
+    /// <summary>
+    /// キャラクターの向きに合わせて生成する必要があるのでSpriteの向きが必要
+    /// </summary>
+    public void Defeated(int dir)
+    {
+        GameObject instance = Instantiate(_defeatedEffectSettings);
+        instance.transform.parent = null;
+        DOVirtual.DelayedCall(DefeatedEffectLifeTime, () => instance.SetActive(false))
+            .OnStart(() => instance.SetActive(true)).SetLink(gameObject);
+
+        Vector3 scale = Vector3.one;
+        scale.x = dir;
+        instance.transform.localScale = scale;
     }
 
     /// <summary>
@@ -48,25 +68,5 @@ public class PerformanceBehavior : MonoBehaviour
         instance.SetActive(_initActive);
 
         return instance;
-    }
-
-    public void Discover()
-    {
-        _discoverEffect.SetActive(true);
-    }
-
-    /// <summary>
-    /// キャラクターの向きに合わせて生成する必要があるのでSpriteの向きが必要
-    /// </summary>
-    public void Defeated(int scaleX)
-    {
-        GameObject instance = Instantiate(_defeatedEffectSettings);
-        instance.transform.parent = null;
-        DOVirtual.DelayedCall(DefeatedEffectLifeTime, () => instance.SetActive(false))
-            .OnStart(() => instance.SetActive(true)).SetLink(gameObject);
-
-        Vector3 scale = Vector3.one;
-        scale.x = scaleX;
-        instance.transform.localScale = scale;
     }
 }

@@ -38,10 +38,10 @@ public class ShieldEnemyController : EnemyController
         this.OnDisableAsObservable().Subscribe(_ => _shield.OnDamaged -= () => IsReflect = true);
     }
 
-    public void MoveForward()
-    {
-        _moveBehavior.StartMoveForward(Params.AttackRange, Params.RunSpeed);
-    }
+    /// <summary>
+    /// 攻撃する際に前方に移動するので、このメソッドを呼んで一定時間経過後に攻撃の処理を呼ぶ
+    /// </summary>
+    public void MoveForward() => _moveBehavior.StartMoveForward(Params.AttackRange, Params.RunSpeed);
 
     /// <summary>
     /// Reflection状態で一定時間たったらこのメソッドを呼ぶことでもう一度盾弾かれが出来る
