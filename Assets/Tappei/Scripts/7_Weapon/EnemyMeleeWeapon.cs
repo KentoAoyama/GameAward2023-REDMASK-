@@ -10,6 +10,8 @@ public class EnemyMeleeWeapon : MonoBehaviour, IEnemyWeapon
     [SerializeField] private float _radius;
     [Header("プレイヤーが属するレイヤー")]
     [SerializeField] private LayerMask _playerLayerMask;
+    [Header("攻撃時に再生される音の名前")]
+    [SerializeField] private string _attackSEName;
 
     /// <summary>プレイヤーのみを検出するので長さは1で良い</summary>
     private Collider2D[] _results = new Collider2D[1];
@@ -21,6 +23,8 @@ public class EnemyMeleeWeapon : MonoBehaviour, IEnemyWeapon
         {
             _results[0].GetComponent<IDamageable>().Damage();
         }
+
+        GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", _attackSEName);
     }
 
     private void OnDrawGizmosSelected()
