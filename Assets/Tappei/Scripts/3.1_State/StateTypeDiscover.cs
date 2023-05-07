@@ -19,7 +19,7 @@ public class StateTypeDiscover : StateTypeBase
     protected override void Enter()
     {
         Controller.PlayAnimation(AnimationName.Discover);
-        Controller.DiscoverPerformance();
+        Controller.PlayDiscoverPerformance();
 
         float delay = Controller.Params.DiscoverStateTransitionDelay;
         _tween = DOVirtual.DelayedCall(delay, () => _isTransitionable = true);
@@ -36,7 +36,7 @@ public class StateTypeDiscover : StateTypeBase
         }
 
         // 一度発見したら視界の外に出てしまった場合でも一度Move状態に遷移する
-        SightResult result = Controller.IsFindPlayer();
+        SightResult result = Controller.LookForPlayerInSight();
         if (_isTransitionable)
         {
             if (result == SightResult.InSight || result == SightResult.OutSight)

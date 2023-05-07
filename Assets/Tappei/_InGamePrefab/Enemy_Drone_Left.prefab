@@ -297,6 +297,7 @@ GameObject:
   - component: {fileID: 441480886372639653}
   - component: {fileID: 441480886372639652}
   - component: {fileID: 441480886372639655}
+  - component: {fileID: 720534816504838170}
   m_Layer: 6
   m_Name: Enemy_Drone_Left
   m_TagString: Enemy
@@ -477,6 +478,20 @@ MonoBehaviour:
   _placedFacingLeft: 1
   _idleWhenUndiscover: 0
   _text: {fileID: 0}
+--- !u!114 &720534816504838170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 441480886372639654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa4aef6dbcf693b44b20baa25f1f17aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _eye: {fileID: 441480885910638407}
+  _controller: {fileID: 0}
 --- !u!1001 &8810738001119421516
 PrefabInstance:
   m_ObjectHideFlags: 0

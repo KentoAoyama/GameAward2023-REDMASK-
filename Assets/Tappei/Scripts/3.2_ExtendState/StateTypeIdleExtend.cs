@@ -17,7 +17,7 @@ public class StateTypeIdleExtend : StateTypeIdle
 
     protected override void Stay()
     {
-        _shieldController.Idle();
+        _shieldController.UpdateIdle();
 
         if (Controller.IsDefeated)
         {
@@ -32,7 +32,7 @@ public class StateTypeIdleExtend : StateTypeIdle
             return;
         }
 
-        SightResult result = Controller.IsFindPlayer();
+        SightResult result = Controller.LookForPlayerInSight();
         if (result == SightResult.InSight || result == SightResult.InAttackRange)
         {
             TryChangeState(StateType.DiscoverExtend);

@@ -29,7 +29,7 @@ public class StateTypeDiscoverExtend : StateTypeDiscover
         }
 
         // 一度発見したら視界の外に出てしまった場合でも一度Move状態に遷移する
-        SightResult result = Controller.IsFindPlayer();
+        SightResult result = Controller.LookForPlayerInSight();
         if (_isTransitionable)
         {
             if (result == SightResult.InSight || result == SightResult.OutSight)

@@ -30,7 +30,7 @@ public class StateTypeSearchExtend : StateTypeSearch
             return;
         }
 
-        SightResult result = Controller.IsFindPlayer();
+        SightResult result = Controller.LookForPlayerInSight();
         if (result == SightResult.InSight || result == SightResult.InAttackRange)
         {
             TryChangeState(StateType.DiscoverExtend);

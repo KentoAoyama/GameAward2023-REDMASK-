@@ -64,7 +64,7 @@ public class StateTypeAttackExtend : StateTypeAttack
             _shieldController.PlayAnimation(AnimationName.Attack);
         }
 
-        SightResult result = Controller.IsFindPlayer();
+        SightResult result = Controller.LookForPlayerInSight();
         if (result == SightResult.OutSight)
         {
             TryChangeState(StateType.IdleExtend);

@@ -152,6 +152,7 @@ GameObject:
   - component: {fileID: 3988215834778814114}
   - component: {fileID: 3988215834778814113}
   - component: {fileID: 3988215834778814112}
+  - component: {fileID: 2486729576585183718}
   m_Layer: 6
   m_Name: Enemy_RangeAttack
   m_TagString: Enemy
@@ -331,6 +332,20 @@ MonoBehaviour:
   _placedFacingLeft: 0
   _idleWhenUndiscover: 0
   _text: {fileID: 0}
+--- !u!114 &2486729576585183718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3988215834778814127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa4aef6dbcf693b44b20baa25f1f17aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _eye: {fileID: 3988215834080215047}
+  _controller: {fileID: 0}
 --- !u!1 &6156873978449303552
 GameObject:
   m_ObjectHideFlags: 0

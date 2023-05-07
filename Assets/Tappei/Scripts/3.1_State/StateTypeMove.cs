@@ -39,7 +39,7 @@ public class StateTypeMove : StateTypeBase
             return;
         }
 
-        SightResult result = Controller.IsFindPlayer();
+        SightResult result = Controller.LookForPlayerInSight();
         if (result == SightResult.OutSight)
         {
             TryChangeState(StateType.Idle);

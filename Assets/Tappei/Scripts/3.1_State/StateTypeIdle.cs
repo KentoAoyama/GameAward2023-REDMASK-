@@ -22,7 +22,7 @@ public class StateTypeIdle : StateTypeBase
 
     protected override void Stay()
     {
-        Controller.Idle();
+        Controller.UpdateIdle();
 
         if (Controller.IsDefeated)
         {
@@ -30,7 +30,7 @@ public class StateTypeIdle : StateTypeBase
             return;
         }
 
-        SightResult result = Controller.IsFindPlayer();
+        SightResult result = Controller.LookForPlayerInSight();
         if (result == SightResult.InSight || result == SightResult.InAttackRange)
         {
             TryChangeState(StateType.Discover);
