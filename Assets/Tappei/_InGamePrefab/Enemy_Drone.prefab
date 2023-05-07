@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1123124038}
   - component: {fileID: 1123124039}
   m_Layer: 10
-  m_Name: DoroneFoot
+  m_Name: DroneFoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -155,9 +155,9 @@ GameObject:
   m_Component:
   - component: {fileID: 441480884754228600}
   - component: {fileID: 441480884754228601}
-  - component: {fileID: 441480884754228607}
+  - component: {fileID: 529488501211995846}
   m_Layer: 0
-  m_Name: Animation
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -198,7 +198,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!212 &441480884754228607
+--- !u!212 &529488501211995846
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -392,16 +392,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4b8c61805a99304d8f0b07aa608acb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spriteTrans: {fileID: 441480884754228600}
-  _eyeTrans: {fileID: 441480885910638407}
-  _weaponTrans: {fileID: 3279374071047124308}
-  _groundLayerMask:
-    serializedVersion: 2
-    m_Bits: 128
-  _enemyTypeLayerMask:
-    serializedVersion: 2
-    m_Bits: 1088
-  EnemyTypeRayOffset: {x: 1.25, y: 0.5}
+  _turnModule:
+    _sprite: {fileID: 441480884754228600}
+    _eye: {fileID: 441480885910638407}
+    _weapon: {fileID: 3279374071047124308}
+  _detectorModule:
+    _footPosRaySettings:
+      _distance: 1
+      _offset: {x: 0, y: 0.5, z: 0}
+      _layerMask:
+        serializedVersion: 2
+        m_Bits: 128
+    _floorRaySettings:
+      _distance: 6
+      _offset: {x: 0, y: 1.5, z: 0}
+      _layerMask:
+        serializedVersion: 2
+        m_Bits: 128
+    _enemyRaySettings:
+      _distance: 1.1
+      _offset: {x: 1.25, y: 0.5, z: 0}
+      _layerMask:
+        serializedVersion: 2
+        m_Bits: 1088
+  _rigidbodyModule:
+    _rigidbody: {fileID: 441480886372639673}
+  _sprite: {fileID: 441480884754228600}
 --- !u!114 &441480886372639653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -449,6 +465,7 @@ MonoBehaviour:
   _playerTagName: Player
   _enemyParamsSO: {fileID: 11400000, guid: 6e3b35f7c0b07af42a0751495def85aa, type: 2}
   _placedFacingLeft: 0
+  _idleWhenUndiscover: 0
   _text: {fileID: 0}
 --- !u!1001 &8810738001119421516
 PrefabInstance:
@@ -513,6 +530,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -18
       objectReference: {fileID: 0}
+    - target: {fileID: 6324367588736487705, guid: a6d66e3845461fd47bc2c262e2e727aa, type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
     - target: {fileID: 6324367588736487705, guid: a6d66e3845461fd47bc2c262e2e727aa, type: 3}
       propertyPath: m_Name
       value: Weapon_DroneGun
