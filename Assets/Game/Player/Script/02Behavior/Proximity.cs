@@ -102,6 +102,9 @@ namespace Player
 
         private void AttckStart()
         {
+            //重力を戻す
+            _playerController.Rigidbody2D.gravityScale = 1f;
+
             //アニメーションの再生
             _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.Proximity);
 

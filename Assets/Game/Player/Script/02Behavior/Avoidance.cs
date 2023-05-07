@@ -166,6 +166,9 @@ namespace Player
             //TestTExT???????????????????///////////////////////////////////////
             _testAvoidText.SetActive(true);
 
+            //重力を戻す
+            _playerController.Rigidbody2D.gravityScale = 1f;
+
             _isCanAvoidance = false;
 
             _isAvoidacneNow = true;
