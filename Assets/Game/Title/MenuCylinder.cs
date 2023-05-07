@@ -48,22 +48,38 @@ public class MenuCylinder : MonoBehaviour
 
         if (left && _sylinderEnabled && !_isRotating)
         {
-            RotateCylinder(-60f);
-
-            GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Reroad");
+            GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Selection");
 
             _currentButtonIndex += 7;
             _currentButtonIndex %= 6;
+            int skipCount = 1;
+
+            while (!_circleDeploy.SelectButtons[_currentButtonIndex].enabled)
+            {
+                _currentButtonIndex += 7;
+                _currentButtonIndex %= 6;
+                skipCount++;
+            }
+
+            RotateCylinder(-60f * skipCount);
             _circleDeploy.SelectButtons[_currentButtonIndex].Select();
         }
         else if (right && _sylinderEnabled && !_isRotating)
         {
-            RotateCylinder(60f);
-
-            GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Reroad");
+            GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Selection");
 
             _currentButtonIndex += 5;
             _currentButtonIndex %= 6;
+            int skipCount = 1;
+
+            while (!_circleDeploy.SelectButtons[_currentButtonIndex].enabled)
+            {
+                _currentButtonIndex += 5;
+                _currentButtonIndex %= 6;
+                skipCount++;
+            }
+
+            RotateCylinder(60f * skipCount);
             _circleDeploy.SelectButtons[_currentButtonIndex].Select();
         }
     }
