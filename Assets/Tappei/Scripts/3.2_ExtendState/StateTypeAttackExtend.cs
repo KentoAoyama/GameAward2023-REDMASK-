@@ -16,6 +16,12 @@ public class StateTypeAttackExtend : StateTypeAttack
     private static readonly float NextAttackDelay = -80.0f;
 
     private ShieldEnemyController _shieldController;
+
+    /// <summary>
+    /// Œp³Œ³‚Å‚ ‚éStateTypeAttackƒNƒ‰ƒX‚Æ‚ÍUŒ‚‚Ì‹““®‚ªˆá‚¤‚Ì‚Å•Ê‚Ì•Ï”‚ğéŒ¾‚·‚é
+    /// ‚±‚¿‚ç‚Íó‘Ô‚Ì‘JˆÚ‚Å‰Šú‰»‚³‚ê‚é
+    /// </summary>
+    private float _time;
     /// <summary>
     /// ŠÔ‡‚¢‚ğ‹l‚ß‚Ä‚­‚é“®ì’†‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO
     /// </summary>
@@ -48,7 +54,7 @@ public class StateTypeAttackExtend : StateTypeAttack
             return;
         }
 
-        _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime * AttackTimerMag;
+        _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime;
         if (_time > Controller.Params.AttackRate && !_isApproaching)
         {
             _isApproaching = true;

@@ -6,15 +6,9 @@ using UnityEngine;
 public class StateTypeAttack : StateTypeBase
 {
     /// <summary>
-    /// UŒ‚‚·‚é‚Ü‚Å‚Ìƒ^ƒCƒ}[‚ÌƒJƒEƒ“ƒg‚Ì”{—¦
-    /// deltaTime‚Æ‚ÌæZ‚ÅUŒ‚‚Ü‚Å‚ÌŠÔŠu‚ğ’²®‚·‚é
+    /// ‘JˆÚ‚ğŒJ‚è•Ô‚·‚±‚Æ‚Å‚Ì˜AË‘Îô‚Æ‚µ‚ÄA‚±‚Ì’l‚Íó‘Ô‚Ì‘JˆÚ‚ğ‚µ‚Ä‚à‰Šú‰»‚³‚ê‚È‚¢
     /// </summary>
-    protected static readonly int AttackTimerMag = 60;
-    /// <summary>
-    /// ‘JˆÚ‚ğŒJ‚è•Ô‚·‚±‚Æ‚Å‚Ì˜AË‘Îô‚Æ‚µ‚Ä
-    /// StateTypeAttackƒNƒ‰ƒX‚Å‚Í‚±‚Ì’l‚Íó‘Ô‚Ì‘JˆÚ‚ğ‚µ‚Ä‚à‰Šú‰»‚³‚ê‚È‚¢
-    /// </summary>
-    protected float _time;
+    private float _time;
 
     public StateTypeAttack(EnemyController controller, StateType stateType)
         : base(controller, stateType) { }
@@ -22,34 +16,41 @@ public class StateTypeAttack : StateTypeBase
     protected override void Enter()
     {
         Controller.PlayAnimation(AnimationName.Attack);
-        //Controller.MoveToPlayer();
     }
 
     protected override void Stay()
     {
-        _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime * AttackTimerMag;
+        base.Stay();
+        AttackAtInterval();
+        Transition();
+    }
+
+    /// <summary>
+    /// ˆê’èŠÔŠu‚ÅUŒ‚‚·‚é
+    /// </summary>
+    private void AttackAtInterval()
+    {
+        _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime;
         if (_time > Controller.Params.AttackRate)
         {
             _time = 0;
             Controller.Attack();
         }
+    }
 
-        if (Controller.IsDefeated)
-        {
-            TryChangeState(StateType.Defeated);
-            return;
-        }
-
+    /// <summary>
+    /// ‹ŠE‚©‚çŠO‚ê‚½‚çIdleó‘Ô‚ÉAUŒ‚”ÍˆÍ‚©‚çŠO‚ê‚½‚çMoveó‘Ô‚É‘JˆÚ‚·‚é
+    /// </summary>
+    private void Transition()
+    {
         SightResult result = Controller.LookForPlayerInSight();
         if (result == SightResult.OutSight)
         {
             TryChangeState(StateType.Idle);
-            return;
         }
         else if (result == SightResult.InSight)
         {
             TryChangeState(StateType.Move);
-            return;
         }
     }
 }

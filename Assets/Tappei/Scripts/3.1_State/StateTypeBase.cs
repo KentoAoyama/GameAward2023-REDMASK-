@@ -1,7 +1,6 @@
 using UnityEngine;
 
 /// <summary>
-/// 各ステートは必ずこのクラスを継承する必要がある。
 /// StateRegisterクラスから生成するので、継承したステートの
 /// コンストラクタはこのステートと同じである必要がある
 /// </summary>
@@ -52,7 +51,17 @@ public abstract class StateTypeBase
     }
 
     protected virtual void Enter() { }
-    protected virtual void Stay() { }
+
+    protected virtual void Stay()
+    {
+        // 撃破された場合の処理はDefeated状態以外は共通処理なので基底クラスに書いてある
+        if (Controller.IsDefeated)
+        {
+            TryChangeState(StateType.Defeated);
+            return;
+        }
+    }
+
     protected virtual void Exit() { }
 
     public virtual void OnPause() { }
