@@ -94,7 +94,7 @@ AnimatorStateMachine:
     m_Position: {x: 750, y: -100, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3946044860969925250}
-    m_Position: {x: 790, y: -10, z: 0}
+    m_Position: {x: 800, y: -10, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -146926405974047614}
     m_Position: {x: 600, y: 50, z: 0}
@@ -118,7 +118,7 @@ AnimatorStateMachine:
     m_Position: {x: 410, y: -130, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 8608088108985849635}
-    m_Position: {x: 1040, y: 20, z: 0}
+    m_Position: {x: 1050, y: 20, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6640563493717283727}
     m_Position: {x: 130, y: 230, z: 0}
@@ -411,19 +411,25 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: IsGround
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: SpeedX
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
+  - m_Name: IsSetUp
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -675,6 +681,9 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 1
     m_ConditionEvent: IsGround
+    m_EventTreshold: 0
+  - m_ConditionMode: 3
+    m_ConditionEvent: SpeedX
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 2147700755340001416}
