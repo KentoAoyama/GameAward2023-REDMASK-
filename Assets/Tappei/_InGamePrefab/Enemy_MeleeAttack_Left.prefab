@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7583987934753659962}
   - component: {fileID: 387739673697377045}
   m_Layer: 6
-  m_Name: EditorView
+  m_Name: Debug_EditorView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -107,9 +107,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4631331078965245614}
   - component: {fileID: 4631331078965245615}
-  - component: {fileID: 4631331078965245610}
+  - component: {fileID: 1273740427334642712}
   m_Layer: 0
-  m_Name: Animation
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -150,7 +150,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!212 &4631331078965245610
+--- !u!212 &1273740427334642712
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -312,16 +312,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4b8c61805a99304d8f0b07aa608acb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spriteTrans: {fileID: 4631331078965245614}
-  _eyeTrans: {fileID: 4631331080168618389}
-  _weaponTrans: {fileID: 2744833655703790595}
-  _groundLayerMask:
-    serializedVersion: 2
-    m_Bits: 128
-  _enemyTypeLayerMask:
-    serializedVersion: 2
-    m_Bits: 1088
-  EnemyTypeRayOffset: {x: 1.25, y: 0.5}
+  _turnModule:
+    _sprite: {fileID: 4631331078965245614}
+    _eye: {fileID: 4631331080168618389}
+    _weapon: {fileID: 2744833655703790595}
+  _detectorModule:
+    _footPosRaySettings:
+      _distance: 1
+      _offset: {x: 0, y: 0.5, z: 0}
+      _layerMask:
+        serializedVersion: 2
+        m_Bits: 128
+    _floorRaySettings:
+      _distance: 6
+      _offset: {x: 0, y: 1.5, z: 0}
+      _layerMask:
+        serializedVersion: 2
+        m_Bits: 128
+    _enemyRaySettings:
+      _distance: 1.1
+      _offset: {x: 1.25, y: 0.5, z: 0}
+      _layerMask:
+        serializedVersion: 2
+        m_Bits: 1088
+  _rigidbodyModule:
+    _rigidbody: {fileID: 4631331079718261116}
+  _sprite: {fileID: 4631331078965245614}
 --- !u!114 &4631331079718261056
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -369,6 +385,7 @@ MonoBehaviour:
   _playerTagName: Player
   _enemyParamsSO: {fileID: 11400000, guid: 59e0555cd4dd32649959daebff9ba6df, type: 2}
   _placedFacingLeft: 1
+  _idleWhenUndiscover: 0
   _text: {fileID: 0}
 --- !u!1 &4631331080168618388
 GameObject:
@@ -408,6 +425,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4631331079718261117}
     m_Modifications:
+    - target: {fileID: 6215001629339422187, guid: f32e2aa97db2714419106a64c8e73f0e, type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
     - target: {fileID: 6215001629339422187, guid: f32e2aa97db2714419106a64c8e73f0e, type: 3}
       propertyPath: m_Name
       value: Weapon_MeleeWeapon

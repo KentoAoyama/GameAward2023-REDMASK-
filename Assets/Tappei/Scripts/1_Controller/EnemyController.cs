@@ -110,7 +110,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     /// </summary>
     public void MoveToPlayer()
     {
-        _moveBehavior.CancelMoving();
+        _moveBehavior.CancelMoveToTarget();
         _moveBehavior.StartMoveToTarget(_player, Params.RunSpeed);
     }
 
@@ -118,18 +118,16 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     /// 周囲のランダムな個所に移動する
     /// Search状態での移動をする際にステートのEnter()で呼ばれる
     /// </summary>
-    public void SearchMoving()
+    public void MoveSeachForPlayer()
     {
-        _moveBehavior.CancelMoving();
-        Transform target = _moveBehavior.GetSearchDestination(
-            Params.TurningPoint, Params.UseRandomTurningPoint);
-        _moveBehavior.StartMoveToTarget(target, Params.WalkSpeed);
+        _moveBehavior.CancelMoveToTarget();
+        _moveBehavior.StartMoveSearchForPlayer(Params.RunSpeed, Params.TurningPoint, Params.UseRandomTurningPoint);
     }
 
     /// <summary>
     /// 遷移する際に現在の移動をキャンセルするためにステートから呼ばれる
     /// </summary>
-    public void CancelMoving() => _moveBehavior.CancelMoving();
+    public void CancelMoving() => _moveBehavior.CancelMoveToTarget();
 
     /// <summary>
     /// 視界に対してプレイヤーがどの位置にいるのかを判定する
@@ -168,7 +166,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     {
         _isPause = true;
         _currentState.Value.Pause();
-        _moveBehavior.Pause();
+        _moveBehavior.OnPause();
         _animator.SetFloat(AnimationSpeedParam, 0);
     }
 
@@ -176,7 +174,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     {
         _isPause = false;
         _currentState.Value.Resume();
-        _moveBehavior.Resume();
+        _moveBehavior.OnResume();
         _animator.SetFloat(AnimationSpeedParam, GameManager.Instance.TimeController.EnemyTime);
     }
 
@@ -186,7 +184,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         if (IsDefeated) return;
 
         IsDefeated = true;
-        _performanceBehavior.Defeated(_moveBehavior.SpriteDirection);
+        _performanceBehavior.Defeated(_moveBehavior.SpriteDir);
         gameObject.layer = LayerMask.NameToLayer(DefeatedTransitionLayerName);
 
         DOVirtual.DelayedCall(Params.DefeatedStateTransitionDelay, () =>
@@ -201,20 +199,9 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     {
         if (UnityEditor.EditorApplication.isPlaying)
         {
-            DrawTurningPoint();
             DrawSight();
             DrawAttackRange();
         }
-    }
-
-    private void DrawTurningPoint()
-    {
-        float turningPoint = Params.TurningPoint;
-        Vector3 footPos = _moveBehavior.FootPos;
-
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(footPos + Vector3.right * turningPoint, 0.25f);
-        Gizmos.DrawWireSphere(footPos + Vector3.left * turningPoint, 0.25f);
     }
 
     private void DrawSight()

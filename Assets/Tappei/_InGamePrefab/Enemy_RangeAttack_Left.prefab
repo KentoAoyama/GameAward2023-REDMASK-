@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3988215833671822388}
   - component: {fileID: 3988215833671822389}
-  - component: {fileID: 3988215833671822390}
+  - component: {fileID: 1128698295246220403}
   m_Layer: 0
-  m_Name: Animation
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -53,7 +53,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!212 &3988215833671822390
+--- !u!212 &1128698295246220403
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -246,16 +246,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4b8c61805a99304d8f0b07aa608acb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spriteTrans: {fileID: 3988215833671822388}
-  _eyeTrans: {fileID: 3988215834080215047}
-  _weaponTrans: {fileID: 8381272835378975572}
-  _groundLayerMask:
-    serializedVersion: 2
-    m_Bits: 128
-  _enemyTypeLayerMask:
-    serializedVersion: 2
-    m_Bits: 1088
-  EnemyTypeRayOffset: {x: 1.25, y: 0.5}
+  _turnModule:
+    _sprite: {fileID: 3988215833671822388}
+    _eye: {fileID: 3988215834080215047}
+    _weapon: {fileID: 8381272835378975572}
+  _detectorModule:
+    _footPosRaySettings:
+      _distance: 1
+      _offset: {x: 0, y: 0.5, z: 0}
+      _layerMask:
+        serializedVersion: 2
+        m_Bits: 128
+    _floorRaySettings:
+      _distance: 6
+      _offset: {x: 0, y: 1.5, z: 0}
+      _layerMask:
+        serializedVersion: 2
+        m_Bits: 128
+    _enemyRaySettings:
+      _distance: 1.1
+      _offset: {x: 1.25, y: 0.5, z: 0}
+      _layerMask:
+        serializedVersion: 2
+        m_Bits: 1088
+  _rigidbodyModule:
+    _rigidbody: {fileID: 3988215834778814118}
+  _sprite: {fileID: 3988215833671822388}
 --- !u!114 &3988215834778814114
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -303,6 +319,7 @@ MonoBehaviour:
   _playerTagName: Player
   _enemyParamsSO: {fileID: 11400000, guid: dcbebc8bd73bb224cb873bda1e7e44b5, type: 2}
   _placedFacingLeft: 1
+  _idleWhenUndiscover: 0
   _text: {fileID: 0}
 --- !u!1 &6156873978449303552
 GameObject:

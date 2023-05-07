@@ -20,6 +20,8 @@ public class StateTypeMove : StateTypeBase
 
         _prevPos = Vector3.one * -1000;
         _timer = 0;
+
+        GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", Controller.Params.RunSEName);
     }
 
     protected override void Stay()

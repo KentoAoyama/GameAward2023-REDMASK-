@@ -21,7 +21,8 @@ public class StateTypeReflection : StateTypeBase
     {
         _delay = _shieldController.ShieldParams.StiffeningTime;
         _shieldController.PlayAnimation(AnimationName.Reflection);
-        //Debug.Log("パリィ");
+
+        GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Enemy_Damage_Shield");
     }
 
     protected override void Stay()
@@ -38,7 +39,6 @@ public class StateTypeReflection : StateTypeBase
         {
             _isPostured = true;
             Controller.PlayAnimation(AnimationName.Posture);
-            //Debug.Log("もどし");
         }
         else if (_time > _delay)
         {
@@ -52,6 +52,5 @@ public class StateTypeReflection : StateTypeBase
         _delay = 0;
         _isPostured = false;
         _shieldController.RecoverShield();
-        //Debug.Log("パリィおわり");
     }
 }

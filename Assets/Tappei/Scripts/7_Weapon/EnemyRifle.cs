@@ -13,13 +13,14 @@ public class EnemyRifle : MonoBehaviour, IEnemyWeapon
     /// </summary>
     private static Transform _poolObject;
 
-    [Header("発射する弾の設定")]
+    [Header("発射する弾に関する設定")]
     [SerializeField] private EnemyBullet _enemyBullet;
     [Tooltip("プールする敵弾の数、攻撃頻度を上げる場合はこちらも上げないといけない")]
     [SerializeField] private int _poolQuantity;
-    [Header("敵弾を発射するマズル")]
-    [Tooltip("飛ぶ方向の左右の制御はスケールのxを-1にすることで行う")]
+    [Tooltip("弾が発射されるマズル、飛ぶ方向の左右の制御はスケールのxを-1にすることで行う")]
     [SerializeField] protected Transform _muzzle;
+    [Header("攻撃時に再生される音の名前")]
+    [SerializeField] private string _attackSEName;
 
     private Stack<EnemyBullet> _pool;
 
@@ -80,6 +81,8 @@ public class EnemyRifle : MonoBehaviour, IEnemyWeapon
 
         bullet.transform.position = _muzzle.position;
         bullet.SetVelocity(GetBulletDirection());
+
+        GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", _attackSEName);
     }
 
     protected virtual Vector3 GetBulletDirection() => _muzzle.right * _muzzle.transform.localScale.x;

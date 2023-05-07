@@ -23,10 +23,11 @@ public class EnemyParamsSO : ScriptableObject
     /// </summary>
     public static readonly float MoveCancelTimeThreshold = 0.25f;
 
-    [Tooltip("Discover状態のAnimationClipを割り当てる")]
+    [Header("この項目はプランナーが弄る必要なし")]
     [SerializeField] private AnimationClip _discoverAnimClip;
-    [Tooltip("Dead状態のAnimationClipを割り当てる")]
     [SerializeField] private AnimationClip _deadAnimClip;
+    [SerializeField] private string _walkSEName;
+    [SerializeField] private string _runSEName;
 
     [Header("移動速度の設定")]
     [Tooltip("歩いて移動する際の速度")]
@@ -63,6 +64,8 @@ public class EnemyParamsSO : ScriptableObject
     {
         get => _deadAnimClip != null ? _deadAnimClip.length + DefeatedStateTransitionDelayAdd : 0;
     }
+    public string WalkSEName => _walkSEName;
+    public string RunSEName => _runSEName;
     public float WalkSpeed => _walkSpeed;
     public float RunSpeed => _runSpeed;
     public float TurningPoint => _turningPoint;

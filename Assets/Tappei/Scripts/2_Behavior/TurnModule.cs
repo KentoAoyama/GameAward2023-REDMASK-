@@ -2,29 +2,21 @@ using UnityEngine;
 
 /// <summary>
 /// 敵の各要素を進行方向に応じて左右反転させるクラス
-/// MoveBehaviorクラスが持つ
+/// MoveBehaviorクラスから使用される
 /// </summary>
+[System.Serializable]
 public class TurnModule
 {
-    private Transform _transform;
-    private Transform _sprite;
-    private Transform _eye;
-    private Transform _weapon;
-
-    public TurnModule(Transform transform, Transform sprite, Transform eye, Transform weapon)
-    {
-        _transform = transform;
-        _sprite = sprite;
-        _eye = eye;
-        _weapon = weapon;
-    }
+    [SerializeField] private Transform _sprite;
+    [SerializeField] private Transform _eye;
+    [SerializeField] private Transform _weapon;
 
     /// <summary>
     /// ターゲットの位置に応じて回転させる
     /// </summary>
-    public void TurnTowardsTarget(Vector3 targetPos)
+    public void TurnTowardsTarget(Vector3 targetPos, Transform transform)
     {
-        int dir = GetDirectionTowardsTarget(targetPos, _transform);
+        int dir = GetDirectionTowardsTarget(targetPos, transform);
         UpdateSpriteDirection(dir, _sprite);
         UpdateEyePositionAndDirection(dir, _eye);
         UpdateWeaponPositionAndDirection(dir, _weapon);
