@@ -14,35 +14,58 @@ public class StateTypeMoveExtend : StateTypeMove
 
     protected override void Stay()
     {
-        if (Controller.IsDefeated)
-        {
-            TryChangeState(StateType.Defeated);
-            return;
-        }
+        if (TransitionDefeated()) return;
+        if (TransitionReflection()) return;
+        if (Transition()) return;
+        if (TransitionAtMoveCancel()) return;
+    }
 
+    /// <summary>
+    /// ’e‚ğ”½Ë‚µ‚½‚çReflectionó‘Ô‚É‘JˆÚ‚·‚é
+    /// </summary>
+    private bool TransitionReflection()
+    {
         if (_shieldController.IsReflect)
         {
-            _shieldController.LastStateType = StateType.DiscoverExtend;
+            _shieldController.LastStateType = StateType.MoveExtend;
             TryChangeState(StateType.Reflection);
-            return;
+            return true;
         }
 
-        if (IsMoveCancel())
-        {
-            TryChangeState(StateType.IdleExtend);
-            return;
-        }
+        return false;
+    }
 
+    /// <summary>
+    /// ‹ŠE‚©‚çŠO‚ê‚½‚çIdleó‘Ô‚ÉAUŒ‚”ÍˆÍ“à‚É“ü‚Á‚½‚çAttackó‘Ô‚É‘JˆÚ‚·‚é
+    /// </summary>
+    private bool Transition()
+    {
         SightResult result = Controller.LookForPlayerInSight();
         if (result == SightResult.OutSight)
         {
             TryChangeState(StateType.IdleExtend);
-            return;
+            return true;
         }
         else if (result == SightResult.InAttackRange)
         {
             TryChangeState(StateType.AttackExtend);
-            return;
+            return true;
         }
+
+        return false;
+    }
+
+    /// <summary>
+    /// ˆÚ“®‚ªƒLƒƒƒ“ƒZƒ‹‚³‚ê‚½ê‡‚ÍIdleó‘Ô‚É‘JˆÚ‚·‚é
+    /// </summary>
+    private bool TransitionAtMoveCancel()
+    {
+        if (IsMoveCancel())
+        {
+            TryChangeState(StateType.IdleExtend);
+            return true;
+        }
+
+        return false;
     }
 }

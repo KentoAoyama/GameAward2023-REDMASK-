@@ -24,30 +24,43 @@ public class StateTypeIdle : StateTypeBase
     {
         Controller.UpdateIdle();
 
-        if (Controller.IsDefeated)
-        {
-            TryChangeState(StateType.Defeated);
-            return;
-        }
-
-        SightResult result = Controller.LookForPlayerInSight();
-        if (result == SightResult.InSight || result == SightResult.InAttackRange)
-        {
-            TryChangeState(StateType.Discover);
-            return;
-        }
-
-        float timeScale = GameManager.Instance.TimeController.EnemyTime;
-        _time += timeScale * Time.deltaTime;
-        if (_time > _delay)
-        {
-            TryChangeState(Controller.IdleWhenUndiscover ? StateType.Idle : StateType.Search);
-            return;
-        }
+        if (TransitionDefeated()) return;
+        if (Transition()) return;
+        if (TransitionAtTimeElapsed()) return;
     }
 
     protected override void Exit()
     {
         _time = 0;
+    }
+
+    /// <summary>
+    /// ‹ŠE“à/UŒ‚”ÍˆÍ“à‚É“ü‚Á‚½‚çDiscoveró‘Ô‚É‘JˆÚ‚·‚é
+    /// </summary>
+    private bool Transition()
+    {
+        SightResult result = Controller.LookForPlayerInSight();
+        if (result == SightResult.InSight || result == SightResult.InAttackRange)
+        {
+            TryChangeState(StateType.Discover);
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// ŠÔŒo‰ß‚ÅIdle‚à‚µ‚­‚ÍSearchó‘Ô‚É‘JˆÚ‚·‚é
+    /// </summary>
+    private bool TransitionAtTimeElapsed()
+    {
+        _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime;
+        if (_time > _delay)
+        {
+            TryChangeState(Controller.IdleWhenUndiscover ? StateType.Idle : StateType.Search);
+            return true;
+        }
+
+        return false;
     }
 }

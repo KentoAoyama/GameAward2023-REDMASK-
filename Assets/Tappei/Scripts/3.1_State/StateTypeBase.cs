@@ -51,21 +51,27 @@ public abstract class StateTypeBase
     }
 
     protected virtual void Enter() { }
+    protected virtual void Stay() { }
+    protected virtual void Exit() { }
 
-    protected virtual void Stay()
+    /// <summary>
+    /// 撃破された場合の処理はDefeated状態以外は共通処理なので基底クラスに実装してある
+    /// 遷移する場合はtrueが返る
+    /// </summary>
+    protected bool TransitionDefeated()
     {
-        // 撃破された場合の処理はDefeated状態以外は共通処理なので基底クラスに書いてある
         if (Controller.IsDefeated)
         {
             TryChangeState(StateType.Defeated);
-            return;
+            return true;
         }
-    }
 
-    protected virtual void Exit() { }
+        return false;
+    }
 
     public virtual void OnPause() { }
     public virtual void OnResume() { }
+
 
     /// <summary>
     /// Enter()が呼ばれてかつ、ステートの遷移処理を呼んでいない場合のみ遷移可能

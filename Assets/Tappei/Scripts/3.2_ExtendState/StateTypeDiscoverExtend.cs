@@ -15,33 +15,46 @@ public class StateTypeDiscoverExtend : StateTypeDiscover
 
     protected override void Stay()
     {
-        if (Controller.IsDefeated)
-        {
-            TryChangeState(StateType.Defeated);
-            return;
-        }
+        if (TransitionDefeated()) return;
+        if (TransitionReflection()) return;
+        if (Transition()) return;
+    }
 
+    /// <summary>
+    /// ’e‚ğ”½Ë‚µ‚½‚çReflectionó‘Ô‚É‘JˆÚ‚·‚é
+    /// </summary>
+    private bool TransitionReflection()
+    {
         if (_shieldController.IsReflect)
         {
             _shieldController.LastStateType = StateType.DiscoverExtend;
             TryChangeState(StateType.Reflection);
-            return;
+            return true;
         }
 
-        // ˆê“x”­Œ©‚µ‚½‚ç‹ŠE‚ÌŠO‚Éo‚Ä‚µ‚Ü‚Á‚½ê‡‚Å‚àˆê“xMoveó‘Ô‚É‘JˆÚ‚·‚é
+        return false;
+    }
+
+    /// <summary>
+    /// ˆê“x”­Œ©‚µ‚½‚ç‹ŠE‚ÌŠO‚Éo‚Ä‚µ‚Ü‚Á‚½ê‡‚Å‚àˆê“xMoveó‘Ô‚É‘JˆÚ‚·‚é
+    /// </summary>
+    private bool Transition()
+    {
         SightResult result = Controller.LookForPlayerInSight();
         if (_isTransitionable)
         {
             if (result == SightResult.InSight || result == SightResult.OutSight)
             {
                 TryChangeState(StateType.MoveExtend);
+                return true;
             }
             else
             {
                 TryChangeState(StateType.AttackExtend);
+                return true;
             }
-
-            return;
         }
+
+        return false;
     }
 }

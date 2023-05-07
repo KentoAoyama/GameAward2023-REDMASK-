@@ -20,9 +20,9 @@ public class StateTypeAttack : StateTypeBase
 
     protected override void Stay()
     {
-        base.Stay();
+        if (TransitionDefeated()) return;
         AttackAtInterval();
-        Transition();
+        if (Transition()) return;
     }
 
     /// <summary>
@@ -41,16 +41,20 @@ public class StateTypeAttack : StateTypeBase
     /// <summary>
     /// ‹ŠE‚©‚çŠO‚ê‚½‚çIdleó‘Ô‚ÉAUŒ‚”ÍˆÍ‚©‚çŠO‚ê‚½‚çMoveó‘Ô‚É‘JˆÚ‚·‚é
     /// </summary>
-    private void Transition()
+    private bool Transition()
     {
         SightResult result = Controller.LookForPlayerInSight();
         if (result == SightResult.OutSight)
         {
             TryChangeState(StateType.Idle);
+            return true;
         }
         else if (result == SightResult.InSight)
         {
             TryChangeState(StateType.Move);
+            return true;
         }
+
+        return false;
     }
 }

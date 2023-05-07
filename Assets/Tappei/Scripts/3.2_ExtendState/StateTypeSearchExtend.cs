@@ -17,25 +17,9 @@ public class StateTypeSearchExtend : StateTypeSearch
 
     protected override void Stay()
     {
-        if (Controller.IsDefeated)
-        {
-            TryChangeState(StateType.Defeated);
-            return;
-        }
-
-        if (_shieldController.IsReflect)
-        {
-            _shieldController.LastStateType = StateType.SearchExtend;
-            TryChangeState(StateType.Reflection);
-            return;
-        }
-
-        SightResult result = Controller.LookForPlayerInSight();
-        if (result == SightResult.InSight || result == SightResult.InAttackRange)
-        {
-            TryChangeState(StateType.DiscoverExtend);
-            return;
-        }
+        if (TransitionDefeated()) return;
+        if (TransitionReflection()) return;
+        if (Transition()) return;
 
         _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime;
         float interval = Controller.Params.TurningPoint / Controller.Params.WalkSpeed;
@@ -44,5 +28,35 @@ public class StateTypeSearchExtend : StateTypeSearch
             _time = 0;
             TryChangeState(StateType.IdleExtend);
         }
+    }
+
+    /// <summary>
+    /// ’e‚ğ”½Ë‚µ‚½‚çReflectionó‘Ô‚É‘JˆÚ‚·‚é
+    /// </summary>
+    private bool TransitionReflection()
+    {
+        if (_shieldController.IsReflect)
+        {
+            _shieldController.LastStateType = StateType.SearchExtend;
+            TryChangeState(StateType.Reflection);
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// ‹ŠE“à/UŒ‚”ÍˆÍ“à‚É“ü‚Á‚½‚çDiscoveró‘Ô‚É‘JˆÚ‚·‚é
+    /// </summary>
+    private bool Transition()
+    {
+        SightResult result = Controller.LookForPlayerInSight();
+        if (result == SightResult.InSight || result == SightResult.InAttackRange)
+        {
+            TryChangeState(StateType.DiscoverExtend);
+            return true;
+        }
+
+        return false;
     }
 }

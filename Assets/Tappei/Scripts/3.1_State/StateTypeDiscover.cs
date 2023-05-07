@@ -29,32 +29,36 @@ public class StateTypeDiscover : StateTypeBase
 
     protected override void Stay()
     {
-        if (Controller.IsDefeated)
-        {
-            TryChangeState(StateType.Defeated);
-            return;
-        }
-
-        // 一度発見したら視界の外に出てしまった場合でも一度Move状態に遷移する
-        SightResult result = Controller.LookForPlayerInSight();
-        if (_isTransitionable)
-        {
-            if (result == SightResult.InSight || result == SightResult.OutSight)
-            {
-                TryChangeState(StateType.Move);
-            }
-            else
-            {
-                TryChangeState(StateType.Attack);
-            }
-
-            return;
-        }
+        if (TransitionDefeated()) return;
+        if (Transition()) return;
     }
 
     protected override void Exit()
     {
         _tween.Kill();
         _isTransitionable = false;
+    }
+
+    /// <summary>
+    /// 一度発見したら視界の外に出てしまった場合でも一度Move状態に遷移する
+    /// </summary>
+    private bool Transition()
+    {
+        SightResult result = Controller.LookForPlayerInSight();
+        if (_isTransitionable)
+        {
+            if (result == SightResult.InSight || result == SightResult.OutSight)
+            {
+                TryChangeState(StateType.Move);
+                return true;
+            }
+            else
+            {
+                TryChangeState(StateType.Attack);
+                return true;
+            }
+        }
+
+        return false;
     }
 }
