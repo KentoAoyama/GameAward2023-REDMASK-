@@ -218,6 +218,7 @@ GameObject:
   - component: {fileID: 4631331079718261056}
   - component: {fileID: 4631331079718261063}
   - component: {fileID: 4631331079718261062}
+  - component: {fileID: -3756041871909875656}
   m_Layer: 6
   m_Name: Enemy_MeleeAttack_Left
   m_TagString: Enemy
@@ -397,6 +398,20 @@ MonoBehaviour:
   _placedFacingLeft: 1
   _idleWhenUndiscover: 0
   _text: {fileID: 0}
+--- !u!114 &-3756041871909875656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4631331079718261061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa4aef6dbcf693b44b20baa25f1f17aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _eye: {fileID: 4631331080168618389}
+  _controller: {fileID: 0}
 --- !u!1 &4631331080168618388
 GameObject:
   m_ObjectHideFlags: 0
