@@ -397,24 +397,34 @@ MonoBehaviour:
     _eye: {fileID: 441480885910638407}
     _weapon: {fileID: 3279374071047124308}
   _detectorModule:
+    _onGroundIdleRaySettings:
+      _distance: 0.3
+      _offset: {x: 0, y: 0.05, z: 0}
+      _layerMask:
+        serializedVersion: 2
+        m_Bits: 128
+      _isVisible: 1
     _footPosRaySettings:
       _distance: 1
       _offset: {x: 0, y: 0.5, z: 0}
       _layerMask:
         serializedVersion: 2
         m_Bits: 128
+      _isVisible: 0
     _floorRaySettings:
       _distance: 6
       _offset: {x: 0, y: 1.5, z: 0}
       _layerMask:
         serializedVersion: 2
         m_Bits: 128
+      _isVisible: 0
     _enemyRaySettings:
       _distance: 1.1
       _offset: {x: 1.25, y: 0.5, z: 0}
       _layerMask:
         serializedVersion: 2
         m_Bits: 1088
+      _isVisible: 0
   _rigidbodyModule:
     _rigidbody: {fileID: 441480886372639673}
   _sprite: {fileID: 441480884754228600}
