@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UniRx;
+using UniRx.Triggers;
 
 /// <summary>
 /// ドローンが使用する武器のクラス
@@ -12,36 +14,43 @@ public class EnemyDroneRifle : EnemyRifle
     [SerializeField] private bool _isLinkEnemyParams = true;
 
     private Transform _player;
-    private SightSensor _sightSensor;
-    private float _sightRadius = 10;
-    private float _maxAngle = 360;
-
-    protected override void Awake()
-    {
-        _sightSensor = GetComponent<SightSensor>();
-
-        if (_isLinkEnemyParams)
-        {
-            InitParams();
-        }
-
-        base.Awake();
-    }
+    /// <summary>
+    /// デフォルトの視界の半径
+    /// </summary>
+    private static float _sightRadius = 10;
+    /// <summary>
+    /// デフォルトの視界の角度
+    /// </summary>
+    private static float _maxAngle = 360;
 
     private void Start()
+    {
+        InitOnStart();
+    }
+
+    protected override void InitOnAwake()
+    {
+        base.InitOnAwake();
+
+        if (_isLinkEnemyParams) InitParams();
+
+        // プレイヤーの方を向く
+        this.UpdateAsObservable().Subscribe(_ =>
+        {
+            SightSensor sightSensor = GetComponent<SightSensor>();
+            SightResult result = sightSensor.LookForPlayerInSight(_sightRadius, _maxAngle, _sightRadius);
+            if (result == SightResult.OutSight) return;
+
+            TurnToPlayer();
+        });
+    }
+
+    private void InitOnStart()
     {
         _player = GameObject.FindGameObjectWithTag(_playerTagName).transform;
     }
 
-    private void Update()
-    {
-        SightResult result = _sightSensor.LookForPlayerInSight(_sightRadius,_maxAngle,_sightRadius);
-        if (result == SightResult.OutSight) return;
-
-        TurnToPlayer();
-    }
-
-    void TurnToPlayer()
+    private void TurnToPlayer()
     {
         Vector3 dir = _player.transform.position - transform.position;
         transform.right = dir * transform.localScale.x;

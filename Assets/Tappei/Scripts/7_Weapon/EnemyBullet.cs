@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
+using UniRx.Triggers;
 
 /// <summary>
 /// 指定した方向にまっすぐ飛ぶ敵弾のクラス
@@ -7,9 +9,6 @@ using UnityEngine;
 /// </summary>
 public class EnemyBullet : MonoBehaviour, IPausable, IDamageable
 {
-    /// <summary>途中で消えて違和感あるようだったらこの値を大きくする</summary>
-    private static float LifeTime = 3.0f;
-
     [Header("ヒットするタグの設定")]
     [Tooltip("プレイヤーのタグ")]
     [SerializeField, TagName] private string PlayerTagName;
@@ -21,70 +20,73 @@ public class EnemyBullet : MonoBehaviour, IPausable, IDamageable
     private Transform _transform;
     private Stack<EnemyBullet> _pool;
     private Vector3 _velocity;
-    private float _timer;
+    private float _time;
     private bool _isPause;
 
     private void Awake()
     {
+        InitOnAwake();
+    }
+
+    private void InitOnAwake()
+    {
+        this.OnEnableAsObservable().Subscribe(_ => GameManager.Instance.PauseManager.Register(this));
+        this.OnDisableAsObservable().Subscribe(_ => GameManager.Instance.PauseManager.Lift(this));
+
         _transform = transform;
+
+        // 一定時間前方に飛んでプールに戻る
+        this.UpdateAsObservable().Where(_ => !_isPause).Subscribe(_ =>
+        {
+            float deltaTime = Time.deltaTime * GameManager.Instance.TimeController.EnemyTime;
+            // 途中で消えて違和感あるようだったらこの値を大きくする
+            float lifeTime = 3.0f;
+
+            _time += deltaTime;
+            if (_time > lifeTime)
+            {
+                ReturnPool();
+            }
+            else
+            {
+                _transform.Translate(_velocity * deltaTime);
+            }
+        });
+
+        // プレイヤーにヒットしたらプールに戻る
+        this.OnTriggerEnter2DAsObservable().Subscribe(c =>
+        {
+            if (c.CompareTag(PlayerTagName) && c.gameObject.TryGetComponent(out IDamageable damageable))
+            {
+                damageable.Damage();
+                ReturnPool();
+            }
+            else if (c.CompareTag(WallTagName))
+            {
+                ReturnPool();
+            }
+        });
     }
 
-    private void OnEnable()
-    {
-        GameManager.Instance.PauseManager.Register(this);
-    }
-
-    private void OnDisable()
-    {
-        GameManager.Instance.PauseManager.Lift(this);
-    }
-
-    public void Pause() => _isPause = true;
-    public void Resume() => _isPause = false;
-
-    /// <summary>弾が生成された際にEnemyRifleクラスから呼び出される</summary>
+    /// <summary>
+    /// 弾が生成された際にEnemyRifleクラスから呼び出される
+    /// </summary>
     public void InitSetPool(Stack<EnemyBullet> pool) => _pool = pool;
-    /// <summary>発射される際にEnemyRifleクラスから呼び出される</summary>
+    /// <summary>
+    /// 発射される際にEnemyRifleクラスから呼び出される
+    /// </summary>
     public void SetVelocity(Vector3 dir) => _velocity = dir * _speed;
-
-    void Update()
-    {
-        if (_isPause) return;
-
-        float deltaTime = Time.deltaTime * GameManager.Instance.TimeController.EnemyTime;
-
-        _timer += deltaTime;
-        if (_timer > LifeTime)
-        {
-            ReturnPool();
-        }
-        else
-        {
-            _transform.Translate(_velocity * deltaTime);
-        }
-    }
-
-    /// <summary>このメソッドを呼ぶことでプールに戻す</summary>
+    /// <summary>
+    /// このメソッドを呼ぶことでプールに戻す
+    /// </summary>
     private void ReturnPool()
     {
-        _timer = 0;
+        _time = 0;
         gameObject.SetActive(false);
         _pool?.Push(this);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag(PlayerTagName) &&
-            collision.gameObject.TryGetComponent(out IDamageable damageable))
-        {
-            damageable.Damage();
-            ReturnPool();
-        }
-        else if (collision.CompareTag(WallTagName))
-        {
-            ReturnPool();
-        }
-    }
-
+    public void Pause() => _isPause = true;
+    public void Resume() => _isPause = false;
     public void Damage() => ReturnPool();
 }

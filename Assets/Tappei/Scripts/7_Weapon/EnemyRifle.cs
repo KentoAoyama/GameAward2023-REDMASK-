@@ -24,7 +24,15 @@ public class EnemyRifle : MonoBehaviour, IEnemyWeapon
 
     private Stack<EnemyBullet> _pool;
 
-    protected virtual void Awake()
+    private void Awake()
+    {
+        InitOnAwake();
+    }
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private void ReleasePoolObjectInstance() => _poolObject = null;
+
+    protected virtual void InitOnAwake()
     {
         if (_poolObject == null)
         {
@@ -34,9 +42,6 @@ public class EnemyRifle : MonoBehaviour, IEnemyWeapon
         _pool = new Stack<EnemyBullet>(_poolQuantity);
         CreatePool();
     }
-
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    private void ReleasePoolObjectInstance() => _poolObject = null;
 
     private void CreatePoolObject()
     {
@@ -81,7 +86,12 @@ public class EnemyRifle : MonoBehaviour, IEnemyWeapon
 
         bullet.transform.position = _muzzle.position;
         bullet.SetVelocity(GetBulletDirection());
+
+        GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", _attackSEName);
     }
 
+    /// <summary>
+    /// このメソッドをオーバーライドすることで弾を飛ばす方向を変更できる
+    /// </summary>
     protected virtual Vector3 GetBulletDirection() => _muzzle.right * _muzzle.transform.localScale.x;
 }
