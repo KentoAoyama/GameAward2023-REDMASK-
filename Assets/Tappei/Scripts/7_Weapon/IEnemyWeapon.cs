@@ -1,6 +1,6 @@
-/// <summary>
-/// �G�̕���Ƃ��Ĉ�����悤�ɂȂ�C���^�[�t�F�[�X
-/// AttackBehavior����Ăяo�����
+﻿/// <summary>
+/// 敵の武器として扱えるようになるインターフェース
+/// AttackBehaviorから呼び出される
 /// </summary>
 public interface IEnemyWeapon
 {

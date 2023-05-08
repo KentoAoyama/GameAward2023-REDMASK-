@@ -1,9 +1,9 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// ‚‚¿—p
-/// ƒvƒŒƒCƒ„[‚ğ’T‚·‚½‚ß‚ÉˆÚ“®‚·‚éó‘Ô‚ÌƒNƒ‰ƒX
-/// ŠÔŒo‰ß‚ÅIdleó‘Ô‚É‘JˆÚ‚·‚é
+/// ç›¾æŒã¡ç”¨
+/// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’æ¢ã™ãŸã‚ã«ç§»å‹•ã™ã‚‹çŠ¶æ…‹ã®ã‚¯ãƒ©ã‚¹
+/// æ™‚é–“çµŒéã§IdleçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
 /// </summary>
 public class StateTypeSearchExtend : StateTypeSearch
 {
@@ -24,7 +24,7 @@ public class StateTypeSearchExtend : StateTypeSearch
     }
 
     /// <summary>
-    /// ’e‚ğ”½Ë‚µ‚½‚çReflectionó‘Ô‚É‘JˆÚ‚·‚é
+    /// å¼¾ã‚’åå°„ã—ãŸã‚‰ReflectionçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
     /// </summary>
     private bool TransitionReflection()
     {
@@ -39,7 +39,7 @@ public class StateTypeSearchExtend : StateTypeSearch
     }
 
     /// <summary>
-    /// ‹ŠE“à/UŒ‚”ÍˆÍ“à‚É“ü‚Á‚½‚çDiscoveró‘Ô‚É‘JˆÚ‚·‚é
+    /// è¦–ç•Œå†…/æ”»æ’ƒç¯„å›²å†…ã«å…¥ã£ãŸã‚‰DiscoverçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
     /// </summary>
     private bool Transition()
     {
@@ -54,16 +54,14 @@ public class StateTypeSearchExtend : StateTypeSearch
     }
 
     /// <summary>
-    /// ˆê’èŠÔ‚ªŒo‰ß‚µ‚½‚çIdleó‘Ô‚É‘JˆÚ‚·‚é
+    /// ä¸€å®šæ™‚é–“ãŒçµŒéã—ãŸã‚‰IdleçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
     /// </summary>
-    /// <returns></returns>
     private bool TransitionAtTimeElapsed()
     {
         _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime;
         float interval = Controller.Params.TurningPoint / Controller.Params.WalkSpeed;
         if (_time > interval)
         {
-            _time = 0;
             TryChangeState(StateType.IdleExtend);
             return true;
         }

@@ -1,21 +1,21 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// w’è‚µ‚½•ûŒü‚É‚Ü‚Á‚·‚®”ò‚Ô“G’e‚ÌƒNƒ‰ƒX
-/// EnemyRifleƒNƒ‰ƒX‚Éƒv[ƒ‹‚³‚ê‚Ä‚¨‚èA”­Ë‚·‚éÛ‚ÉƒAƒNƒeƒBƒu‚É‚È‚é
+/// æŒ‡å®šã—ãŸæ–¹å‘ã«ã¾ã£ã™ãé£›ã¶æ•µå¼¾ã®ã‚¯ãƒ©ã‚¹
+/// EnemyRifleã‚¯ãƒ©ã‚¹ã«ãƒ—ãƒ¼ãƒ«ã•ã‚Œã¦ãŠã‚Šã€ç™ºå°„ã™ã‚‹éš›ã«ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ãªã‚‹
 /// </summary>
 public class EnemyBullet : MonoBehaviour, IPausable, IDamageable
 {
-    /// <summary>“r’†‚ÅÁ‚¦‚Äˆá˜aŠ´‚ ‚é‚æ‚¤‚¾‚Á‚½‚ç‚±‚Ì’l‚ğ‘å‚«‚­‚·‚é</summary>
+    /// <summary>é€”ä¸­ã§æ¶ˆãˆã¦é•å’Œæ„Ÿã‚ã‚‹ã‚ˆã†ã ã£ãŸã‚‰ã“ã®å€¤ã‚’å¤§ããã™ã‚‹</summary>
     private static float LifeTime = 3.0f;
 
-    [Header("ƒqƒbƒg‚·‚éƒ^ƒO‚Ìİ’è")]
-    [Tooltip("ƒvƒŒƒCƒ„[‚Ìƒ^ƒO")]
+    [Header("ãƒ’ãƒƒãƒˆã™ã‚‹ã‚¿ã‚°ã®è¨­å®š")]
+    [Tooltip("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚¿ã‚°")]
     [SerializeField, TagName] private string PlayerTagName;
-    [Tooltip("•Ç‚È‚Ç‚ÌƒXƒe[ƒW“à‚ÌƒIƒuƒWƒFƒNƒg‚Ìƒ^ƒO")]
+    [Tooltip("å£ãªã©ã®ã‚¹ãƒ†ãƒ¼ã‚¸å†…ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¿ã‚°")]
     [SerializeField, TagName] private string WallTagName;
-    [Header("’e‚Ìİ’è")]
+    [Header("å¼¾ã®è¨­å®š")]
     [SerializeField] private float _speed;
 
     private Transform _transform;
@@ -42,9 +42,9 @@ public class EnemyBullet : MonoBehaviour, IPausable, IDamageable
     public void Pause() => _isPause = true;
     public void Resume() => _isPause = false;
 
-    /// <summary>’e‚ª¶¬‚³‚ê‚½Û‚ÉEnemyRifleƒNƒ‰ƒX‚©‚çŒÄ‚Ño‚³‚ê‚é</summary>
+    /// <summary>å¼¾ãŒç”Ÿæˆã•ã‚ŒãŸéš›ã«EnemyRifleã‚¯ãƒ©ã‚¹ã‹ã‚‰å‘¼ã³å‡ºã•ã‚Œã‚‹</summary>
     public void InitSetPool(Stack<EnemyBullet> pool) => _pool = pool;
-    /// <summary>”­Ë‚³‚ê‚éÛ‚ÉEnemyRifleƒNƒ‰ƒX‚©‚çŒÄ‚Ño‚³‚ê‚é</summary>
+    /// <summary>ç™ºå°„ã•ã‚Œã‚‹éš›ã«EnemyRifleã‚¯ãƒ©ã‚¹ã‹ã‚‰å‘¼ã³å‡ºã•ã‚Œã‚‹</summary>
     public void SetVelocity(Vector3 dir) => _velocity = dir * _speed;
 
     void Update()
@@ -64,7 +64,7 @@ public class EnemyBullet : MonoBehaviour, IPausable, IDamageable
         }
     }
 
-    /// <summary>‚±‚Ìƒƒ\ƒbƒh‚ğŒÄ‚Ô‚±‚Æ‚Åƒv[ƒ‹‚É–ß‚·</summary>
+    /// <summary>ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã¶ã“ã¨ã§ãƒ—ãƒ¼ãƒ«ã«æˆ»ã™</summary>
     private void ReturnPool()
     {
         _timer = 0;

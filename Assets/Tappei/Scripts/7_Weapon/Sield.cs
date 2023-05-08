@@ -1,16 +1,16 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.Events;
 
 /// <summary>
-/// ‚‚¿‚Ì“G‚ª‘•”õ‚·‚é‚
-/// ˆê“x’e‚ğó‚¯‚½‚ç”CˆÓ‚Ìƒ^ƒCƒ~ƒ“ƒO‚Ü‚Å–³Œø‰»‚³‚ê‚é
+/// ç›¾æŒã¡ã®æ•µãŒè£…å‚™ã™ã‚‹ç›¾
+/// ä¸€åº¦å¼¾ã‚’å—ã‘ãŸã‚‰ä»»æ„ã®ã‚¿ã‚¤ãƒŸãƒ³ã‚°ã¾ã§ç„¡åŠ¹åŒ–ã•ã‚Œã‚‹
 /// </summary>
 public class Sield : MonoBehaviour, IDamageable
 {
     private Collider2D _collider;
 
     /// <summary>
-    /// ‚‚ÉƒvƒŒƒCƒ„[‚Ì’e‚ªƒqƒbƒg‚µ‚½‚Æ‚«‚ÌƒR[ƒ‹ƒoƒbƒN
+    /// ç›¾ã«ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å¼¾ãŒãƒ’ãƒƒãƒˆã—ãŸã¨ãã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯
     /// </summary>
     public UnityAction OnDamaged;
 
@@ -26,7 +26,7 @@ public class Sield : MonoBehaviour, IDamageable
     }
 
     /// <summary>
-    /// ŠO•”‚©‚ç‚±‚Ìƒƒ\ƒbƒh‚ğŒÄ‚Ô‚±‚Æ‚Å‚‚ª—LŒø‰»‚³‚ê‚é
+    /// å¤–éƒ¨ã‹ã‚‰ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã¶ã“ã¨ã§ç›¾ãŒæœ‰åŠ¹åŒ–ã•ã‚Œã‚‹
     /// </summary>
     public void Recover() => _collider.enabled = true;
 }

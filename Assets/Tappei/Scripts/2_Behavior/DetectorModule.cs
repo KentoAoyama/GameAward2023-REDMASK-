@@ -1,8 +1,8 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// Ray‚ğ”ò‚Î‚µ‚ÄƒIƒuƒWƒFƒNƒg‚ğŒŸ’m‚·‚éƒNƒ‰ƒX
-/// MoveBehaviorƒNƒ‰ƒX‚©‚çg—p‚³‚ê‚é
+/// Rayã‚’é£›ã°ã—ã¦ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ¤œçŸ¥ã™ã‚‹ã‚¯ãƒ©ã‚¹
+/// MoveBehaviorã‚¯ãƒ©ã‚¹ã‹ã‚‰ä½¿ç”¨ã•ã‚Œã‚‹
 /// </summary>
 [System.Serializable]
 public class DetectorModule
@@ -16,18 +16,18 @@ public class DetectorModule
         public bool _isVisible;
     }
 
-    [Tooltip("‚±‚ÌRay‚Í¶‰E‚ÌŒü‚«‚É‰‚¶‚Ä”½“]‚µ‚È‚¢‚Ì‚Å’ˆÓ")]
+    [Tooltip("ã“ã®Rayã¯å·¦å³ã®å‘ãã«å¿œã˜ã¦åè»¢ã—ãªã„ã®ã§æ³¨æ„")]
     [SerializeField] private RaySettings _onGroundIdleRaySettings;
-    [Tooltip("‚±‚ÌRay‚Í¶‰E‚ÌŒü‚«‚É‰‚¶‚Ä”½“]‚µ‚È‚¢‚Ì‚Å’ˆÓ")]
+    [Tooltip("ã“ã®Rayã¯å·¦å³ã®å‘ãã«å¿œã˜ã¦åè»¢ã—ãªã„ã®ã§æ³¨æ„")]
     [SerializeField] private RaySettings _footPosRaySettings;
-    [Tooltip("‚±‚ÌRay‚Í¶‰E‚ÌŒü‚«‚É‰‚¶‚Ä”½“]‚µ‚È‚¢‚Ì‚Å’ˆÓ")]
+    [Tooltip("ã“ã®Rayã¯å·¦å³ã®å‘ãã«å¿œã˜ã¦åè»¢ã—ãªã„ã®ã§æ³¨æ„")]
     [SerializeField] private RaySettings _floorRaySettings;
-    [Tooltip("©g‚ÌƒRƒ‰ƒCƒ_[‚Æ‚Ô‚Â‚©‚ç‚È‚¢‚æ‚¤‚Éİ’è‚·‚é•K—v‚ª‚ ‚é")]
+    [Tooltip("è‡ªèº«ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã¨ã¶ã¤ã‹ã‚‰ãªã„ã‚ˆã†ã«è¨­å®šã™ã‚‹å¿…è¦ãŒã‚ã‚‹")]
     [SerializeField] private RaySettings _enemyRaySettings;
 
     /// <summary>
-    /// ‘«Œ³(^‰º)‚ÉŒü‚©‚Á‚ÄRay‚ğ”ò‚Î‚·‚±‚Æ‚Å°‚Ìã‚É‚¢‚é‚©‚ğ”»’è‚·‚é
-    /// °‚Ìã‚É‚¢‚éê‡‚Í‚»‚ÌÀ•W‚ğ•Ô‚·‚±‚Æ‚ÅƒLƒƒƒ‰ƒNƒ^[‚Ì‘«Œ³‚ÌŠî€‚É‚È‚éÀ•W‚ğXV‚·‚é
+    /// è¶³å…ƒ(çœŸä¸‹)ã«å‘ã‹ã£ã¦Rayã‚’é£›ã°ã™ã“ã¨ã§åºŠã®ä¸Šã«ã„ã‚‹ã‹ã‚’åˆ¤å®šã™ã‚‹
+    /// åºŠã®ä¸Šã«ã„ã‚‹å ´åˆã¯ãã®åº§æ¨™ã‚’è¿”ã™ã“ã¨ã§ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®è¶³å…ƒã®åŸºæº–ã«ãªã‚‹åº§æ¨™ã‚’æ›´æ–°ã™ã‚‹
     /// </summary>
     public bool DetectOnGroundIdle(Vector3 center, out Vector3 hitPos)
     {
@@ -35,8 +35,8 @@ public class DetectorModule
     }
 
     /// <summary>
-    /// ‘«Œ³(^‰º)‚ÉŒü‚©‚Á‚ÄRay‚ğ”ò‚Î‚·‚±‚Æ‚Å°‚Ìã‚É‚¢‚é‚©‚ğ”»’è‚·‚é
-    /// Idleó‘Ô‚ÆSearchó‘Ô‚Å•ÊX‚Ìİ’è‚ğg—p‚·‚é‚Ì‚Åƒƒ\ƒbƒh‚ğ•ª‚¯‚Ä‚¢‚é
+    /// è¶³å…ƒ(çœŸä¸‹)ã«å‘ã‹ã£ã¦Rayã‚’é£›ã°ã™ã“ã¨ã§åºŠã®ä¸Šã«ã„ã‚‹ã‹ã‚’åˆ¤å®šã™ã‚‹
+    /// IdleçŠ¶æ…‹ã¨SearchçŠ¶æ…‹ã§åˆ¥ã€…ã®è¨­å®šã‚’ä½¿ç”¨ã™ã‚‹ã®ã§ãƒ¡ã‚½ãƒƒãƒ‰ã‚’åˆ†ã‘ã¦ã„ã‚‹
     /// </summary>
     public bool DetectFootPos(Vector3 center, out Vector3 hitPos)
     {
@@ -57,11 +57,11 @@ public class DetectorModule
     }
 
     /// <summary>
-    /// Î‚ß‘O‚ÉRay‚ğ”ò‚Î‚·‚±‚Æ‚Åi‚ñ‚¾æ‚É°‚ª‚ ‚é‚©‚ğ”»’è‚·‚é
+    /// æ–œã‚å‰ã«Rayã‚’é£›ã°ã™ã“ã¨ã§é€²ã‚“ã å…ˆã«åºŠãŒã‚ã‚‹ã‹ã‚’åˆ¤å®šã™ã‚‹
     /// </summary>
     public bool DetectFloorInFront(int dir, Transform transform)
     {
-        // Ray‚ÌÎ‚ß‰º‚ÌŒü‚«‰ÁŒ¸
+        // Rayã®æ–œã‚ä¸‹ã®å‘ãåŠ æ¸›
         float y = -2.0f;
 
         Vector3 rayOrigin = transform.position + _floorRaySettings._offset;
@@ -77,8 +77,8 @@ public class DetectorModule
     }
 
     /// <summary>
-    /// ³–Ê‚ÉŒü‚©‚Á‚ÄRay‚ğ”ò‚Î‚·‚±‚Æ‚Å‘O•û‚É“G‚ª‚¢‚é‚©‚Ç‚¤‚©‚ğ”»’è‚·‚é
-    /// Œ»İg‚í‚ê‚Ä‚¢‚È‚¢‚ª’Ç‰Á‚Ì‹@”\‚ğì‚éÛ‚É•K—v‚É‚È‚è‚»‚¤‚È‚Ì‚Åc‚µ‚Ä‚¢‚é
+    /// æ­£é¢ã«å‘ã‹ã£ã¦Rayã‚’é£›ã°ã™ã“ã¨ã§å‰æ–¹ã«æ•µãŒã„ã‚‹ã‹ã©ã†ã‹ã‚’åˆ¤å®šã™ã‚‹
+    /// ç¾åœ¨ä½¿ã‚ã‚Œã¦ã„ãªã„ãŒè¿½åŠ ã®æ©Ÿèƒ½ã‚’ä½œã‚‹éš›ã«å¿…è¦ã«ãªã‚Šãã†ãªã®ã§æ®‹ã—ã¦ã„ã‚‹
     /// </summary>
     public bool DetectEnemyInForward(int dir, Transform transform)
     {
@@ -97,7 +97,7 @@ public class DetectorModule
 
     private void DebugDrawRay(bool hit, Vector3 rayOrigin, Vector3 dir, bool isVisible)
     {
-        // Šeƒƒ\ƒbƒh‚Åd•¡‚µ‚ÄğŒ•ªŠò‚ğ‘‚©‚È‚­‚Ä‚à—Ç‚¢‚æ‚¤‚Éƒƒ\ƒbƒh“à‚ÅğŒ•ªŠò‚ğ‘‚¢‚Ä‚¢‚é
+        // å„ãƒ¡ã‚½ãƒƒãƒ‰ã§é‡è¤‡ã—ã¦æ¡ä»¶åˆ†å²ã‚’æ›¸ã‹ãªãã¦ã‚‚è‰¯ã„ã‚ˆã†ã«ãƒ¡ã‚½ãƒƒãƒ‰å†…ã§æ¡ä»¶åˆ†å²ã‚’æ›¸ã„ã¦ã„ã‚‹
         if (!isVisible) return;
 
         Color color = hit ? Color.green : Color.red;

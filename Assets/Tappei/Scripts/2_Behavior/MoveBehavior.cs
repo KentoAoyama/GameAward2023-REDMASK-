@@ -1,12 +1,12 @@
-using Cysharp.Threading.Tasks;
+ï»¿using Cysharp.Threading.Tasks;
 using System.Threading;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
 
 /// <summary>
-/// Šeó‘Ô‚É‚¨‚¢‚ÄˆÚ“®‚·‚éÛ‚Ég—p‚·‚éƒNƒ‰ƒX
-/// •K—v‚ÈŠeModule‚ÌƒNƒ‰ƒX‚ğ§Œä‚·‚é
+/// å„çŠ¶æ…‹ã«ãŠã„ã¦ç§»å‹•ã™ã‚‹éš›ã«ä½¿ç”¨ã™ã‚‹ã‚¯ãƒ©ã‚¹
+/// å¿…è¦ãªå„Moduleã®ã‚¯ãƒ©ã‚¹ã‚’åˆ¶å¾¡ã™ã‚‹
 /// </summary>
 public class MoveBehavior : MonoBehaviour
 {
@@ -17,17 +17,17 @@ public class MoveBehavior : MonoBehaviour
     [SerializeField] private DetectorModule _detectorModule;
     [SerializeField] private RigidBodyModule _rigidbodyModule;
     [SerializeField] private WaypointModule _waypointModule;
-    [Tooltip("Sprite‚Ì¶‰E‚É‰‚¶‚½ˆ—‚ğ‚µ‚½‚¢‚Ì‚ÅQÆ‚ª•K—v")]
+    [Tooltip("Spriteã®å·¦å³ã«å¿œã˜ãŸå‡¦ç†ã‚’ã—ãŸã„ã®ã§å‚ç…§ãŒå¿…è¦")]
     [SerializeField] private Transform _sprite;
 
     /// <summary>
-    /// Pause()‚ªŒÄ‚Î‚ê‚é‚Ætrue‚ÉResume()‚ªŒÄ‚Î‚ê‚é‚Æfalse‚É‚È‚é
+    /// Pause()ãŒå‘¼ã°ã‚Œã‚‹ã¨trueã«Resume()ãŒå‘¼ã°ã‚Œã‚‹ã¨falseã«ãªã‚‹
     /// </summary>
     private bool _isPause;
 
     /// <summary>
-    /// Sprite‚Ì¶‰E‚ÌŒü‚«‚É‡‚í‚¹‚½ˆ—‚ğ‚·‚éÛ‚Ég‚¤
-    /// ‰EŒü‚«: 1 ¶Œü‚«: -1
+    /// Spriteã®å·¦å³ã®å‘ãã«åˆã‚ã›ãŸå‡¦ç†ã‚’ã™ã‚‹éš›ã«ä½¿ã†
+    /// å³å‘ã: 1 å·¦å‘ã: -1
     /// </summary>
     public int SpriteDir => (int)Mathf.Sign(_sprite.localScale.x);
 
@@ -57,13 +57,13 @@ public class MoveBehavior : MonoBehaviour
     }
 
     /// <summary>
-    /// ˆê’èŠÔŠu‚Å‘«Œ³‚ÌÀ•W‚ğXV‚·‚é
-    /// ‚±‚Ìˆ—‚Í‘¼‚ÌƒNƒ‰ƒX‚âTimeScale‚É‰e‹¿‚³‚ê‚È‚¢‚Ì‚Å
-    /// Update()“à‚Ìƒƒ\ƒbƒh‚¾‚ª‚±‚ÌƒNƒ‰ƒX“à‚ÅÀs‚µ‚Ä‚¢‚é
+    /// ä¸€å®šé–“éš”ã§è¶³å…ƒã®åº§æ¨™ã‚’æ›´æ–°ã™ã‚‹
+    /// ã“ã®å‡¦ç†ã¯ä»–ã®ã‚¯ãƒ©ã‚¹ã‚„TimeScaleã«å½±éŸ¿ã•ã‚Œãªã„ã®ã§
+    /// Update()å†…ã®ãƒ¡ã‚½ãƒƒãƒ‰ã ãŒã“ã®ã‚¯ãƒ©ã‚¹å†…ã§å®Ÿè¡Œã—ã¦ã„ã‚‹
     /// </summary>
     private void FootPosUpdateStart()
     {
-        // –ˆƒtƒŒ[ƒ€Ray‚ğ”ò‚Î‚³‚È‚¢‚æ‚¤‚ÉASearchó‘Ô‚Å‚ÌˆÚ“®”ÍˆÍ‚ğXV‚·‚éŠÔŠu‚ğİ’è‚·‚é
+        // æ¯ãƒ•ãƒ¬ãƒ¼ãƒ Rayã‚’é£›ã°ã•ãªã„ã‚ˆã†ã«ã€SearchçŠ¶æ…‹ã§ã®ç§»å‹•ç¯„å›²ã‚’æ›´æ–°ã™ã‚‹é–“éš”ã‚’è¨­å®šã™ã‚‹
         float updateFootPosInterval = 0.15f;
 
         this.UpdateAsObservable()
@@ -79,7 +79,7 @@ public class MoveBehavior : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒLƒƒƒ‰ƒNƒ^[‚ğ¶Œü‚«‚É”z’u‚·‚éÛ‚Ég—p‚·‚é
+    /// ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã‚’å·¦å‘ãã«é…ç½®ã™ã‚‹éš›ã«ä½¿ç”¨ã™ã‚‹
     /// </summary>
     public void TurnLeft()
     {
@@ -101,8 +101,8 @@ public class MoveBehavior : MonoBehaviour
     }
 
     /// <summary>
-    /// ƒ^[ƒQƒbƒg‚ÉŒü‚¯‚ÄˆÚ“®‚·‚é
-    /// Šî–{‚Í‚±‚Ìƒƒ\ƒbƒh‚ğŒÄ‚Ô‚±‚Æ‚Åƒ^[ƒQƒbƒg‚ğ’Ç‚¢‚©‚¯‚é
+    /// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«å‘ã‘ã¦ç§»å‹•ã™ã‚‹
+    /// åŸºæœ¬ã¯ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã¶ã“ã¨ã§ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’è¿½ã„ã‹ã‘ã‚‹
     /// </summary>
     public void StartMoveToTarget(Transform target, float moveSpeed)
     {
@@ -130,8 +130,8 @@ public class MoveBehavior : MonoBehaviour
     }
 
     /// <summary>
-    /// Œ»İ‚ÌˆÚ“®‚ğƒLƒƒƒ“ƒZƒ‹‚µ‚Ä‚»‚Ìê‚É—¯‚Ü‚é
-    /// •Ê‚ÌˆÚ“®æ‚ÉŒü‚©‚¤Û‚Í‚±‚Ìƒƒ\ƒbƒh‚ğŒÄ‚ñ‚ÅŒ»İ‚ÌˆÚ“®‚ğƒLƒƒƒ“ƒZƒ‹‚·‚é‚±‚Æ
+    /// ç¾åœ¨ã®ç§»å‹•ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã—ã¦ãã®å ´ã«ç•™ã¾ã‚‹
+    /// åˆ¥ã®ç§»å‹•å…ˆã«å‘ã‹ã†éš›ã¯ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã‚“ã§ç¾åœ¨ã®ç§»å‹•ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã™ã‚‹ã“ã¨
     /// </summary>
     public void CancelMoveToTarget()
     {
@@ -140,8 +140,8 @@ public class MoveBehavior : MonoBehaviour
     }
 
     /// <summary>
-    /// ‘«Œ³‚©‚ç‚ÌRay‚ªƒqƒbƒg‚µ‚È‚¢ê‡‚Í‚»‚Ì‚Ü‚Ü—‰º‚µ
-    /// ƒqƒbƒg‚µ‚½ê‡‚ÍPosition‚ğ‚»‚ÌÀ•W‚É‚·‚é‚±‚Æ‚ÅŠŠ‚ç‚È‚¢‚æ‚¤‚É‚µ‚Ä‚¢‚é
+    /// è¶³å…ƒã‹ã‚‰ã®RayãŒãƒ’ãƒƒãƒˆã—ãªã„å ´åˆã¯ãã®ã¾ã¾è½ä¸‹ã—
+    /// ãƒ’ãƒƒãƒˆã—ãŸå ´åˆã¯Positionã‚’ãã®åº§æ¨™ã«ã™ã‚‹ã“ã¨ã§æ»‘ã‚‰ãªã„ã‚ˆã†ã«ã—ã¦ã„ã‚‹
     /// </summary>
     public void Idle()
     {

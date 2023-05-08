@@ -1,6 +1,6 @@
-/// <summary>
-/// ‚‚¿—p
-/// ƒvƒŒƒCƒ„[‚ÉŒü‚¯‚ÄˆÚ“®‚·‚éó‘Ô‚ÌƒNƒ‰ƒX
+ï»¿/// <summary>
+/// ç›¾æŒã¡ç”¨
+/// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«å‘ã‘ã¦ç§»å‹•ã™ã‚‹çŠ¶æ…‹ã®ã‚¯ãƒ©ã‚¹
 /// </summary>
 public class StateTypeMoveExtend : StateTypeMove
 {
@@ -21,7 +21,7 @@ public class StateTypeMoveExtend : StateTypeMove
     }
 
     /// <summary>
-    /// ’e‚ğ”½Ë‚µ‚½‚çReflectionó‘Ô‚É‘JˆÚ‚·‚é
+    /// å¼¾ã‚’åå°„ã—ãŸã‚‰ReflectionçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
     /// </summary>
     private bool TransitionReflection()
     {
@@ -36,7 +36,7 @@ public class StateTypeMoveExtend : StateTypeMove
     }
 
     /// <summary>
-    /// ‹ŠE‚©‚çŠO‚ê‚½‚çIdleó‘Ô‚ÉAUŒ‚”ÍˆÍ“à‚É“ü‚Á‚½‚çAttackó‘Ô‚É‘JˆÚ‚·‚é
+    /// è¦–ç•Œã‹ã‚‰å¤–ã‚ŒãŸã‚‰IdleçŠ¶æ…‹ã«ã€æ”»æ’ƒç¯„å›²å†…ã«å…¥ã£ãŸã‚‰AttackçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
     /// </summary>
     private bool Transition()
     {
@@ -56,7 +56,7 @@ public class StateTypeMoveExtend : StateTypeMove
     }
 
     /// <summary>
-    /// ˆÚ“®‚ªƒLƒƒƒ“ƒZƒ‹‚³‚ê‚½ê‡‚ÍIdleó‘Ô‚É‘JˆÚ‚·‚é
+    /// ç§»å‹•ãŒã‚­ãƒ£ãƒ³ã‚»ãƒ«ã•ã‚ŒãŸå ´åˆã¯IdleçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
     /// </summary>
     private bool TransitionAtMoveCancel()
     {

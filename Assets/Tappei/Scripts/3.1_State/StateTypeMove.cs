@@ -1,15 +1,16 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// ƒvƒŒƒCƒ„[‚ÉŒü‚¯‚ÄˆÚ“®‚·‚éó‘Ô‚ÌƒNƒ‰ƒX
+/// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«å‘ã‘ã¦ç§»å‹•ã™ã‚‹çŠ¶æ…‹ã®ã‚¯ãƒ©ã‚¹
 /// </summary>
 public class StateTypeMove : StateTypeBase
 {
-    // ˆÈ‰º2‚Â‚Í’n–Ê‚Ì’[‚È‚Ç‚ÅˆÚ“®‚ªƒLƒƒƒ“ƒZƒ‹‚³‚ê‚½ê‡‚É
-    // ˆê’èŠÔŒã‚É‘JˆÚ‚³‚¹‚éˆ—‚É•K—v‚È•Ï”
-    private Vector3 _prevPos;
-    private float _timer;
+    private float _time;
     private int _cachedSEIndex;
+    /// <summary>
+    /// ç§»å‹•é‡ãŒ0ã®çŠ¶æ…‹ãŒä¸€å®šæ™‚é–“ç¶šã„ãŸã‚‰IdleçŠ¶æ…‹ã«é·ç§»ã•ã›ã‚‹ãŸã‚ã«å‰ãƒ•ãƒ¬ãƒ¼ãƒ ã§ã®ä½ç½®ãŒå¿…è¦
+    /// </summary>
+    private Vector3 _prevPos;
 
     public StateTypeMove(EnemyController controller, StateType stateType)
         : base(controller, stateType) { }
@@ -19,8 +20,8 @@ public class StateTypeMove : StateTypeBase
         Controller.PlayAnimation(AnimationName.Move);
         Controller.MoveToPlayer();
 
-        _prevPos = Vector3.one * -1000;
-        _timer = 0;
+        _prevPos = Vector3.positiveInfinity;
+        _time = 0;
 
         _cachedSEIndex = GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", Controller.Params.RunSEName);
     }
@@ -44,7 +45,7 @@ public class StateTypeMove : StateTypeBase
     }
 
     /// <summary>
-    /// ˆÚ“®‚ªƒLƒƒƒ“ƒZƒ‹‚³‚ê‚½ê‡‚ÍIdleó‘Ô‚É‘JˆÚ‚·‚é
+    /// ç§»å‹•ãŒã‚­ãƒ£ãƒ³ã‚»ãƒ«ã•ã‚ŒãŸå ´åˆã¯IdleçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
     /// </summary>
     private bool TransitionAtMoveCancel()
     {
@@ -58,7 +59,7 @@ public class StateTypeMove : StateTypeBase
     }
 
     /// <summary>
-    /// ‹ŠE‚©‚çŠO‚ê‚½‚çIdleó‘Ô‚ÉAUŒ‚”ÍˆÍ“à‚É“ü‚Á‚½‚çAttackó‘Ô‚É‘JˆÚ‚·‚é
+    /// è¦–ç•Œã‹ã‚‰å¤–ã‚ŒãŸã‚‰IdleçŠ¶æ…‹ã«ã€æ”»æ’ƒç¯„å›²å†…ã«å…¥ã£ãŸã‚‰AttackçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
     /// </summary>
     private bool Transition()
     {
@@ -78,21 +79,24 @@ public class StateTypeMove : StateTypeBase
     }
 
     /// <summary>
-    /// ‘OƒtƒŒ[ƒ€‚©‚ç‚ÌˆÚ“®—Ê‚ª0‚Ìó‘Ô‚ªˆê’èŠÔ‘±‚­‚È‚çˆÚ“®‚ªƒLƒƒƒ“ƒZƒ‹‚³‚ê‚½‚Æ‚İ‚È‚·
+    /// å‰ãƒ•ãƒ¬ãƒ¼ãƒ ã‹ã‚‰ã®ç§»å‹•é‡ãŒ0ã®çŠ¶æ…‹ãŒä¸€å®šæ™‚é–“ç¶šããªã‚‰ç§»å‹•ãŒã‚­ãƒ£ãƒ³ã‚»ãƒ«ã•ã‚ŒãŸã¨ã¿ãªã™
     /// </summary>
     protected bool IsMoveCancel()
     {
+        // TODO:æ¯ãƒ•ãƒ¬ãƒ¼ãƒ å‘¼ã‚“ã§ã„ã‚‹ã®ã§ä½™è£•ãŒã‚ã‚Œã°æ”¹å–„ã™ã‚‹
         float distance = Vector3.Distance(_prevPos, Controller.transform.position);
         if (distance <= Mathf.Epsilon)
         {
-            _timer += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime;
+            _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime;
         }
         else
         {
-            _timer = 0;
+            _time = 0;
         }
         _prevPos = Controller.transform.position;
 
-        return _timer > EnemyParamsSO.MoveCancelTimeThreshold;
+        // ç§»å‹•é‡ãŒ0ã®çŠ¶æ…‹ãŒç¶šã„ãŸéš›ã«IdleçŠ¶æ…‹ã«é·ç§»ã•ã›ã‚‹ã¾ã§ã®æ™‚é–“
+        float timeThreshold = 0.25f;
+        return _time > timeThreshold;
     }
 }

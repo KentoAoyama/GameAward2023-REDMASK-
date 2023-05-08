@@ -1,8 +1,8 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// —§‚¿~‚Ü‚Á‚Ä‚¢‚éó‘Ô‚ÌƒNƒ‰ƒX
-/// ŠÔŒo‰ß‚ÅSearchó‘Ô‚É‘JˆÚ‚·‚é
+/// ç«‹ã¡æ­¢ã¾ã£ã¦ã„ã‚‹çŠ¶æ…‹ã®ã‚¯ãƒ©ã‚¹
+/// æ™‚é–“çµŒéã§SearchçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
 /// </summary>
 public class StateTypeIdle : StateTypeBase
 {
@@ -16,7 +16,7 @@ public class StateTypeIdle : StateTypeBase
     {
         Controller.PlayAnimation(AnimationName.Idle);
 
-        // ƒ‰ƒ“ƒ_ƒ€‚ÈŠÔ‚Å‘JˆÚ‚·‚é‚æ‚¤‚Éİ’è‚·‚é
+        // ãƒ©ãƒ³ãƒ€ãƒ ãªæ™‚é–“ã§é·ç§»ã™ã‚‹ã‚ˆã†ã«è¨­å®šã™ã‚‹
         _delay = Controller.Params.GetRandomIdleStateTimer();
     }
 
@@ -35,7 +35,7 @@ public class StateTypeIdle : StateTypeBase
     }
 
     /// <summary>
-    /// ‹ŠE“à/UŒ‚”ÍˆÍ“à‚É“ü‚Á‚½‚çDiscoveró‘Ô‚É‘JˆÚ‚·‚é
+    /// è¦–ç•Œå†…/æ”»æ’ƒç¯„å›²å†…ã«å…¥ã£ãŸã‚‰DiscoverçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
     /// </summary>
     private bool Transition()
     {
@@ -50,7 +50,7 @@ public class StateTypeIdle : StateTypeBase
     }
 
     /// <summary>
-    /// ŠÔŒo‰ß‚ÅIdle‚à‚µ‚­‚ÍSearchó‘Ô‚É‘JˆÚ‚·‚é
+    /// æ™‚é–“çµŒéã§Idleã‚‚ã—ãã¯SearchçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
     /// </summary>
     private bool TransitionAtTimeElapsed()
     {

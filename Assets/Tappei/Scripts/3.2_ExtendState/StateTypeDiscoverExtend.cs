@@ -1,7 +1,9 @@
+ï»¿using UnityEngine;
+
 /// <summary>
-/// ‚‚¿—p
-/// ƒvƒŒƒCƒ„[”­Œ©‚É‰‰o—p‚É‘JˆÚ‚·‚éó‘Ô‚ÌƒNƒ‰ƒX
-/// ‹——£‚É‚æ‚Á‚ÄMove‚à‚µ‚­‚ÍAttackó‘Ô‚É‘JˆÚ‚·‚é
+/// ç›¾æŒã¡ç”¨
+/// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ç™ºè¦‹æ™‚ã«æ¼”å‡ºç”¨ã«é·ç§»ã™ã‚‹çŠ¶æ…‹ã®ã‚¯ãƒ©ã‚¹
+/// è·é›¢ã«ã‚ˆã£ã¦Moveã‚‚ã—ãã¯AttackçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
 /// </summary>
 public class StateTypeDiscoverExtend : StateTypeDiscover
 {
@@ -21,7 +23,7 @@ public class StateTypeDiscoverExtend : StateTypeDiscover
     }
 
     /// <summary>
-    /// ’e‚ğ”½Ë‚µ‚½‚çReflectionó‘Ô‚É‘JˆÚ‚·‚é
+    /// å¼¾ã‚’åå°„ã—ãŸã‚‰ReflectionçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
     /// </summary>
     private bool TransitionReflection()
     {
@@ -36,13 +38,14 @@ public class StateTypeDiscoverExtend : StateTypeDiscover
     }
 
     /// <summary>
-    /// ˆê“x”­Œ©‚µ‚½‚ç‹ŠE‚ÌŠO‚Éo‚Ä‚µ‚Ü‚Á‚½ê‡‚Å‚àˆê“xMoveó‘Ô‚É‘JˆÚ‚·‚é
+    /// ä¸€åº¦ç™ºè¦‹ã—ãŸã‚‰è¦–ç•Œã®å¤–ã«å‡ºã¦ã—ã¾ã£ãŸå ´åˆã§ã‚‚ä¸€åº¦MoveçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
     /// </summary>
     private bool Transition()
     {
-        SightResult result = Controller.LookForPlayerInSight();
-        if (_isTransitionable)
+        _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime;
+        if (_time > Controller.Params.DiscoverStateTransitionDelay)
         {
+            SightResult result = Controller.LookForPlayerInSight();
             if (result == SightResult.InSight || result == SightResult.OutSight)
             {
                 TryChangeState(StateType.MoveExtend);

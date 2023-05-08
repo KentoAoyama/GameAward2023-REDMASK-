@@ -1,28 +1,28 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
-/// Rigidbody�𑀍삷��N���X
-/// MoveBehavior�N���X����g�p�����
+/// Rigidbodyを操作するクラス
+/// MoveBehaviorクラスから使用される
 /// </summary>
 [System.Serializable]
 public class RigidBodyModule
 {
     /// <summary>
-    /// �ړ���ɓ��������ۂɂՂ�Ղ邵�Ȃ��悤�ɂ���ׂ̒l
-    /// �l��傫������΂�萳�m�Ɉړ���ɂ��ǂ蒅�����A���x����ł͂Ղ�Ղ邵�Ă��܂�
+    /// 移動先に到着した際にぷるぷるしないようにする為の値
+    /// 値を大きくすればより正確に移動先にたどり着くが、速度次第ではぷるぷるしてしまう
     /// </summary>
     private static readonly float ArrivalTolerance = 500.0f;
 
     [SerializeField] private Rigidbody2D _rigidbody;
     
     /// <summary>
-    /// �|�[�Y�����Ƃ���Velocity����U�ۑ����Ă������߂̕ϐ�
+    /// ポーズしたときにVelocityを一旦保存しておくための変数
     /// </summary>
     private Vector3 _tempVelocity;
 
     /// <summary>
-    /// Velocity���^�[�Q�b�g�̕����Ɍ����邱�ƂŃ^�[�Q�b�g�ւ̈ړ����s��
-    /// �X���[���[�V�����ƃ|�[�Y�ɑΉ����Ă���
+    /// Velocityをターゲットの方向に向けることでターゲットへの移動を行う
+    /// スローモーションとポーズに対応している
     /// </summary>
     public void SetVelocityToTarget(Vector3 targetPos, float moveSpeed, Transform transform)
     {
@@ -36,8 +36,8 @@ public class RigidBodyModule
     }
 
     /// <summary>
-    /// ���R����������ׂ�Velocity��ݒ肷��
-    /// �ړ����L�����Z�������ꍇ�ɌĂ΂��
+    /// 自然落下させる為のVelocityを設定する
+    /// 移動をキャンセルした場合に呼ばれる
     /// </summary>
     public void SetFallVelocity()
     {
@@ -48,8 +48,8 @@ public class RigidBodyModule
     }
 
     /// <summary>
-    /// �⓹�ŐÎ~���Ă���ۂ̊���~�߂��s������
-    /// �ړ��J�n���ɂ�isKinematic�̗L�����̂��߂ɌĂ΂��
+    /// 坂道で静止している際の滑り止めを行う処理
+    /// 移動開始時にもisKinematicの有効化のために呼ばれる
     /// </summary>
     public void UpdateKinematic(bool isKinematic)
     {
@@ -66,7 +66,7 @@ public class RigidBodyModule
     }
 
     /// <summary>
-    /// �|�[�Y���ɑ��x���ꎞ�I�ɕۑ�����
+    /// ポーズ時に速度を一時的に保存する
     /// </summary>
     public void SaveVelocity()
     {
@@ -76,7 +76,7 @@ public class RigidBodyModule
     }
 
     /// <summary>
-    /// �|�[�Y�������Ɉꎞ�ۑ����Ă������x�����蓖�Ă�
+    /// ポーズ解除時に一時保存していた速度を割り当てる
     /// </summary>
     public void LoadVelocity()
     {

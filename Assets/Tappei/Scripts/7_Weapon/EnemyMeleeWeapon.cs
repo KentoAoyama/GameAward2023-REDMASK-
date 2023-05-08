@@ -1,20 +1,20 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// ‹ßÚUŒ‚‚Ì•Ší‚ÌƒNƒ‰ƒX
-/// Enemy_RangeAttackƒIƒuƒWƒFƒNƒg‚ªg—p‚·‚é
+/// è¿‘æ¥æ”»æ’ƒã®æ­¦å™¨ã®ã‚¯ãƒ©ã‚¹
+/// Enemy_RangeAttackã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒä½¿ç”¨ã™ã‚‹
 /// </summary>
 public class EnemyMeleeWeapon : MonoBehaviour, IEnemyWeapon
 {
-    [Header("UŒ‚”ÍˆÍ")]
+    [Header("æ”»æ’ƒç¯„å›²")]
     [SerializeField] private float _radius;
-    [Header("ƒvƒŒƒCƒ„[‚ª‘®‚·‚éƒŒƒCƒ„[")]
+    [Header("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒå±ã™ã‚‹ãƒ¬ã‚¤ãƒ¤ãƒ¼")]
     [SerializeField] private LayerMask _playerLayerMask;
-    [Header("UŒ‚‚ÉÄ¶‚³‚ê‚é‰¹‚Ì–¼‘O")]
+    [Header("æ”»æ’ƒæ™‚ã«å†ç”Ÿã•ã‚Œã‚‹éŸ³ã®åå‰")]
     [SerializeField] private string _attackSEName;
 
     /// <summary>
-    /// ƒvƒŒƒCƒ„[‚Ì‚İ‚ğŒŸo‚·‚é‚Ì‚Å’·‚³‚Í1‚Å—Ç‚¢
+    /// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã¿ã‚’æ¤œå‡ºã™ã‚‹ã®ã§é•·ã•ã¯1ã§è‰¯ã„
     /// </summary>
     private Collider2D[] _results = new Collider2D[1];
 

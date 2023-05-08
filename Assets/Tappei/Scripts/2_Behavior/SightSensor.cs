@@ -1,30 +1,30 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// ‚±‚ÌƒNƒ‰ƒX‚ğg—p‚µ‚Ä‹ŠE“à‚ÉƒvƒŒƒCƒ„[‚ª‚¢‚é‚©‚Ç‚¤‚©‚ğŒŸo‚·‚é
-/// ƒXƒ[ƒ‚[ƒVƒ‡ƒ“’†‚©‚Ç‚¤‚©‚É‰e‹¿‚³‚ê‚È‚¢
+/// ã“ã®ã‚¯ãƒ©ã‚¹ã‚’ä½¿ç”¨ã—ã¦è¦–ç•Œå†…ã«ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒã„ã‚‹ã‹ã©ã†ã‹ã‚’æ¤œå‡ºã™ã‚‹
+/// ã‚¹ãƒ­ãƒ¼ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ä¸­ã‹ã©ã†ã‹ã«å½±éŸ¿ã•ã‚Œãªã„
 /// </summary>
 public class SightSensor : MonoBehaviour
 {
     /// <summary>
-    /// ˆê“x‚É‹ŠE‚ªŒŸo‚Å‚«‚éƒIƒuƒWƒFƒNƒg‚ÌÅ‘å”
-    /// ƒXƒe[ƒW‚É‘å—Ê‚ÌŒŸo‚Å‚«‚éƒIƒuƒWƒFƒNƒg‚ª‘¶İ‚·‚éê‡‚Í‘‚â‚·•K—v‚ª‚ ‚é
+    /// ä¸€åº¦ã«è¦–ç•ŒãŒæ¤œå‡ºã§ãã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æœ€å¤§æ•°
+    /// ã‚¹ãƒ†ãƒ¼ã‚¸ã«å¤§é‡ã®æ¤œå‡ºã§ãã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå­˜åœ¨ã™ã‚‹å ´åˆã¯å¢—ã‚„ã™å¿…è¦ãŒã‚ã‚‹
     /// </summary>
     private static readonly int MaxDetected = 9;
 
-    [Header("ŒŸo”ÍˆÍ‚ÌŠî€‚Æ‚È‚éƒIƒuƒWƒFƒNƒg")]
-    [Tooltip("‹üã‚ÌáŠQ•¨‚Æ‚µ‚ÄŒŸ’m‚µ‚Ä‚µ‚Ü‚¤‚Ì‚Å‘¼‚ÌƒRƒ‰ƒCƒ_[‚Æ”í‚¹‚È‚¢‚±‚Æ")]
+    [Header("æ¤œå‡ºç¯„å›²ã®åŸºæº–ã¨ãªã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ")]
+    [Tooltip("è¦–ç·šä¸Šã®éšœå®³ç‰©ã¨ã—ã¦æ¤œçŸ¥ã—ã¦ã—ã¾ã†ã®ã§ä»–ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã¨è¢«ã›ãªã„ã“ã¨")]
     [SerializeField] private Transform _eyeTransform;
-    [Header("ŒŸo‚·‚éƒIƒuƒWƒFƒNƒg‚ª‘®‚·‚éƒŒƒCƒ„[")]
+    [Header("æ¤œå‡ºã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå±ã™ã‚‹ãƒ¬ã‚¤ãƒ¤ãƒ¼")]
     [SerializeField] private LayerMask _playerLayerMask;
-    [Tooltip("‹ŠE‚ğÕ‚éƒIƒuƒWƒFƒNƒg‚ÌƒŒƒCƒ„[‚ğŠ„‚è“–‚Ä‚é")]
+    [Tooltip("è¦–ç•Œã‚’é®ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’å‰²ã‚Šå½“ã¦ã‚‹")]
     [SerializeField] private LayerMask _obstacleLayerMask;
 
     private Collider2D[] _detectedResults = new Collider2D[MaxDetected];
 
     /// <summary>
-    /// ƒvƒŒƒCƒ„[‚Æ‚ÌˆÊ’uŠÖŒW‚ğ—ñ‹“Œ^‚Å•Ô‚·
-    /// ‚±‚Ìƒƒ\ƒbƒh‚ğŠO•”‚©‚çŒÄ‚Ô‚±‚Æ‚ÅƒvƒŒƒCƒ„[‚Æ‚ÌˆÊ’u‚É‰‚¶‚½ˆ—‚ğs‚¤
+    /// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨ã®ä½ç½®é–¢ä¿‚ã‚’åˆ—æŒ™å‹ã§è¿”ã™
+    /// ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’å¤–éƒ¨ã‹ã‚‰å‘¼ã¶ã“ã¨ã§ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨ã®ä½ç½®ã«å¿œã˜ãŸå‡¦ç†ã‚’è¡Œã†
     /// </summary>
     public SightResult LookForPlayerInSight(float radius, float maxAngle, float attackRange,
         bool isIgnoreObstacle = false)
@@ -47,16 +47,16 @@ public class SightSensor : MonoBehaviour
     }
 
     /// <returns>
-    /// ƒvƒŒƒCƒ„[‚ª‹ŠE“à‚É‚¢‚éê‡‚ÍƒvƒŒƒCƒ„[‚Æ‚Ì‹——£‚ğ•Ô‚·
-    /// ‹ŠE“à‚É‚¢‚È‚¢ê‡‚Í-1‚ª•Ô‚é
+    /// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒè¦–ç•Œå†…ã«ã„ã‚‹å ´åˆã¯ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨ã®è·é›¢ã‚’è¿”ã™
+    /// è¦–ç•Œå†…ã«ã„ãªã„å ´åˆã¯-1ãŒè¿”ã‚‹
     /// </returns>
     private bool TryGetDistanceToPlayer(float radius, float maxAngle, out float result, 
         bool isIgnoreObstacle = false)
     {
         Vector3 rayOrigin = _eyeTransform.position;
 
-        // ƒqƒbƒg‚µ‚È‚©‚Á‚½ê‡‚Å‚à”z—ñ“à‚Ì—v‘f‚Ííœ‚³‚ê‚È‚¢‚Ì‚Å
-        // ƒqƒbƒg‚µ‚½ƒIƒuƒWƒFƒNƒg‚Ìî•ñ‚ğ•Ô‚·‚æ‚¤‚É•ÏX‚·‚éê‡‚Í’ˆÓ
+        // ãƒ’ãƒƒãƒˆã—ãªã‹ã£ãŸå ´åˆã§ã‚‚é…åˆ—å†…ã®è¦ç´ ã¯å‰Šé™¤ã•ã‚Œãªã„ã®ã§
+        // ãƒ’ãƒƒãƒˆã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æƒ…å ±ã‚’è¿”ã™ã‚ˆã†ã«å¤‰æ›´ã™ã‚‹å ´åˆã¯æ³¨æ„
         int hitCount = Physics2D.OverlapCircleNonAlloc(rayOrigin, radius, _detectedResults, _playerLayerMask);
         if (hitCount == 0)
         {
@@ -83,8 +83,8 @@ public class SightSensor : MonoBehaviour
                 return true;
             }
 
-            // ‹ŠE‚ğÕ‚éƒIƒuƒWƒFƒNƒg—p‚ÌƒŒƒCƒ„[‚ª‚ ‚ê‚ÎAƒ^[ƒQƒbƒg‚Ü‚Å‚ÌRay‚ğ”ò‚Î‚µ‚Ä
-            // ‹ŠE‚ğÕ‚éƒIƒuƒWƒFƒNƒg‚Éƒqƒbƒg‚µ‚½‚ç‹ŠE‚É‰f‚ç‚È‚¢‚Æ‚¢‚¤ˆ—‚É•ÏXo—ˆ‚éB
+            // è¦–ç•Œã‚’é®ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”¨ã®ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒã‚ã‚Œã°ã€ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã¾ã§ã®Rayã‚’é£›ã°ã—ã¦
+            // è¦–ç•Œã‚’é®ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ãƒ’ãƒƒãƒˆã—ãŸã‚‰è¦–ç•Œã«æ˜ ã‚‰ãªã„ã¨ã„ã†å‡¦ç†ã«å¤‰æ›´å‡ºæ¥ã‚‹ã€‚
             //bool isSightable = hit.collider.GetInstanceID() == detectedCollider.GetInstanceID();
             bool isSightable = !hit;
 
