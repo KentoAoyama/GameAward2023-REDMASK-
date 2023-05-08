@@ -29,8 +29,8 @@ public class TipsAnimation : MonoBehaviour
         {
             ChangeTips(_gamepadText);
         }
-        else if (Keyboard.current.anyKey.wasPressedThisFrame ||
-            _mouse.WasPressedThisFrame() &&
+        else if ((Keyboard.current.anyKey.wasPressedThisFrame ||
+            _mouse.WasPressedThisFrame()) &&
             _currentText != _keyboardText
         )
         {
