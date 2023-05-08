@@ -39,7 +39,15 @@ public class BulletSubtractionButton : MonoBehaviour
     private void BulletSubtraction()
     {
         _bulletPrepareControl.PullBullet(_storageSiteType, _index);
-        var a = _uiController.GetNearSelectableObj(transform);
+        GameObject a = null;
+        if (_storageSiteType == StorageSiteType.Cylinder)
+        {
+            a = _uiController.GetNearSelectableObjForCylinder(transform);
+        }
+        else if (_storageSiteType == StorageSiteType.GunBelt)
+        {
+            a = _uiController.GetNearSelectableObjForGunbelt(transform);
+        }
         _eventSystem.SetSelectedGameObject(a);
     }
 }
