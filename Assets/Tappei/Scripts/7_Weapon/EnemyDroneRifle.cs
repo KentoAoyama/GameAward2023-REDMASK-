@@ -1,14 +1,14 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// ƒhƒ[ƒ“‚ªg—p‚·‚é•Ší‚ÌƒNƒ‰ƒX
+/// ãƒ‰ãƒ­ãƒ¼ãƒ³ãŒä½¿ç”¨ã™ã‚‹æ­¦å™¨ã®ã‚¯ãƒ©ã‚¹
 /// </summary>
 public class EnemyDroneRifle : EnemyRifle
 {
-    [Header("ƒV[ƒ“ã‚É”z’u‚³‚ê‚Ä‚¢‚éƒvƒŒƒCƒ„[‚Ìƒ^ƒO")]
+    [Header("ã‚·ãƒ¼ãƒ³ä¸Šã«é…ç½®ã•ã‚Œã¦ã„ã‚‹ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚¿ã‚°")]
     [SerializeField, TagName] private string _playerTagName;
-    [Header("“G–{‘Ì‚Ì‹ŠE‚Æ“¯‚¶’l‚ğg—p‚·‚é‚©")]
-    [Tooltip("eƒIƒuƒWƒFƒNƒg‚ÉEnemyController‚ªƒAƒ^ƒbƒ`‚³‚ê‚Ä‚¢‚éê‡‚É—LŒø")]
+    [Header("æ•µæœ¬ä½“ã®è¦–ç•Œã¨åŒã˜å€¤ã‚’ä½¿ç”¨ã™ã‚‹ã‹")]
+    [Tooltip("è¦ªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«EnemyControllerãŒã‚¢ã‚¿ãƒƒãƒã•ã‚Œã¦ã„ã‚‹å ´åˆã«æœ‰åŠ¹")]
     [SerializeField] private bool _isLinkEnemyParams = true;
 
     private Transform _player;
@@ -62,7 +62,7 @@ public class EnemyDroneRifle : EnemyRifle
         }
         else
         {
-            Debug.LogWarning("EnemyController‚ªæ“¾‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½BƒfƒtƒHƒ‹ƒg‚Ì’l‚ğg—p‚µ‚Ü‚·B");
+            Debug.LogWarning("EnemyControllerãŒå–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®å€¤ã‚’ä½¿ç”¨ã—ã¾ã™ã€‚");
         }
     }
 }

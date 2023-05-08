@@ -1,8 +1,8 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// “G‚ÌŠe—v‘f‚ğis•ûŒü‚É‰‚¶‚Ä¶‰E”½“]‚³‚¹‚éƒNƒ‰ƒX
-/// MoveBehaviorƒNƒ‰ƒX‚©‚çg—p‚³‚ê‚é
+/// æ•µã®å„è¦ç´ ã‚’é€²è¡Œæ–¹å‘ã«å¿œã˜ã¦å·¦å³åè»¢ã•ã›ã‚‹ã‚¯ãƒ©ã‚¹
+/// MoveBehaviorã‚¯ãƒ©ã‚¹ã‹ã‚‰ä½¿ç”¨ã•ã‚Œã‚‹
 /// </summary>
 [System.Serializable]
 public class TurnModule
@@ -12,7 +12,7 @@ public class TurnModule
     [SerializeField] private Transform _weapon;
 
     /// <summary>
-    /// ƒ^[ƒQƒbƒg‚ÌˆÊ’u‚É‰‚¶‚Ä‰ñ“]‚³‚¹‚é
+    /// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®ä½ç½®ã«å¿œã˜ã¦å›è»¢ã•ã›ã‚‹
     /// </summary>
     public void TurnTowardsTarget(Vector3 targetPos, Transform transform)
     {
@@ -29,7 +29,7 @@ public class TurnModule
     }
 
     /// <summary>
-    /// –Ú•W‚ÌˆÊ’u‚É‰‚¶‚ÄƒLƒƒƒ‰ƒNƒ^[‚ÌSprite‚ğ¶‰E”½“]‚³‚¹‚é
+    /// ç›®æ¨™ã®ä½ç½®ã«å¿œã˜ã¦ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®Spriteã‚’å·¦å³åè»¢ã•ã›ã‚‹
     /// </summary>
     private void UpdateSpriteDirection(int dir, Transform sprite)
     {
@@ -38,7 +38,7 @@ public class TurnModule
     }
 
     /// <summary>
-    /// ‹ŠE‚ÌŒ´“_‚ğ¶‰E‚É‰‚¶‚½ˆÊ’u‚ÉˆÚ“®•¶‰E”½“]‚³‚¹‚é
+    /// è¦–ç•Œã®åŸç‚¹ã‚’å·¦å³ã«å¿œã˜ãŸä½ç½®ã«ç§»å‹•ï¼†å·¦å³åè»¢ã•ã›ã‚‹
     /// </summary>
     private void UpdateEyePositionAndDirection(int dir, Transform eye)
     {
@@ -50,7 +50,7 @@ public class TurnModule
     }
 
     /// <summary>
-    /// •Ší‚ÌˆÊ’u‚ğ¶‰E‚É‰‚¶‚½ˆÊ’u‚ÉˆÚ“®•¶‰E”½“]‚³‚¹‚é
+    /// æ­¦å™¨ã®ä½ç½®ã‚’å·¦å³ã«å¿œã˜ãŸä½ç½®ã«ç§»å‹•ï¼†å·¦å³åè»¢ã•ã›ã‚‹
     /// </summary>
     private void UpdateWeaponPositionAndDirection(int dir, Transform weapon)
     {

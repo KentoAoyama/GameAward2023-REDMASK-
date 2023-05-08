@@ -1,6 +1,6 @@
-/// <summary>
-/// �ʏ�/�������������g�p���錂�j���ꂽ��Ԃ̃N���X
-/// ����ȏ�͑J�ڂ��Ȃ�
+﻿/// <summary>
+/// 通常/盾持ち両方が使用する撃破された状態のクラス
+/// これ以上は遷移しない
 /// </summary>
 public class StateTypeDefeated : StateTypeBase
 {

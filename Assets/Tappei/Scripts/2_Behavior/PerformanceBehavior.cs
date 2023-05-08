@@ -1,9 +1,9 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using System;
 using DG.Tweening;
 
 /// <summary>
-/// Šeí‰‰o‚ğs‚¤ƒNƒ‰ƒX
+/// å„ç¨®æ¼”å‡ºã‚’è¡Œã†ã‚¯ãƒ©ã‚¹
 /// </summary>
 public class PerformanceBehavior : MonoBehaviour
 {
@@ -11,7 +11,7 @@ public class PerformanceBehavior : MonoBehaviour
     private struct EffectSettings
     {
         [SerializeField] private GameObject _prefab;
-        [Tooltip("ƒLƒƒƒ‰ƒNƒ^[‚Ì‘«Œ³‚ğŠî€‚Éİ’è‚·‚é")]
+        [Tooltip("ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®è¶³å…ƒã‚’åŸºæº–ã«è¨­å®šã™ã‚‹")]
         [SerializeField] private Vector2 _offset;
 
         public GameObject Prefab => _prefab;
@@ -20,15 +20,15 @@ public class PerformanceBehavior : MonoBehaviour
 
     static readonly float DefeatedEffectLifeTime = 1.5f;
 
-    [Header("Œ‚”j‚³‚ê‚½Û‚ÌƒGƒtƒFƒNƒg")]
+    [Header("æ’ƒç ´ã•ã‚ŒãŸéš›ã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ")]
     [SerializeField] private EffectSettings _defeatedEffectSettings;
-    [Header("”­Œ©‚ÌƒGƒtƒFƒNƒg")]
+    [Header("ç™ºè¦‹æ™‚ã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ")]
     [SerializeField] private EffectSettings _discoverEffectSettings;
-    [Header("’²®—p:¶¬‚µ‚½Û‚ÉƒGƒtƒFƒNƒg‚ğ•\¦‚·‚é")]
+    [Header("èª¿æ•´ç”¨:ç”Ÿæˆã—ãŸéš›ã«ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’è¡¨ç¤ºã™ã‚‹")]
     [SerializeField] private bool _initActive;
 
     /// <summary>
-    /// ”­Œ©‚ÌƒGƒtƒFƒNƒg‚Íg‚¢‚Ü‚í‚·‚Ì‚Åƒƒ“ƒo‚Æ‚µ‚Ä•Û‚µ‚Ä‚¨‚­
+    /// ç™ºè¦‹æ™‚ã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã¯ä½¿ã„ã¾ã‚ã™ã®ã§ãƒ¡ãƒ³ãƒã¨ã—ã¦ä¿æŒã—ã¦ãŠã
     /// </summary>
     private GameObject _discoverEffect;
 
@@ -40,7 +40,7 @@ public class PerformanceBehavior : MonoBehaviour
     public void Discover() => _discoverEffect.SetActive(true);
 
     /// <summary>
-    /// ƒLƒƒƒ‰ƒNƒ^[‚ÌŒü‚«‚É‡‚í‚¹‚Ä¶¬‚·‚é•K—v‚ª‚ ‚é‚Ì‚ÅSprite‚ÌŒü‚«‚ª•K—v
+    /// ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®å‘ãã«åˆã‚ã›ã¦ç”Ÿæˆã™ã‚‹å¿…è¦ãŒã‚ã‚‹ã®ã§Spriteã®å‘ããŒå¿…è¦
     /// </summary>
     public void Defeated(int dir)
     {
@@ -55,8 +55,8 @@ public class PerformanceBehavior : MonoBehaviour
     }
 
     /// <summary>
-    /// ŠeíƒGƒtƒFƒNƒg‚Ì¶¬ˆ—
-    /// Prefab‚ªnull‚¾‚Á‚½ê‡‚Í“K“–‚ÈGameObject‚ğì‚Á‚Ä•Ô‚·
+    /// å„ç¨®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®ç”Ÿæˆå‡¦ç†
+    /// PrefabãŒnullã ã£ãŸå ´åˆã¯é©å½“ãªGameObjectã‚’ä½œã£ã¦è¿”ã™
     /// </summary>
     private GameObject Instantiate(EffectSettings effectSettings)
     {

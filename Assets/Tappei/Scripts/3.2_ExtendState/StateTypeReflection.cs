@@ -1,8 +1,8 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// ‚‚¿—p
-/// ‚‚ÉUŒ‚‚ğó‚¯‚Ä‚µ‚Î‚ç‚­d’¼‚µ‚Ä‚¢‚éó‘Ô
+/// ç›¾æŒã¡ç”¨
+/// ç›¾ã«æ”»æ’ƒã‚’å—ã‘ã¦ã—ã°ã‚‰ãç¡¬ç›´ã—ã¦ã„ã‚‹çŠ¶æ…‹
 /// </summary>
 public class StateTypeReflection : StateTypeBase
 {
@@ -40,8 +40,8 @@ public class StateTypeReflection : StateTypeBase
     }
 
     /// <summary>
-    /// ŠÔŒo‰ß‚Å‚‚ğ\‚¦’¼‚·ƒAƒjƒ[ƒVƒ‡ƒ“‚ğÄ¶‚·‚é
-    /// ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌÄ¶ŒãAÅŒã‚Ìó‘Ô‚É‘JˆÚ‚·‚é
+    /// æ™‚é–“çµŒéã§ç›¾ã‚’æ§‹ãˆç›´ã™ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å†ç”Ÿã™ã‚‹
+    /// ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®å†ç”Ÿå¾Œã€æœ€å¾Œã®çŠ¶æ…‹ã«é·ç§»ã™ã‚‹
     /// </summary>
     private bool RecoverProcess()
     {

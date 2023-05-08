@@ -1,12 +1,12 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// ˆê’èŠÔŠu‚ÅUŒ‚‚ğ‚·‚éó‘Ô‚ÌƒNƒ‰ƒX
+/// ä¸€å®šé–“éš”ã§æ”»æ’ƒã‚’ã™ã‚‹çŠ¶æ…‹ã®ã‚¯ãƒ©ã‚¹
 /// </summary>
 public class StateTypeAttack : StateTypeBase
 {
     /// <summary>
-    /// ‘JˆÚ‚ğŒJ‚è•Ô‚·‚±‚Æ‚Å‚Ì˜AË‘Îô‚Æ‚µ‚ÄA‚±‚Ì’l‚Íó‘Ô‚Ì‘JˆÚ‚ğ‚µ‚Ä‚à‰Šú‰»‚³‚ê‚È‚¢
+    /// é·ç§»ã‚’ç¹°ã‚Šè¿”ã™ã“ã¨ã§ã®é€£å°„å¯¾ç­–ã¨ã—ã¦ã€ã“ã®å€¤ã¯çŠ¶æ…‹ã®é·ç§»ã‚’ã—ã¦ã‚‚åˆæœŸåŒ–ã•ã‚Œãªã„
     /// </summary>
     private float _time;
 
@@ -18,7 +18,7 @@ public class StateTypeAttack : StateTypeBase
 
     protected override void Enter()
     {
-        // UŒ‚‚Ü‚Å‚ÌŠÔA‘JˆÚŒ³‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ªÄ¶‚³‚ê‘±‚¯‚È‚¢‚æ‚¤‚Éˆê“xIdleó‘Ô‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ğÄ¶‚·‚é
+        // æ”»æ’ƒã¾ã§ã®é–“ã€é·ç§»å…ƒã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒå†ç”Ÿã•ã‚Œç¶šã‘ãªã„ã‚ˆã†ã«ä¸€åº¦IdleçŠ¶æ…‹ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å†ç”Ÿã™ã‚‹
         Controller.PlayAnimation(AnimationName.Idle);
     }
 
@@ -32,7 +32,7 @@ public class StateTypeAttack : StateTypeBase
     }
 
     /// <summary>
-    /// ˆê’èŠÔŠu‚ÅUŒ‚‚·‚é
+    /// ä¸€å®šé–“éš”ã§æ”»æ’ƒã™ã‚‹
     /// </summary>
     private void AttackAtInterval()
     {
@@ -46,7 +46,7 @@ public class StateTypeAttack : StateTypeBase
     }
 
     /// <summary>
-    /// ‹ŠE‚©‚çŠO‚ê‚½‚çIdleó‘Ô‚ÉAUŒ‚”ÍˆÍ‚©‚çŠO‚ê‚½‚çMoveó‘Ô‚É‘JˆÚ‚·‚é
+    /// è¦–ç•Œã‹ã‚‰å¤–ã‚ŒãŸã‚‰IdleçŠ¶æ…‹ã«ã€æ”»æ’ƒç¯„å›²ã‹ã‚‰å¤–ã‚ŒãŸã‚‰MoveçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
     /// </summary>
     private bool Transition()
     {

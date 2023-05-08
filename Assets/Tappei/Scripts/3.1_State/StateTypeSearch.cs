@@ -1,8 +1,8 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// ƒvƒŒƒCƒ„[‚ğ’T‚·‚½‚ß‚ÉˆÚ“®‚·‚éó‘Ô‚ÌƒNƒ‰ƒX
-/// ŠÔŒo‰ß‚ÅIdleó‘Ô‚É‘JˆÚ‚·‚é
+/// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’æ¢ã™ãŸã‚ã«ç§»å‹•ã™ã‚‹çŠ¶æ…‹ã®ã‚¯ãƒ©ã‚¹
+/// æ™‚é–“çµŒéã§IdleçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
 /// </summary>
 public class StateTypeSearch : StateTypeBase
 {
@@ -40,7 +40,7 @@ public class StateTypeSearch : StateTypeBase
     }
 
     /// <summary>
-    /// ‹ŠE“à/UŒ‚”ÍˆÍ“à‚É“ü‚Á‚½‚çDiscoveró‘Ô‚É‘JˆÚ‚·‚é
+    /// è¦–ç•Œå†…/æ”»æ’ƒç¯„å›²å†…ã«å…¥ã£ãŸã‚‰DiscoverçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
     /// </summary>
     private bool Transition()
     {
@@ -55,7 +55,7 @@ public class StateTypeSearch : StateTypeBase
     }
 
     /// <summary>
-    /// ŠÔŒo‰ß‚ÅIdleó‘Ô‚É‘JˆÚ‚·‚é
+    /// æ™‚é–“çµŒéã§IdleçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
     /// </summary>
     private bool TransitionAtTimeElapsed()
     {

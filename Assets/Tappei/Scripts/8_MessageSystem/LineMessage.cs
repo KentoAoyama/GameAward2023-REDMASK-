@@ -1,6 +1,6 @@
-/// <summary>
-/// •\Ž¦‚³‚ê‚é‘äŽŒ‚Ì\‘¢‘Ì
-/// ‚±‚ê‚ðƒƒbƒZ[ƒWƒ“ƒO‚Å‚â‚èŽæ‚è‚·‚é
+ï»¿/// <summary>
+/// è¡¨ç¤ºã•ã‚Œã‚‹å°è©žã®æ§‹é€ ä½“
+/// ã“ã‚Œã‚’ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒ³ã‚°ã§ã‚„ã‚Šå–ã‚Šã™ã‚‹
 /// </summary>
 public readonly struct LineMessage
 {

@@ -1,9 +1,9 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// ‚‚¿—p
-/// —§‚¿~‚Ü‚Á‚Ä‚¢‚éó‘Ô‚ÌƒNƒ‰ƒX
-/// ŠÔŒo‰ß‚ÅSearchó‘Ô‚É‘JˆÚ‚·‚é
+/// ç›¾æŒã¡ç”¨
+/// ç«‹ã¡æ­¢ã¾ã£ã¦ã„ã‚‹çŠ¶æ…‹ã®ã‚¯ãƒ©ã‚¹
+/// æ™‚é–“çµŒéã§SearchçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
 /// </summary>
 public class StateTypeIdleExtend : StateTypeIdle
 {
@@ -26,7 +26,7 @@ public class StateTypeIdleExtend : StateTypeIdle
     }
 
     /// <summary>
-    /// ’e‚ğ”½Ë‚µ‚½‚çReflectionó‘Ô‚É‘JˆÚ‚·‚é
+    /// å¼¾ã‚’åå°„ã—ãŸã‚‰ReflectionçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
     /// </summary>
     private bool TransitionReflection()
     {
@@ -41,7 +41,7 @@ public class StateTypeIdleExtend : StateTypeIdle
     }
 
     /// <summary>
-    /// ‹ŠE“à/UŒ‚”ÍˆÍ“à‚É“ü‚Á‚½‚çDiscoveró‘Ô‚É‘JˆÚ‚·‚é
+    /// è¦–ç•Œå†…/æ”»æ’ƒç¯„å›²å†…ã«å…¥ã£ãŸã‚‰DiscoverçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
     /// </summary>
     private bool Transition()
     {
@@ -56,7 +56,7 @@ public class StateTypeIdleExtend : StateTypeIdle
     }
 
     /// <summary>
-    /// ‹ŠE“à/UŒ‚”ÍˆÍ“à‚É“ü‚Á‚½‚çDiscoveró‘Ô‚É‘JˆÚ‚·‚é
+    /// è¦–ç•Œå†…/æ”»æ’ƒç¯„å›²å†…ã«å…¥ã£ãŸã‚‰DiscoverçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
     /// </summary>
     private bool TransitionAtTimeElapsed()
     {

@@ -1,8 +1,8 @@
-using UniRx;
+ï»¿using UniRx;
 
 /// <summary>
-/// ‘äŒ‚ğ•\¦‚³‚¹‚é‚Ì‚Ég—p‚·‚éƒNƒ‰ƒX
-/// ‘—‚é‘¤
+/// å°è©ã‚’è¡¨ç¤ºã•ã›ã‚‹ã®ã«ä½¿ç”¨ã™ã‚‹ã‚¯ãƒ©ã‚¹
+/// é€ã‚‹å´
 /// </summary>
 public static class LineMessageSender
 {

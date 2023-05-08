@@ -1,25 +1,25 @@
-using Cysharp.Threading.Tasks;
+ï»¿using Cysharp.Threading.Tasks;
 using System.Threading;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// ‘äŒ‚ğ•\¦‚³‚¹‚é‚Ì‚Ég—p‚·‚éƒNƒ‰ƒX
-/// ó‚¯æ‚é‘¤
+/// å°è©ã‚’è¡¨ç¤ºã•ã›ã‚‹ã®ã«ä½¿ç”¨ã™ã‚‹ã‚¯ãƒ©ã‚¹
+/// å—ã‘å–ã‚‹å´
 /// </summary>
 public class LineMessageReceiver : MonoBehaviour
 {
-    [Header("‘äŒ‚ğ•\¦‚·‚éƒeƒLƒXƒg")]
+    [Header("å°è©ã‚’è¡¨ç¤ºã™ã‚‹ãƒ†ã‚­ã‚¹ãƒˆ")]
     [SerializeField] private Text _text;
-    [Header("•\¦‚·‚é‘äŒ‚ğXV‚·‚éŠÔŠu(•b)")]
+    [Header("è¡¨ç¤ºã™ã‚‹å°è©ã‚’æ›´æ–°ã™ã‚‹é–“éš”(ç§’)")]
     [SerializeField] private float _interval = 1.0f;
 
     private string _nextLine;
 
     private void Awake()
     {
-        // ˆê”ÔÅŒã‚ÉóM‚µ‚½ƒƒbƒZ[ƒW‚ªŸ‚Ì‘äŒ‚É”½‰f‚³‚ê‚é
+        // ä¸€ç•ªæœ€å¾Œã«å—ä¿¡ã—ãŸãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒæ¬¡ã®å°è©ã«åæ˜ ã•ã‚Œã‚‹
         MessageBroker.Default.Receive<LineMessage>().Subscribe(message =>
         {
             _nextLine = message.Line;
@@ -33,7 +33,7 @@ public class LineMessageReceiver : MonoBehaviour
     }
 
     /// <summary>
-    /// ‘äŒ‚ğóM‚µ‚½‚çƒeƒLƒXƒg‚É•\¦‚µ‚Ä‚»‚ÌƒeƒLƒXƒg‚ª”ñ•\¦‚É‚È‚é‚Ì‚ğ‘Ò‚Â‚Æ‚¢‚¤“®ì‚ğŒJ‚è•Ô‚·
+    /// å°è©ã‚’å—ä¿¡ã—ãŸã‚‰ãƒ†ã‚­ã‚¹ãƒˆã«è¡¨ç¤ºã—ã¦ãã®ãƒ†ã‚­ã‚¹ãƒˆãŒéè¡¨ç¤ºã«ãªã‚‹ã®ã‚’å¾…ã¤ã¨ã„ã†å‹•ä½œã‚’ç¹°ã‚Šè¿”ã™
     /// </summary>
     private async UniTaskVoid LineControlAsync(CancellationToken token)
     {

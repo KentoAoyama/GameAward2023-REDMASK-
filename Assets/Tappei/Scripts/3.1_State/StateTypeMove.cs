@@ -1,12 +1,12 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// ƒvƒŒƒCƒ„[‚ÉŒü‚¯‚ÄˆÚ“®‚·‚éó‘Ô‚ÌƒNƒ‰ƒX
+/// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«å‘ã‘ã¦ç§»å‹•ã™ã‚‹çŠ¶æ…‹ã®ã‚¯ãƒ©ã‚¹
 /// </summary>
 public class StateTypeMove : StateTypeBase
 {
-    // ˆÈ‰º2‚Â‚Í’n–Ê‚Ì’[‚È‚Ç‚ÅˆÚ“®‚ªƒLƒƒƒ“ƒZƒ‹‚³‚ê‚½ê‡‚É
-    // ˆê’èŠÔŒã‚É‘JˆÚ‚³‚¹‚éˆ—‚É•K—v‚È•Ï”
+    // ä»¥ä¸‹2ã¤ã¯åœ°é¢ã®ç«¯ãªã©ã§ç§»å‹•ãŒã‚­ãƒ£ãƒ³ã‚»ãƒ«ã•ã‚ŒãŸå ´åˆã«
+    // ä¸€å®šæ™‚é–“å¾Œã«é·ç§»ã•ã›ã‚‹å‡¦ç†ã«å¿…è¦ãªå¤‰æ•°
     private Vector3 _prevPos;
     private float _timer;
     private int _cachedSEIndex;
@@ -44,7 +44,7 @@ public class StateTypeMove : StateTypeBase
     }
 
     /// <summary>
-    /// ˆÚ“®‚ªƒLƒƒƒ“ƒZƒ‹‚³‚ê‚½ê‡‚ÍIdleó‘Ô‚É‘JˆÚ‚·‚é
+    /// ç§»å‹•ãŒã‚­ãƒ£ãƒ³ã‚»ãƒ«ã•ã‚ŒãŸå ´åˆã¯IdleçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
     /// </summary>
     private bool TransitionAtMoveCancel()
     {
@@ -58,7 +58,7 @@ public class StateTypeMove : StateTypeBase
     }
 
     /// <summary>
-    /// ‹ŠE‚©‚çŠO‚ê‚½‚çIdleó‘Ô‚ÉAUŒ‚”ÍˆÍ“à‚É“ü‚Á‚½‚çAttackó‘Ô‚É‘JˆÚ‚·‚é
+    /// è¦–ç•Œã‹ã‚‰å¤–ã‚ŒãŸã‚‰IdleçŠ¶æ…‹ã«ã€æ”»æ’ƒç¯„å›²å†…ã«å…¥ã£ãŸã‚‰AttackçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
     /// </summary>
     private bool Transition()
     {
@@ -78,7 +78,7 @@ public class StateTypeMove : StateTypeBase
     }
 
     /// <summary>
-    /// ‘OƒtƒŒ[ƒ€‚©‚ç‚ÌˆÚ“®—Ê‚ª0‚Ìó‘Ô‚ªˆê’èŠÔ‘±‚­‚È‚çˆÚ“®‚ªƒLƒƒƒ“ƒZƒ‹‚³‚ê‚½‚Æ‚İ‚È‚·
+    /// å‰ãƒ•ãƒ¬ãƒ¼ãƒ ã‹ã‚‰ã®ç§»å‹•é‡ãŒ0ã®çŠ¶æ…‹ãŒä¸€å®šæ™‚é–“ç¶šããªã‚‰ç§»å‹•ãŒã‚­ãƒ£ãƒ³ã‚»ãƒ«ã•ã‚ŒãŸã¨ã¿ãªã™
     /// </summary>
     protected bool IsMoveCancel()
     {

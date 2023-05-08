@@ -1,8 +1,8 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
-/// �^�[�Q�b�g�ł͂Ȃ��ړ�����w�肵�Ĉړ�����ꍇ�̈ړ���𐧌䂷��N���X
-/// MoveBehavior�N���X����g�p�����
+/// ターゲットではなく移動先を指定して移動する場合の移動先を制御するクラス
+/// MoveBehaviorクラスから使用される
 /// </summary>
 [System.Serializable]
 public class WaypointModule
@@ -10,18 +10,18 @@ public class WaypointModule
     private GameObject _searchWaypoint;
     private GameObject _forwardWaypoint;
     /// <summary>
-    /// ���̍��W����ɂ���Search��Ԃ̈ړ����s��
+    /// この座標を基準にしてSearch状態の移動を行う
     /// </summary>
     private Vector3 _footPos;
 
     /// <summary>
-    /// �O��̍��E�̈ړ�������-1�������邱�ƂŔ��]������̂Ń����o�Ƃ��ĕێ����Ă���
+    /// 前回の左右の移動方向に-1をかけることで反転させるのでメンバとして保持しておく
     /// </summary>
     private int _prevRandomDir;
 
     /// <summary>
-    /// GameObject�𐶐����邽�߂�Awake�̃^�C�~���O�ŌĂяo���K�v������
-    /// �킴�킴�������Ă���̂�Serializable������t���Č����ڂ𓝈ꂳ���邽��
+    /// GameObjectを生成するためにAwakeのタイミングで呼び出す必要がある
+    /// わざわざこうしているのはSerializable属性を付けて見た目を統一させるため
     /// </summary>
     public void InitOnAwake()
     {
@@ -33,8 +33,8 @@ public class WaypointModule
     public void UpdateFootPos(Vector3 pos) => _footPos = pos;
 
     /// <summary>
-    /// Search��Ԃ̈ړ�������ۂɌĂ΂��
-    /// Transform��Ԃ����Ƃňړ����Ɉړ���𓮂������Ƃ��o����
+    /// Search状態の移動をする際に呼ばれる
+    /// Transformを返すことで移動中に移動先を動かすことが出来る
     /// </summary>
     public Transform GetSearchWaypoint(float distance, bool useRandomDistance)
     {
@@ -56,14 +56,14 @@ public class WaypointModule
     }
 
     /// <summary>
-    /// �O���Ɉړ�������ۂɌĂ΂��
-    /// Transform��Ԃ����Ƃňړ����Ɉړ���𓮂������Ƃ��o����
+    /// 前方に移動をする際に呼ばれる
+    /// Transformを返すことで移動中に移動先を動かすことが出来る
     /// </summary>
     public Transform GetForwardWaypoint(float destination)
     {
-        // FootPos�̍X�V�����Ԋu�Ȃ̂ōX�V�ƍX�V�̊Ԃɍ����Ƃ��납�痎�����
-        // �i���̏��FootPos�������Ԃł��̃��\�b�h���Ă΂�Ă��܂���������Ȃ�
-        // ���������ꍇ�A�ǂɈ���������ȂǈӐ}���Ȃ�����������\��������
+        // FootPosの更新が一定間隔なので更新と更新の間に高いところから落ちると
+        // 段差の上にFootPosがある状態でこのメソッドが呼ばれてしまうかもしれない
+        // そうした場合、壁に引っかかるなど意図しない挙動をする可能性がある
 
         _footPos.x += destination;
         _forwardWaypoint.transform.position = _footPos;

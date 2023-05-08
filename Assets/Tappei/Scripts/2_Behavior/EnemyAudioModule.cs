@@ -1,20 +1,20 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// �G���g�p���鉹���Ǘ�����N���X
-/// EnemyController�o�R�Ŏg�p�����
+/// 敵が使用する音を管理するクラス
+/// EnemyController経由で使用される
 /// </summary>
 public class EnemyAudioModule
 {
-    // SE�̍Đ�
-    // ���j���ꂽ�Ƃ��ɍĐ����̉��͑S���~�߂�
-    // �}�b�v�O�ŉ����Ȃ�Ȃ��悤�ɂ�����
-    // ����ɂ�����炷�������K�v
+    // SEの再生
+    // 撃破されたときに再生中の音は全部止める
+    // マップ外で音をならないようにしたい
+    // 武器にも音を鳴らす処理が必要
 
-    // EnemyController�Ɏ�������̂�State��EnemyController������̂݌Ăяo����
-    // �eBehavior����Ăяo���Ȃ������v
+    // EnemyControllerに持たせるのでStateとEnemyController内からのみ呼び出せる
+    // 各Behaviorから呼び出せないが大丈夫
 
     void Start()
     {

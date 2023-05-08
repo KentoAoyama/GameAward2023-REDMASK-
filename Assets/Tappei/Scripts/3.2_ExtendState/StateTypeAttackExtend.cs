@@ -1,29 +1,29 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// ‚‚¿—p
-/// ˆê’èŠÔŠu‚ÅUŒ‚‚ğ‚·‚éó‘Ô‚ÌƒNƒ‰ƒX
+/// ç›¾æŒã¡ç”¨
+/// ä¸€å®šé–“éš”ã§æ”»æ’ƒã‚’ã™ã‚‹çŠ¶æ…‹ã®ã‚¯ãƒ©ã‚¹
 /// </summary>
 public class StateTypeAttackExtend : StateTypeAttack
 {
     /// <summary>
-    /// ŠÔ‡‚¢‚ğ‹l‚ß‚Ä‚­‚éŠÔ‚ğŒvZ‚·‚é‚½‚ß‚ÉUŒ‚”ÍˆÍ‚É’è”‚ğ‚©‚¯‚é
+    /// é–“åˆã„ã‚’è©°ã‚ã¦ãã‚‹æ™‚é–“ã‚’è¨ˆç®—ã™ã‚‹ãŸã‚ã«æ”»æ’ƒç¯„å›²ã«å®šæ•°ã‚’ã‹ã‘ã‚‹
     /// </summary>
     private static readonly float MovingDistanceMag = 15.0f;
     /// <summary>
-    /// Ÿ‚ÌUŒ‚‚Ü‚Å‚Ì‘Ò‚¿ŠÔ‚ÍUŒ‚ƒ‚[ƒVƒ‡ƒ“‚ğl—¶‚µ‚Äƒ}ƒCƒiƒX‚Ì’l‚ğİ’è‚·‚é
+    /// æ¬¡ã®æ”»æ’ƒã¾ã§ã®å¾…ã¡æ™‚é–“ã¯æ”»æ’ƒãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã‚’è€ƒæ…®ã—ã¦ãƒã‚¤ãƒŠã‚¹ã®å€¤ã‚’è¨­å®šã™ã‚‹
     /// </summary>
     private static readonly float NextAttackDelay = -80.0f;
 
     private ShieldEnemyController _shieldController;
 
     /// <summary>
-    /// Œp³Œ³‚Å‚ ‚éStateTypeAttackƒNƒ‰ƒX‚Æ‚ÍUŒ‚‚Ì‹““®‚ªˆá‚¤‚Ì‚Å•Ê‚Ì•Ï”‚ğéŒ¾‚·‚é
-    /// ‚±‚¿‚ç‚Íó‘Ô‚Ì‘JˆÚ‚Å‰Šú‰»‚³‚ê‚é
+    /// ç¶™æ‰¿å…ƒã§ã‚ã‚‹StateTypeAttackã‚¯ãƒ©ã‚¹ã¨ã¯æ”»æ’ƒã®æŒ™å‹•ãŒé•ã†ã®ã§åˆ¥ã®å¤‰æ•°ã‚’å®£è¨€ã™ã‚‹
+    /// ã“ã¡ã‚‰ã¯çŠ¶æ…‹ã®é·ç§»ã§åˆæœŸåŒ–ã•ã‚Œã‚‹
     /// </summary>
     private float _time;
     /// <summary>
-    /// ŠÔ‡‚¢‚ğ‹l‚ß‚Ä‚­‚é“®ì’†‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO
+    /// é–“åˆã„ã‚’è©°ã‚ã¦ãã‚‹å‹•ä½œä¸­ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°
     /// </summary>
     private bool _isApproaching;
 
@@ -31,12 +31,14 @@ public class StateTypeAttackExtend : StateTypeAttack
     : base(controller, stateType) 
     {
         _shieldController = controller as ShieldEnemyController;
+        // æœ€åˆã®1å›ã—ã‹åˆæœŸåŒ–ã—ãªã„(åŸºåº•ã‚¯ãƒ©ã‚¹ã¨åŒã˜)ã«å¤‰æ›´
+        // â†“ã“ã“ä»¥å¤–ã¯ãƒªãƒ•ã‚¡ã‚¯ã‚¿ãƒªãƒ³ã‚°å¾Œã‹ã‚‰å¼„ã£ã¦ã„ãªã„
+        _time = Controller.Params.AttackRate;
     }
 
     protected override void Enter()
     {
-        // TODO:UŒ‚‚Ìˆ—‚ª•¡G‚È‚Ì‚Å‚Ü‚¾‰˜‚¢
-        _time = Controller.Params.AttackRate;
+        // TODO:æ”»æ’ƒã®å‡¦ç†ãŒè¤‡é›‘ãªã®ã§ã¾ã æ±šã„
         _shieldController.PlayAnimation(AnimationName.Idle);
     }
 
@@ -55,7 +57,7 @@ public class StateTypeAttackExtend : StateTypeAttack
     }
 
     /// <summary>
-    /// ŠÔŒo‰ß‚Å‘O•û‚ÉˆÚ“®->UŒ‚‚ğs‚¤
+    /// æ™‚é–“çµŒéã§å‰æ–¹ã«ç§»å‹•->æ”»æ’ƒã‚’è¡Œã†
     /// </summary>
     private void AttackAtInterval()
     {
@@ -66,8 +68,9 @@ public class StateTypeAttackExtend : StateTypeAttack
             _shieldController.MoveForward();
             _shieldController.PlayAnimation(AnimationName.Move);
         }
-        if (_time > Controller.Params.AttackRate + MovingDistanceMag * Controller.Params.AttackRange)
+        if (_time > Controller.Params.AttackRate + Controller.Params.AttackRange / Controller.Params.RunSpeed)
         {
+            // æ”»æ’ƒãŒ1å›ãã¡ã‚“ã¨è¡Œã‚ã‚Œã‚‹ã“ã¨ãŒç¢ºèªã§ãã‚‹ã¾ã§2å›ç›®ã®æ”»æ’ƒãŒå‡ºãªã„ã‚ˆã†ãªå€¤ã«è¨­å®šã—ã¦ã‚ã‚‹
             _time = NextAttackDelay;
             _isApproaching = false;
             _shieldController.CancelMoveToTarget();
@@ -77,7 +80,7 @@ public class StateTypeAttackExtend : StateTypeAttack
     }
 
     /// <summary>
-    /// ’e‚ğ”½Ë‚µ‚½‚çReflectionó‘Ô‚É‘JˆÚ‚·‚é
+    /// å¼¾ã‚’åå°„ã—ãŸã‚‰ReflectionçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
     /// </summary>
     private bool TransitionReflection()
     {
@@ -92,7 +95,7 @@ public class StateTypeAttackExtend : StateTypeAttack
     }
 
     /// <summary>
-    /// ‹ŠE‚©‚çŠO‚ê‚½‚çIdleó‘Ô‚ÉAUŒ‚”ÍˆÍ‚©‚çŠO‚ê‚½‚çMoveó‘Ô‚É‘JˆÚ‚·‚é
+    /// è¦–ç•Œã‹ã‚‰å¤–ã‚ŒãŸã‚‰IdleçŠ¶æ…‹ã«ã€æ”»æ’ƒç¯„å›²ã‹ã‚‰å¤–ã‚ŒãŸã‚‰MoveçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
     /// </summary>
     private bool Transition()
     {

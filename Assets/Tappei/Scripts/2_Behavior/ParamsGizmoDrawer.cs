@@ -1,7 +1,7 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// ŠeEnemy‚ÉŠ„‚è“–‚Ä‚Ä‚ ‚éSO‚Ìƒpƒ‰ƒ[ƒ^‚ğGizmoã‚É•\¦‚·‚éƒNƒ‰ƒX
+/// å„Enemyã«å‰²ã‚Šå½“ã¦ã¦ã‚ã‚‹SOã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’Gizmoä¸Šã«è¡¨ç¤ºã™ã‚‹ã‚¯ãƒ©ã‚¹
 /// </summary>
 public class ParamsGizmoDrawer : MonoBehaviour
 {
