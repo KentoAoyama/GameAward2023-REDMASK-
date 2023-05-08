@@ -13,7 +13,9 @@ public class EnemyMeleeWeapon : MonoBehaviour, IEnemyWeapon
     [Header("攻撃時に再生される音の名前")]
     [SerializeField] private string _attackSEName;
 
-    /// <summary>プレイヤーのみを検出するので長さは1で良い</summary>
+    /// <summary>
+    /// プレイヤーのみを検出するので長さは1で良い
+    /// </summary>
     private Collider2D[] _results = new Collider2D[1];
 
     public void Attack()
