@@ -15,6 +15,11 @@ public class WaypointModule
     private Vector3 _footPos;
 
     /// <summary>
+    /// 前回の左右の移動方向に-1をかけることで反転させるのでメンバとして保持しておく
+    /// </summary>
+    private int _prevRandomDir;
+
+    /// <summary>
     /// GameObjectを生成するためにAwakeのタイミングで呼び出す必要がある
     /// わざわざこうしているのはSerializable属性を付けて見た目を統一させるため
     /// </summary>
@@ -22,6 +27,7 @@ public class WaypointModule
     {
         _searchWaypoint = new("SearchWaypoint");
         _forwardWaypoint = new("ForwardWaypoint");
+        _prevRandomDir = (int)Mathf.Sign(Random.Range(-100, 100));
     }
 
     public void UpdateFootPos(Vector3 pos) => _footPos = pos;
@@ -32,11 +38,18 @@ public class WaypointModule
     /// </summary>
     public Transform GetSearchWaypoint(float distance, bool useRandomDistance)
     {
-        // 左右どちらかにcenterからdistanceだけ離れた位置
-        Vector3 dir = Random.value > 0.5f ? Vector3.left : Vector3.right;
-        float percentage = useRandomDistance ? Random.value : 1;
-        Vector3 pos = _footPos + dir * distance * percentage;
+        if (Random.value <= 0.7f)
+        {
+            _prevRandomDir *= -1;
+        }
+        else
+        {
+            _prevRandomDir = (int)Mathf.Sign(Random.Range(-100, 100));
+        }
 
+        float percentage = useRandomDistance ? Random.value : 1;
+        Vector3 targetPos = Vector3.right * _prevRandomDir * distance * percentage;
+        Vector3 pos = _footPos + targetPos;
         _searchWaypoint.transform.position = pos;
 
         return _searchWaypoint.transform;

@@ -20,14 +20,7 @@ public class StateTypeSearchExtend : StateTypeSearch
         if (TransitionDefeated()) return;
         if (TransitionReflection()) return;
         if (Transition()) return;
-
-        _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime;
-        float interval = Controller.Params.TurningPoint / Controller.Params.WalkSpeed;
-        if (_time > interval)
-        {
-            _time = 0;
-            TryChangeState(StateType.IdleExtend);
-        }
+        if (TransitionAtTimeElapsed()) return;
     }
 
     /// <summary>
@@ -54,6 +47,24 @@ public class StateTypeSearchExtend : StateTypeSearch
         if (result == SightResult.InSight || result == SightResult.InAttackRange)
         {
             TryChangeState(StateType.DiscoverExtend);
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// ˆê’èŠÔ‚ªŒo‰ß‚µ‚½‚çIdleó‘Ô‚É‘JˆÚ‚·‚é
+    /// </summary>
+    /// <returns></returns>
+    private bool TransitionAtTimeElapsed()
+    {
+        _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime;
+        float interval = Controller.Params.TurningPoint / Controller.Params.WalkSpeed;
+        if (_time > interval)
+        {
+            _time = 0;
+            TryChangeState(StateType.IdleExtend);
             return true;
         }
 

@@ -81,8 +81,6 @@ public class EnemyRifle : MonoBehaviour, IEnemyWeapon
 
         bullet.transform.position = _muzzle.position;
         bullet.SetVelocity(GetBulletDirection());
-
-        GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", _attackSEName);
     }
 
     protected virtual Vector3 GetBulletDirection() => _muzzle.right * _muzzle.transform.localScale.x;
