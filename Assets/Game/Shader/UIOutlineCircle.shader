@@ -1,4 +1,4 @@
-Shader "Custom/UIOutline"
+Shader "Custom/UIOutlineCircle"
 {
     Properties
     {
@@ -56,12 +56,9 @@ Shader "Custom/UIOutline"
 
             float4 frag (v2f i) : SV_Target
             {
-                float outlineAlpha = saturate(
-                    SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv + float2(_MainTex_TexelSize.x * _OutlineRange, 0)).a +
-                    SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv + float2(_MainTex_TexelSize.x * -_OutlineRange, 0)).a +
-                    SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv + float2(0, _MainTex_TexelSize.y * _OutlineRange)).a +
-                    SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv + float2(0, _MainTex_TexelSize.y * -_OutlineRange)).a
-                );
+                float2 correction = (i.uv * 2 - 1) * _OutlineRange;
+
+                float outlineAlpha = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv + correction).a;
                 float4 outCol = float4(_OutlineColor.rgb, outlineAlpha);
 
                 float4 col = (SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv) + _TextureSampleAdd) * i.color;
