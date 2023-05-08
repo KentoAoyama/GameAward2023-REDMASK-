@@ -1,4 +1,6 @@
-﻿/// <summary>
+﻿using UnityEngine;
+
+/// <summary>
 /// 盾持ち用
 /// プレイヤー発見時に演出用に遷移する状態のクラス
 /// 距離によってMoveもしくはAttack状態に遷移する
@@ -40,9 +42,10 @@ public class StateTypeDiscoverExtend : StateTypeDiscover
     /// </summary>
     private bool Transition()
     {
-        SightResult result = Controller.LookForPlayerInSight();
-        if (_isTransitionable)
+        _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime;
+        if (_time > Controller.Params.DiscoverStateTransitionDelay)
         {
+            SightResult result = Controller.LookForPlayerInSight();
             if (result == SightResult.InSight || result == SightResult.OutSight)
             {
                 TryChangeState(StateType.MoveExtend);

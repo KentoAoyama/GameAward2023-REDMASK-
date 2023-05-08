@@ -7,8 +7,10 @@
 public class StateTypeReflection : StateTypeBase
 {
     private ShieldEnemyController _shieldController;
-    private float _delay;
     private float _time;
+    /// <summary>
+    /// 構え直しのアニメーションを再生しているフラグ
+    /// </summary>
     private bool _isPostured;
 
     public StateTypeReflection(EnemyController controller, StateType stateType)
@@ -19,7 +21,6 @@ public class StateTypeReflection : StateTypeBase
 
     protected override void Enter()
     {
-        _delay = _shieldController.ShieldParams.StiffeningTime;
         _shieldController.PlayAnimation(AnimationName.Reflection);
 
         GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Enemy_Damage_Shield");
@@ -34,7 +35,8 @@ public class StateTypeReflection : StateTypeBase
     protected override void Exit()
     {
         _time = 0;
-        _delay = 0;
+
+        // この状態から遷移するタイミングでもう一度弾を弾けるようになる
         _isPostured = false;
         _shieldController.RecoverShield();
     }
@@ -46,12 +48,16 @@ public class StateTypeReflection : StateTypeBase
     private bool RecoverProcess()
     {
         _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime;
-        if (_time > _delay - 1.0f && !_isPostured)
+
+        // この状態から遷移するタイミングに合わせて構え直すアニメーションを再生する
+        ShieldEnemyParamsSO eParams = _shieldController.ShieldParams;
+        float playAnimTime = eParams.StiffeningTime - eParams.PostureAnimClipLength;
+        if (_time > playAnimTime && !_isPostured)
         {
             _isPostured = true;
             Controller.PlayAnimation(AnimationName.Posture);
         }
-        else if (_time > _delay)
+        else if (_time > _shieldController.ShieldParams.StiffeningTime)
         {
             TryChangeState(_shieldController.LastStateType);
             return true;

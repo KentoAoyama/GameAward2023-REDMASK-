@@ -63,7 +63,6 @@ public class StateTypeSearch : StateTypeBase
         float interval = Controller.Params.TurningPoint / Controller.Params.WalkSpeed;
         if (_time > interval)
         {
-            _time = 0;
             TryChangeState(StateType.Idle);
             return true;
         }

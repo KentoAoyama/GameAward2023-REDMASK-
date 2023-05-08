@@ -1,4 +1,4 @@
-﻿using DG.Tweening;
+﻿using UnityEngine;
 
 /// <summary>
 /// プレイヤー発見時に演出用に遷移する状態のクラス
@@ -6,12 +6,7 @@
 /// </summary>
 public class StateTypeDiscover : StateTypeBase
 {
-    /// <summary>
-    /// 発見時のアニメーションの終了を待って遷移させるためのフラグ
-    /// このフラグが立つまで遷移は不可能だが、視界は機能している
-    /// </summary>
-    protected bool _isTransitionable;
-    private Tween _tween;
+    protected float _time;
 
     public StateTypeDiscover(EnemyController controller, StateType type) 
         : base(controller, type) { }
@@ -20,9 +15,6 @@ public class StateTypeDiscover : StateTypeBase
     {
         Controller.PlayAnimation(AnimationName.Discover);
         Controller.PlayDiscoverPerformance();
-
-        float delay = Controller.Params.DiscoverStateTransitionDelay;
-        _tween = DOVirtual.DelayedCall(delay, () => _isTransitionable = true);
 
         GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Enemy_Discover");
     }
@@ -35,8 +27,7 @@ public class StateTypeDiscover : StateTypeBase
 
     protected override void Exit()
     {
-        _tween.Kill();
-        _isTransitionable = false;
+        _time = 0;
     }
 
     /// <summary>
@@ -44,9 +35,10 @@ public class StateTypeDiscover : StateTypeBase
     /// </summary>
     private bool Transition()
     {
-        SightResult result = Controller.LookForPlayerInSight();
-        if (_isTransitionable)
+        _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime;
+        if (_time > Controller.Params.DiscoverStateTransitionDelay)
         {
+            SightResult result = Controller.LookForPlayerInSight();
             if (result == SightResult.InSight || result == SightResult.OutSight)
             {
                 TryChangeState(StateType.Move);

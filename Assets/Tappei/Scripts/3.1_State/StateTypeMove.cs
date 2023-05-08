@@ -5,11 +5,12 @@
 /// </summary>
 public class StateTypeMove : StateTypeBase
 {
-    // 以下2つは地面の端などで移動がキャンセルされた場合に
-    // 一定時間後に遷移させる処理に必要な変数
-    private Vector3 _prevPos;
-    private float _timer;
+    private float _time;
     private int _cachedSEIndex;
+    /// <summary>
+    /// 移動量が0の状態が一定時間続いたらIdle状態に遷移させるために前フレームでの位置が必要
+    /// </summary>
+    private Vector3 _prevPos;
 
     public StateTypeMove(EnemyController controller, StateType stateType)
         : base(controller, stateType) { }
@@ -19,8 +20,8 @@ public class StateTypeMove : StateTypeBase
         Controller.PlayAnimation(AnimationName.Move);
         Controller.MoveToPlayer();
 
-        _prevPos = Vector3.one * -1000;
-        _timer = 0;
+        _prevPos = Vector3.positiveInfinity;
+        _time = 0;
 
         _cachedSEIndex = GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", Controller.Params.RunSEName);
     }
@@ -82,17 +83,20 @@ public class StateTypeMove : StateTypeBase
     /// </summary>
     protected bool IsMoveCancel()
     {
+        // TODO:毎フレーム呼んでいるので余裕があれば改善する
         float distance = Vector3.Distance(_prevPos, Controller.transform.position);
         if (distance <= Mathf.Epsilon)
         {
-            _timer += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime;
+            _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime;
         }
         else
         {
-            _timer = 0;
+            _time = 0;
         }
         _prevPos = Controller.transform.position;
 
-        return _timer > EnemyParamsSO.MoveCancelTimeThreshold;
+        // 移動量が0の状態が続いた際にIdle状態に遷移させるまでの時間
+        float timeThreshold = 0.25f;
+        return _time > timeThreshold;
     }
 }

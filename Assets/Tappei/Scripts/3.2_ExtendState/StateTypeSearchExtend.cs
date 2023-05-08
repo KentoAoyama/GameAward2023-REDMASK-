@@ -56,14 +56,12 @@ public class StateTypeSearchExtend : StateTypeSearch
     /// <summary>
     /// 一定時間が経過したらIdle状態に遷移する
     /// </summary>
-    /// <returns></returns>
     private bool TransitionAtTimeElapsed()
     {
         _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime;
         float interval = Controller.Params.TurningPoint / Controller.Params.WalkSpeed;
         if (_time > interval)
         {
-            _time = 0;
             TryChangeState(StateType.IdleExtend);
             return true;
         }

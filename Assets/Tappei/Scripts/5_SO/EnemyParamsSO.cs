@@ -12,17 +12,6 @@ public class EnemyParamsSO : ScriptableObject
         Search,
     }
 
-    /// <summary>
-    /// 死亡した際に死体が消えるまでの追加時間
-    /// 死亡のアニメーションに追加で待つ
-    /// </summary>
-    static readonly float DefeatedStateTransitionDelayAdd = 3.0f;
-    /// <summary>
-    /// 移動量が0の状態が続いた際にIdle状態に遷移させるまでの時間
-    /// Move状態でしか使われないが、State内に設定する値を持たせたくないのでSO内に持つ
-    /// </summary>
-    public static readonly float MoveCancelTimeThreshold = 0.25f;
-
     [Header("この項目はプランナーが弄る必要なし")]
     [SerializeField] private AnimationClip _discoverAnimClip;
     [SerializeField] private AnimationClip _deadAnimClip;
@@ -59,10 +48,18 @@ public class EnemyParamsSO : ScriptableObject
     [SerializeField] private float _minIdleStateTimer = 1.0f;
     [SerializeField] private float _maxIdleStateTimer = 2.0f;
 
-    public float DiscoverStateTransitionDelay => _discoverAnimClip != null ? _discoverAnimClip.length : 0;
+    public float DiscoverStateTransitionDelay
+    {
+        get => _discoverAnimClip != null ? _discoverAnimClip.length : 0;
+    }
     public float DefeatedStateTransitionDelay
     {
-        get => _deadAnimClip != null ? _deadAnimClip.length + DefeatedStateTransitionDelayAdd : 0;
+        get
+        {
+            // 死亡した際にすぐ消えないようにアニメーション追加で待つ時間を追加する
+            float addTime = 3.0f;
+            return _deadAnimClip != null ? _deadAnimClip.length + addTime : 0;
+        }
     }
     public string WalkSEName => _walkSEName;
     public string RunSEName => _runSEName;
