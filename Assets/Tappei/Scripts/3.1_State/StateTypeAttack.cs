@@ -24,6 +24,8 @@ public class StateTypeAttack : StateTypeBase
 
     protected override void Stay()
     {
+        Controller.UpdateIdle();
+
         if (TransitionDefeated()) return;
         AttackAtInterval();
         if (Transition()) return;

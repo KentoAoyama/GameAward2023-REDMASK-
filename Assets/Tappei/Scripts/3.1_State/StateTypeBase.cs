@@ -71,7 +71,7 @@ public abstract class StateTypeBase
 
     public virtual void OnPause() { }
     public virtual void OnResume() { }
-
+    public virtual void OnDisable() { }
 
     /// <summary>
     /// Enter()が呼ばれてかつ、ステートの遷移処理を呼んでいない場合のみ遷移可能

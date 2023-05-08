@@ -34,6 +34,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     protected ReactiveProperty<StateTypeBase> _currentState = new();
     protected StateRegister _stateRegister = new();
     protected MoveBehavior _moveBehavior;
+    private EnemyAudioModule _audioModule = new();
     private Transform _player;
     private SightSensor _sightSensor;
     private AttackBehavior _attackBehavior;
@@ -68,6 +69,11 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         InitOnStart();
     }
 
+    private void OnDisable()
+    {
+        _currentState.Value.OnDisable();
+    }
+
     protected virtual void InitOnAwake()
     {
         _stateRegister.Register(StateType.Idle, this);
@@ -100,7 +106,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     }
 
     /// <summary>
-    /// その場で待機する。Idle状態の時、毎フレーム呼ばれる
+    /// その場で待機する。IdleとAttack状態の時、毎フレーム呼ばれる
     /// </summary>
     public void UpdateIdle() => _moveBehavior.Idle();
 

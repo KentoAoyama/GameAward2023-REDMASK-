@@ -34,6 +34,11 @@ public class StateTypeSearch : StateTypeBase
         GameManager.Instance.AudioManager.StopSE(_cachedSEIndex);
     }
 
+    public override void OnDisable()
+    {
+        GameManager.Instance.AudioManager.StopSE(_cachedSEIndex);
+    }
+
     /// <summary>
     /// ‹ŠE“à/UŒ‚”ÍˆÍ“à‚É“ü‚Á‚½‚çDiscoveró‘Ô‚É‘JˆÚ‚·‚é
     /// </summary>
