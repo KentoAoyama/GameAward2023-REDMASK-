@@ -40,7 +40,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     protected ReactiveProperty<StateTypeBase> _currentState = new();
     protected StateRegister _stateRegister = new();
     protected MoveBehavior _moveBehavior;
-    private EnemyAudioModule _audioModule = new();
+    //private EnemyAudioModule _audioModule = new();
     private Transform _player;
     private SightSensor _sightSensor;
     private AttackBehavior _attackBehavior;
