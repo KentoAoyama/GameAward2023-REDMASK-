@@ -8,7 +8,7 @@ using UnityEngine;
 /// </summary>
 public class ShieldEnemyController : EnemyController
 {
-    [Header("盾のコライダーが付いたオブジェクト")]
+    [Tooltip("盾のコライダーが付いたオブジェクト")]
     [SerializeField] Sield _shield;
 
     /// <summary>

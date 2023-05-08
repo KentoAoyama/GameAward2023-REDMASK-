@@ -17,8 +17,6 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     private static string AnimationSpeedParam = "Speed";
     private static string DefeatedTransitionLayerName = "DeathEnemy";
 
-    [Header("シーン上に配置されているプレイヤーのタグ")]
-    [SerializeField, TagName] private string _playerTagName;
     [Header("敵の各種パラメーターを設定したSO")]
     [Tooltip("各振る舞いのクラスはこのSO内の値を参照して機能する")]
     [SerializeField] protected EnemyParamsSO _enemyParamsSO;
@@ -27,9 +25,17 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     [SerializeField] private bool _placedFacingLeft;
     [Header("プレイヤー未発見時は常にIdle状態にする")]
     [SerializeField] private bool _idleWhenUndiscover;
+    [Header("視界の設定")]
+    [Tooltip("扇状の視界の半径")]
+    [SerializeField] private float _sightRadius = 9.0f;
+    [Tooltip("扇状の視界の角度")]
+    [SerializeField] private float _sightAngle = 270.0f;
+    [Tooltip("間に障害物があった場合に無視する")]
+    [SerializeField] private bool _isIgnoreObstacle;
 
-    [Header("デバッグ用:現在の状態を表示するText")]
-    [SerializeField] private Text _text;
+    [Header("この項目はプランナーが弄る必要なし")]
+    [SerializeField, TagName] private string _playerTagName;
+    [SerializeField] private Text _debugStateViewText;
 
     protected ReactiveProperty<StateTypeBase> _currentState = new();
     protected StateRegister _stateRegister = new();
@@ -52,6 +58,9 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     public EnemyParamsSO Params => _enemyParamsSO;
     public bool IsDefeated => _isDefeated;
     public bool IdleWhenUndiscover => _idleWhenUndiscover;
+    public float SightRadius => _sightRadius;
+    public float SightAngle => _sightAngle;
+    public bool IsIgnoreObstacle => _isIgnoreObstacle;
 
     private void Awake()
     {
@@ -99,9 +108,9 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
             _animator.SetFloat(AnimationSpeedParam, GameManager.Instance.TimeController.EnemyTime);
         });
 
-        this.UpdateAsObservable().Where(_ => _text != null).Subscribe(_ =>
+        this.UpdateAsObservable().Where(_ => _debugStateViewText != null).Subscribe(_ =>
         {
-            _text.text = _currentState.Value.ToString();
+            _debugStateViewText.text = _currentState.Value.ToString();
         });
     }
 
@@ -139,8 +148,8 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     /// 視界に対してプレイヤーがどの位置にいるのかを判定する
     /// 各ステートの実行中呼ばれ続ける
     /// </summary>
-    public SightResult LookForPlayerInSight() => _sightSensor.LookForPlayerInSight(Params.SightRadius, 
-        Params.SightAngle, Params.AttackRange, Params.IsIgnoreObstacle);
+    public SightResult LookForPlayerInSight() => _sightSensor.LookForPlayerInSight(_sightRadius, 
+        _sightAngle, Params.AttackRange, _isIgnoreObstacle);
 
     /// <summary>
     /// Attack状態の時、一定間隔で呼ばれる

@@ -66,8 +66,8 @@ public class EnemyDroneRifle : EnemyRifle
         EnemyController enemyController = GetComponentInParent<EnemyController>();
         if (enemyController != null)
         {
-            _sightRadius = enemyController.Params.SightRadius;
-            _maxAngle = enemyController.Params.SightAngle;
+            _sightRadius = enemyController.SightRadius;
+            _maxAngle = enemyController.SightAngle;
         }
         else
         {

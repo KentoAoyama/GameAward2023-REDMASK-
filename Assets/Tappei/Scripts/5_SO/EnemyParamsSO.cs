@@ -30,14 +30,6 @@ public class EnemyParamsSO : ScriptableObject
     [Tooltip("折り返し地点に付く前にランダムに折り返す")]
     [SerializeField] private bool _useRandomTurningPoint;
 
-    [Header("視界の設定")]
-    [Tooltip("扇状の視界の半径")]
-    [SerializeField] private float _sightRadius = 9.0f;
-    [Tooltip("扇状の視界の角度")]
-    [SerializeField] private float _sightAngle = 270.0f;
-    [Tooltip("間に障害物があった場合に無視する")]
-    [SerializeField] private bool _isIgnoreObstacle;
-
     [Header("攻撃範囲の設定")]
     [Tooltip("攻撃可能な範囲")]
     [SerializeField] private float _attackRange = 3.0f;
@@ -67,9 +59,6 @@ public class EnemyParamsSO : ScriptableObject
     public float RunSpeed => _runSpeed;
     public float TurningPoint => _turningPoint;
     public bool UseRandomTurningPoint => _useRandomTurningPoint;
-    public float SightRadius => _sightRadius;
-    public float SightAngle => _sightAngle;
-    public bool IsIgnoreObstacle => _isIgnoreObstacle;
     public float AttackRange => _attackRange;
     public float AttackRate => _attackRate;
 
