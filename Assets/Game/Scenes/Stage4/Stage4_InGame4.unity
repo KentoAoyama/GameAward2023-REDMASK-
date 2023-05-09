@@ -485,9 +485,17 @@ PrefabInstance:
       propertyPath: _stageController2
       value: 
       objectReference: {fileID: 5524505501810550007}
+    - target: {fileID: 1622929108, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1892249080, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: m_SortingOrder
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2030569643, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2109781610, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: m_FollowOffset.x
@@ -1463,6 +1471,8 @@ MonoBehaviour:
   _stageController2: {fileID: 5524505501810550007}
   _playerTag: Player
   _nextSceneName: Stage4_CompletePerformance
+  _isFinal: 1
+  _currentStageNumberForFinal: 4
 --- !u!212 &5524505501461790102
 SpriteRenderer:
   m_ObjectHideFlags: 0

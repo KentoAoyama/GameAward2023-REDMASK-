@@ -19,17 +19,20 @@ public class TitleDissolve : MonoBehaviour
     private Image _dissolvePanel;
     /// <summary>�f�B�]���u�̃A�j���[�V����</summary>
     private Animator _animator;
+    private bool _isFading = false;
 
+    private InputAction _allButton = new InputAction(binding: "*/<Button>");
     private void Awake()
     {
         _dissolvePanel = GetComponent<Image>();
         _animator = GetComponent<Animator>();
         _dissolvePanel.enabled = false;
+        _allButton.Enable();
     }
 
     private void Update()
     {
-        if (Keyboard.current.anyKey.wasPressedThisFrame)
+        if (_allButton.WasPressedThisFrame())
         {
             StartCoroutine(Fade());
         }
@@ -47,6 +50,13 @@ public class TitleDissolve : MonoBehaviour
     /// <returns></returns>
     private IEnumerator Fade()
     {
+        if (_isFading)
+        {
+            yield break;
+        }
+
+        _isFading = true;
+
         yield return new WaitForEndOfFrame();
 
         Texture2D screenShot = new Texture2D(Screen.width, Screen.height);

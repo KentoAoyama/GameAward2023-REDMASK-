@@ -66,30 +66,52 @@ namespace Player
 
         public void UpData()
         {
+            if (!_playerController.GroungChecker.IsHit(_playerController.Move.MoveHorizontalDir))
+            {
+                return;
+            }   //空中では出来ない
 
+
+            //
+            if (_playerController.Proximity.IsProximityNow || _playerController.Avoidance.IsAvoidanceNow) return;
+
+
+            //構えの入力を離した場合
             if (_playerController.InputManager.IsReleased[InputType.GunSetUp])
             {
-                _isGunSetUp = false;
+                //アニメーションを設定
+                _playerController.PlayerAnimatorControl.GunSetEnd();
 
-                _isGunSetUping = false;
-
-                _setUpTimeCount = 0;
-
-                _gageHealWaitTimeCount = 0;
-
+                //ゲージが余っていた時に時遅を解除
                 if (_nowGage > 0)
                 {
                     EndSlowTime();
                 }
 
+                //構えにかかる時間の計測をリセット
+                _setUpTimeCount = 0;
+
+                //ゲージを回復するまでの計測をリセット
+                _gageHealWaitTimeCount = 0;
+
+                //構え、状態を解除
+                _isGunSetUp = false;
+
+                //構え中、の状態を解除
+                _isGunSetUping = false;
+
+                //緊急で解除する、をFalseに
                 _isEmergencyStopSlowTime = false;
+
+                //構え中、のboolをfalseに
                 _isCanselSutUping = false;
 
-            }     //構えボタンを離したら構えを解除
+            }
 
-
+            //構えのボタンを押したら
             if (_playerController.InputManager.IsPressed[InputType.GunSetUp])
             {
+                //構えてる最中
                 _isGunSetUping = true;
             }
 
@@ -105,12 +127,17 @@ namespace Player
 
                 if (_setUpTimeCount >= _setUpTime)
                 {
+                    //重力を戻す
+                    _playerController.Rigidbody2D.gravityScale = 1f;
+
                     _isGunSetUp = true;
                     _isGunSetUping = false;
 
                     if (_nowGage > 0)
                     {
                         DoSlow();
+                        _playerController.PlayerAnimatorControl.GunSet();
+
                         _isNoGage = false;
                     }
                 }
@@ -162,6 +189,35 @@ namespace Player
             }
         }
 
+
+        public void CheckRelesedSetUp()
+        {
+            if (!_playerController.InputManager.IsExist[InputType.GunSetUp])
+            {
+                if (_isGunSetUp)
+                {
+                    _playerController.PlayerAnimatorControl.GunSetEnd();
+
+                    _isGunSetUp = false;
+
+                    _isGunSetUping = false;
+
+                    _setUpTimeCount = 0;
+
+                    _gageHealWaitTimeCount = 0;
+
+                    if (_nowGage > 0)
+                    {
+                        EndSlowTime();
+                    }
+
+                    _isEmergencyStopSlowTime = false;
+                    _isCanselSutUping = false;
+                }
+
+            }     //構えボタンを離したら構えを解除
+        }
+
         public void DoSlow()
         {
             /////TEST用............
@@ -181,7 +237,7 @@ namespace Player
 
         public void EndSlowTime()
         {
-            if (_isEmergencyStopSlowTime) return;
+            if (_isEmergencyStopSlowTime || !_isGunSetUp) return;
 
             /////TEST用............
             _testSlowTimeText.SetActive(false);

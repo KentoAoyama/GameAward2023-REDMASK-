@@ -11,7 +11,11 @@ namespace Player
 
         public void AnimEnd()
         {
-            gameObject.SetActive(false);
+            if (_playerController.GunSetUp.IsGunSetUp)
+            {
+                gameObject.SetActive(false);
+            }
+
             _playerController.PlayerAnimatorControl.EndAnimation();
         }
 

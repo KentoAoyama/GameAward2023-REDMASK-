@@ -34,7 +34,7 @@ namespace Player
         /// <summaryクールタイムの計測用</summary>
         private float _attackCoolTimeCount = 0;
         /// <summary>攻撃可能かどうか</summary>
-        private bool _isCanAttack = false;
+        private bool _isCanAttack = true;
         /// <summary>攻撃実行中かどうか</summary>
         private bool _isAttackNow = false;
         public bool IsProximityNow => _isAttackNow;
@@ -102,6 +102,9 @@ namespace Player
 
         private void AttckStart()
         {
+            //重力を戻す
+            _playerController.Rigidbody2D.gravityScale = 1f;
+
             //アニメーションの再生
             _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.Proximity);
 
@@ -145,6 +148,9 @@ namespace Player
         public void AttackEnd()
         {
             _testAttackText.SetActive(false);
+
+            //特定行動中に構えを解除していないかどうかを確認する
+            _playerController.GunSetUp.CheckRelesedSetUp();
 
             Debug.Log("近接攻撃終わり！");
             //試験的に、色を変える    

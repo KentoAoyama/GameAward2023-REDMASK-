@@ -14,25 +14,21 @@ public class MenuCylinder : MonoBehaviour
     private TitleController _titleController;
     [SerializeField, Tooltip("シリンダーが回るかどうか")]
     private bool _sylinderEnabled = false;
-
+    /// <summary>
+    /// シリンダーが回るかどうか
+    /// </summary>
+    /// <value></value>
     public bool SylinderEnabled
     {
         set 
         {
             _sylinderEnabled = value;
-            Debug.Log($"_sylinder = {_sylinderEnabled}");
         }
     }
 
     private float _currentAngle = 0.0f;
-    private bool _selectable = true;
     private bool _isRotating = false;
     private int _currentButtonIndex = 0;
-
-    public bool Selectable
-    {
-        set => _selectable = value;
-    }
 
     private void Awake()
     {
@@ -41,30 +37,49 @@ public class MenuCylinder : MonoBehaviour
 
     private void Update()
     {
-        
-        if (Keyboard.current.aKey.wasPressedThisFrame && _sylinderEnabled)
-        {
-            if (_isRotating || !_selectable) return;
-            Debug.Log("A�L�[����������܂���");
-            RotateCylinder(-60f);
+        bool left = Keyboard.current.aKey.wasPressedThisFrame;
+        bool right = Keyboard.current.dKey.wasPressedThisFrame;
 
-            GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Reroad");
+        if (Gamepad.current != null)
+        {
+            left |= Gamepad.current.dpad.left.isPressed || Gamepad.current.leftStick.ReadValue().x < -0.1;
+            right |= Gamepad.current.dpad.right.isPressed || Gamepad.current.leftStick.ReadValue().x > 0.1;
+        }
+
+        if (left && _sylinderEnabled && !_isRotating)
+        {
+            GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Selection");
 
             _currentButtonIndex += 7;
             _currentButtonIndex %= 6;
+            int skipCount = 1;
+
+            while (!_circleDeploy.SelectButtons[_currentButtonIndex].enabled)
+            {
+                _currentButtonIndex += 7;
+                _currentButtonIndex %= 6;
+                skipCount++;
+            }
+
+            RotateCylinder(-60f * skipCount);
             _circleDeploy.SelectButtons[_currentButtonIndex].Select();
         }
-
-        if (Keyboard.current.dKey.wasPressedThisFrame && _sylinderEnabled)
+        else if (right && _sylinderEnabled && !_isRotating)
         {
-            if (_isRotating || !_selectable) return;
-            RotateCylinder(60f);
-            Debug.Log("D�L�[����������܂���");
-
-            GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Reroad");
+            GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Selection");
 
             _currentButtonIndex += 5;
             _currentButtonIndex %= 6;
+            int skipCount = 1;
+
+            while (!_circleDeploy.SelectButtons[_currentButtonIndex].enabled)
+            {
+                _currentButtonIndex += 5;
+                _currentButtonIndex %= 6;
+                skipCount++;
+            }
+
+            RotateCylinder(60f * skipCount);
             _circleDeploy.SelectButtons[_currentButtonIndex].Select();
         }
     }

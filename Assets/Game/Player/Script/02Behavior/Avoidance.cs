@@ -166,6 +166,9 @@ namespace Player
             //TestTExT???????????????????///////////////////////////////////////
             _testAvoidText.SetActive(true);
 
+            //重力を戻す
+            _playerController.Rigidbody2D.gravityScale = 1f;
+
             _isCanAvoidance = false;
 
             _isAvoidacneNow = true;
@@ -191,6 +194,9 @@ namespace Player
         {
             //TestTExT???????????????????///////////////////////////////////////
             _testAvoidText.SetActive(false);
+
+            //特定行動中に構えを解除していないかどうかを確認する
+            _playerController.GunSetUp.CheckRelesedSetUp();
 
             _isAvoidacneNow = false;
 

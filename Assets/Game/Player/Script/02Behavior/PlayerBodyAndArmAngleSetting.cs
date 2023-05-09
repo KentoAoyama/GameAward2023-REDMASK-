@@ -60,6 +60,8 @@ namespace Player
         private float _imageAngleRight = default;
         private float _imageAngleLeft = default;
 
+        private Vector3 _currentMousePos;
+
         private PlayerController _playerController;
 
         public void Init(PlayerController playerController)
@@ -76,6 +78,8 @@ namespace Player
             arms.ForEach(i => i.SetActive(false));
             arms[i].SetActive(true);
             _nowMuzzleNum = i;
+
+            _currentMousePos = _playerController.InputManager.GetValue<Vector2>(InputType.LookingMausePos);
         }
 
         /// <summary>ベクトルから角度を求める</summary>
@@ -144,15 +148,28 @@ namespace Player
                 if ((_playerController.InputManager.GetValue<Vector2>(InputType.LookingAngleGamePad)).magnitude > 0.5f)
                 {
                     _aimingAngle = _playerController.InputManager.GetValue<Vector2>(InputType.LookingAngleGamePad);
+                    _playerController.RevolverOperator.StopRevolverReLoad();
+                    _playerController.PlayerAnimatorControl.GunSet();
+                    _playerController.Revolver.OffDrawAimingLine(true);
                 }
             }
             else // マウス操作の場合
             {
                 // マウスの座標をワールド座標に変換する
-                Vector3 a = _playerController.InputManager.GetValue<Vector2>(InputType.LookingMausePos);
-                a.z = 10f;
-                var mouseWorldPos = Camera.main.ScreenToWorldPoint(a);
+                Vector3 mouseDir = _playerController.InputManager.GetValue<Vector2>(InputType.LookingMausePos);
+                mouseDir.z = 10f;
+                var mouseWorldPos = Camera.main.ScreenToWorldPoint(mouseDir);
                 _aimingAngle = mouseWorldPos - _arm.transform.position;
+
+
+                float distance = Vector2.Distance(mouseDir, _currentMousePos);
+                _currentMousePos = mouseDir;
+                if(distance> 3f)
+                {
+                    _playerController.RevolverOperator.StopRevolverReLoad();
+                    _playerController.PlayerAnimatorControl.GunSet();
+                    _playerController.Revolver.OffDrawAimingLine(true);
+                }
             }
 
             //360度の角度を取得

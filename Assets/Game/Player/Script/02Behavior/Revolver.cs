@@ -39,6 +39,8 @@ namespace Player
         /// <summary> 攻撃可能かどうかを表す値 </summary>
         private bool _canFire = true;
 
+        private bool _offLineRendrer = false;
+
         /// <summary> 現在のチェンバーの位置 </summary>
         public int CurrentChamber => _currentChamber;
         /// <summary> 現在のシリンダーの状態 </summary>
@@ -226,6 +228,13 @@ namespace Player
         /// </summary>
         public void OnDrawAimingLine()
         {
+            //構えてないときは描画しない
+            if (!_playerController.GunSetUp.IsGunSetUp || _playerController.PlayerAnimatorControl.IsAnimationNow || !_offLineRendrer)
+            {
+                _aimingLineRenderer.positionCount = 0;
+                return;
+            }
+
             // 位置リストを取得
             var potisitons = GetPositions2ForGuideline(_cylinder[_currentChamber] as Bullet2);
             // ラインレンダラーにいくつの位置があるか教える
@@ -236,6 +245,15 @@ namespace Player
                 _aimingLineRenderer.SetPosition(i, potisitons[i]);
             }
         }
+
+
+        /// <summary>リロード中など、照準を消したいときに呼ぶ</summary>
+        public void OffDrawAimingLine(bool isOn)
+        {
+            _offLineRendrer = isOn;
+        }
+
+
 
         /// <summary> ガイドライン用のポジションをまとめて持つリスト </summary>
         private List<Vector2> _potisions = new List<Vector2>();
