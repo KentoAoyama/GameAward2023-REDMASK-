@@ -4,7 +4,7 @@ Shader "Custom/UIOutlineCircle"
     {
         [PerRendererData]_MainTex ("Texture", 2D) = "white" {}
         [HDR] _OutlineColor ("OutlineColor", Color) = (1, 1, 1, 1)
-        _OutlineRange ("OutlineRange", Float) = 0.1
+        _OutlineRange ("OutlineRange", Range(0.0, 1.0)) = 0.1
     }
     SubShader
     {
@@ -56,13 +56,13 @@ Shader "Custom/UIOutlineCircle"
 
             float4 frag (v2f i) : SV_Target
             {
-                float2 correction = (i.uv * 2 - 1) * _OutlineRange;
+                float2 correction = (i.uv * 2 - 1) * -_OutlineRange;
 
                 float outlineAlpha = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv + correction).a;
                 float4 outCol = float4(_OutlineColor.rgb, outlineAlpha);
 
                 float4 col = (SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv) + _TextureSampleAdd) * i.color;
-                col = col.a > 0 ? col : outCol;
+                col = lerp(outCol, col, col.a);
 
                 col.rgb *= col.a;
                 return col;

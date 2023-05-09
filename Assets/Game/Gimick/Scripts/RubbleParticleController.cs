@@ -11,11 +11,13 @@ public class RubbleParticleController : MonoBehaviour
         _particleSystem = GetComponent<ParticleSystem>();
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    private void OnParticleCollision(GameObject other)
     {
-        foreach (ContactPoint2D contactPoint in other.contacts)
+        var eventList = new List<ParticleCollisionEvent>();
+        _particleSystem.GetCollisionEvents(other, eventList);
+        
+        foreach (ParticleCollisionEvent particleCollisionEvent in eventList)
         {
-            Debug.Log(contactPoint.point.ToString());
         }
     }
 }
