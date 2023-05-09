@@ -164,10 +164,12 @@ public class AudioManager
         return _sePlayer.Count - 1;
     }
 
-    /// <summary>SEを停止させる</summary>
-    /// <param name="index">止めたいPlaySE()の戻り値</param>
+    /// <summary>SEを停止させる </summary>
+    /// <param name="index">止めたいPlaySE()の戻り値 (-1以下を渡すと処理を行わない)</param>
     public void StopSE(int index)
     {
+        if (index < 0) return;
+
         if (_sePlayer[index].GetStatus() != CriAtomExPlayer.Status.Playing)
         {
             return;
