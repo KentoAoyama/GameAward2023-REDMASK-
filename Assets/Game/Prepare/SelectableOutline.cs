@@ -22,6 +22,7 @@ public class SelectableOutline : MonoBehaviour
         _image = GetComponent<Image>();
 
         _image.material = new Material(_outlineShader);
+        _image.material.renderQueue = 3000;
         _image.material.SetFloat(_rangePropertyId, 0.0f);
         _image.material.SetColor(_colorPropertyId,  _outlineColor);
     }
