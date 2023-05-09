@@ -1,48 +1,56 @@
-using UnityEngine;
+ï»¿using UnityEngine;
+using UniRx;
+using UniRx.Triggers;
 
 /// <summary>
-/// ƒhƒ[ƒ“‚ªg—p‚·‚é•Ší‚ÌƒNƒ‰ƒX
+/// ãƒ‰ãƒ­ãƒ¼ãƒ³ãŒä½¿ç”¨ã™ã‚‹æ­¦å™¨ã®ã‚¯ãƒ©ã‚¹
 /// </summary>
 public class EnemyDroneRifle : EnemyRifle
 {
-    [Header("ƒV[ƒ“ã‚É”z’u‚³‚ê‚Ä‚¢‚éƒvƒŒƒCƒ„[‚Ìƒ^ƒO")]
+    [Header("ã‚·ãƒ¼ãƒ³ä¸Šã«é…ç½®ã•ã‚Œã¦ã„ã‚‹ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚¿ã‚°")]
     [SerializeField, TagName] private string _playerTagName;
-    [Header("“G–{‘Ì‚Ì‹ŠE‚Æ“¯‚¶’l‚ğg—p‚·‚é‚©")]
-    [Tooltip("eƒIƒuƒWƒFƒNƒg‚ÉEnemyController‚ªƒAƒ^ƒbƒ`‚³‚ê‚Ä‚¢‚éê‡‚É—LŒø")]
+    [Header("æ•µæœ¬ä½“ã®è¦–ç•Œã¨åŒã˜å€¤ã‚’ä½¿ç”¨ã™ã‚‹ã‹")]
+    [Tooltip("è¦ªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«EnemyControllerãŒã‚¢ã‚¿ãƒƒãƒã•ã‚Œã¦ã„ã‚‹å ´åˆã«æœ‰åŠ¹")]
     [SerializeField] private bool _isLinkEnemyParams = true;
 
     private Transform _player;
-    private SightSensor _sightSensor;
-    private float _sightRadius = 10;
-    private float _maxAngle = 360;
-
-    protected override void Awake()
-    {
-        _sightSensor = GetComponent<SightSensor>();
-
-        if (_isLinkEnemyParams)
-        {
-            InitParams();
-        }
-
-        base.Awake();
-    }
+    /// <summary>
+    /// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®è¦–ç•Œã®åŠå¾„
+    /// </summary>
+    private static float _sightRadius = 10;
+    /// <summary>
+    /// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®è¦–ç•Œã®è§’åº¦
+    /// </summary>
+    private static float _maxAngle = 360;
 
     private void Start()
+    {
+        InitOnStart();
+    }
+
+    protected override void InitOnAwake()
+    {
+        base.InitOnAwake();
+
+        if (_isLinkEnemyParams) InitParams();
+
+        // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ–¹ã‚’å‘ã
+        this.UpdateAsObservable().Subscribe(_ =>
+        {
+            SightSensor sightSensor = GetComponent<SightSensor>();
+            SightResult result = sightSensor.LookForPlayerInSight(_sightRadius, _maxAngle, _sightRadius);
+            if (result == SightResult.OutSight) return;
+
+            TurnToPlayer();
+        });
+    }
+
+    private void InitOnStart()
     {
         _player = GameObject.FindGameObjectWithTag(_playerTagName).transform;
     }
 
-    private void Update()
-    {
-        float result = _sightSensor.TryGetDistanceToPlayer(_sightRadius, _maxAngle);
-        if (result > SightSensor.PlayerOutSight)
-        {
-            TurnToPlayer();
-        }
-    }
-
-    void TurnToPlayer()
+    private void TurnToPlayer()
     {
         Vector3 dir = _player.transform.position - transform.position;
         transform.right = dir * transform.localScale.x;
@@ -58,12 +66,12 @@ public class EnemyDroneRifle : EnemyRifle
         EnemyController enemyController = GetComponentInParent<EnemyController>();
         if (enemyController != null)
         {
-            _sightRadius = enemyController.Params.SightRadius;
-            _maxAngle = enemyController.Params.SightAngle;
+            _sightRadius = enemyController.SightRadius;
+            _maxAngle = enemyController.SightAngle;
         }
         else
         {
-            Debug.LogWarning("EnemyController‚ªæ“¾‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½BƒfƒtƒHƒ‹ƒg‚Ì’l‚ğg—p‚µ‚Ü‚·B");
+            Debug.LogWarning("EnemyControllerãŒå–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸã€‚ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®å€¤ã‚’ä½¿ç”¨ã—ã¾ã™ã€‚");
         }
     }
 }

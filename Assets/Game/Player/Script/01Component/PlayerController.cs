@@ -291,6 +291,9 @@ namespace Player
                 //音を鳴らす
                 GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Damage");
 
+                //重力を戻す
+                _rigidbody2D.gravityScale = 1f;
+
                 //死亡した
                 _isDead = true;
 
@@ -302,6 +305,9 @@ namespace Player
 
                 //死亡時のカメラの揺れ
                 _camraControl.DeadCameraShake();
+
+                //時が遅くなっているのを解除
+                GameManager.Instance.ShaderPropertyController.MonochromeController.SetMonoBlend(0, 0.2f);
             }
         }
 

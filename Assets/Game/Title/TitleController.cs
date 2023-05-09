@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// タイトル画面を制御するクラス
@@ -12,6 +13,7 @@ public class TitleController : MonoBehaviour
     private GameObject[] _firstNotNeededObject = default;
 
     private TitleState _currentState = TitleState.Title;
+    private GameObject _lastSelectedObject = default;
     public TitleState CurrentState
     {
         get { return _currentState; }
@@ -21,7 +23,20 @@ public class TitleController : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.AudioManager.Load();
+        GameManager.Instance.AudioManager.PlayBGM("CueSheet_Gun", "BGM_Title");
         Setup();
+    }
+
+    private void Update()
+    {
+        if (EventSystem.current.currentSelectedGameObject == null)
+        {
+            EventSystem.current.SetSelectedGameObject(_lastSelectedObject);
+        }  
+        else if (EventSystem.current.currentSelectedGameObject != _lastSelectedObject)
+        {
+            _lastSelectedObject = EventSystem.current.currentSelectedGameObject;
+        }
     }
 
     /// <summary>

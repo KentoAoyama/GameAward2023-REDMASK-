@@ -1,29 +1,29 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ‚±‚ÌƒNƒ‰ƒX‚ğ—p‚¢‚Äg—p‚·‚éƒXƒe[ƒg‚Ì¶¬‚Æ“o˜^‚ğs‚¤
+/// ã“ã®ã‚¯ãƒ©ã‚¹ã‚’ç”¨ã„ã¦ä½¿ç”¨ã™ã‚‹ã‚¹ãƒ†ãƒ¼ãƒˆã®ç”Ÿæˆã¨ç™»éŒ²ã‚’è¡Œã†
 /// </summary>
 public class StateRegister
 {
     /// <summary>
-    /// StateType‚É1:1‚Å‘Î‰‚µ‚½ƒXƒe[ƒg‚ğŒŸõ‚·‚é‚Ì‚Å
-    /// ƒXƒe[ƒg‚Ì”‚¾‚¯‰Šú—e—Ê‚ğŠm•Û‚µ‚Ä‚¨‚­
+    /// StateTypeã«1:1ã§å¯¾å¿œã—ãŸã‚¹ãƒ†ãƒ¼ãƒˆã‚’æ¤œç´¢ã™ã‚‹ã®ã§
+    /// ã‚¹ãƒ†ãƒ¼ãƒˆã®æ•°ã ã‘åˆæœŸå®¹é‡ã‚’ç¢ºä¿ã—ã¦ãŠã
     /// </summary>
     private static readonly int StateDicCap = Enum.GetValues(typeof(StateType)).Length;
 
     private Dictionary<StateType, StateTypeBase> _stateDic = new(StateDicCap);
 
     /// <summary>
-    /// æ‚è‚¤‚éƒXƒe[ƒg‚Ìí—Ş‚ğw’è‚µ‚Ä¶¬•«‘Œ^‚É“o˜^‚·‚é
-    /// “o˜^‚µ‚½ƒXƒe[ƒg‚ÍGetState()‚É‚æ‚Á‚Äæ“¾‰Â”\
+    /// å–ã‚Šã†ã‚‹ã‚¹ãƒ†ãƒ¼ãƒˆã®ç¨®é¡ã‚’æŒ‡å®šã—ã¦ç”Ÿæˆï¼†è¾æ›¸å‹ã«ç™»éŒ²ã™ã‚‹
+    /// ç™»éŒ²ã—ãŸã‚¹ãƒ†ãƒ¼ãƒˆã¯GetState()ã«ã‚ˆã£ã¦å–å¾—å¯èƒ½
     /// </summary>
     public void Register(StateType type, object stateArg)
     {
         if (_stateDic.ContainsKey(type))
         {
-            Debug.LogWarning("«‘‚ÉƒXƒe[ƒg‚ªŠù‚É“o˜^‚³‚ê‚Ä‚¢‚Ü‚·: " + type);
+            Debug.LogWarning("è¾æ›¸ã«ã‚¹ãƒ†ãƒ¼ãƒˆãŒæ—¢ã«ç™»éŒ²ã•ã‚Œã¦ã„ã¾ã™: " + type);
             return;
         }
 
@@ -37,11 +37,11 @@ public class StateRegister
 
         if (stateClass == null)
         {
-            Debug.LogError("StateType‚ÉƒXƒe[ƒg‚ª•R‚Ã‚¯‚ç‚ê‚Ä‚¢‚Ü‚¹‚ñ: " + type);
+            Debug.LogError("StateTypeã«ã‚¹ãƒ†ãƒ¼ãƒˆãŒç´ã¥ã‘ã‚‰ã‚Œã¦ã„ã¾ã›ã‚“: " + type);
             return null;
         }
 
-        // ƒXƒe[ƒg‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^‚Ìˆø”‚Ì‡‚É•À‚×‚Ä‚¢‚é
+        // ã‚¹ãƒ†ãƒ¼ãƒˆã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã®å¼•æ•°ã®é †ã«ä¸¦ã¹ã¦ã„ã‚‹
         object[] args = { stateArg, type };
         StateTypeBase instance = (StateTypeBase)Activator.CreateInstance(stateClass, args);
 
@@ -56,14 +56,14 @@ public class StateRegister
         }
         else
         {
-            Debug.LogError("‘Î‰‚·‚éƒXƒe[ƒg‚ª«‘‚É“o˜^‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ: " + type);
+            Debug.LogError("å¯¾å¿œã™ã‚‹ã‚¹ãƒ†ãƒ¼ãƒˆãŒè¾æ›¸ã«ç™»éŒ²ã•ã‚Œã¦ã„ã¾ã›ã‚“: " + type);
             return null;
         }
     }
 
     /// <summary>
-    /// —ñ‹“Œ^‚É‘Î‰‚µ‚½ƒXƒe[ƒg‚ÌƒNƒ‰ƒX‚ÌŒ^‚ğ•Ô‚·‚Ì‚ÅAV‚µ‚­ƒXƒe[ƒg‚ğì‚Á‚½Û‚É‚Í
-    /// ‚±‚Ìˆ—‚Ì•ªŠò‚É’Ç‰Á‚µ‚Ä—ñ‹“Œ^‚ÆƒNƒ‰ƒX‚ğ•R‚Ã‚¯‚é•K—v‚ª‚ ‚é
+    /// åˆ—æŒ™å‹ã«å¯¾å¿œã—ãŸã‚¹ãƒ†ãƒ¼ãƒˆã®ã‚¯ãƒ©ã‚¹ã®å‹ã‚’è¿”ã™ã®ã§ã€æ–°ã—ãã‚¹ãƒ†ãƒ¼ãƒˆã‚’ä½œã£ãŸéš›ã«ã¯
+    /// ã“ã®å‡¦ç†ã®åˆ†å²ã«è¿½åŠ ã—ã¦åˆ—æŒ™å‹ã¨ã‚¯ãƒ©ã‚¹ã‚’ç´ã¥ã‘ã‚‹å¿…è¦ãŒã‚ã‚‹
     /// </summary>
     private Type GetStateClassType(StateType type)
     {
@@ -82,7 +82,7 @@ public class StateRegister
             case StateType.Defeated: return typeof(StateTypeDefeated);
             case StateType.Reflection:return typeof(StateTypeReflection);
             default:
-                Debug.LogError("‘Î‰‚·‚éƒXƒe[ƒg‚ª•R‚Ã‚¯‚ç‚ê‚Ä‚¢‚Ü‚¹‚ñ: " + type);
+                Debug.LogError("å¯¾å¿œã™ã‚‹ã‚¹ãƒ†ãƒ¼ãƒˆãŒç´ã¥ã‘ã‚‰ã‚Œã¦ã„ã¾ã›ã‚“: " + type);
                 return null;
         }
     }

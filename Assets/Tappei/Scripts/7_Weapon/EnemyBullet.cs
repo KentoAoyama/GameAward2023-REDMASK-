@@ -1,90 +1,92 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
+using UniRx;
+using UniRx.Triggers;
 
 /// <summary>
-/// w’è‚µ‚½•ûŒü‚É‚Ü‚Á‚·‚®”ò‚Ô“G’e‚ÌƒNƒ‰ƒX
-/// EnemyRifleƒNƒ‰ƒX‚Éƒv[ƒ‹‚³‚ê‚Ä‚¨‚èA”­Ë‚·‚éÛ‚ÉƒAƒNƒeƒBƒu‚É‚È‚é
+/// æŒ‡å®šã—ãŸæ–¹å‘ã«ã¾ã£ã™ãé£›ã¶æ•µå¼¾ã®ã‚¯ãƒ©ã‚¹
+/// EnemyRifleã‚¯ãƒ©ã‚¹ã«ãƒ—ãƒ¼ãƒ«ã•ã‚Œã¦ãŠã‚Šã€ç™ºå°„ã™ã‚‹éš›ã«ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«ãªã‚‹
 /// </summary>
 public class EnemyBullet : MonoBehaviour, IPausable, IDamageable
 {
-    /// <summary>“r’†‚ÅÁ‚¦‚Äˆá˜aŠ´‚ ‚é‚æ‚¤‚¾‚Á‚½‚ç‚±‚Ì’l‚ğ‘å‚«‚­‚·‚é</summary>
-    private static float LifeTime = 3.0f;
-
-    [Header("ƒqƒbƒg‚·‚éƒ^ƒO‚Ìİ’è")]
-    [Tooltip("ƒvƒŒƒCƒ„[‚Ìƒ^ƒO")]
+    [Header("ãƒ’ãƒƒãƒˆã™ã‚‹ã‚¿ã‚°ã®è¨­å®š")]
+    [Tooltip("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚¿ã‚°")]
     [SerializeField, TagName] private string PlayerTagName;
-    [Tooltip("•Ç‚È‚Ç‚ÌƒXƒe[ƒW“à‚ÌƒIƒuƒWƒFƒNƒg‚Ìƒ^ƒO")]
+    [Tooltip("å£ãªã©ã®ã‚¹ãƒ†ãƒ¼ã‚¸å†…ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¿ã‚°")]
     [SerializeField, TagName] private string WallTagName;
-    [Header("’e‚Ìİ’è")]
+    [Header("å¼¾ã®è¨­å®š")]
     [SerializeField] private float _speed;
 
     private Transform _transform;
     private Stack<EnemyBullet> _pool;
     private Vector3 _velocity;
-    private float _timer;
+    private float _time;
     private bool _isPause;
 
     private void Awake()
     {
+        InitOnAwake();
+    }
+
+    private void InitOnAwake()
+    {
+        this.OnEnableAsObservable().Subscribe(_ => GameManager.Instance.PauseManager.Register(this));
+        this.OnDisableAsObservable().Subscribe(_ => GameManager.Instance.PauseManager.Lift(this));
+
         _transform = transform;
+
+        // ä¸€å®šæ™‚é–“å‰æ–¹ã«é£›ã‚“ã§ãƒ—ãƒ¼ãƒ«ã«æˆ»ã‚‹
+        this.UpdateAsObservable().Where(_ => !_isPause).Subscribe(_ =>
+        {
+            float deltaTime = Time.deltaTime * GameManager.Instance.TimeController.EnemyTime;
+            // é€”ä¸­ã§æ¶ˆãˆã¦é•å’Œæ„Ÿã‚ã‚‹ã‚ˆã†ã ã£ãŸã‚‰ã“ã®å€¤ã‚’å¤§ããã™ã‚‹
+            float lifeTime = 3.0f;
+
+            _time += deltaTime;
+            if (_time > lifeTime)
+            {
+                ReturnPool();
+            }
+            else
+            {
+                _transform.Translate(_velocity * deltaTime);
+            }
+        });
+
+        // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«ãƒ’ãƒƒãƒˆã—ãŸã‚‰ãƒ—ãƒ¼ãƒ«ã«æˆ»ã‚‹
+        this.OnTriggerEnter2DAsObservable().Subscribe(c =>
+        {
+            if (c.CompareTag(PlayerTagName) && c.gameObject.TryGetComponent(out IDamageable damageable))
+            {
+                damageable.Damage();
+                ReturnPool();
+            }
+            else if (c.CompareTag(WallTagName))
+            {
+                ReturnPool();
+            }
+        });
     }
 
-    private void OnEnable()
-    {
-        GameManager.Instance.PauseManager.Register(this);
-    }
-
-    private void OnDisable()
-    {
-        GameManager.Instance.PauseManager.Lift(this);
-    }
-
-    public void Pause() => _isPause = true;
-    public void Resume() => _isPause = false;
-
-    /// <summary>’e‚ª¶¬‚³‚ê‚½Û‚ÉEnemyRifleƒNƒ‰ƒX‚©‚çŒÄ‚Ño‚³‚ê‚é</summary>
+    /// <summary>
+    /// å¼¾ãŒç”Ÿæˆã•ã‚ŒãŸéš›ã«EnemyRifleã‚¯ãƒ©ã‚¹ã‹ã‚‰å‘¼ã³å‡ºã•ã‚Œã‚‹
+    /// </summary>
     public void InitSetPool(Stack<EnemyBullet> pool) => _pool = pool;
-    /// <summary>”­Ë‚³‚ê‚éÛ‚ÉEnemyRifleƒNƒ‰ƒX‚©‚çŒÄ‚Ño‚³‚ê‚é</summary>
+    /// <summary>
+    /// ç™ºå°„ã•ã‚Œã‚‹éš›ã«EnemyRifleã‚¯ãƒ©ã‚¹ã‹ã‚‰å‘¼ã³å‡ºã•ã‚Œã‚‹
+    /// </summary>
     public void SetVelocity(Vector3 dir) => _velocity = dir * _speed;
-
-    void Update()
-    {
-        if (_isPause) return;
-
-        float deltaTime = Time.deltaTime * GameManager.Instance.TimeController.EnemyTime;
-
-        _timer += deltaTime;
-        if (_timer > LifeTime)
-        {
-            ReturnPool();
-        }
-        else
-        {
-            _transform.Translate(_velocity * deltaTime);
-        }
-    }
-
-    /// <summary>‚±‚Ìƒƒ\ƒbƒh‚ğŒÄ‚Ô‚±‚Æ‚Åƒv[ƒ‹‚É–ß‚·</summary>
+    /// <summary>
+    /// ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã¶ã“ã¨ã§ãƒ—ãƒ¼ãƒ«ã«æˆ»ã™
+    /// </summary>
     private void ReturnPool()
     {
-        _timer = 0;
+        _time = 0;
         gameObject.SetActive(false);
         _pool?.Push(this);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag(PlayerTagName) &&
-            collision.gameObject.TryGetComponent(out IDamageable damageable))
-        {
-            damageable.Damage();
-            ReturnPool();
-        }
-        else if (collision.CompareTag(WallTagName))
-        {
-            ReturnPool();
-        }
-    }
-
+    public void Pause() => _isPause = true;
+    public void Resume() => _isPause = false;
     public void Damage() => ReturnPool();
 }

@@ -19,6 +19,7 @@ public class TitleStartButton : MonoBehaviour
     {
         GameManager.Instance.PauseManager.ClearCount();
         DOTween.KillAll();
+        GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Start");
         GameManager.Instance.CompletedStageManager.Clear(); // ステージのクリア状況をリセットする
         GameManager.Instance.StageSelectManager.SetStage(_stageOne); // これから赴くステージを設定する
         SceneManager.LoadScene(_prepareScene); // 準備シーンに遷移する

@@ -1,29 +1,38 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ‰“‹——£UŒ‚‚Ì•Ší‚ÌƒNƒ‰ƒX
-/// Enemy_RangeAttackƒIƒuƒWƒFƒNƒg‚ªg—p‚·‚é
+/// é è·é›¢æ”»æ’ƒã®æ­¦å™¨ã®ã‚¯ãƒ©ã‚¹
+/// Enemy_RangeAttackã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒä½¿ç”¨ã™ã‚‹
 /// </summary>
 public class EnemyRifle : MonoBehaviour, IEnemyWeapon
 {
     /// <summary>
-    /// “G–ˆ‚É‚±‚ÌƒIƒuƒWƒFƒNƒg‚Ìq‚É’e‚ğ¶¬‚µ‚Ä‚¢‚­
-    /// ƒhƒ[ƒ“‚Æ‰“‹——£UŒ‚‚Ì“G‚ªg—p‚·‚é’e‚ª“¯‚¶‚Æ‚¢‚¤‘z’è
+    /// æ•µæ¯ã«ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å­ã«å¼¾ã‚’ç”Ÿæˆã—ã¦ã„ã
+    /// ãƒ‰ãƒ­ãƒ¼ãƒ³ã¨é è·é›¢æ”»æ’ƒã®æ•µãŒä½¿ç”¨ã™ã‚‹å¼¾ãŒåŒã˜ã¨ã„ã†æƒ³å®š
     /// </summary>
     private static Transform _poolObject;
 
-    [Header("”­Ë‚·‚é’e‚Ìİ’è")]
+    [Header("ç™ºå°„ã™ã‚‹å¼¾ã«é–¢ã™ã‚‹è¨­å®š")]
     [SerializeField] private EnemyBullet _enemyBullet;
-    [Tooltip("ƒv[ƒ‹‚·‚é“G’e‚Ì”AUŒ‚•p“x‚ğã‚°‚éê‡‚Í‚±‚¿‚ç‚àã‚°‚È‚¢‚Æ‚¢‚¯‚È‚¢")]
+    [Tooltip("ãƒ—ãƒ¼ãƒ«ã™ã‚‹æ•µå¼¾ã®æ•°ã€æ”»æ’ƒé »åº¦ã‚’ä¸Šã’ã‚‹å ´åˆã¯ã“ã¡ã‚‰ã‚‚ä¸Šã’ãªã„ã¨ã„ã‘ãªã„")]
     [SerializeField] private int _poolQuantity;
-    [Header("“G’e‚ğ”­Ë‚·‚éƒ}ƒYƒ‹")]
-    [Tooltip("”ò‚Ô•ûŒü‚Ì¶‰E‚Ì§Œä‚ÍƒXƒP[ƒ‹‚Ìx‚ğ-1‚É‚·‚é‚±‚Æ‚Ås‚¤")]
+    [Tooltip("å¼¾ãŒç™ºå°„ã•ã‚Œã‚‹ãƒã‚ºãƒ«ã€é£›ã¶æ–¹å‘ã®å·¦å³ã®åˆ¶å¾¡ã¯ã‚¹ã‚±ãƒ¼ãƒ«ã®xã‚’-1ã«ã™ã‚‹ã“ã¨ã§è¡Œã†")]
     [SerializeField] protected Transform _muzzle;
+    [Header("æ”»æ’ƒæ™‚ã«å†ç”Ÿã•ã‚Œã‚‹éŸ³ã®åå‰")]
+    [SerializeField] private string _attackSEName;
 
     private Stack<EnemyBullet> _pool;
 
-    protected virtual void Awake()
+    private void Awake()
+    {
+        InitOnAwake();
+    }
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private void ReleasePoolObjectInstance() => _poolObject = null;
+
+    protected virtual void InitOnAwake()
     {
         if (_poolObject == null)
         {
@@ -33,9 +42,6 @@ public class EnemyRifle : MonoBehaviour, IEnemyWeapon
         _pool = new Stack<EnemyBullet>(_poolQuantity);
         CreatePool();
     }
-
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    private void ReleasePoolObjectInstance() => _poolObject = null;
 
     private void CreatePoolObject()
     {
@@ -56,8 +62,8 @@ public class EnemyRifle : MonoBehaviour, IEnemyWeapon
     }
 
     /// <summary>
-    /// ƒv[ƒ‹‚©‚çæ‚èo‚·ˆ—
-    /// –ß‚·ˆ—‚Í’e‘¤‚É‚½‚¹‚Ä‚¢‚é
+    /// ãƒ—ãƒ¼ãƒ«ã‹ã‚‰å–ã‚Šå‡ºã™å‡¦ç†
+    /// æˆ»ã™å‡¦ç†ã¯å¼¾å´ã«æŒãŸã›ã¦ã„ã‚‹
     /// </summary>
     protected EnemyBullet PopPool()
     {
@@ -80,7 +86,12 @@ public class EnemyRifle : MonoBehaviour, IEnemyWeapon
 
         bullet.transform.position = _muzzle.position;
         bullet.SetVelocity(GetBulletDirection());
+
+        GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", _attackSEName);
     }
 
+    /// <summary>
+    /// ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ã™ã‚‹ã“ã¨ã§å¼¾ã‚’é£›ã°ã™æ–¹å‘ã‚’å¤‰æ›´ã§ãã‚‹
+    /// </summary>
     protected virtual Vector3 GetBulletDirection() => _muzzle.right * _muzzle.transform.localScale.x;
 }

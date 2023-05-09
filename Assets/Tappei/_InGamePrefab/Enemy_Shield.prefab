@@ -209,9 +209,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8503014303464848283}
   - component: {fileID: 8503014303464848285}
-  - component: {fileID: 8503014303464848282}
+  - component: {fileID: 7349167457375388228}
   m_Layer: 0
-  m_Name: Animation
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -253,7 +253,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!212 &8503014303464848282
+--- !u!212 &7349167457375388228
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -299,7 +299,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 5.12, y: 5.12}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
@@ -321,6 +321,7 @@ GameObject:
   - component: {fileID: 8503014304221832855}
   - component: {fileID: 8503014304221832852}
   - component: {fileID: 8503014304221833069}
+  - component: {fileID: 6647060181384297606}
   m_Layer: 6
   m_Name: Enemy_Shield
   m_TagString: Enemy
@@ -415,16 +416,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4b8c61805a99304d8f0b07aa608acb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spriteTrans: {fileID: 8503014303464848283}
-  _eyeTrans: {fileID: 8503014302711201555}
-  _weaponTrans: {fileID: 2324096520020784011}
-  _groundLayerMask:
-    serializedVersion: 2
-    m_Bits: 128
-  _enemyTypeLayerMask:
-    serializedVersion: 2
-    m_Bits: 1088
-  EnemyTypeRayOffset: {x: 1.25, y: 0.5}
+  _turnModule:
+    _sprite: {fileID: 8503014303464848283}
+    _eye: {fileID: 8503014302711201555}
+    _weapon: {fileID: 2324096520020784011}
+  _detectorModule:
+    _onGroundIdleRaySettings:
+      _distance: 0.3
+      _offset: {x: 0, y: 0.05, z: 0}
+      _layerMask:
+        serializedVersion: 2
+        m_Bits: 128
+      _isVisible: 1
+    _footPosRaySettings:
+      _distance: 1
+      _offset: {x: 0, y: 0.5, z: 0}
+      _layerMask:
+        serializedVersion: 2
+        m_Bits: 128
+      _isVisible: 0
+    _floorRaySettings:
+      _distance: 6
+      _offset: {x: 0, y: 1.5, z: 0}
+      _layerMask:
+        serializedVersion: 2
+        m_Bits: 128
+      _isVisible: 0
+    _enemyRaySettings:
+      _distance: 1.1
+      _offset: {x: 1.25, y: 0.5, z: 0}
+      _layerMask:
+        serializedVersion: 2
+        m_Bits: 1088
+      _isVisible: 0
+  _rigidbodyModule:
+    _rigidbody: {fileID: 8503014304221833067}
+  _sprite: {fileID: 8503014303464848283}
 --- !u!114 &8503014304221832855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -472,8 +499,23 @@ MonoBehaviour:
   _playerTagName: Player
   _enemyParamsSO: {fileID: 11400000, guid: 551f1fdee32cf314993b4dc2ba225250, type: 2}
   _placedFacingLeft: 0
+  _idleWhenUndiscover: 0
   _text: {fileID: 0}
   _shield: {fileID: 8503014302860041443}
+--- !u!114 &6647060181384297606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8503014304221832850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa4aef6dbcf693b44b20baa25f1f17aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _eye: {fileID: 8503014302711201555}
+  _controller: {fileID: 0}
 --- !u!1001 &8503014302302568038
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -481,6 +523,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8503014304221833066}
     m_Modifications:
+    - target: {fileID: 6215001629339422187, guid: c8a64334d608b1c47a957566731a1bb9, type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
     - target: {fileID: 6215001629339422187, guid: c8a64334d608b1c47a957566731a1bb9, type: 3}
       propertyPath: m_Name
       value: Weapon_Shield

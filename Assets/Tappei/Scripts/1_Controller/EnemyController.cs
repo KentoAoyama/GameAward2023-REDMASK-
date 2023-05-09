@@ -1,12 +1,12 @@
-using UniRx;
+ï»¿using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
 /// <summary>
-/// ‹ßÚA‰“‹——£Aƒhƒ[ƒ“—p
-/// ŠeU‚é•‘‚¢‚ÌƒNƒ‰ƒX‚Ìƒƒ\ƒbƒh‚ğ‘g‚İ‡‚í‚¹‚Äs“®‚ğ§Œä‚·‚éƒNƒ‰ƒX
+/// è¿‘æ¥ã€é è·é›¢ã€ãƒ‰ãƒ­ãƒ¼ãƒ³ç”¨
+/// å„æŒ¯ã‚‹èˆã„ã®ã‚¯ãƒ©ã‚¹ã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’çµ„ã¿åˆã‚ã›ã¦è¡Œå‹•ã‚’åˆ¶å¾¡ã™ã‚‹ã‚¯ãƒ©ã‚¹
 /// </summary>
 [RequireComponent(typeof(SightSensor))]
 [RequireComponent(typeof(MoveBehavior))]
@@ -17,39 +17,50 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     private static string AnimationSpeedParam = "Speed";
     private static string DefeatedTransitionLayerName = "DeathEnemy";
 
-    [Header("ƒV[ƒ“ã‚É”z’u‚³‚ê‚Ä‚¢‚éƒvƒŒƒCƒ„[‚Ìƒ^ƒO")]
-    [SerializeField, TagName] private string _playerTagName;
-    [Header("“G‚ÌŠeíƒpƒ‰ƒ[ƒ^[‚ğİ’è‚µ‚½SO")]
-    [Tooltip("ŠeU‚é•‘‚¢‚ÌƒNƒ‰ƒX‚Í‚±‚ÌSO“à‚Ì’l‚ğQÆ‚µ‚Ä‹@”\‚·‚é")]
+    [Header("æ•µã®å„ç¨®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãƒ¼ã‚’è¨­å®šã—ãŸSO")]
+    [Tooltip("å„æŒ¯ã‚‹èˆã„ã®ã‚¯ãƒ©ã‚¹ã¯ã“ã®SOå†…ã®å€¤ã‚’å‚ç…§ã—ã¦æ©Ÿèƒ½ã™ã‚‹")]
     [SerializeField] protected EnemyParamsSO _enemyParamsSO;
-    [Header("¶Œü‚«‚É”z’u‚·‚é")]
-    [Tooltip("Šù‘¶‚ÌƒIƒuƒWƒFƒNƒg‚ğ”½“]‚³‚¹‚éê‡‚Íq‚ÌEditorViewƒIƒuƒWƒFƒNƒg‚à”½“]‚³‚¹‚é‚ÆŒ©‚½–Ú‚ª‡‚¤")]
+    [Header("å·¦å‘ãã«é…ç½®ã™ã‚‹")]
+    [Tooltip("æ—¢å­˜ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’åè»¢ã•ã›ã‚‹å ´åˆã¯å­ã®EditorViewã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚‚åè»¢ã•ã›ã‚‹ã¨è¦‹ãŸç›®ãŒåˆã†")]
     [SerializeField] private bool _placedFacingLeft;
-    [Header("ƒvƒŒƒCƒ„[–¢”­Œ©‚Íí‚ÉIdleó‘Ô‚É‚·‚é")]
+    [Header("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼æœªç™ºè¦‹æ™‚ã¯å¸¸ã«IdleçŠ¶æ…‹ã«ã™ã‚‹")]
     [SerializeField] private bool _idleWhenUndiscover;
+    [Header("è¦–ç•Œã®è¨­å®š")]
+    [Tooltip("æ‰‡çŠ¶ã®è¦–ç•Œã®åŠå¾„")]
+    [SerializeField] private float _sightRadius = 9.0f;
+    [Tooltip("æ‰‡çŠ¶ã®è¦–ç•Œã®è§’åº¦")]
+    [SerializeField] private float _sightAngle = 270.0f;
+    [Tooltip("é–“ã«éšœå®³ç‰©ãŒã‚ã£ãŸå ´åˆã«ç„¡è¦–ã™ã‚‹")]
+    [SerializeField] private bool _isIgnoreObstacle;
 
-    [Header("ƒfƒoƒbƒO—p:Œ»İ‚Ìó‘Ô‚ğ•\¦‚·‚éText")]
-    [SerializeField] private Text _text;
+    [Header("ã“ã®é …ç›®ã¯ãƒ—ãƒ©ãƒ³ãƒŠãƒ¼ãŒå¼„ã‚‹å¿…è¦ãªã—")]
+    [SerializeField, TagName] private string _playerTagName;
+    [SerializeField] private Text _debugStateViewText;
 
     protected ReactiveProperty<StateTypeBase> _currentState = new();
     protected StateRegister _stateRegister = new();
     protected MoveBehavior _moveBehavior;
+    private EnemyAudioModule _audioModule = new();
     private Transform _player;
     private SightSensor _sightSensor;
     private AttackBehavior _attackBehavior;
     private PerformanceBehavior _performanceBehavior;
     private Animator _animator;
     /// <summary>
-    /// Pause()‚ªŒÄ‚Î‚ê‚é‚Ætrue‚ÉResume()‚ªŒÄ‚Î‚ê‚é‚Æfalse‚É‚È‚é
+    /// Pause()ãŒå‘¼ã°ã‚Œã‚‹ã¨trueã«Resume()ãŒå‘¼ã°ã‚Œã‚‹ã¨falseã«ãªã‚‹
     /// </summary>
     private bool _isPause;
+    /// <summary>
+    /// æ’ƒç ´ã•ã‚ŒãŸéš›ã«trueã«ãªã‚ŠDefeatedçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
+    /// </summary>
+    private bool _isDefeated;
 
     public EnemyParamsSO Params => _enemyParamsSO;
-    /// <summary>
-    /// Œ‚”j‚³‚ê‚½Û‚Étrue‚É‚È‚èDefeatedó‘Ô‚É‘JˆÚ‚·‚é
-    /// </summary>
-    public bool IsDefeated { get; private set; }
+    public bool IsDefeated => _isDefeated;
     public bool IdleWhenUndiscover => _idleWhenUndiscover;
+    public float SightRadius => _sightRadius;
+    public float SightAngle => _sightAngle;
+    public bool IsIgnoreObstacle => _isIgnoreObstacle;
 
     private void Awake()
     {
@@ -67,6 +78,22 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         InitOnStart();
     }
 
+    private void OnDisable()
+    {
+        _currentState.Value.OnDisable();
+    }
+
+    protected virtual void InitOnAwake()
+    {
+        _stateRegister.Register(StateType.Idle, this);
+        _stateRegister.Register(StateType.Search, this);
+        _stateRegister.Register(StateType.Discover, this);
+        _stateRegister.Register(StateType.Move, this);
+        _stateRegister.Register(StateType.Attack, this);
+        _stateRegister.Register(StateType.Defeated, this);
+        _currentState.Value = _stateRegister.GetState(StateType.Idle);
+    }
+
     private void InitOnStart()
     {
         _player = GameObject.FindGameObjectWithTag(_playerTagName).transform;
@@ -81,160 +108,98 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
             _animator.SetFloat(AnimationSpeedParam, GameManager.Instance.TimeController.EnemyTime);
         });
 
-        this.UpdateAsObservable().Where(_ => _text != null).Subscribe(_ =>
+        this.UpdateAsObservable().Where(_ => _debugStateViewText != null).Subscribe(_ =>
         {
-            _text.text = _currentState.Value.ToString();
+            _debugStateViewText.text = _currentState.Value.ToString();
         });
     }
 
-    protected virtual void InitOnAwake()
-    {
-        _stateRegister.Register(StateType.Idle, this);
-        _stateRegister.Register(StateType.Search, this);
-        _stateRegister.Register(StateType.Discover, this);
-        _stateRegister.Register(StateType.Move, this);
-        _stateRegister.Register(StateType.Attack, this);
-        _stateRegister.Register(StateType.Defeated, this);
-        _currentState.Value = _stateRegister.GetState(StateType.Idle);
-    }
-
-    /// <summary>‚»‚Ìê‚ÅUŒ‚‚·‚éBAttackó‘Ô‚ÌAˆê’èŠÔŠu‚ÅŒÄ‚Î‚ê‚é</summary>
-    public virtual void Attack() => _attackBehavior.Attack();
-
-    /// <summary>‚»‚Ìê‚Å‘Ò‹@‚·‚éBIdleó‘Ô‚ÌA–ˆƒtƒŒ[ƒ€ŒÄ‚Î‚ê‚é</summary>
-    public void Idle() => _moveBehavior.Idle();
+    /// <summary>
+    /// ãã®å ´ã§å¾…æ©Ÿã™ã‚‹ã€‚Idleã¨AttackçŠ¶æ…‹ã®æ™‚ã€æ¯ãƒ•ãƒ¬ãƒ¼ãƒ å‘¼ã°ã‚Œã‚‹
+    /// </summary>
+    public void UpdateIdle() => _moveBehavior.Idle();
 
     /// <summary>
-    /// ƒvƒŒƒCƒ„[‚ÉŒü‚¯‚ÄˆÚ“®‚·‚é
-    /// Moveó‘Ô‚Å‚ÌˆÚ“®‚ğ‚·‚éÛ‚ÉƒXƒe[ƒg‚ÌEnter()‚ÅŒÄ‚Î‚ê‚é
+    /// ç¾åœ¨ã®ç§»å‹•ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã—ã¦ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«å‘ã‘ã¦ç§»å‹•ã™ã‚‹
+    /// MoveçŠ¶æ…‹ã§ã®ç§»å‹•ã‚’ã™ã‚‹éš›ã«ã‚¹ãƒ†ãƒ¼ãƒˆã®Enter()ã§å‘¼ã°ã‚Œã‚‹
     /// </summary>
     public void MoveToPlayer()
     {
-        _moveBehavior.CancelMoving();
+        _moveBehavior.CancelMoveToTarget();
         _moveBehavior.StartMoveToTarget(_player, Params.RunSpeed);
     }
 
     /// <summary>
-    /// üˆÍ‚Ìƒ‰ƒ“ƒ_ƒ€‚ÈŒÂŠ‚ÉˆÚ“®‚·‚é
-    /// Searchó‘Ô‚Å‚ÌˆÚ“®‚ğ‚·‚éÛ‚ÉƒXƒe[ƒg‚ÌEnter()‚ÅŒÄ‚Î‚ê‚é
+    /// ç¾åœ¨ã®ç§»å‹•ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã—ã¦å‘¨å›²ã®ãƒ©ãƒ³ãƒ€ãƒ ãªå€‹æ‰€ã«ç§»å‹•ã™ã‚‹
+    /// SearchçŠ¶æ…‹ã§ã®ç§»å‹•ã‚’ã™ã‚‹éš›ã«ã‚¹ãƒ†ãƒ¼ãƒˆã®Enter()ã§å‘¼ã°ã‚Œã‚‹
     /// </summary>
-    public void SearchMoving()
+    public void MoveSeachForPlayer()
     {
-        _moveBehavior.CancelMoving();
-        Transform target = _moveBehavior.GetSearchDestination(
-            Params.TurningPoint, Params.UseRandomTurningPoint);
-        _moveBehavior.StartMoveToTarget(target, Params.WalkSpeed);
+        _moveBehavior.CancelMoveToTarget();
+        _moveBehavior.StartMoveSearchForPlayer(Params.RunSpeed, Params.TurningPoint, Params.UseRandomTurningPoint);
     }
 
     /// <summary>
-    /// ‘JˆÚ‚·‚éÛ‚ÉŒ»İ‚ÌˆÚ“®‚ğƒLƒƒƒ“ƒZƒ‹‚·‚é‚½‚ß‚ÉƒXƒe[ƒg‚©‚çŒÄ‚Î‚ê‚é
+    /// é·ç§»ã™ã‚‹éš›ã«ç¾åœ¨ã®ç§»å‹•ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã™ã‚‹å ´åˆã«ã‚¹ãƒ†ãƒ¼ãƒˆã‹ã‚‰å‘¼ã°ã‚Œã‚‹
     /// </summary>
-    public void CancelMoving() => _moveBehavior.CancelMoving();
+    public void CancelMoveToTarget() => _moveBehavior.CancelMoveToTarget();
 
     /// <summary>
-    /// ‹ŠE‚É‘Î‚µ‚ÄƒvƒŒƒCƒ„[‚ª‚Ç‚ÌˆÊ’u‚É‚¢‚é‚Ì‚©‚ğ”»’è‚·‚é
-    /// ŠeƒXƒe[ƒg‚ÌÀs’†ŒÄ‚Î‚ê‘±‚¯‚é
+    /// è¦–ç•Œã«å¯¾ã—ã¦ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒã©ã®ä½ç½®ã«ã„ã‚‹ã®ã‹ã‚’åˆ¤å®šã™ã‚‹
+    /// å„ã‚¹ãƒ†ãƒ¼ãƒˆã®å®Ÿè¡Œä¸­å‘¼ã°ã‚Œç¶šã‘ã‚‹
     /// </summary>
-    public SightResult IsFindPlayer()
-    {
-        float distance = _sightSensor.TryGetDistanceToPlayer(
-            Params.SightRadius, Params.SightAngle, Params.IsIgnoreObstacle);
-
-        if (distance == SightSensor.PlayerOutSight)
-        {
-            return SightResult.OutSight;
-        }
-        else if (distance < Params.AttackRange)
-        {
-            return SightResult.InAttackRange;
-        }
-        else
-        {
-            return SightResult.InSight;
-        }
-    }
-
-    /// <summary>ŠeƒXƒe[ƒg‚ªÄ¶‚·‚éƒAƒjƒ[ƒVƒ‡ƒ“‚ğŒÄ‚Ño‚·</summary>
-    public void PlayAnimation(AnimationName name) => _animator.Play(Params.GetAnimationHash(name));
-
-    public void DiscoverPerformance() => _performanceBehavior.Discover();
+    public SightResult LookForPlayerInSight() => _sightSensor.LookForPlayerInSight(_sightRadius, 
+        _sightAngle, Params.AttackRange, _isIgnoreObstacle);
 
     /// <summary>
-    /// ŠeƒXƒe[ƒg‚Í‚±‚Ìƒƒ\ƒbƒh‚ğŒÄ‚Ô‚±‚Æ‚Å‘JˆÚæ‚ÌƒXƒe[ƒg‚ğæ“¾‚·‚é
+    /// AttackçŠ¶æ…‹ã®æ™‚ã€ä¸€å®šé–“éš”ã§å‘¼ã°ã‚Œã‚‹
+    /// </summary>
+    public virtual void Attack() => _attackBehavior.Attack();
+
+    /// <summary>
+    /// å„ã‚¹ãƒ†ãƒ¼ãƒˆã‹ã‚‰å†ç”Ÿã™ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å‘¼ã³å‡ºã™
+    /// </summary>
+    public void PlayAnimation(AnimationName name) => _animator.Play(Params.GetAnimationHash(name), 0, 0);
+
+    /// <summary>
+    /// ç™ºè¦‹æ™‚ã®æ¼”å‡ºã‚’è¡Œã†
+    /// </summary>
+    public void PlayDiscoverPerformance() => _performanceBehavior.Discover();
+
+    /// <summary>
+    /// å„ã‚¹ãƒ†ãƒ¼ãƒˆã¯ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã¶ã“ã¨ã§é·ç§»å…ˆã®ã‚¹ãƒ†ãƒ¼ãƒˆã‚’å–å¾—ã™ã‚‹
     /// </summary>
     public StateTypeBase GetState(StateType type) => _stateRegister.GetState(type);
 
     public void Pause()
     {
         _isPause = true;
-        _currentState.Value.Pause();
-        _moveBehavior.Pause();
+        _currentState.Value.OnPause();
+        _moveBehavior.OnPause();
         _animator.SetFloat(AnimationSpeedParam, 0);
     }
 
     public void Resume()
     {
         _isPause = false;
-        _currentState.Value.Resume();
-        _moveBehavior.Resume();
+        _currentState.Value.OnResume();
+        _moveBehavior.OnResume();
         _animator.SetFloat(AnimationSpeedParam, GameManager.Instance.TimeController.EnemyTime);
     }
 
-    /// <summary>Œ‚”j‚³‚ê‚½Û‚Í”ñ•\¦‚É‚µ‚Ä‰æ–ÊŠO‚ÉˆÚ“®‚³‚¹‚é</summary>
     public void Damage()
     {
-        if (IsDefeated) return;
+        if (_isDefeated) return;
 
-        IsDefeated = true;
-        _performanceBehavior.Defeated(_moveBehavior.SpriteDirection);
+        _isDefeated = true;
+        _performanceBehavior.Defeated(_moveBehavior.SpriteDir);
         gameObject.layer = LayerMask.NameToLayer(DefeatedTransitionLayerName);
 
+        // ä¸€å®šæ™‚é–“çµŒéå¾Œã€éè¡¨ç¤ºã«ã—ã¦ç”»é¢å¤–ã«ç§»å‹•ã•ã›ã‚‹
         DOVirtual.DelayedCall(Params.DefeatedStateTransitionDelay, () =>
         {
             gameObject.SetActive(false);
             gameObject.transform.position = Vector3.one * 100;
         }).SetLink(gameObject);
     }
-    
-#if UNITY_EDITOR
-    private void OnDrawGizmos()
-    {
-        if (UnityEditor.EditorApplication.isPlaying)
-        {
-            DrawTurningPoint();
-            DrawSight();
-            DrawAttackRange();
-        }
-    }
-
-    private void DrawTurningPoint()
-    {
-        float turningPoint = Params.TurningPoint;
-        Vector3 footPos = _moveBehavior.FootPos;
-
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(footPos + Vector3.right * turningPoint, 0.25f);
-        Gizmos.DrawWireSphere(footPos + Vector3.left * turningPoint, 0.25f);
-    }
-
-    private void DrawSight()
-    {
-        Transform eye = _sightSensor.EyeTransform;
-        Vector3 dir = Quaternion.Euler(0, 0, -Params.SightAngle / 2) * eye.right;
-
-        UnityEditor.Handles.color = new Color32(0, 0, 255, 64);
-        UnityEditor.Handles.DrawSolidArc(eye.position, Vector3.forward, dir, 
-            Params.SightAngle, Params.SightRadius);
-    }
-
-    private void DrawAttackRange()
-    {
-        Transform eye = _sightSensor.EyeTransform;
-        Vector3 dir = Quaternion.Euler(0, 0, -Params.SightAngle / 2) * eye.right;
-
-        UnityEditor.Handles.color = new Color32(255, 0, 0, 64);
-        UnityEditor.Handles.DrawSolidArc(eye.position, Vector3.forward, dir,
-            Params.SightAngle, Params.AttackRange);
-    }
-#endif
 }

@@ -1,36 +1,50 @@
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using DG.Tweening;
 
 public class MuzzleFlashController : MonoBehaviour
 {
-    /// <summary>ƒAƒjƒ[ƒVƒ‡ƒ“‚³‚¹‚éParticle</summary>
-    private ParticleSystem _particleSystem;
-    /// <summary>ƒAƒjƒ[ƒVƒ‡ƒ“‚³‚¹‚éLight2D</summary>
-    private SpriteRenderer _renderer;
+    [SerializeField, Tooltip("ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®æ™‚é–“(ç§’)")]
+    private float _animDuration = 0.5f;
+    /// <summary>ï¿½Aï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Particle</summary>
+    private ParticleSystem _particleSystem = default;
+    /// <summary>ï¿½Aï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Light2D</summary>
+    private Light2D _muzzleFlash = default;
+
+    private Sequence _currentAnimation;
 
     private void Awake()
     {
         _particleSystem = GetComponentInChildren<ParticleSystem>();
-        _renderer = GetComponentInChildren<SpriteRenderer>();
-
-        _renderer.enabled = false;
+        _muzzleFlash = GetComponentInChildren<Light2D>();
+        _muzzleFlash.enabled = false;
     }
 
-    /// <summary>Particle‚ğŒÄ‚Ño‚·</summary>
-    private void PlayParticle()
+    public void PlayMuzzleFlash()
     {
-        _particleSystem.Play();
-    }
+        if(_currentAnimation != null)
+        {
+            _currentAnimation.Kill();
+        }
 
-    /// <summary>ƒ‰ƒCƒg‚ğ—LŒø‚É‚·‚é</summary>
-    private void LightEnable()
-    {
-        _renderer.enabled = true;
-    }
+        _currentAnimation = DOTween.Sequence();
 
-    /// <summary>ƒ‰ƒCƒg‚ğ–³Œø‚É‚·‚é</summary>
-    private void LightDisable()
-    {
-        _renderer.enabled = false;
+        _currentAnimation.OnStart(() => 
+            {
+                _particleSystem.Play();
+                _muzzleFlash.enabled = true; 
+            })
+            .SetDelay(_animDuration)
+            .OnComplete(() => 
+            {
+                _muzzleFlash.enabled = false;
+                _currentAnimation = null;
+            })
+            .OnKill(() =>
+            {
+                _muzzleFlash.enabled = false;
+                _currentAnimation = null;
+            });
+            
     }
 }

@@ -47,20 +47,29 @@ public class CircleDeploy : MonoBehaviour
 
     public void RotateChild(float angle)
     {
-        _currentAngle += angle;
-
-        var i = 0;
+        int i = 0;
         float angle2 = 360f / transform.childCount;
 
         foreach (Transform n in transform)
         {
-            float tempAngle = (_currentAngle + angle2 * i) * Mathf.Deg2Rad;
-            Vector3 temp = Vector3.zero;
-            temp.x = _radius * Mathf.Cos(tempAngle);
-            temp.y = _radius * Mathf.Sin(tempAngle);
+            int num = i;
+            var start = _currentAngle;
 
-            n.DOLocalMove(temp, 0.5f);
+            DOTween.To(
+                () => start,
+                x => {
+                    float tempAngle = (x + angle2 * num) * Mathf.Deg2Rad;
+                    Vector3 temp = new Vector3();
+                    temp.x = _radius * Mathf.Cos(tempAngle);
+                    temp.y = _radius * Mathf.Sin(tempAngle);
+
+                    n.localPosition = temp;
+                },
+                angle + _currentAngle,
+                0.5f);
             i++;
         }
+
+        _currentAngle += angle;
     }
 }

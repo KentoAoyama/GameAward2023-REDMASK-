@@ -1,22 +1,27 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// UŒ‚‚ğs‚¤Û‚Ég—p‚·‚éƒNƒ‰ƒX
+/// æ”»æ’ƒã‚’è¡Œã†éš›ã«ä½¿ç”¨ã™ã‚‹ã‚¯ãƒ©ã‚¹
 /// </summary>
 public class AttackBehavior : MonoBehaviour
 {
-    [Header("•Ší‚ÌƒIƒuƒWƒFƒNƒg")]
+    [Header("æ­¦å™¨ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ")]
     [SerializeField] private MonoBehaviour _weapon;
 
-    IEnemyWeapon _enemyWeapon;
+    private IEnemyWeapon _enemyWeapon;
 
     private void Awake()
     {
         if (!_weapon.TryGetComponent(out _enemyWeapon))
         {
-            Debug.LogError("IEnemyWeapon‚ğÀ‘•‚µ‚½ƒRƒ“ƒ|[ƒlƒ“ƒg‚Å‚Í‚ ‚è‚Ü‚¹‚ñ: " + _weapon);
+            Debug.LogError("IEnemyWeaponã‚’å®Ÿè£…ã—ãŸã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã§ã¯ã‚ã‚Šã¾ã›ã‚“: " + _weapon);
         }
     }
 
-    public void Attack() => _enemyWeapon.Attack();
+    public void Attack()
+    {
+        // TODO:æ”»æ’ƒã®åˆ¤å®šãŒå‡ºã‚‹ã¾ã§ãƒ‡ã‚£ãƒ¬ã‚¤ãŒæ¬²ã—ã„
+
+        _enemyWeapon.Attack();
+    }
 }

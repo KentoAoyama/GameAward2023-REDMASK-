@@ -1,12 +1,13 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// ƒvƒŒƒCƒ„[‚ğ’T‚·‚½‚ß‚ÉˆÚ“®‚·‚éó‘Ô‚ÌƒNƒ‰ƒX
-/// ŠÔŒo‰ß‚ÅIdleó‘Ô‚É‘JˆÚ‚·‚é
+/// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’æ¢ã™ãŸã‚ã«ç§»å‹•ã™ã‚‹çŠ¶æ…‹ã®ã‚¯ãƒ©ã‚¹
+/// æ™‚é–“çµŒéã§IdleçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
 /// </summary>
 public class StateTypeSearch : StateTypeBase
 {
     protected float _time;
+    private int _cachedSEIndex;
 
     public StateTypeSearch(EnemyController controller, StateType stateType)
         : base(controller, stateType) { }
@@ -14,38 +15,58 @@ public class StateTypeSearch : StateTypeBase
     protected override void Enter()
     {
         Controller.PlayAnimation(AnimationName.Search);
-        Controller.SearchMoving();
+        Controller.MoveSeachForPlayer();
+
+        _cachedSEIndex = GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", Controller.Params.WalkSEName);
     }
 
     protected override void Stay()
     {
-        if (Controller.IsDefeated)
-        {
-            TryChangeState(StateType.Defeated);
-            return;
-        }
-
-        SightResult result = Controller.IsFindPlayer();
-        if (result == SightResult.InSight || result == SightResult.InAttackRange)
-        {
-            TryChangeState(StateType.Discover);
-            return;
-        }
-
-        // ˆÚ“®‚ğs‚¤ƒƒ\ƒbƒh‚ğŒÄ‚Ño‚µ‚ÄŠÔŒo‰ß‚ÅIdle‚É‘JˆÚ‚·‚é
-        // ‚ğŒJ‚è•Ô‚µ‚ÄüˆÍ‚ğ’Tõ‚³‚¹‚é
-        _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime;
-        float interval = Controller.Params.TurningPoint / Controller.Params.WalkSpeed;
-        if (_time > interval)
-        {
-            _time = 0;
-            TryChangeState(StateType.Idle);
-        }
+        if (TransitionDefeated()) return;
+        if (Transition()) return;
+        if (TransitionAtTimeElapsed()) return;
     }
 
     protected override void Exit()
     {
         _time = 0;
-        Controller.CancelMoving();
+        Controller.CancelMoveToTarget();
+        GameManager.Instance.AudioManager.StopSE(_cachedSEIndex);
+    }
+
+    public override void OnDisable()
+    {
+        GameManager.Instance.AudioManager.StopSE(_cachedSEIndex);
+    }
+
+    /// <summary>
+    /// è¦–ç•Œå†…/æ”»æ’ƒç¯„å›²å†…ã«å…¥ã£ãŸã‚‰DiscoverçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
+    /// </summary>
+    private bool Transition()
+    {
+        SightResult result = Controller.LookForPlayerInSight();
+        if (result == SightResult.InSight || result == SightResult.InAttackRange)
+        {
+            TryChangeState(StateType.Discover);
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// æ™‚é–“çµŒéã§IdleçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
+    /// </summary>
+    private bool TransitionAtTimeElapsed()
+    {
+        _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime;
+        float interval = Controller.Params.TurningPoint / Controller.Params.WalkSpeed;
+        if (_time > interval)
+        {
+            TryChangeState(StateType.Idle);
+            return true;
+        }
+
+        return false;
     }
 }

@@ -1,6 +1,6 @@
-/// <summary>
-/// �X�e�[�g�̎�ނ̔�����s���ۂɎg�p����񋓌^
-/// �e�X�e�[�g�͕K�����̗񋓌^�̂����̂ǂꂩ�ɑΉ����Ă��Ȃ���΂Ȃ�Ȃ�
+﻿/// <summary>
+/// ステートの種類の判定を行う際に使用する列挙型
+/// 各ステートは必ずこの列挙型のうちのどれかに対応していなければならない
 /// </summary>
 public enum StateType
 {
@@ -20,8 +20,8 @@ public enum StateType
 }
 
 /// <summary>
-/// ���E�ɑ΂��ăv���C���[���ǂ̈ʒu�ɂ��邩�̔���Ɏg�p�����񋓌^
-/// ���E�̏����Ƃ��̌��ʂ��󂯂Ă̕���Ɏg�p�����
+/// 視界に対してプレイヤーがどの位置にいるかの判定に使用される列挙型
+/// 視界の処理とその結果を受けての分岐に使用される
 /// </summary>
 public enum SightResult
 {
@@ -31,8 +31,8 @@ public enum SightResult
 }
 
 /// <summary>
-/// �A�j���[�V�������̎擾�Ɏg�p�����񋓌^
-/// �񋓌^����n�b�V�����擾����̂Ɏg�p����̂Œl�͊eAnimation���ƈ�v�����邱��
+/// アニメーション名の取得に使用される列挙型
+/// 列挙型からハッシュを取得するのに使用するので値は各Animation名と一致させること
 /// </summary>
 public enum AnimationName
 {

@@ -1,292 +1,153 @@
-using Cysharp.Threading.Tasks;
+ï»¿using Cysharp.Threading.Tasks;
 using System.Threading;
-using UnityEngine;
-using UniRx.Triggers;
 using UniRx;
+using UniRx.Triggers;
+using UnityEngine;
 
 /// <summary>
-/// Šeó‘Ô‚É‚¨‚¢‚ÄˆÚ“®‚·‚éÛ‚Ég—p‚·‚éƒNƒ‰ƒX
+/// å„çŠ¶æ…‹ã«ãŠã„ã¦ç§»å‹•ã™ã‚‹éš›ã«ä½¿ç”¨ã™ã‚‹ã‚¯ãƒ©ã‚¹
+/// å¿…è¦ãªå„Moduleã®ã‚¯ãƒ©ã‚¹ã‚’åˆ¶å¾¡ã™ã‚‹
 /// </summary>
 public class MoveBehavior : MonoBehaviour
 {
-    /// <summary>
-    /// ˆÚ“®æ‚É“’…‚µ‚½Û‚É‚Õ‚é‚Õ‚é‚µ‚È‚¢‚æ‚¤‚É‚·‚éˆ×‚Ì’l
-    /// ’l‚ğ‘å‚«‚­‚·‚ê‚Î‚æ‚è³Šm‚ÉˆÚ“®æ‚É‚½‚Ç‚è’…‚­‚ªA‘¬“xŸ‘æ‚Å‚Í‚Õ‚é‚Õ‚é‚µ‚Ä‚µ‚Ü‚¤
-    /// </summary>
-    private static readonly float ArrivalTolerance = 500.0f;
-    /// <summary>
-    /// –ˆƒtƒŒ[ƒ€Ray‚ğ”ò‚Î‚³‚È‚¢‚æ‚¤‚ÉASearchó‘Ô‚Å‚ÌˆÚ“®”ÍˆÍ‚ğXV‚·‚éŠÔŠu‚ğİ’è‚·‚é
-    /// </summary>
-    private static readonly float UpdateFootPosInterval = 0.15f;
-
-    private static readonly float FootPosRayDistance = 1.0f;
-    private static readonly float FloorRayDistance = 6.0f;
-    private static readonly float EnemyTypeRayDistance = 1.1f;
-    private static readonly Vector2 FootPosRayOffset = new Vector2(0, 0.5f);
-    private static readonly Vector2 FloorRayOffset = new Vector2(0, 1.5f);
-
-    [Header("ˆÚ“®•ûŒü‚ÉŒü‚¯‚éƒIƒuƒWƒFƒNƒg‚Ìİ’è")]
-    [SerializeField] private Transform _spriteTrans;
-    [SerializeField] private Transform _eyeTrans;
-    [SerializeField] private Transform _weaponTrans;
-    [Header("ˆÚ“®‚ÉŒŸ’m‚·‚é‚½‚ß‚ÌRay‚Ìİ’è")]
-    [SerializeField] private LayerMask _groundLayerMask;
-    [SerializeField] private LayerMask _enemyTypeLayerMask;
-    [Tooltip("©g‚ÌƒRƒ‰ƒCƒ_[‚Æ‚Ô‚Â‚©‚ç‚È‚¢‚æ‚¤‚Éİ’è‚·‚é")]
-    [SerializeField] private Vector2 EnemyTypeRayOffset = new Vector2(1.25f, 0.5f);
-
-    private CancellationTokenSource _cts;
     private Transform _transform;
-    private Rigidbody2D _rigidbody;
-    private GameObject _searchDestination;
-    private GameObject _forwardDestination;
+    private CancellationTokenSource _cts;
 
-    private TurnModule _turnModule;
+    [SerializeField] private TurnModule _turnModule;
+    [SerializeField] private DetectorModule _detectorModule;
+    [SerializeField] private RigidBodyModule _rigidbodyModule;
+    [SerializeField] private WaypointModule _waypointModule;
+    [Tooltip("Spriteã®å·¦å³ã«å¿œã˜ãŸå‡¦ç†ã‚’ã—ãŸã„ã®ã§å‚ç…§ãŒå¿…è¦")]
+    [SerializeField] private Transform _sprite;
 
-    /// <summary>ƒ|[ƒY‚µ‚½‚Æ‚«‚ÉVelocity‚ğˆê’U•Û‘¶‚µ‚Ä‚¨‚­‚½‚ß‚Ì•Ï”</summary>
-    private Vector3 _tempVelocity;
-    /// <summary>‚±‚ÌÀ•W‚ğŠî€‚É‚µ‚ÄSearchó‘Ô‚ÌˆÚ“®‚ğs‚¤summary>
-    private Vector3 _footPos;
-    /// <summary>Pause()‚ªŒÄ‚Î‚ê‚é‚Ætrue‚ÉResume()‚ªŒÄ‚Î‚ê‚é‚Æfalse‚É‚È‚é</summary>
+    /// <summary>
+    /// Pause()ãŒå‘¼ã°ã‚Œã‚‹ã¨trueã«Resume()ãŒå‘¼ã°ã‚Œã‚‹ã¨falseã«ãªã‚‹
+    /// </summary>
     private bool _isPause;
 
-    /// <summary>Sprite‚Ì¶‰E‚ÌŒü‚«‚É‡‚í‚¹‚½ˆ—‚ğ‚·‚éÛ‚Ég‚¤</summary>
-    public int SpriteDirection => (int)Mathf.Sign(_spriteTrans.localScale.x);
-
-#if UNITY_EDITOR
-    /// <summary>EnemyController‚ÅƒMƒYƒ‚‚É•\¦‚·‚é—p“r‚Åg‚Á‚Ä‚¢‚é</summary>
-    public Vector3 FootPos => _footPos;
-#endif
+    /// <summary>
+    /// Spriteã®å·¦å³ã®å‘ãã«åˆã‚ã›ãŸå‡¦ç†ã‚’ã™ã‚‹éš›ã«ä½¿ã†
+    /// å³å‘ã: 1 å·¦å‘ã: -1
+    /// </summary>
+    public int SpriteDir => (int)Mathf.Sign(_sprite.localScale.x);
 
     private void Awake()
     {
-        _turnModule = new(transform, _spriteTrans, _eyeTrans, _weaponTrans);
-
         _transform = GetComponent<Transform>();
-        _rigidbody = GetComponent<Rigidbody2D>();
-        _searchDestination = new GameObject("SearchDestination");
-        _forwardDestination = new GameObject("ForwardDestination");
-    }
+        _waypointModule.InitOnAwake();
 
-    private void Start()
-    {
         FootPosUpdateStart();
     }
 
     private void OnDisable()
     {
-        CancelMoving();
+        CancelMoveToTarget();
     }
 
-    public void Pause()
+    public void OnPause()
     {
         _isPause = true;
-        _rigidbody.isKinematic = true;
-        _tempVelocity = _rigidbody.velocity;
-        _rigidbody.velocity = Vector3.zero;
+        _rigidbodyModule.SaveVelocity();
     }
 
-    public void Resume()
+    public void OnResume()
     {
         _isPause = false;
-        _rigidbody.isKinematic = false;
-        _rigidbody.velocity = _tempVelocity;
+        _rigidbodyModule.LoadVelocity();
     }
 
     /// <summary>
-    /// ˆê’èŠÔŠu‚Å‘«Œ³‚ÌÀ•W‚ğXV‚·‚é
-    /// ‚±‚Ìˆ—‚Í‘¼‚ÌƒNƒ‰ƒX‚âTimeScale‚É‰e‹¿‚³‚ê‚È‚¢‚Ì‚Å
-    /// Update()“à‚Ìƒƒ\ƒbƒh‚¾‚ª‚±‚ÌƒNƒ‰ƒX“à‚ÅÀs‚µ‚Ä‚¢‚é
+    /// ä¸€å®šé–“éš”ã§è¶³å…ƒã®åº§æ¨™ã‚’æ›´æ–°ã™ã‚‹
+    /// ã“ã®å‡¦ç†ã¯ä»–ã®ã‚¯ãƒ©ã‚¹ã‚„TimeScaleã«å½±éŸ¿ã•ã‚Œãªã„ã®ã§
+    /// Update()å†…ã®ãƒ¡ã‚½ãƒƒãƒ‰ã ãŒã“ã®ã‚¯ãƒ©ã‚¹å†…ã§å®Ÿè¡Œã—ã¦ã„ã‚‹
     /// </summary>
     private void FootPosUpdateStart()
     {
+        // æ¯ãƒ•ãƒ¬ãƒ¼ãƒ Rayã‚’é£›ã°ã•ãªã„ã‚ˆã†ã«ã€SearchçŠ¶æ…‹ã§ã®ç§»å‹•ç¯„å›²ã‚’æ›´æ–°ã™ã‚‹é–“éš”ã‚’è¨­å®šã™ã‚‹
+        float updateFootPosInterval = 0.15f;
+
         this.UpdateAsObservable()
-            .ThrottleFirst(System.TimeSpan.FromSeconds(UpdateFootPosInterval))
-            .Subscribe(_ => UpdateFootPos())
+            .ThrottleFirst(System.TimeSpan.FromSeconds(updateFootPosInterval))
+            .Subscribe(_ => 
+            {
+                if (_detectorModule.DetectFootPos(_transform.position, out Vector3 hitPos))
+                {
+                    _waypointModule.UpdateFootPos(hitPos);
+                }
+            })
             .AddTo(this);
     }
 
-    private void UpdateFootPos()
+    /// <summary>
+    /// ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã‚’å·¦å‘ãã«é…ç½®ã™ã‚‹éš›ã«ä½¿ç”¨ã™ã‚‹
+    /// </summary>
+    public void TurnLeft()
     {
-        Vector3 rayOrigin = _transform.position + (Vector3)FootPosRayOffset;
-        RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector3.down, FootPosRayDistance, _groundLayerMask);
+        Vector3 dir = _transform.position;
+        dir.x += -int.MaxValue;
+        _turnModule.TurnTowardsTarget(dir, _transform);
+    }
 
-        if (hit.collider) _footPos = hit.point;
+    public void StartMoveSearchForPlayer(float moveSpeed, float distance, bool useRandomDistance)
+    {
+        Transform waypoint = _waypointModule.GetSearchWaypoint(distance, useRandomDistance);
+        StartMoveToTarget(waypoint, moveSpeed);
+    }
+
+    public void StartMoveForward(float distance, float moveSpeed)
+    {
+        Transform forwardWaypoint = _waypointModule.GetForwardWaypoint(SpriteDir * distance);
+        StartMoveToTarget(forwardWaypoint, moveSpeed);
     }
 
     /// <summary>
-    /// Searchó‘Ô‚ÌˆÚ“®‚ğ‚·‚éÛ‚ÉŒÄ‚Î‚ê‚é
-    /// ˆÚ“®æ‚ÌÀ•W‚ğSearchDestination‚ÌPosition‚ÉƒZƒbƒg‚µ‚Ä
-    /// •Ô‚·‚±‚Æ‚ÅˆÚ“®’†‚ÉˆÚ“®æ‚ğ“®‚©‚·‚±‚Æ‚ªo—ˆ‚é
+    /// ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«å‘ã‘ã¦ç§»å‹•ã™ã‚‹
+    /// åŸºæœ¬ã¯ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã¶ã“ã¨ã§ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’è¿½ã„ã‹ã‘ã‚‹
     /// </summary>
-    public Transform GetSearchDestination(float distance, bool useRandomDistance)
+    public void StartMoveToTarget(Transform target, float moveSpeed)
     {
-        // ¶‰E‚Ç‚¿‚ç‚©‚É‘«Œ³‚©‚ç‘æˆêˆø”‚Ì‹——£‚¾‚¯—£‚ê‚½ˆÊ’u‚ÉˆÚ“®æ‚ğİ’è‚·‚é
-        // ›<----š---->›
-        Vector3 dir = Random.value > 0.5f ? Vector3.left : Vector3.right;
-        float percentage = useRandomDistance ? Random.value : 1;
-        Vector3 targetPos = _footPos + dir * distance * percentage;
+        _cts = new CancellationTokenSource();
+        MoveToTargetAsync(target, moveSpeed).Forget();
+    }
 
-        _searchDestination.transform.position = targetPos;
+    private async UniTaskVoid MoveToTargetAsync(Transform target, float moveSpeed)
+    {
+        _cts.Token.ThrowIfCancellationRequested();
 
-#if UNITY_EDITOR
-        Debug.DrawLine(targetPos + Vector3.up, targetPos + Vector3.down, Color.yellow, 1.0f);
-#endif
+        _rigidbodyModule.UpdateKinematic(false);
+        _turnModule.TurnTowardsTarget(target.position, _transform);
+        while (_detectorModule.DetectFloorInFront(SpriteDir, _transform))
+        {
+            if (!_isPause)
+            {
+                _rigidbodyModule.SetVelocityToTarget(target.position, moveSpeed, _transform);
+                _turnModule.TurnTowardsTarget(target.position, _transform);
+            }
 
-        return _searchDestination.transform;
+            await UniTask.Yield(PlayerLoopTiming.FixedUpdate, _cts.Token);
+        }
+        CancelMoveToTarget();
     }
 
     /// <summary>
-    /// Œ»İ‚ÌˆÚ“®‚ğƒLƒƒƒ“ƒZƒ‹‚µ‚Ä‚»‚Ìê‚É—¯‚Ü‚é
-    /// •Ê‚ÌˆÚ“®æ‚ÉŒü‚©‚¤Û‚Í‚±‚Ìƒƒ\ƒbƒh‚ğŒÄ‚ñ‚ÅŒ»İ‚ÌˆÚ“®‚ğƒLƒƒƒ“ƒZƒ‹‚·‚é‚±‚Æ
+    /// ç¾åœ¨ã®ç§»å‹•ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã—ã¦ãã®å ´ã«ç•™ã¾ã‚‹
+    /// åˆ¥ã®ç§»å‹•å…ˆã«å‘ã‹ã†éš›ã¯ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã‚“ã§ç¾åœ¨ã®ç§»å‹•ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã™ã‚‹ã“ã¨
     /// </summary>
-    public void CancelMoving()
+    public void CancelMoveToTarget()
     {
         _cts?.Cancel();
-        DropVertically();
+        _rigidbodyModule.SetFallVelocity();
     }
 
     /// <summary>
-    /// ‘«Œ³‚©‚ç‚ÌRay‚ªƒqƒbƒg‚µ‚È‚¢ê‡‚Í‚»‚Ì‚Ü‚Ü—‰º‚µ
-    /// ƒqƒbƒg‚µ‚½ê‡‚ÍPosition‚ğ‚»‚ÌÀ•W‚É‚·‚é‚±‚Æ‚ÅŠŠ‚ç‚È‚¢‚æ‚¤‚É‚µ‚Ä‚¢‚é
+    /// è¶³å…ƒã‹ã‚‰ã®RayãŒãƒ’ãƒƒãƒˆã—ãªã„å ´åˆã¯ãã®ã¾ã¾è½ä¸‹ã—
+    /// ãƒ’ãƒƒãƒˆã—ãŸå ´åˆã¯Positionã‚’ãã®åº§æ¨™ã«ã™ã‚‹ã“ã¨ã§æ»‘ã‚‰ãªã„ã‚ˆã†ã«ã—ã¦ã„ã‚‹
     /// </summary>
     public void Idle()
     {
         if (_isPause) return;
 
-        RaycastHit2D groundHit = Physics2D.Raycast(_transform.position, Vector3.down, 0.25f, _groundLayerMask);
-        if (groundHit)
-        {
-            _rigidbody.velocity = Vector3.zero;
-            _transform.position = groundHit.point;
-        }
-        else
-        {
-            DropVertically();
-        }
-
-        _rigidbody.isKinematic = groundHit;
-
-#if UNITY_EDITOR
-        Color c = groundHit ? Color.blue : Color.red;
-        Debug.DrawRay(_transform.position, Vector3.down * 0.5f, c, 0.016f);
-#endif
-    }
-
-    /// <summary>¶‰E‚ÌˆÚ“®‚ğƒLƒƒƒ“ƒZƒ‹‚µ‚Ä‚’¼—‰º‚³‚¹‚é</summary>
-    private void DropVertically()
-    {
-        Vector3 velo = _rigidbody.velocity;
-        velo.x = 0;
-        velo.z = 0;
-        _rigidbody.velocity = velo;
-    }
-
-    /// <summary>‘O•û‚É”CˆÓ‚Ì‹——£‚¾‚¯ˆÚ“®‚·‚é</summary>
-    public void StartMoveForward(float distance, float moveSpeed)
-    {
-        // w’è‚µ‚½ˆÊ’u‚ÉforwardDestination‚ğˆÚ“®‚³‚¹‚Ä‚»‚±‚ÉŒü‚©‚Á‚ÄˆÚ“®‚·‚é
-        Vector3 pos = transform.position;
-        pos.x += _spriteTrans.localScale.x * distance;
-        _forwardDestination.transform.position = pos;
-        StartMoveToTarget(_forwardDestination.transform, moveSpeed * 2);
-
-#if UNITY_EDITOR
-        Debug.DrawRay(pos, Vector3.up * 5, Color.magenta, 3.0f);
-#endif
-    }
-
-    /// <summary>ƒLƒƒƒ‰ƒNƒ^[‚ğ¶Œü‚«‚É”z’u‚·‚éÛ‚Ég—p‚·‚é</summary>
-    public void TurnLeft()
-    {
-        Vector3 dir = _transform.position;
-        dir.x += -int.MaxValue;
-        _turnModule.TurnTowardsTarget(dir);
-    }
-
-    /// <summary>
-    /// ‚±‚Ìƒƒ\ƒbƒh‚ğŠO•”‚©‚çŒÄ‚Ô‚±‚Æ‚ÅˆÚ“®‚ğs‚¤
-    /// ˆÚ“®‚ğs‚¤Û‚Í•K‚¸CancelMoving()‚ğŒÄ‚ñ‚ÅŒ»İ‚ÌˆÚ“®‚ğƒLƒƒƒ“ƒZƒ‹‚µ‚Ä‚©‚çs‚¤‚±‚Æ
-    /// </summary>
-    public void StartMoveToTarget(Transform target, float moveSpeed)
-    {
-        // ƒAƒCƒhƒ‹ó‘Ô‚Å–³Œø‰»‚µ‚Ä‚¢‚é‚Ì‚ÅˆÚ“®‚·‚éÛ‚ÍÄ“x•¨—‰‰Z‚ğ—LŒø‚É‚·‚é
-        _rigidbody.isKinematic = false;
-
-        _cts = new CancellationTokenSource();
-        MoveToTargetAsync(target, moveSpeed).Forget();
-    }
-
-    /// <summary>
-    /// FixedUpdate()‚Ìƒ^ƒCƒ~ƒ“ƒO‚Åƒ^[ƒQƒbƒg‚ÉŒü‚©‚Á‚Ä1ƒtƒŒ[ƒ€•ª‚¾‚¯ˆÚ“®‚·‚é–‚É‚æ‚Á‚Ä
-    /// ƒ^[ƒQƒbƒg‚Ö‚ÌˆÚ“®‚ğs‚¤Bˆø”‚ªTransform‚Ì‚½‚ßƒ^[ƒQƒbƒg‚ª“®‚¢‚Ä‚¢‚Ä‚à’Ç]‚·‚é
-    /// </summary>
-    private async UniTask MoveToTargetAsync(Transform target, float moveSpeed)
-    {
-        _cts.Token.ThrowIfCancellationRequested();
-
-        _turnModule.TurnTowardsTarget(target.position);
-        while (IsDetectedFloor()/* && IsUndetectedEnemy()*/)
-        {
-            if (!_isPause)
-            {
-                SetVelocityToTarget(target.position, moveSpeed);
-                _turnModule.TurnTowardsTarget(target.position);
-            }
-
-            await UniTask.Yield(PlayerLoopTiming.FixedUpdate, _cts.Token);
-        }
-        CancelMoving();
-    }
-
-    /// <summary>
-    /// Velocity‚ğƒ^[ƒQƒbƒg‚Ì•ûŒü‚ÉŒü‚¯‚é‚±‚Æ‚Åƒ^[ƒQƒbƒg‚Ö‚ÌˆÚ“®‚ğs‚¤
-    /// ƒXƒ[ƒ‚[ƒVƒ‡ƒ“‚Æƒ|[ƒY‚É‘Î‰‚µ‚Ä‚¢‚é
-    /// </summary>
-    private void SetVelocityToTarget(Vector3 targetPos, float moveSpeed)
-    {
-        Vector3 velo = targetPos - _transform.position;
-        float TimeScale = GameManager.Instance.TimeController.EnemyTime;
-
-        if (velo.sqrMagnitude < moveSpeed / ArrivalTolerance)
-        {
-            velo = Vector3.zero;
-        }
-        else
-        {
-            velo = Vector3.Normalize(velo) * moveSpeed;
-        }
-
-        velo.y = _rigidbody.velocity.y;
-        _rigidbody.velocity = velo * TimeScale;
-    }
-
-    private bool IsDetectedFloor()
-    {
-        Vector3 rayOrigin = _transform.position + (Vector3)FloorRayOffset;
-        Vector3 dir = ((_transform.right * SpriteDirection) + new Vector3(0, -2f, 0)).normalized;
-        RaycastHit2D groundHit = Physics2D.Raycast(rayOrigin, dir, FloorRayDistance, _groundLayerMask);
-
-#if UNITY_EDITOR
-        Color c = groundHit ? Color.blue : Color.red;
-        Debug.DrawRay(rayOrigin, dir * FloorRayDistance, c, 0.016f);
-#endif
-
-        return groundHit;
-    }
-
-    private bool IsUndetectedEnemy()
-    {
-        Vector3 offset = new Vector3(EnemyTypeRayOffset.x * SpriteDirection, EnemyTypeRayOffset.y, 0);
-        Vector3 rayOrigin = _transform.position + offset;
-        Vector3 dir = _transform.right * SpriteDirection;
-        RaycastHit2D enemyHit = Physics2D.Raycast(rayOrigin, dir, EnemyTypeRayDistance, _enemyTypeLayerMask);
-
-#if UNITY_EDITOR
-        Color c = !enemyHit ? Color.blue : Color.red;
-        Debug.DrawRay(rayOrigin, dir * EnemyTypeRayDistance, c, 0.016f);
-#endif
-
-        return !enemyHit;
+        bool onGround = _detectorModule.DetectOnGroundIdle(_transform.position, out Vector3 hitPos);
+        _rigidbodyModule.UpdateKinematic(onGround);
     }
 }

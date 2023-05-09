@@ -22,6 +22,14 @@ public class PrepareImageSlideController : MonoBehaviour
     private float _rightAreaPos;
     [SerializeField]
     private Image _behindObjDontTouchiImage = default;
+    [SerializeField]
+    private Image _leftSideArrowIamge = default;
+    [SerializeField]
+    private Image _rightSideArrowIamge = default;
+    [SerializeField]
+    private Text _leftSideManualTextIamge = default;
+    [SerializeField]
+    private Text _rightSideManualTextIamge = default;
 
     /// <summary> 現在表示している場所 </summary>
     private ReactiveProperty<ScreenArea> _currentScreenArea = new ReactiveProperty<ScreenArea>(ScreenArea.Left);
@@ -31,6 +39,14 @@ public class PrepareImageSlideController : MonoBehaviour
     private RectTransform _rectTransform = null;
     /// <summary> DOTween保存用 </summary>
     private TweenerCore<Vector3, Vector3, VectorOptions> _slidingAnim = default;
+    /// <summary> DOTween保存用 </summary>
+    private TweenerCore<Color, Color, ColorOptions> _leftSideArrowAnim = default;
+    /// <summary> DOTween保存用 </summary>
+    private TweenerCore<Color, Color, ColorOptions> _rightSideArrowAnim = default;
+    /// <summary> DOTween保存用 </summary>
+    private TweenerCore<Color, Color, ColorOptions> _leftSideManualTextAnim = default;
+    /// <summary> DOTween保存用 </summary>
+    private TweenerCore<Color, Color, ColorOptions> _rightSideManualTextAnim = default;
 
     public bool IsAnimationNow { get => !_canScroll; }
     public IReadOnlyReactiveProperty<ScreenArea> CurrentScreenArea => _currentScreenArea;
@@ -65,11 +81,11 @@ public class PrepareImageSlideController : MonoBehaviour
         // 現在既に右の場合も無視。
         if (_currentScreenArea.Value == ScreenArea.Right) return;
 
-        AnimStart();
+        RightScrollAnimStart();
         _currentScreenArea.Value = ScreenArea.Right;
         _slidingAnim = _rectTransform.DOLocalMoveX(_rightAreaPos, _duration).
             SetEase(_slidingEasing).
-            OnComplete(AnimEnd);
+            OnComplete(RightScrollAnimEnd);
     }
     private void LeftScroll(InputAction.CallbackContext action)
     {
@@ -78,20 +94,54 @@ public class PrepareImageSlideController : MonoBehaviour
         // 現在既に左の場合も無視。
         if (_currentScreenArea.Value == ScreenArea.Left) return;
 
-        AnimStart();
+        LeftScrollAnimStart();
         _currentScreenArea.Value = ScreenArea.Left;
         _slidingAnim = _rectTransform.DOLocalMoveX(_leftAreaPos, _duration).
             SetEase(_slidingEasing).
-            OnComplete(AnimEnd);
+            OnComplete(LeftScrollAnimEnd);
     }
 
-    private void AnimStart()
+    private void RightScrollAnimStart()
     {
+        // 左側の矢印,テキストのアルファ値を0にする。
+        _leftSideArrowAnim?.Kill();
+        _leftSideManualTextAnim?.Kill();
+        _leftSideArrowAnim = _leftSideArrowIamge.DOFade(0f, _duration).OnComplete(() => _leftSideArrowAnim = null);
+        _leftSideManualTextAnim = _leftSideManualTextIamge.DOFade(0f, _duration).OnComplete(() => _leftSideManualTextAnim = null);
+
         _canScroll = false;
         _behindObjDontTouchiImage.gameObject.SetActive(true);
     }
-    private void AnimEnd()
+    private void LeftScrollAnimStart()
     {
+        // 右側の矢印,テキストのアルファ値を0にする。
+        _rightSideArrowAnim?.Kill();
+        _rightSideManualTextAnim?.Kill();
+        _rightSideArrowAnim = _rightSideArrowIamge.DOFade(0f, _duration).OnComplete(() => _rightSideArrowAnim = null);
+        _rightSideManualTextAnim = _rightSideManualTextIamge.DOFade(0f, _duration).OnComplete(() => _rightSideManualTextAnim = null);
+
+        _canScroll = false;
+        _behindObjDontTouchiImage.gameObject.SetActive(true);
+    }
+    private void RightScrollAnimEnd()
+    {
+        // 右側の矢印,テキストのアルファ値を1にする。
+        _rightSideArrowAnim?.Kill();
+        _rightSideManualTextAnim?.Kill();
+        _rightSideArrowAnim = _rightSideArrowIamge.DOFade(1f, _duration).OnComplete(() => _rightSideArrowAnim = null);
+        _rightSideManualTextAnim = _rightSideManualTextIamge.DOFade(1f, _duration).OnComplete(() => _rightSideManualTextAnim = null);
+
+        _canScroll = true;
+        _behindObjDontTouchiImage.gameObject.SetActive(false);
+    }
+    private void LeftScrollAnimEnd()
+    {
+        // 左側の矢印,テキストのアルファ値を1にする。
+        _leftSideArrowAnim?.Kill();
+        _leftSideManualTextAnim?.Kill();
+        _leftSideArrowAnim = _leftSideArrowIamge.DOFade(1f, _duration).OnComplete(() => _leftSideArrowAnim = null);
+        _leftSideManualTextAnim = _leftSideManualTextIamge.DOFade(1f, _duration).OnComplete(() => _leftSideManualTextAnim = null);
+
         _canScroll = true;
         _behindObjDontTouchiImage.gameObject.SetActive(false);
     }

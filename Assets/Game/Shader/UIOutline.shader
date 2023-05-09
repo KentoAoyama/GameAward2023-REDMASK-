@@ -8,8 +8,11 @@ Shader "Custom/UIOutline"
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags { "RenderType"="Opaque" "Queue" = "Transparent"}
         LOD 100
+        Cull Off
+        ZWrite Off
+        ZTest Always
         blend One OneMinusSrcAlpha
 
         Pass

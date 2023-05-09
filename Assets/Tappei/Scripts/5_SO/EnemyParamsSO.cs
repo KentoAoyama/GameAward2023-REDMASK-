@@ -1,7 +1,7 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// ’Êí‚Ì“G‚ÌŠeƒpƒ‰ƒ[ƒ^‚ğİ’è‚·‚éScriptableObject
+/// é€šå¸¸ã®æ•µã®å„ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’è¨­å®šã™ã‚‹ScriptableObject
 /// </summary>
 [CreateAssetMenu(fileName = "EnemyParams_")]
 public class EnemyParamsSO : ScriptableObject
@@ -12,64 +12,53 @@ public class EnemyParamsSO : ScriptableObject
         Search,
     }
 
-    /// <summary>
-    /// €–S‚µ‚½Û‚É€‘Ì‚ªÁ‚¦‚é‚Ü‚Å‚Ì’Ç‰ÁŠÔ
-    /// €–S‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚É’Ç‰Á‚Å‘Ò‚Â
-    /// </summary>
-    static readonly float DefeatedStateTransitionDelayAdd = 3.0f;
-    /// <summary>
-    /// ˆÚ“®—Ê‚ª0‚Ìó‘Ô‚ª‘±‚¢‚½Û‚ÉIdleó‘Ô‚É‘JˆÚ‚³‚¹‚é‚Ü‚Å‚ÌŠÔ
-    /// Moveó‘Ô‚Å‚µ‚©g‚í‚ê‚È‚¢‚ªAState“à‚Éİ’è‚·‚é’l‚ğ‚½‚¹‚½‚­‚È‚¢‚Ì‚ÅSO“à‚É‚Â
-    /// </summary>
-    public static readonly float MoveCancelTimeThreshold = 0.25f;
-
-    [Tooltip("Discoveró‘Ô‚ÌAnimationClip‚ğŠ„‚è“–‚Ä‚é")]
+    [Header("ã“ã®é …ç›®ã¯ãƒ—ãƒ©ãƒ³ãƒŠãƒ¼ãŒå¼„ã‚‹å¿…è¦ãªã—")]
     [SerializeField] private AnimationClip _discoverAnimClip;
-    [Tooltip("Deadó‘Ô‚ÌAnimationClip‚ğŠ„‚è“–‚Ä‚é")]
     [SerializeField] private AnimationClip _deadAnimClip;
+    [SerializeField] private string _walkSEName;
+    [SerializeField] private string _runSEName;
 
-    [Header("ˆÚ“®‘¬“x‚Ìİ’è")]
-    [Tooltip("•à‚¢‚ÄˆÚ“®‚·‚éÛ‚Ì‘¬“x")]
+    [Header("ç§»å‹•é€Ÿåº¦ã®è¨­å®š")]
+    [Tooltip("æ­©ã„ã¦ç§»å‹•ã™ã‚‹éš›ã®é€Ÿåº¦")]
     [SerializeField] private float _walkSpeed = 2.0f;
-    [Tooltip("‘–‚Á‚ÄˆÚ“®‚·‚éÛ‚Ì‘¬“x")]
+    [Tooltip("èµ°ã£ã¦ç§»å‹•ã™ã‚‹éš›ã®é€Ÿåº¦")]
     [SerializeField] private float _runSpeed = 4.0f;
 
-    [Header("Searchó‘Ô‚ÌÜ‚è•Ô‚µ’n“_‚Ìİ’è")]
-    [Tooltip("Ü‚è•Ô‚·‚Ü‚Å‚Ì‹——£")]
+    [Header("SearchçŠ¶æ…‹ã®æŠ˜ã‚Šè¿”ã—åœ°ç‚¹ã®è¨­å®š")]
+    [Tooltip("æŠ˜ã‚Šè¿”ã™ã¾ã§ã®è·é›¢")]
     [SerializeField] private float _turningPoint = 3.0f;
-    [Tooltip("Ü‚è•Ô‚µ’n“_‚É•t‚­‘O‚Éƒ‰ƒ“ƒ_ƒ€‚ÉÜ‚è•Ô‚·")]
+    [Tooltip("æŠ˜ã‚Šè¿”ã—åœ°ç‚¹ã«ä»˜ãå‰ã«ãƒ©ãƒ³ãƒ€ãƒ ã«æŠ˜ã‚Šè¿”ã™")]
     [SerializeField] private bool _useRandomTurningPoint;
 
-    [Header("‹ŠE‚Ìİ’è")]
-    [Tooltip("îó‚Ì‹ŠE‚Ì”¼Œa")]
-    [SerializeField] private float _sightRadius = 9.0f;
-    [Tooltip("îó‚Ì‹ŠE‚ÌŠp“x")]
-    [SerializeField] private float _sightAngle = 270.0f;
-    [Tooltip("ŠÔ‚ÉáŠQ•¨‚ª‚ ‚Á‚½ê‡‚É–³‹‚·‚é")]
-    [SerializeField] private bool _isIgnoreObstacle;
-
-    [Header("UŒ‚”ÍˆÍ‚Ìİ’è")]
-    [Tooltip("UŒ‚‰Â”\‚È”ÍˆÍ")]
+    [Header("æ”»æ’ƒç¯„å›²ã®è¨­å®š")]
+    [Tooltip("æ”»æ’ƒå¯èƒ½ãªç¯„å›²")]
     [SerializeField] private float _attackRange = 3.0f;
-    [Tooltip("UŒ‚‚ÌŠÔŠu(•b)")]
+    [Tooltip("æ”»æ’ƒã®é–“éš”(ç§’)")]
     [SerializeField] private float _attackRate = 2.0f;
 
-    [Header("Idle‚©‚çSearch‚Éó‘Ô‚ª‘JˆÚ‚·‚é‚Ü‚Å‚ÌŠÔ")]
+    [Header("Idleã‹ã‚‰Searchã«çŠ¶æ…‹ãŒé·ç§»ã™ã‚‹ã¾ã§ã®æ™‚é–“")]
     [SerializeField] private float _minIdleStateTimer = 1.0f;
     [SerializeField] private float _maxIdleStateTimer = 2.0f;
 
-    public float DiscoverStateTransitionDelay => _discoverAnimClip != null ? _discoverAnimClip.length : 0;
+    public float DiscoverStateTransitionDelay
+    {
+        get => _discoverAnimClip != null ? _discoverAnimClip.length : 0;
+    }
     public float DefeatedStateTransitionDelay
     {
-        get => _deadAnimClip != null ? _deadAnimClip.length + DefeatedStateTransitionDelayAdd : 0;
+        get
+        {
+            // æ­»äº¡ã—ãŸéš›ã«ã™ãæ¶ˆãˆãªã„ã‚ˆã†ã«ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³è¿½åŠ ã§å¾…ã¤æ™‚é–“ã‚’è¿½åŠ ã™ã‚‹
+            float addTime = 3.0f;
+            return _deadAnimClip != null ? _deadAnimClip.length + addTime : 0;
+        }
     }
+    public string WalkSEName => _walkSEName;
+    public string RunSEName => _runSEName;
     public float WalkSpeed => _walkSpeed;
     public float RunSpeed => _runSpeed;
     public float TurningPoint => _turningPoint;
     public bool UseRandomTurningPoint => _useRandomTurningPoint;
-    public float SightRadius => _sightRadius;
-    public float SightAngle => _sightAngle;
-    public bool IsIgnoreObstacle => _isIgnoreObstacle;
     public float AttackRange => _attackRange;
     public float AttackRate => _attackRate;
 

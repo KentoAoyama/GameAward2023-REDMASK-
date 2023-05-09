@@ -1,7 +1,9 @@
+ï»¿using UnityEngine;
+
 /// <summary>
-/// ‚‚¿—p
-/// ƒvƒŒƒCƒ„[”­Œ©‚É‰‰o—p‚É‘JˆÚ‚·‚éó‘Ô‚ÌƒNƒ‰ƒX
-/// ‹——£‚É‚æ‚Á‚ÄMove‚à‚µ‚­‚ÍAttackó‘Ô‚É‘JˆÚ‚·‚é
+/// ç›¾æŒã¡ç”¨
+/// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ç™ºè¦‹æ™‚ã«æ¼”å‡ºç”¨ã«é·ç§»ã™ã‚‹çŠ¶æ…‹ã®ã‚¯ãƒ©ã‚¹
+/// è·é›¢ã«ã‚ˆã£ã¦Moveã‚‚ã—ãã¯AttackçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
 /// </summary>
 public class StateTypeDiscoverExtend : StateTypeDiscover
 {
@@ -15,33 +17,47 @@ public class StateTypeDiscoverExtend : StateTypeDiscover
 
     protected override void Stay()
     {
-        if (Controller.IsDefeated)
-        {
-            TryChangeState(StateType.Defeated);
-            return;
-        }
+        if (TransitionDefeated()) return;
+        if (TransitionReflection()) return;
+        if (Transition()) return;
+    }
 
+    /// <summary>
+    /// å¼¾ã‚’åå°„ã—ãŸã‚‰ReflectionçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
+    /// </summary>
+    private bool TransitionReflection()
+    {
         if (_shieldController.IsReflect)
         {
             _shieldController.LastStateType = StateType.DiscoverExtend;
             TryChangeState(StateType.Reflection);
-            return;
+            return true;
         }
 
-        // ˆê“x”­Œ©‚µ‚½‚ç‹ŠE‚ÌŠO‚Éo‚Ä‚µ‚Ü‚Á‚½ê‡‚Å‚àˆê“xMoveó‘Ô‚É‘JˆÚ‚·‚é
-        SightResult result = Controller.IsFindPlayer();
-        if (_isTransitionable)
+        return false;
+    }
+
+    /// <summary>
+    /// ä¸€åº¦ç™ºè¦‹ã—ãŸã‚‰è¦–ç•Œã®å¤–ã«å‡ºã¦ã—ã¾ã£ãŸå ´åˆã§ã‚‚ä¸€åº¦MoveçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
+    /// </summary>
+    private bool Transition()
+    {
+        _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime;
+        if (_time > Controller.Params.DiscoverStateTransitionDelay)
         {
+            SightResult result = Controller.LookForPlayerInSight();
             if (result == SightResult.InSight || result == SightResult.OutSight)
             {
                 TryChangeState(StateType.MoveExtend);
+                return true;
             }
             else
             {
                 TryChangeState(StateType.AttackExtend);
+                return true;
             }
-
-            return;
         }
+
+        return false;
     }
 }

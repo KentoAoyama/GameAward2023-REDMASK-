@@ -1,9 +1,8 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// ŠeƒXƒe[ƒg‚Í•K‚¸‚±‚ÌƒNƒ‰ƒX‚ğŒp³‚·‚é•K—v‚ª‚ ‚éB
-/// StateRegisterƒNƒ‰ƒX‚©‚ç¶¬‚·‚é‚Ì‚ÅAŒp³‚µ‚½ƒXƒe[ƒg‚Ì
-/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚Í‚±‚ÌƒXƒe[ƒg‚Æ“¯‚¶‚Å‚ ‚é•K—v‚ª‚ ‚é
+/// StateRegisterã‚¯ãƒ©ã‚¹ã‹ã‚‰ç”Ÿæˆã™ã‚‹ã®ã§ã€ç¶™æ‰¿ã—ãŸã‚¹ãƒ†ãƒ¼ãƒˆã®
+/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¯ã“ã®ã‚¹ãƒ†ãƒ¼ãƒˆã¨åŒã˜ã§ã‚ã‚‹å¿…è¦ãŒã‚ã‚‹
 /// </summary>
 public abstract class StateTypeBase
 {
@@ -27,7 +26,7 @@ public abstract class StateTypeBase
     public StateType Type { get; }
 
     /// <summary>
-    /// 1“x‚ÌŒÄ‚Ño‚µ‚ÅƒXƒe[ƒg‚Ì’iŠK‚É‰‚¶‚ÄEnter() Stay() Exit()‚Ì‚¤‚¿‚Ç‚ê‚©1‚Â‚ªÀs‚³‚ê‚é
+    /// 1åº¦ã®å‘¼ã³å‡ºã—ã§ã‚¹ãƒ†ãƒ¼ãƒˆã®æ®µéšã«å¿œã˜ã¦Enter() Stay() Exit()ã®ã†ã¡ã©ã‚Œã‹1ã¤ãŒå®Ÿè¡Œã•ã‚Œã‚‹
     /// </summary>
     public StateTypeBase Execute()
     {
@@ -55,11 +54,27 @@ public abstract class StateTypeBase
     protected virtual void Stay() { }
     protected virtual void Exit() { }
 
-    public virtual void Pause() { }
-    public virtual void Resume() { }
+    /// <summary>
+    /// æ’ƒç ´ã•ã‚ŒãŸå ´åˆã®å‡¦ç†ã¯DefeatedçŠ¶æ…‹ä»¥å¤–ã¯å…±é€šå‡¦ç†ãªã®ã§åŸºåº•ã‚¯ãƒ©ã‚¹ã«å®Ÿè£…ã—ã¦ã‚ã‚‹
+    /// é·ç§»ã™ã‚‹å ´åˆã¯trueãŒè¿”ã‚‹
+    /// </summary>
+    protected bool TransitionDefeated()
+    {
+        if (Controller.IsDefeated)
+        {
+            TryChangeState(StateType.Defeated);
+            return true;
+        }
+
+        return false;
+    }
+
+    public virtual void OnPause() { }
+    public virtual void OnResume() { }
+    public virtual void OnDisable() { }
 
     /// <summary>
-    /// Enter()‚ªŒÄ‚Î‚ê‚Ä‚©‚ÂAƒXƒe[ƒg‚Ì‘JˆÚˆ—‚ğŒÄ‚ñ‚Å‚¢‚È‚¢ê‡‚Ì‚İ‘JˆÚ‰Â”\
+    /// Enter()ãŒå‘¼ã°ã‚Œã¦ã‹ã¤ã€ã‚¹ãƒ†ãƒ¼ãƒˆã®é·ç§»å‡¦ç†ã‚’å‘¼ã‚“ã§ã„ãªã„å ´åˆã®ã¿é·ç§»å¯èƒ½
     /// </summary>
     public bool TryChangeState(StateType type)
     {
@@ -67,12 +82,12 @@ public abstract class StateTypeBase
 
         if (_stage == Stage.Enter)
         {
-            Debug.LogWarning("Enter()‚ªŒÄ‚Î‚ê‚é‘O‚ÉƒXƒe[ƒg‚ğ‘JˆÚ‚·‚é‚±‚Æ‚Í•s‰Â”\: ‘JˆÚæ: " + state);
+            Debug.LogWarning("Enter()ãŒå‘¼ã°ã‚Œã‚‹å‰ã«ã‚¹ãƒ†ãƒ¼ãƒˆã‚’é·ç§»ã™ã‚‹ã“ã¨ã¯ä¸å¯èƒ½: é·ç§»å…ˆ: " + state);
             return false;
         }
         else if (_stage == Stage.Exit)
         {
-            Debug.LogWarning("Šù‚É•Ê‚ÌƒXƒe[ƒg‚É‘JˆÚ‚·‚éˆ—‚ªŒÄ‚Î‚ê‚Ä‚¢‚Ü‚·: ‘JˆÚæ: " + state);
+            Debug.LogWarning("æ—¢ã«åˆ¥ã®ã‚¹ãƒ†ãƒ¼ãƒˆã«é·ç§»ã™ã‚‹å‡¦ç†ãŒå‘¼ã°ã‚Œã¦ã„ã¾ã™: é·ç§»å…ˆ: " + state);
             return false;
         }
 

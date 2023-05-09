@@ -1,14 +1,20 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// ‚‚¿‚Ì“G‚ÌŠeƒpƒ‰ƒ[ƒ^‚ğİ’è‚·‚éScriptableObject
-/// EnemyParamsManager‚É‚½‚¹A“G–ˆ‚ÉQÆ‚·‚é
+/// ç›¾æŒã¡ã®æ•µã®å„ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’è¨­å®šã™ã‚‹ScriptableObject
+/// EnemyParamsManagerã«æŒãŸã›ã€æ•µæ¯ã«å‚ç…§ã™ã‚‹
 /// </summary>
 [CreateAssetMenu(fileName = "ShieldEnemyParams_")]
 public class ShieldEnemyParamsSO : EnemyParamsSO
 {
-    [Header("UŒ‚‚³‚ê‚½ê‡‚Ìd’¼ŠÔ(•b)‚Ìİ’è")]
+    [Header("æ”»æ’ƒã•ã‚ŒãŸå ´åˆã®ç¡¬ç›´æ™‚é–“(ç§’)ã®è¨­å®š")]
     [SerializeField] private float _stiffeningTime = 0.5f;
+    [Header("ã“ã®é …ç›®ã¯ãƒ—ãƒ©ãƒ³ãƒŠãƒ¼ãŒå¼„ã‚‹å¿…è¦ãªã—")]
+    [SerializeField] private AnimationClip _postureAnimClip;
 
     public float StiffeningTime => _stiffeningTime;
+    public float PostureAnimClipLength
+    {
+        get => _postureAnimClip != null ? _postureAnimClip.length : 0;
+    }
 }

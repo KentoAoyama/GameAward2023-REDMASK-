@@ -1,17 +1,12 @@
-using DG.Tweening;
+ï»¿using UnityEngine;
 
 /// <summary>
-/// ƒvƒŒƒCƒ„[”­Œ©‚É‰‰o—p‚É‘JˆÚ‚·‚éó‘Ô‚ÌƒNƒ‰ƒX
-/// ‹——£‚É‚æ‚Á‚ÄMove‚à‚µ‚­‚ÍAttackó‘Ô‚É‘JˆÚ‚·‚é
+/// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ç™ºè¦‹æ™‚ã«æ¼”å‡ºç”¨ã«é·ç§»ã™ã‚‹çŠ¶æ…‹ã®ã‚¯ãƒ©ã‚¹
+/// è·é›¢ã«ã‚ˆã£ã¦Moveã‚‚ã—ãã¯AttackçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
 /// </summary>
 public class StateTypeDiscover : StateTypeBase
 {
-    /// <summary>
-    /// ”­Œ©‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ÌI—¹‚ğ‘Ò‚Á‚Ä‘JˆÚ‚³‚¹‚é‚½‚ß‚Ìƒtƒ‰ƒO
-    /// ‚±‚Ìƒtƒ‰ƒO‚ª—§‚Â‚Ü‚Å‘JˆÚ‚Í•s‰Â”\‚¾‚ªA‹ŠE‚Í‹@”\‚µ‚Ä‚¢‚é
-    /// </summary>
-    protected bool _isTransitionable;
-    private Tween _tween;
+    protected float _time;
 
     public StateTypeDiscover(EnemyController controller, StateType type) 
         : base(controller, type) { }
@@ -19,40 +14,43 @@ public class StateTypeDiscover : StateTypeBase
     protected override void Enter()
     {
         Controller.PlayAnimation(AnimationName.Discover);
-        Controller.DiscoverPerformance();
+        Controller.PlayDiscoverPerformance();
 
-        float delay = Controller.Params.DiscoverStateTransitionDelay;
-        _tween = DOVirtual.DelayedCall(delay, () => _isTransitionable = true);
+        GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Enemy_Discover");
     }
 
     protected override void Stay()
     {
-        if (Controller.IsDefeated)
-        {
-            TryChangeState(StateType.Defeated);
-            return;
-        }
-
-        // ˆê“x”­Œ©‚µ‚½‚ç‹ŠE‚ÌŠO‚Éo‚Ä‚µ‚Ü‚Á‚½ê‡‚Å‚àˆê“xMoveó‘Ô‚É‘JˆÚ‚·‚é
-        SightResult result = Controller.IsFindPlayer();
-        if (_isTransitionable)
-        {
-            if (result == SightResult.InSight || result == SightResult.OutSight)
-            {
-                TryChangeState(StateType.Move);
-            }
-            else
-            {
-                TryChangeState(StateType.Attack);
-            }
-
-            return;
-        }
+        if (TransitionDefeated()) return;
+        if (Transition()) return;
     }
 
     protected override void Exit()
     {
-        _tween.Kill();
-        _isTransitionable = false;
+        _time = 0;
+    }
+
+    /// <summary>
+    /// ä¸€åº¦ç™ºè¦‹ã—ãŸã‚‰è¦–ç•Œã®å¤–ã«å‡ºã¦ã—ã¾ã£ãŸå ´åˆã§ã‚‚ä¸€åº¦MoveçŠ¶æ…‹ã«é·ç§»ã™ã‚‹
+    /// </summary>
+    private bool Transition()
+    {
+        _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime;
+        if (_time > Controller.Params.DiscoverStateTransitionDelay)
+        {
+            SightResult result = Controller.LookForPlayerInSight();
+            if (result == SightResult.InSight || result == SightResult.OutSight)
+            {
+                TryChangeState(StateType.Move);
+                return true;
+            }
+            else
+            {
+                TryChangeState(StateType.Attack);
+                return true;
+            }
+        }
+
+        return false;
     }
 }
