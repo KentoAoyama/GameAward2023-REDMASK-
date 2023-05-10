@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
 /// 遠距離攻撃の武器のクラス
 /// Enemy_RangeAttackオブジェクトが使用する
 /// </summary>
-public class EnemyRifle : MonoBehaviour, IEnemyWeapon
+[RequireComponent(typeof(EnemyWeaponGuidelineDrawer))]
+public class EnemyRifle : MonoBehaviour, IEnemyWeapon, IGuidelineDrawer
 {
     /// <summary>
     /// 敵毎にこのオブジェクトの子に弾を生成していく
@@ -22,6 +24,7 @@ public class EnemyRifle : MonoBehaviour, IEnemyWeapon
     [Header("攻撃時に再生される音の名前")]
     [SerializeField] private string _attackSEName;
 
+    private EnemyWeaponGuidelineDrawer _guidelineDrawer;
     private Stack<EnemyBullet> _pool;
 
     private void Awake()
@@ -39,6 +42,7 @@ public class EnemyRifle : MonoBehaviour, IEnemyWeapon
             CreatePoolObject();
         }
 
+        _guidelineDrawer = GetComponent<EnemyWeaponGuidelineDrawer>();
         _pool = new Stack<EnemyBullet>(_poolQuantity);
         CreatePool();
     }
@@ -79,6 +83,11 @@ public class EnemyRifle : MonoBehaviour, IEnemyWeapon
         }
     }
 
+    public void DrawGuideline()
+    {
+        _guidelineDrawer.Draw(_muzzle.position, GetBulletDirection());
+    }
+
     public void Attack()
     {
         EnemyBullet bullet = PopPool();
@@ -93,5 +102,5 @@ public class EnemyRifle : MonoBehaviour, IEnemyWeapon
     /// <summary>
     /// このメソッドをオーバーライドすることで弾を飛ばす方向を変更できる
     /// </summary>
-    protected virtual Vector3 GetBulletDirection() => _muzzle.right * _muzzle.transform.localScale.x;
+    protected virtual Vector3 GetBulletDirection() => Vector3.right * _muzzle.transform.localScale.x;
 }

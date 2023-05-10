@@ -40,7 +40,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     protected ReactiveProperty<StateTypeBase> _currentState = new();
     protected StateRegister _stateRegister = new();
     protected MoveBehavior _moveBehavior;
-    private EnemyAudioModule _audioModule = new();
+    //private EnemyAudioModule _audioModule = new();
     private Transform _player;
     private SightSensor _sightSensor;
     private AttackBehavior _attackBehavior;
@@ -150,6 +150,11 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     /// </summary>
     public SightResult LookForPlayerInSight() => _sightSensor.LookForPlayerInSight(_sightRadius, 
         _sightAngle, Params.AttackRange, _isIgnoreObstacle);
+
+    /// <summary>
+    /// Attack状態中、武器の予告線を表示する
+    /// </summary>
+    public void DrawGuideline() => _attackBehavior.DrawGuideline();
 
     /// <summary>
     /// Attack状態の時、一定間隔で呼ばれる
