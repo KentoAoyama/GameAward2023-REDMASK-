@@ -43,7 +43,9 @@ Shader "Custom/Monochrome"
                 float2 uv : TEXCOORD0;
                 float4 color : COLOR;
                 float4 vertex : SV_POSITION;
+                #ifndef NONLIGHTING
                 half2 lightingUV : TEXCOORD1;
+                #endif
                 #if defined(DEBUG_DISPLAY)
                 float3 vertexWS : TEXCOORD2;
                 #endif
@@ -90,7 +92,9 @@ Shader "Custom/Monochrome"
                 o.color = v.color;
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 
+                #ifndef NONLIGHTING
                 o.lightingUV = half2(ComputeScreenPos(o.vertex / o.vertex.w).xy);
+                #endif
                 return o;
             }
 
@@ -104,17 +108,18 @@ Shader "Custom/Monochrome"
             float4 frag (v2f i) : SV_Target
             {
                 float4 col = (SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv)  + _TextureSampleAdd) * i.color;
-
+                
+                #ifndef NONLIGHTING
                 float4 mask = SAMPLE_TEXTURE2D(_MaskTex, sampler_MaskTex, i.uv);
-#ifndef NONLIGHTING
+
                 SurfaceData2D surfaceData;
-                InputData2D inpuData;
+                InputData2D inputData;
 
                 InitializeSurfaceData(col.rgb, col.a, mask, surfaceData);
-                InitializeInputData(i.uv, i.lightingUV, inpuData);
+                InitializeInputData(i.uv, i.lightingUV, inputData);
 
-                col = CombinedShapeLightShared(surfaceData, inpuData);
-#endif
+                col = CombinedShapeLightShared(surfaceData, inputData);
+                #endif
                 col.rgb = lerp(col.rgb, Monochrome(col.rgb), _MonoBlend);
 
                 return col;
