@@ -38,7 +38,6 @@ public class StateTypeAttackExtend : StateTypeAttack
 
     protected override void Enter()
     {
-        // TODO:攻撃の処理が複雑なのでまだ汚い
         _shieldController.PlayAnimation(AnimationName.Idle);
     }
 
@@ -47,6 +46,7 @@ public class StateTypeAttackExtend : StateTypeAttack
         if (TransitionDefeated()) return;
         if (TransitionReflection()) return;
         AttackAtInterval();
+        Controller.DrawGuideline();
         if (Transition()) return;
     }
 

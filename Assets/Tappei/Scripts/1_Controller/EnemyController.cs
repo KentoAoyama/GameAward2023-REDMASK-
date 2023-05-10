@@ -152,6 +152,11 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         _sightAngle, Params.AttackRange, _isIgnoreObstacle);
 
     /// <summary>
+    /// Attack状態中、武器の予告線を表示する
+    /// </summary>
+    public void DrawGuideline() => _attackBehavior.DrawGuideline();
+
+    /// <summary>
     /// Attack状態の時、一定間隔で呼ばれる
     /// </summary>
     public virtual void Attack() => _attackBehavior.Attack();
