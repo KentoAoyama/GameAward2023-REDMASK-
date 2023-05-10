@@ -6,11 +6,6 @@
 /// </summary>
 public class StateTypeAttackExtend : StateTypeAttack
 {
-    /// <summary>
-    /// 間合いを詰めてくる時間を計算するために攻撃範囲に定数をかける
-    /// </summary>
-    private static readonly float MovingDistanceMag = 15.0f;
-    /// <summary>
     /// 次の攻撃までの待ち時間は攻撃モーションを考慮してマイナスの値を設定する
     /// </summary>
     private static readonly float NextAttackDelay = -80.0f;
