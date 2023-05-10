@@ -6,11 +6,6 @@
 /// </summary>
 public class StateTypeAttackExtend : StateTypeAttack
 {
-    /// <summary>
-    /// 間合いを詰めてくる時間を計算するために攻撃範囲に定数をかける
-    /// </summary>
-    private static readonly float MovingDistanceMag = 15.0f;
-    /// <summary>
     /// 次の攻撃までの待ち時間は攻撃モーションを考慮してマイナスの値を設定する
     /// </summary>
     private static readonly float NextAttackDelay = -80.0f;
@@ -38,7 +33,6 @@ public class StateTypeAttackExtend : StateTypeAttack
 
     protected override void Enter()
     {
-        // TODO:攻撃の処理が複雑なのでまだ汚い
         _shieldController.PlayAnimation(AnimationName.Idle);
     }
 
@@ -47,6 +41,7 @@ public class StateTypeAttackExtend : StateTypeAttack
         if (TransitionDefeated()) return;
         if (TransitionReflection()) return;
         AttackAtInterval();
+        Controller.DrawGuideline();
         if (Transition()) return;
     }
 
