@@ -25,29 +25,20 @@ public class DrumCan : MonoBehaviour, IPausable, IDamageable
         _rayOrigin = transform.position;
     }
 
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
-
     public void Pause()
     {
-        
+        // TODO:あれば追加する
     }
 
     public void Resume()
     {
-        
+        // TODO:あれば追加する
     }
 
     public void Damage()
     {
         // TODO:アニメーション再生後、消える(ポーズとときおそに対応させる)
+        gameObject.SetActive(false);
         // TOOD:音の再生
 
         Collider2D[] results = Physics2D.OverlapCircleAll(_rayOrigin, _radius, _hitLayerMask);
@@ -78,6 +69,6 @@ public class DrumCan : MonoBehaviour, IPausable, IDamageable
     public void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(_rayOrigin, _radius);
+        Gizmos.DrawWireSphere(transform.position, _radius);
     }
 }
