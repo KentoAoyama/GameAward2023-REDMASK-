@@ -1,18 +1,18 @@
-Shader "Custom/Monochrome"
+Shader "Custom/Outline"
 {
     Properties
     {
         [PerRendererData]_MainTex ("Texture", 2D) = "white" {}
-        [HDR] _MonoColor("MonoColor", Color) = (1, 1, 1, 1)
+        [HDR] _OutlineColor ("OutlineColor", Color) = (1, 1, 1, 1)
+        _OutlineRange ("OutlineRange", Float) = 0.1
         [Toggle(NONLIGHTING)]  _NonLighting("NonLighting", Float) = 0
     }
     SubShader
     {
-        Tags {"Queue" = "Transparent" "RenderType" = "Transparent" "RenderPipeline" = "UniversalPipeline" }
-
-        Blend SrcAlpha OneMinusSrcAlpha, One OneMinusSrcAlpha
+        Tags { "RenderType"="Opaque" "Queue" = "Transparent"}
         Cull Off
         ZWrite Off
+        blend One OneMinusSrcAlpha
 
         Pass
         {
@@ -43,9 +43,11 @@ Shader "Custom/Monochrome"
                 float2 uv : TEXCOORD0;
                 float4 color : COLOR;
                 float4 vertex : SV_POSITION;
+
                 #ifndef NONLIGHTING
                 half2 lightingUV : TEXCOORD1;
                 #endif
+
                 #if defined(DEBUG_DISPLAY)
                 float3 vertexWS : TEXCOORD2;
                 #endif
@@ -58,10 +60,11 @@ Shader "Custom/Monochrome"
             SAMPLER(sampler_MainTex);
             TEXTURE2D(_MaskTex);
             SAMPLER(sampler_MaskTex);
-            half4 _MainTex_ST;
-            half4 _TextureSampleAdd;
-            float _MonoBlend;
-            float4 _MonoColor;
+            float4 _MainTex_ST;
+            float4 _MainTex_TexelSize;
+            float4 _TextureSampleAdd;
+            float4 _OutlineColor;
+            float _OutlineRange;
 
             #if USE_SHAPE_LIGHT_TYPE_0
             SHAPE_LIGHT(0)
@@ -91,7 +94,6 @@ Shader "Custom/Monochrome"
                 #endif
                 o.color = v.color;
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-
                 #ifndef NONLIGHTING
                 o.lightingUV = half2(ComputeScreenPos(o.vertex / o.vertex.w).xy);
                 #endif
@@ -100,15 +102,20 @@ Shader "Custom/Monochrome"
 
             #include "Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/CombinedShapeLightShared.hlsl"
 
-            float3 Monochrome(float3 color)
-            {
-                return (color.r * 0.299 + color.g * 0.587 + color.b * 0.114) * _MonoColor;
-            }
-
             float4 frag (v2f i) : SV_Target
             {
-                float4 col = (SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv)  + _TextureSampleAdd) * i.color;
-                
+                float outlineAlpha = saturate(
+                    SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv + float2(_MainTex_TexelSize.x * _OutlineRange, 0)).a +
+                    SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv + float2(_MainTex_TexelSize.x * -_OutlineRange, 0)).a +
+                    SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv + float2(0, _MainTex_TexelSize.y * _OutlineRange)).a +
+                    SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv + float2(0, _MainTex_TexelSize.y * -_OutlineRange)).a
+                );
+                float4 outCol = float4(_OutlineColor.rgb, outlineAlpha);
+
+                float4 col = (SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv) + _TextureSampleAdd) * i.color;
+                          
+                col = col.a > 0 ? col : outCol;
+
                 #ifndef NONLIGHTING
                 float4 mask = SAMPLE_TEXTURE2D(_MaskTex, sampler_MaskTex, i.uv);
 
@@ -120,8 +127,8 @@ Shader "Custom/Monochrome"
 
                 col = CombinedShapeLightShared(surfaceData, inputData);
                 #endif
-                col.rgb = lerp(col.rgb, Monochrome(col.rgb), _MonoBlend);
 
+                col.rgb *= col.a;
                 return col;
             }
             ENDHLSL
