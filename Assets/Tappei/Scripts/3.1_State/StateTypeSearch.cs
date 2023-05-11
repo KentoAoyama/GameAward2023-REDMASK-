@@ -23,6 +23,7 @@ public class StateTypeSearch : StateTypeBase
     protected override void Stay()
     {
         if (TransitionDefeated()) return;
+        if (TransitionAtReaction()) return;
         if (Transition()) return;
         if (TransitionAtTimeElapsed()) return;
     }
@@ -37,6 +38,16 @@ public class StateTypeSearch : StateTypeBase
     public override void OnDisable()
     {
         GameManager.Instance.AudioManager.StopSE(_cachedSEIndex);
+    }
+
+    private bool TransitionAtReaction()
+    {
+        if (Controller.IsReaction)
+        {
+            TryChangeState(StateType.Reaction);
+            return true;
+        }
+        return false;
     }
 
     /// <summary>
