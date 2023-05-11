@@ -46,6 +46,8 @@ namespace Player
         [Header("腕、順番に入れてね")]
         [Tooltip("腕、順番に入れてね"), SerializeField] private List<GameObject> arms = new List<GameObject>();
 
+        public GameObject Arm => _arm;
+
         private int _nowMuzzleNum;
 
 
@@ -135,7 +137,13 @@ namespace Player
 
         public void Update()
         {
-            if(!_playerController.GunSetUp.IsGunSetUp || _playerController.PlayerAnimatorControl.IsAnimationNow)
+            if (GameManager.Instance.PauseManager.PauseCounter > 0)
+            {
+                return;
+            } // ポーズ中は何もできない
+
+
+            if (!_playerController.GunSetUp.IsGunSetUp || _playerController.PlayerAnimatorControl.IsAnimationNow)
             {
                 return;
             }

@@ -160,7 +160,6 @@ namespace Player
             }
             else if (animationKind == AnimaKind.Jump)
             {
-                Debug.Log("Dd");
                 _playerController.PlayerAnim.Play(_animJump);
                 _isAnimationNow = false;
             }

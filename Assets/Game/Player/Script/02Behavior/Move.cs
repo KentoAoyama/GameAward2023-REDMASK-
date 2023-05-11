@@ -54,7 +54,13 @@ namespace Player
         private float _countTime = 0;
         private float _time = 0.7f;
 
+        private bool _isSound = false;
+
+        private int _moveSoundIndex = -1;
+
         private PlayerController _playerController;
+
+        public int MoveSoundIndex => _moveSoundIndex;
 
         /// <summary>
         /// 移動できるかどうかを表す値 <br/>
@@ -154,7 +160,7 @@ namespace Player
             if (hitPluseX.normal.x != 0)
             {
                 dir = Quaternion.AngleAxis(angle, Vector3.forward) * moveDir;
-            }   
+            }
             else
             {
                 dir = Quaternion.AngleAxis(angleDown, Vector3.forward) * moveDir;
@@ -180,6 +186,12 @@ namespace Player
             if (IsPause || _playerController.Avoidance.IsAvoidanceNow || _playerController.Proximity.IsProximityNow
                 || _playerController.GunSetUp.IsGunSetUp || _playerController.GunSetUp.IsGunSetUpping)
             {
+                if (_isSound)
+                {
+                    _isSound = false;
+                    GameManager.Instance.AudioManager.StopSE(_moveSoundIndex);
+                }
+
                 return;
             }
 
@@ -189,7 +201,11 @@ namespace Player
             if (_playerController.InputManager.IsExist[InputType.MoveHorizontal] && CanMove)
             {
 
-
+                if (!_isSound && !_isJump)
+                {
+                    _isSound = true;
+                    _moveSoundIndex = GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Run");
+                }
 
                 // 1フレーム前の水平移動方向（入力方向）を保存しておく
                 _previousDir = _moveHorizontalDir;
@@ -249,6 +265,12 @@ namespace Player
             // 入力がないとき、現在速度を減算する。
             else
             {
+                if (_isSound)
+                {
+                    _isSound = false;
+                    GameManager.Instance.AudioManager.StopSE(_moveSoundIndex);
+                }
+
                 if (_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX))
                 {
                     _currentHorizontalSpeed -= Time.deltaTime * _landDeceleration * _moveHorizontalDir * gameTime;
@@ -308,6 +330,14 @@ namespace Player
                 if (_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX) &&
                     _playerController.InputManager.IsPressed[InputType.Jump])
                 {
+
+                    if (_isSound)
+                    {
+                        Debug.Log("StopSound");
+                        _isSound = false;
+                        GameManager.Instance.AudioManager.StopSE(_moveSoundIndex);
+                    }
+
                     //音を鳴らす
                     GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Jump");
 
@@ -371,6 +401,8 @@ namespace Player
                        _playerController.Rigidbody2D.velocity.y);
             }
         }
+
+
 
 
         /// <summary>
