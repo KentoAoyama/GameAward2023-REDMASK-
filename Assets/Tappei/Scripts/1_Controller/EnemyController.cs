@@ -32,6 +32,8 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     [SerializeField] private float _sightAngle = 270.0f;
     [Tooltip("間に障害物があった場合に無視する")]
     [SerializeField] private bool _isIgnoreObstacle;
+    [Header("プレイヤーの銃撃に反応する距離")]
+    [SerializeField] private float _playerFireReactionDistance = 15.0f;
 
     [Header("この項目はプランナーが弄る必要なし")]
     [SerializeField, TagName] private string _playerTagName;
@@ -47,6 +49,15 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     private PerformanceBehavior _performanceBehavior;
     private Animator _animator;
     /// <summary>
+    /// プレイヤーからのメッセージを受けた際にはこの位置に向かう
+    /// </summary>
+    private Vector3 _playerLastPos;
+    /// <summary>
+    /// プレイヤーからのメッセージを受け取った際に立つフラグ
+    /// Reaction状態に遷移する
+    /// </summary>
+    private bool _isReaction;
+    /// <summary>
     /// Pause()が呼ばれるとtrueにResume()が呼ばれるとfalseになる
     /// </summary>
     private bool _isPause;
@@ -61,6 +72,11 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     public float SightRadius => _sightRadius;
     public float SightAngle => _sightAngle;
     public bool IsIgnoreObstacle => _isIgnoreObstacle;
+    public Vector3 PlayerLastPos => _playerLastPos;
+    /// <summary>
+    /// Reaction状態に遷移した際にステート側からフラグを折る
+    /// </summary>
+    public bool IsReaction { get => _isReaction; set => _isReaction = value; }
 
     private void Awake()
     {
@@ -69,6 +85,18 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         _attackBehavior = GetComponent<AttackBehavior>();
         _performanceBehavior = GetComponent<PerformanceBehavior>();
         _animator = GetComponentInChildren<Animator>();
+
+        // プレイヤーの銃撃に反応させる為の登録処理
+        MessageBroker.Default.Receive<ReactionMessage>()
+            .Where(message => 
+            {
+                return Vector3.Distance(message.Pos, transform.position) <= _playerFireReactionDistance;
+            })
+            .Subscribe(message =>
+            {
+                _playerLastPos = message.Pos;
+                _isReaction = true;
+            }).AddTo(this);
 
         InitOnAwake();
     }
@@ -91,6 +119,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         _stateRegister.Register(StateType.Move, this);
         _stateRegister.Register(StateType.Attack, this);
         _stateRegister.Register(StateType.Defeated, this);
+        _stateRegister.Register(StateType.Reaction, this);
         _currentState.Value = _stateRegister.GetState(StateType.Idle);
     }
 
@@ -127,6 +156,16 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     {
         _moveBehavior.CancelMoveToTarget();
         _moveBehavior.StartMoveToTarget(_player, Params.RunSpeed);
+    }
+
+    /// <summary>
+    /// 現在の移動をキャンセルしてプレイヤーが最後に居た地点に向かって移動する
+    /// Reaction状態での移動をする際にステートのEnter()で呼ばれる
+    /// </summary>
+    public void MoveToPlayerLastPos()
+    {
+        _moveBehavior.CancelMoveToTarget();
+        _moveBehavior.StartMoveToTarget(PlayerLastPos, Params.RunSpeed);
     }
 
     /// <summary>
