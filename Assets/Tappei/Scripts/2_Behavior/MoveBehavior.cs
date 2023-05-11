@@ -110,6 +110,12 @@ public class MoveBehavior : MonoBehaviour
         MoveToTargetAsync(target, moveSpeed).Forget();
     }
 
+    public void StartMoveToTarget(Vector3 pos, float moveSpeed)
+    {
+        _cts = new CancellationTokenSource();
+        MoveToTargetAsync(pos, moveSpeed).Forget();
+    }
+
     private async UniTaskVoid MoveToTargetAsync(Transform target, float moveSpeed)
     {
         _cts.Token.ThrowIfCancellationRequested();
@@ -122,6 +128,29 @@ public class MoveBehavior : MonoBehaviour
             {
                 _rigidbodyModule.SetVelocityToTarget(target.position, moveSpeed, _transform);
                 _turnModule.TurnTowardsTarget(target.position, _transform);
+            }
+
+            await UniTask.Yield(PlayerLoopTiming.FixedUpdate, _cts.Token);
+        }
+        CancelMoveToTarget();
+    }
+
+    /// <summary>
+    /// MoveToTargetAsync()のオーバーライド
+    /// 引数がTransformからVector3に変わっただけ
+    /// </summary>
+    private async UniTaskVoid MoveToTargetAsync(Vector3 pos, float moveSpeed)
+    {
+        _cts.Token.ThrowIfCancellationRequested();
+
+        _rigidbodyModule.UpdateKinematic(false);
+        _turnModule.TurnTowardsTarget(pos, _transform);
+        while (_detectorModule.DetectFloorInFront(SpriteDir, _transform))
+        {
+            if (!_isPause)
+            {
+                _rigidbodyModule.SetVelocityToTarget(pos, moveSpeed, _transform);
+                _turnModule.TurnTowardsTarget(pos, _transform);
             }
 
             await UniTask.Yield(PlayerLoopTiming.FixedUpdate, _cts.Token);

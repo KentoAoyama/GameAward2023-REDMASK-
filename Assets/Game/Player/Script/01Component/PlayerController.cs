@@ -73,6 +73,9 @@ namespace Player
         private Proximity _proximity = default;
         [Tooltip("カメラ制御"), SerializeField]
         private CameraShake _camraControl = default;
+        [Tooltip("カメラ制御"), SerializeField]
+        private CameraLookControl _camraLookControl = default;
+
         [Tooltip("構え"), SerializeField]
         private GunSetUp _gunSetUp = default;
 
@@ -131,6 +134,7 @@ namespace Player
             _camraControl.Init(this);
             _bodyAngleSetting.Init(this);
             _gunSetUp.Init(this);
+            _camraLookControl.Init(this);
 
             IsSetUp = true;
 
@@ -153,11 +157,15 @@ namespace Player
 
                 //_camraControl.CameraShakeSpeed(); //カメラの再生速度
 
+                _camraLookControl.CameraLook();
+
                 _bodyAngleSetting.Update();
 
                 _playerAnimatorControl.SetAnimatorParameters();
             }
         }
+
+
         private void OnDrawGizmosSelected()
         {
             _groungChecker.OnDrawGizmos(transform, DirectionControler.MovementDirectionX);
@@ -262,6 +270,9 @@ namespace Player
 
             //回避モーションの一時停止
             _avoidance.Pause();
+            _gunSetUp.Pause();
+
+            _playerAnim.speed = 0;
 
             //カメラの振動一時停止
             _camraControl.Pause();
@@ -275,6 +286,9 @@ namespace Player
 
             //回避モーションの再開
             _avoidance.Resume();
+            _gunSetUp.Resume();
+
+            _playerAnim.speed = 1;
 
             //カメラの振動の再開
             _camraControl.Pause();
@@ -288,6 +302,8 @@ namespace Player
             //死体撃ちで、2回呼ばれないようにする
             if (!_isDead)
             {
+                GameManager.Instance.AudioManager.StopSE(_move.MoveSoundIndex);
+
                 //音を鳴らす
                 GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Damage");
 

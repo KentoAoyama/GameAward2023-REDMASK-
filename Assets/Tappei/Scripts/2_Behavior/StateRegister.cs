@@ -80,7 +80,9 @@ public class StateRegister
             case StateType.Attack: return typeof(StateTypeAttack);
             case StateType.AttackExtend: return typeof(StateTypeAttackExtend);
             case StateType.Defeated: return typeof(StateTypeDefeated);
-            case StateType.Reflection:return typeof(StateTypeReflection);
+            case StateType.Reflection: return typeof(StateTypeReflection);
+            case StateType.Reaction: return typeof(StateTypeReaction);
+            case StateType.ReactionExtend: return typeof(StateTypeReactionExtend);
             default:
                 Debug.LogError("対応するステートが紐づけられていません: " + type);
                 return null;
