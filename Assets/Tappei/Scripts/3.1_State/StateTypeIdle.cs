@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 /// <summary>
 /// 立ち止まっている状態のクラス
@@ -25,6 +26,7 @@ public class StateTypeIdle : StateTypeBase
         Controller.UpdateIdle();
 
         if (TransitionDefeated()) return;
+        if (TransitionAtReaction()) return;
         if (Transition()) return;
         if (TransitionAtTimeElapsed()) return;
     }
@@ -32,6 +34,16 @@ public class StateTypeIdle : StateTypeBase
     protected override void Exit()
     {
         _time = 0;
+    }
+
+    private bool TransitionAtReaction()
+    {
+        if (Controller.IsReaction)
+        {
+            TryChangeState(StateType.Reaction);
+            return true;
+        }
+        return false;
     }
 
     /// <summary>
