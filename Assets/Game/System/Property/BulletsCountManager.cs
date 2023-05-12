@@ -49,6 +49,12 @@ public class BulletsCountManager
         _bulletCountHome[BulletType.ReflectBullet].Value = 12;
     }
 
+    public void Reset()
+    {
+        _bulletCountHome[BulletType.StandardBullet].Value = 20;
+        _bulletCountHome[BulletType.PenetrateBullet].Value = 8;
+        _bulletCountHome[BulletType.ReflectBullet].Value = 12;
+    }
     public BulletType[] Cylinder
     {
         get => _cylinder; set => _cylinder = value;
