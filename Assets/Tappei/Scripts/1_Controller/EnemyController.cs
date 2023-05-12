@@ -198,7 +198,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     /// <summary>
     /// Attack状態の時、一定間隔で呼ばれる
     /// </summary>
-    public virtual void Attack() => _attackBehavior.Attack();
+    public virtual void Attack() => _attackBehavior.Attack(Params.AttackDelay);
 
     /// <summary>
     /// 各ステートから再生するアニメーションを呼び出す
