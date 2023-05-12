@@ -9,6 +9,7 @@ public class AttackBehavior : MonoBehaviour
     [SerializeField] private MonoBehaviour _weapon;
 
     private IEnemyWeapon _enemyWeapon;
+    private IGuidelineDrawer _guidelineDrawer;
 
     private void Awake()
     {
@@ -16,6 +17,17 @@ public class AttackBehavior : MonoBehaviour
         {
             Debug.LogError("IEnemyWeaponを実装したコンポーネントではありません: " + _weapon);
         }
+
+        _weapon.TryGetComponent(out _guidelineDrawer);
+    }
+
+    /// <summary>
+    /// 武器のクラスにIGuidelineDrawerが実装されている場合は処理が実行される
+    /// 毎フレーム呼ばれて攻撃の予告線を表示する
+    /// </summary>
+    public void DrawGuideline()
+    {
+        _guidelineDrawer?.DrawGuideline();
     }
 
     public void Attack()

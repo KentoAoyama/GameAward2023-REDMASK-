@@ -21,6 +21,7 @@ public class StateTypeIdleExtend : StateTypeIdle
 
         if (TransitionDefeated()) return;
         if (TransitionReflection()) return;
+        if (TransitionAtReaction()) return;
         if (Transition()) return;
         if (TransitionAtTimeElapsed()) return;
     }
@@ -37,6 +38,16 @@ public class StateTypeIdleExtend : StateTypeIdle
             return true;
         }
 
+        return false;
+    }
+
+    private bool TransitionAtReaction()
+    {
+        if (Controller.IsReaction)
+        {
+            TryChangeState(StateType.ReactionExtend);
+            return true;
+        }
         return false;
     }
 

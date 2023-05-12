@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Cysharp.Threading.Tasks;
 
 namespace Player
 {
@@ -54,6 +55,25 @@ namespace Player
 
         public bool IsGunSetUpping => _isGunSetUping;
 
+
+        public bool IsPause { get; private set; } = false;
+
+        public async void Pause()
+        {
+            await UniTask.WaitUntil(() => _playerController != null);
+            // Updateを停止する
+            IsPause = true;
+        }
+        public void Resume()
+        {
+            // Updateを再開する
+            IsPause = false;
+
+            CheckRelesedSetUp();
+
+
+        }
+
         public void Init(PlayerController playerController)
         {
             _playerController = playerController;
@@ -66,6 +86,11 @@ namespace Player
 
         public void UpData()
         {
+            if (GameManager.Instance.PauseManager.PauseCounter > 0)
+            {
+                return;
+            } // ポーズ中は何もできない
+
             if (!_playerController.GroungChecker.IsHit(_playerController.Move.MoveHorizontalDir))
             {
                 return;

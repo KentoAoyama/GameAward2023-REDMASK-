@@ -473,11 +473,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47192ee7343431f45a246313a076344f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerTagName: Player
   _enemyParamsSO: {fileID: 11400000, guid: 6e3b35f7c0b07af42a0751495def85aa, type: 2}
   _placedFacingLeft: 0
   _idleWhenUndiscover: 0
-  _text: {fileID: 0}
+  _sightRadius: 9
+  _sightAngle: 270
+  _isIgnoreObstacle: 0
+  _playerTagName: Player
+  _debugStateViewText: {fileID: 0}
 --- !u!114 &-4295724762969606603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -491,7 +494,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _eye: {fileID: 441480885910638407}
-  _controller: {fileID: 0}
 --- !u!1001 &8810738001119421516
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -566,10 +568,6 @@ PrefabInstance:
     - target: {fileID: 6324367588736487705, guid: a6d66e3845461fd47bc2c262e2e727aa, type: 3}
       propertyPath: m_IsActive
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8208472467010909740, guid: a6d66e3845461fd47bc2c262e2e727aa, type: 3}
-      propertyPath: _playerTagName
-      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a6d66e3845461fd47bc2c262e2e727aa, type: 3}

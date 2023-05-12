@@ -28,6 +28,7 @@ public class StateTypeAttack : StateTypeBase
 
         if (TransitionDefeated()) return;
         AttackAtInterval();
+        Controller.DrawGuideline();
         if (Transition()) return;
     }
 

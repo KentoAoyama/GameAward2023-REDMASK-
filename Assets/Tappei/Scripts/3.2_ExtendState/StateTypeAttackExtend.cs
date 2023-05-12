@@ -6,17 +6,7 @@
 /// </summary>
 public class StateTypeAttackExtend : StateTypeAttack
 {
-    /// <summary>
-    /// 間合いを詰めてくる時間を計算するために攻撃範囲に定数をかける
-    /// </summary>
-    private static readonly float MovingDistanceMag = 15.0f;
-    /// <summary>
-    /// 次の攻撃までの待ち時間は攻撃モーションを考慮してマイナスの値を設定する
-    /// </summary>
-    private static readonly float NextAttackDelay = -80.0f;
-
     private ShieldEnemyController _shieldController;
-
     /// <summary>
     /// 継承元であるStateTypeAttackクラスとは攻撃の挙動が違うので別の変数を宣言する
     /// こちらは状態の遷移で初期化される
@@ -31,14 +21,11 @@ public class StateTypeAttackExtend : StateTypeAttack
     : base(controller, stateType) 
     {
         _shieldController = controller as ShieldEnemyController;
-        // 最初の1回しか初期化しない(基底クラスと同じ)に変更
-        // ↓ここ以外はリファクタリング後から弄っていない
         _time = Controller.Params.AttackRate;
     }
 
     protected override void Enter()
     {
-        // TODO:攻撃の処理が複雑なのでまだ汚い
         _shieldController.PlayAnimation(AnimationName.Idle);
     }
 
@@ -47,6 +34,7 @@ public class StateTypeAttackExtend : StateTypeAttack
         if (TransitionDefeated()) return;
         if (TransitionReflection()) return;
         AttackAtInterval();
+        Controller.DrawGuideline();
         if (Transition()) return;
     }
 
@@ -70,8 +58,7 @@ public class StateTypeAttackExtend : StateTypeAttack
         }
         if (_time > Controller.Params.AttackRate + Controller.Params.AttackRange / Controller.Params.RunSpeed)
         {
-            // 攻撃が1回きちんと行われることが確認できるまで2回目の攻撃が出ないような値に設定してある
-            _time = NextAttackDelay;
+            _time = 0;
             _isApproaching = false;
             _shieldController.CancelMoveToTarget();
             _shieldController.Attack();
