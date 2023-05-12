@@ -7,11 +7,7 @@
 public class StateTypeAttackExtend : StateTypeAttack
 {
     private ShieldEnemyController _shieldController;
-    /// <summary>
-    /// 継承元であるStateTypeAttackクラスとは攻撃の挙動が違うので別の変数を宣言する
-    /// こちらは状態の遷移で初期化される
-    /// </summary>
-    private float _time;
+
     /// <summary>
     /// 間合いを詰めてくる動作中かどうかのフラグ
     /// </summary>
@@ -21,12 +17,6 @@ public class StateTypeAttackExtend : StateTypeAttack
     : base(controller, stateType) 
     {
         _shieldController = controller as ShieldEnemyController;
-        _time = Controller.Params.AttackRate;
-    }
-
-    protected override void Enter()
-    {
-        _shieldController.PlayAnimation(AnimationName.Idle);
     }
 
     protected override void Stay()
@@ -40,7 +30,6 @@ public class StateTypeAttackExtend : StateTypeAttack
 
     protected override void Exit()
     {
-        _time = 0;
         _isApproaching = false;
     }
 

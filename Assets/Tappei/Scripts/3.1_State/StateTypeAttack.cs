@@ -8,18 +8,18 @@ public class StateTypeAttack : StateTypeBase
     /// <summary>
     /// 遷移を繰り返すことでの連射対策として、この値は状態の遷移をしても初期化されない
     /// </summary>
-    private float _time;
+    protected float _time;
 
     public StateTypeAttack(EnemyController controller, StateType stateType)
         : base(controller, stateType) 
     {
-        _time = controller.Params.AttackRate;
     }
 
     protected override void Enter()
     {
         // 攻撃までの間、遷移元のアニメーションが再生され続けないように一度Idle状態のアニメーションを再生する
         Controller.PlayAnimation(AnimationName.Idle);
+        _time = 0;
     }
 
     protected override void Stay()
