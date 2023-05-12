@@ -18,7 +18,6 @@ public class StageSelectButton : MonoBehaviour
     {
         // シーン遷移に伴い、ポーズカウントを初期化、
         GameManager.Instance.PauseManager.ClearCount();
-        DOTween.KillAll();
         GameManager.Instance.StageSelectManager.SetStage(_stageType);
     }
 }
