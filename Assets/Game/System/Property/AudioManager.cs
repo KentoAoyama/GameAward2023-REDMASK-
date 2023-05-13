@@ -127,7 +127,7 @@ public class AudioManager
 
     public void StopBGM()
     {
-        if (_bgmPlayer.GetStatus() == CriAtomExPlayer.Status.Prep)
+        if (_bgmPlayer.GetStatus() == CriAtomExPlayer.Status.Playing)
         {
             _bgmPlayer.Stop();
         }
