@@ -17,6 +17,7 @@ public class TitleStartButton : MonoBehaviour
     }
     private void OnClick()
     {
+        GameManager.Instance.BulletsCountManager.Reset();
         GameManager.Instance.PauseManager.ClearCount();
         DOTween.KillAll();
         GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Start");
