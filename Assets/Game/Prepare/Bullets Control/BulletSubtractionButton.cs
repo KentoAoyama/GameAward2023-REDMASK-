@@ -38,6 +38,7 @@ public class BulletSubtractionButton : MonoBehaviour
     }
     private void BulletSubtraction()
     {
+        GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Bullets_Selection");
         _bulletPrepareControl.PullBullet(_storageSiteType, _index);
         GameObject a = null;
         if (_storageSiteType == StorageSiteType.Cylinder)
