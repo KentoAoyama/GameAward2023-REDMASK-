@@ -31,6 +31,7 @@ public class ShieldEnemyController : EnemyController
         _stateRegister.Register(StateType.AttackExtend, this);
         _stateRegister.Register(StateType.Defeated, this);
         _stateRegister.Register(StateType.Reflection, this);
+        _stateRegister.Register(StateType.ReactionExtend, this);
         _currentState.Value = _stateRegister.GetState(StateType.IdleExtend);
 
         // 盾に弾がヒットしたらReflection状態に遷移するフラグを立てる

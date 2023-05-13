@@ -5,6 +5,12 @@
 /// </summary>
 public class StateTypeMove : StateTypeBase
 {
+    /// <summary>
+    /// 前フレームと同じ位置にいるので移動をキャンセルするという判定になる閾値
+    /// 移動速度によっては値を変更する必要がある
+    /// </summary>
+    static readonly float MoveCancelThreshold = 0.01f;
+
     private float _time;
     private int _cachedSEIndex;
     /// <summary>
@@ -19,11 +25,7 @@ public class StateTypeMove : StateTypeBase
     {
         Controller.PlayAnimation(AnimationName.Move);
         Controller.MoveToPlayer();
-
-        _prevPos = Vector3.positiveInfinity;
-        _time = 0;
-
-        _cachedSEIndex = GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", Controller.Params.RunSEName);
+        ResetOnEnter();
     }
 
     protected override void Stay()
@@ -45,9 +47,20 @@ public class StateTypeMove : StateTypeBase
     }
 
     /// <summary>
+    /// 余計な値を継承先に公開しなくて良いようにEnter()の処理をまとめておく
+    /// </summary>
+    protected void ResetOnEnter()
+    {
+        _prevPos = Vector3.positiveInfinity;
+        _time = 0;
+
+        _cachedSEIndex = GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", Controller.Params.RunSEName);
+    }
+
+    /// <summary>
     /// 移動がキャンセルされた場合はIdle状態に遷移する
     /// </summary>
-    private bool TransitionAtMoveCancel()
+    protected virtual bool TransitionAtMoveCancel()
     {
         if (IsMoveCancel())
         {
@@ -61,7 +74,7 @@ public class StateTypeMove : StateTypeBase
     /// <summary>
     /// 視界から外れたらIdle状態に、攻撃範囲内に入ったらAttack状態に遷移する
     /// </summary>
-    private bool Transition()
+    protected virtual bool Transition()
     {
         SightResult result = Controller.LookForPlayerInSight();
         if (result == SightResult.OutSight)
@@ -85,7 +98,7 @@ public class StateTypeMove : StateTypeBase
     {
         // TODO:毎フレーム呼んでいるので余裕があれば改善する
         float distance = Vector3.Distance(_prevPos, Controller.transform.position);
-        if (distance <= Mathf.Epsilon)
+        if (distance <= MoveCancelThreshold)
         {
             _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime;
         }

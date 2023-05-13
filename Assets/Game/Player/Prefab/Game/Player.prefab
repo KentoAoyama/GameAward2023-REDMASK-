@@ -791,6 +791,7 @@ GameObject:
   - component: {fileID: 328675650}
   - component: {fileID: 328675655}
   - component: {fileID: 328675656}
+  - component: {fileID: 155635596}
   m_Layer: 0
   m_Name: CM vcam1
   m_TagString: Untagged
@@ -806,7 +807,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 328675649}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: -10}
+  m_LocalPosition: {x: 2, y: 4, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -835,7 +836,7 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 4514520410212876857}
   m_Lens:
-    FieldOfView: 60
+    FieldOfView: 70
     OrthographicSize: 5
     NearClipPlane: 0.3
     FarClipPlane: 1000
@@ -928,6 +929,21 @@ MonoBehaviour:
     m_DissipationDistance: 100
     m_PropagationSpeed: 1
   m_DefaultVelocity: {x: 1.13, y: 0.58, z: 0.39}
+--- !u!114 &155635596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 328675649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f453f694addf4275988fac205bc91968, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BoundingShape2D: {fileID: 0}
+  m_Damping: 0.5
+  m_MaxWindowSize: -1
 --- !u!1 &432904051
 GameObject:
   m_ObjectHideFlags: 0
@@ -3051,7 +3067,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 2, z: -10}
+  m_FollowOffset: {x: 2, y: 4, z: -10}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -5291,10 +5307,10 @@ MonoBehaviour:
     _crossLeftRayOffSetX: {x: 0, y: 0}
     _startSpeed: 0.66
     _toMoveTime: 0.18
-    _moveSpeed: 4
+    _moveSpeed: 6
     _midairMoveAcceleration: 4
     _maxMidairMoveSpeed: 4
-    _landDeceleration: 20
+    _landDeceleration: 60
     _midairDeceleration: 6
     _currentHorizontalSpeed: 0
     _jumpPower: 4
@@ -5361,7 +5377,7 @@ MonoBehaviour:
     _currentHorizontalSpeed: 0
   _proximityHitChecker:
     _offset: {x: -1.06, y: 0}
-    _size: {x: 1, y: 1.88}
+    _size: {x: 2.2, y: 1.88}
     _targetLayer:
       serializedVersion: 2
       m_Bits: 8256
@@ -5371,7 +5387,7 @@ MonoBehaviour:
   _proximity:
     _testAttackText: {fileID: 3483316093106665025}
     _attackDoTime: 1
-    _attackCoolTime: 4
+    _attackCoolTime: 0.5
     _attackPower: 10
     _spriteRenderer: {fileID: 1892249080}
   _camraControl:

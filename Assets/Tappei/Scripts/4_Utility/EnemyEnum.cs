@@ -17,6 +17,8 @@ public enum StateType
     AttackExtend,
     Defeated,
     Reflection,
+    Reaction,
+    ReactionExtend,
 }
 
 /// <summary>

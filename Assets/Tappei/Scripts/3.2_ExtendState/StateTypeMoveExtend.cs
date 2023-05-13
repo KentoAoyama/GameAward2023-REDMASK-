@@ -38,7 +38,7 @@ public class StateTypeMoveExtend : StateTypeMove
     /// <summary>
     /// 視界から外れたらIdle状態に、攻撃範囲内に入ったらAttack状態に遷移する
     /// </summary>
-    private bool Transition()
+    protected override bool Transition()
     {
         SightResult result = Controller.LookForPlayerInSight();
         if (result == SightResult.OutSight)
@@ -58,7 +58,7 @@ public class StateTypeMoveExtend : StateTypeMove
     /// <summary>
     /// 移動がキャンセルされた場合はIdle状態に遷移する
     /// </summary>
-    private bool TransitionAtMoveCancel()
+    protected override bool TransitionAtMoveCancel()
     {
         if (IsMoveCancel())
         {

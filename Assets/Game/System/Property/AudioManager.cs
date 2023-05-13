@@ -112,14 +112,25 @@ public class AudioManager
         _currentBGMCueName = cueName;
     }
 
+    public void PauseBGM()
+    {
+        if (_bgmPlayer.GetStatus() == CriAtomExPlayer.Status.Playing)
+        {
+            _bgmPlayer.Pause();
+        }
+    }
+
+    public void ResumeBGM()
+    {
+        _bgmPlayer.Resume(CriAtomEx.ResumeMode.PausedPlayback);
+    }
+
     public void StopBGM()
     {
-        if (_bgmPlayer.GetStatus() != CriAtomExPlayer.Status.Playing)
+        if (_bgmPlayer.GetStatus() == CriAtomExPlayer.Status.Playing)
         {
-            return;
+            _bgmPlayer.Stop();
         }
-
-        _bgmPlayer.Stop();
     }
 
     /// <summary>SEを流す関数</summary>
@@ -128,8 +139,6 @@ public class AudioManager
     /// <returns>停止する際に必要なIndex</returns>
     public int PlaySE(string cueSheetName, string cueName, float volume = 1f)
     {
-
-
         for (int i = 0; i < _sePlayer.Count; i++)
         {
             if (_sePlayer[i].GetStatus() != CriAtomExPlayer.Status.Playing)
@@ -164,15 +173,36 @@ public class AudioManager
         return _sePlayer.Count - 1;
     }
 
-    /// <summary>SEを停止させる</summary>
-    /// <param name="index">止めたいPlaySE()の戻り値</param>
+    /// <summary>SEをPauseさせる </summary>
+    /// <param name="index">一時停止させたいPlaySE()の戻り値 (-1以下を渡すと処理を行わない)</param>
+    public void PauseSE(int index)
+    {
+        if (index < 0) return;
+
+        if (_sePlayer[index].GetStatus() == CriAtomExPlayer.Status.Playing)
+        {
+            _sePlayer[index].Pause();
+        }
+    }
+
+    /// <summary>PauseさせたSEを再開させる</summary>
+    /// <param name="index">再開させたいPlaySE()の戻り値 (-1以下を渡すと処理を行わない)</param>
+    public void ResumeSE(int index)
+    {
+        if (index < 0) return; 
+
+        _sePlayer[index].Resume(CriAtomEx.ResumeMode.AllPlayback);
+    }
+
+    /// <summary>SEを停止させる </summary>
+    /// <param name="index">止めたいPlaySE()の戻り値 (-1以下を渡すと処理を行わない)</param>
     public void StopSE(int index)
     {
-        if (_sePlayer[index].GetStatus() != CriAtomExPlayer.Status.Playing)
-        {
-            return;
-        }
+        if (index < 0) return;
 
-        _sePlayer[index].Stop();
+        if (_sePlayer[index].GetStatus() == CriAtomExPlayer.Status.Playing)
+        {
+            _sePlayer[index].Stop();
+        }
     }
 }

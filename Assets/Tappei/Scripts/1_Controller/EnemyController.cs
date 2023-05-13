@@ -32,6 +32,8 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     [SerializeField] private float _sightAngle = 270.0f;
     [Tooltip("間に障害物があった場合に無視する")]
     [SerializeField] private bool _isIgnoreObstacle;
+    [Header("プレイヤーの銃撃に反応する距離")]
+    [SerializeField] private float _playerFireReactionDistance = 15.0f;
 
     [Header("この項目はプランナーが弄る必要なし")]
     [SerializeField, TagName] private string _playerTagName;
@@ -40,12 +42,21 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     protected ReactiveProperty<StateTypeBase> _currentState = new();
     protected StateRegister _stateRegister = new();
     protected MoveBehavior _moveBehavior;
-    private EnemyAudioModule _audioModule = new();
+    //private EnemyAudioModule _audioModule = new();
     private Transform _player;
     private SightSensor _sightSensor;
     private AttackBehavior _attackBehavior;
     private PerformanceBehavior _performanceBehavior;
     private Animator _animator;
+    /// <summary>
+    /// プレイヤーからのメッセージを受けた際にはこの位置に向かう
+    /// </summary>
+    private Vector3 _playerLastPos;
+    /// <summary>
+    /// プレイヤーからのメッセージを受け取った際に立つフラグ
+    /// Reaction状態に遷移する
+    /// </summary>
+    private bool _isReaction;
     /// <summary>
     /// Pause()が呼ばれるとtrueにResume()が呼ばれるとfalseになる
     /// </summary>
@@ -61,6 +72,11 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     public float SightRadius => _sightRadius;
     public float SightAngle => _sightAngle;
     public bool IsIgnoreObstacle => _isIgnoreObstacle;
+    public Vector3 PlayerLastPos => _playerLastPos;
+    /// <summary>
+    /// Reaction状態に遷移した際にステート側からフラグを折る
+    /// </summary>
+    public bool IsReaction { get => _isReaction; set => _isReaction = value; }
 
     private void Awake()
     {
@@ -69,6 +85,18 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         _attackBehavior = GetComponent<AttackBehavior>();
         _performanceBehavior = GetComponent<PerformanceBehavior>();
         _animator = GetComponentInChildren<Animator>();
+
+        // プレイヤーの銃撃に反応させる為の登録処理
+        MessageBroker.Default.Receive<ReactionMessage>()
+            .Where(message => 
+            {
+                return Vector3.Distance(message.Pos, transform.position) <= _playerFireReactionDistance;
+            })
+            .Subscribe(message =>
+            {
+                _playerLastPos = message.Pos;
+                _isReaction = true;
+            }).AddTo(this);
 
         InitOnAwake();
     }
@@ -91,6 +119,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         _stateRegister.Register(StateType.Move, this);
         _stateRegister.Register(StateType.Attack, this);
         _stateRegister.Register(StateType.Defeated, this);
+        _stateRegister.Register(StateType.Reaction, this);
         _currentState.Value = _stateRegister.GetState(StateType.Idle);
     }
 
@@ -130,13 +159,23 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     }
 
     /// <summary>
+    /// 現在の移動をキャンセルしてプレイヤーが最後に居た地点に向かって移動する
+    /// Reaction状態での移動をする際にステートのEnter()で呼ばれる
+    /// </summary>
+    public void MoveToPlayerLastPos()
+    {
+        _moveBehavior.CancelMoveToTarget();
+        _moveBehavior.StartMoveToTarget(PlayerLastPos, Params.RunSpeed);
+    }
+
+    /// <summary>
     /// 現在の移動をキャンセルして周囲のランダムな個所に移動する
     /// Search状態での移動をする際にステートのEnter()で呼ばれる
     /// </summary>
     public void MoveSeachForPlayer()
     {
         _moveBehavior.CancelMoveToTarget();
-        _moveBehavior.StartMoveSearchForPlayer(Params.RunSpeed, Params.TurningPoint, Params.UseRandomTurningPoint);
+        _moveBehavior.StartMoveSearchForPlayer(Params.WalkSpeed, Params.TurningPoint, Params.UseRandomTurningPoint);
     }
 
     /// <summary>
@@ -152,9 +191,14 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         _sightAngle, Params.AttackRange, _isIgnoreObstacle);
 
     /// <summary>
+    /// Attack状態中、武器の予告線を表示する
+    /// </summary>
+    public void DrawGuideline() => _attackBehavior.DrawGuideline();
+
+    /// <summary>
     /// Attack状態の時、一定間隔で呼ばれる
     /// </summary>
-    public virtual void Attack() => _attackBehavior.Attack();
+    public virtual void Attack() => _attackBehavior.Attack(Params.AttackDelay);
 
     /// <summary>
     /// 各ステートから再生するアニメーションを呼び出す

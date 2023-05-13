@@ -13,6 +13,7 @@ Shader "Custom/MonochromeDissolve"
     {
         Tags { "RenderType"="Opaque" }
         LOD 100
+        Blend One OneMinusSrcAlpha
 
         Pass
         {
@@ -39,6 +40,7 @@ Shader "Custom/MonochromeDissolve"
             {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
+                float4 color : COLOR;
             };
 
             struct v2f
@@ -46,6 +48,7 @@ Shader "Custom/MonochromeDissolve"
                 float2 uv : TEXCOORD0;
                 float2 duv : TEXCOORD1;
                 float4 vertex : SV_POSITION;
+                float4 color : COLOR;
             };
 
             v2f vert (appdata v)
@@ -54,6 +57,7 @@ Shader "Custom/MonochromeDissolve"
                 o.vertex = TransformObjectToHClip(v.vertex);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 o.duv = TRANSFORM_TEX(v.uv, _DissolveTex);
+                o.color = v.color;
                 return o;
             }
 
@@ -82,6 +86,8 @@ Shader "Custom/MonochromeDissolve"
                     float value = clamp((_Amount + 1) / (alpha), -1, 1);
                     col.rgb = lerp(mono + _MonoColor2, mono + _MonoColor1, value);
                 }
+                col *= i.color;
+                col.rgb *= col.a;
 
                 return col;
             }

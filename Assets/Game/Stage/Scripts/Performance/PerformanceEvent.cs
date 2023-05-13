@@ -28,19 +28,54 @@ public class PerformanceEvent
     private PerformanceMovement[] _move = default;
     [SerializeField]
     private PerformanceAnimation[] _animation = default;
+    [SerializeField]
+    private TalkSE _talkSE = default;
 
     private List<TweenerCore<Vector3, Vector3, VectorOptions>> _mover = new List<TweenerCore<Vector3, Vector3, VectorOptions>>();
 
-    private bool _isFire = false;   
+    private bool _isFire = false;
     public bool IsFire => _isFire;
+
+    private enum TalkSE
+    {
+        None,
+        Player,
+        Target,
+        Boss,
+        Robot
+    }
 
     public async UniTask Execute()
     {
         // 登録されたUnityEventを実行
         _awake?.Invoke();
+
         // テキストを更新
+        int index = -1;
         if (_text != null)
+        {
             _text.text = _messageText;
+
+            string cueName = "";
+            switch (_talkSE)
+            {
+                case TalkSE.Player:
+                    cueName = "SE_Talk_Player";
+                    break;
+                case TalkSE.Target:
+                    cueName = "SE_Talk_Target";
+                    break;
+                case TalkSE.Boss:
+                    cueName = "SE_Talk_Boss";
+                    break;
+                case TalkSE.Robot:
+                    cueName = "SE_Talk_Robot";
+                    break;
+            }
+
+            if (_talkSE != TalkSE.None)
+            index = GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", cueName);
+        }
         // 移動を開始
         foreach (var e in _move)
         {
@@ -82,12 +117,19 @@ public class PerformanceEvent
         });
 
         // このイベントを終了する。
-
+        FinishEvent(index);
         // DOTween をキル
         foreach (var e in _mover)
         {
             e?.Kill();
         }
+    }
+
+    private void FinishEvent(int index)
+    {
+        if (index != -1)
+            Debug.Log("OK");
+        GameManager.Instance.AudioManager.StopSE(index);
     }
 
     private float _timer = 0f;
