@@ -10,6 +10,10 @@ public class MenuPanelController : MonoBehaviour
     private string _animationParameterName = "";
     [SerializeField, Tooltip("partcleのアニメーション")]
     private TitleParticleAnimation _particleAnim = default;
+    [SerializeField]
+    private MenuCylinder _cylinder = default;
+    [SerializeField]
+    private Button _button = default;
 
     private bool _panelEnabled = false;
 
@@ -42,6 +46,9 @@ public class MenuPanelController : MonoBehaviour
         if (close)
         {
             ClosePanel();
+            GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Back");
+            _cylinder.SylinderEnabled = true;
+            _button.Select();
         }
     }
 
