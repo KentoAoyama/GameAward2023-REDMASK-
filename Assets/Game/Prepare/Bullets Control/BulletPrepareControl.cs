@@ -57,6 +57,7 @@ public class BulletPrepareControl : MonoBehaviour
         {
             if (_cylinder[i].Value == BulletType.NotSet)
             {
+                GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Bullets_Selection");
                 // シリンダーの弾の状態を更新する
                 _cylinder[i].Value = bulletType;
                 // アジトの弾の総数を減らす
@@ -69,6 +70,7 @@ public class BulletPrepareControl : MonoBehaviour
         {
             if (_gunBelt[i].Value == BulletType.NotSet)
             {
+                GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Bullets_Selection");
                 // ガンベルトの弾の状態を更新する
                 _gunBelt[i].Value = bulletType;
                 // アジトの弾の総数を減らす
