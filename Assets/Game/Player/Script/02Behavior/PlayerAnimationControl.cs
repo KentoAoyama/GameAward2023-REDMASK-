@@ -20,6 +20,9 @@ namespace Player
         [Header("構えのオブジェクト")]
         [SerializeField] private List<GameObject> _nomalAnim = new List<GameObject>();
 
+        [Header("回避中の構えのオブジェクト")]
+        [SerializeField] private List<GameObject> _avoidAnim = new List<GameObject>();
+
         [Header("通常のオブジェクト")]
         [SerializeField] private GameObject _fireAnim;
 
@@ -28,18 +31,19 @@ namespace Player
 
 
         [Header("ジャンプ")]
-        private string _animJump = "Player_JumpStart";
+        [SerializeField] private string _animJump = "Player_JumpStart";
         [Header("発砲")]
-        private string _animFire = "Player_Fire";
+        [SerializeField] private string _animFire = "Player_Fire";
         [Header("リロードはじめ")]
-        private string _animReLoadStart = "Player_ReLoadStart";
+        [SerializeField] private string _animReLoadStart = "Player_ReLoadStart";
         [Header("リロード、弾を籠める")]
-        private string _animReLoadNow = "Player_ReLoadNow";
+        [SerializeField] private string _animReLoadNow = "Player_ReLoadNow";
         [Header("リロード、終わり")]
-        private string _animReLoadEnd = "Player_ReLoadEnd";
+        [SerializeField] private string _animReLoadEnd = "Player_ReLoadEnd";
         [Header("近接攻撃")]
-        private string _animProximity = "Player_Proximity";
-
+        [SerializeField] private string _animProximity = "Player_Proximity";
+        [Header("回避")]
+        [SerializeField] private string _animAvoid = "Player_Avoid";
 
         [Header("Animatorのパラメータ名")]
         [Header("速度X")]
@@ -75,6 +79,8 @@ namespace Player
             Proximity,
             /// <summary>ジャンプ</summary>
             Jump,
+            /// <summary>回避</summary>
+            Avoid,
 
             ReLoadStart,
             ReLoad,
@@ -120,14 +126,28 @@ namespace Player
             _playerController.PlayerAnim.SetBool(_isGroundParameta, _playerController.GroungChecker.IsHit(_playerController.Move.MoveHorizontalDir));
         }
 
-        public void GunSet()
+        public void GunSet(bool isAvoid)
         {
-
             _fireAnim.SetActive(false);
-            if (_playerController.GunSetUp.IsGunSetUp)
+            Debug.Log(_playerController.Avoidance.IsAvoidanceNow);
+
+            if (_playerController.Avoidance.IsAvoidanceNow)
             {
-                _nomalAnim.ForEach(i => i.SetActive(true));
+
+                _avoidAnim.ForEach(i => i.SetActive(true));
+                _nomalAnim.ForEach(i => i.SetActive(false));
             }
+            else
+            {
+
+                if (_playerController.GunSetUp.IsGunSetUp)
+                {
+                    _avoidAnim.ForEach(i => i.SetActive(false));
+                    _nomalAnim.ForEach(i => i.SetActive(true));
+                }
+            }
+
+
         }
 
         public void GunSetEnd()
@@ -136,8 +156,14 @@ namespace Player
             _fireAnim.SetActive(true);
             if (_playerController.GunSetUp.IsGunSetUp)
             {
+                _avoidAnim.ForEach(i => i.SetActive(false));
                 _nomalAnim.ForEach(i => i.SetActive(false));
             }
+        }
+
+        public void SetBoolAvoid(bool isTrue)
+        {
+            _playerController.PlayerAnim.SetBool("IsAvoid", isTrue);
         }
 
 
@@ -180,13 +206,29 @@ namespace Player
                 _playerController.PlayerAnim.Play(_animReLoadEnd);
                 _isAnimationNow = false;
             }
+            else if (animationKind == AnimaKind.Avoid)
+            {
+                _playerController.PlayerAnim.Play(_animAvoid);
+                _playerController.PlayerAnim.SetBool("IsAvoid", true);
+                _isFire = true;
+            }
         }
 
         public void EndAnimation()
         {
             if (_playerController.GunSetUp.IsGunSetUp)
             {
-                _nomalAnim.ForEach(i => i.SetActive(true));
+                if (_playerController.Avoidance.IsAvoidanceNow)
+                {
+                    _avoidAnim.ForEach(i => i.SetActive(true));
+                    _nomalAnim.ForEach(i => i.SetActive(false));
+                }
+                else
+                {
+                    _avoidAnim.ForEach(i => i.SetActive(false));
+                    _nomalAnim.ForEach(i => i.SetActive(true));
+                }
+
             }
             _isAnimationNow = false;
             _isFire = false;
