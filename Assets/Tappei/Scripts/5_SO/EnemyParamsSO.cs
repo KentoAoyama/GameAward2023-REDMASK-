@@ -15,8 +15,11 @@ public class EnemyParamsSO : ScriptableObject
     [Header("この項目はプランナーが弄る必要なし")]
     [SerializeField] private AnimationClip _discoverAnimClip;
     [SerializeField] private AnimationClip _deadAnimClip;
+    [SerializeField] private AnimationClip _attackAnimClip;
     [SerializeField] private string _walkSEName;
     [SerializeField] private string _runSEName;
+    [Range(0,1.0f)]
+    [SerializeField] private float _attackDelay;
 
     [Header("移動速度の設定")]
     [Tooltip("歩いて移動する際の速度")]
@@ -61,6 +64,7 @@ public class EnemyParamsSO : ScriptableObject
     public bool UseRandomTurningPoint => _useRandomTurningPoint;
     public float AttackRange => _attackRange;
     public float AttackRate => _attackRate;
+    public float AttackDelay => Mathf.Min(_attackAnimClip.length * _attackDelay, _attackRate);
 
     public int GetAnimationHash(AnimationName name) => Animator.StringToHash(name.ToString());
     public float GetRandomIdleStateTimer() => Random.Range(_minIdleStateTimer, _maxIdleStateTimer);
