@@ -58,7 +58,7 @@ public class PrepareImageSlideController : MonoBehaviour
     }
     private async void OnEnable()
     {
-        await UniTask.WaitUntil(() => _prepareInputManager != null);
+        await UniTask.WaitUntil(() => _prepareInputManager != null && _prepareInputManager.PrepareInputController != null);
 
         _prepareInputManager.PrepareInputController.Prepare.LeftScroll.started += LeftScroll;
         _prepareInputManager.PrepareInputController.Prepare.RightScroll.started += RightScroll;
