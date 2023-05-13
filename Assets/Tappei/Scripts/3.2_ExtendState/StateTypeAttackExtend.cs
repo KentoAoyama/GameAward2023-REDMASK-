@@ -73,7 +73,7 @@ public class StateTypeAttackExtend : StateTypeAttack
     /// <summary>
     /// 視界から外れたらIdle状態に、攻撃範囲から外れたらMove状態に遷移する
     /// </summary>
-    private bool Transition()
+    protected override bool Transition()
     {
         SightResult result = Controller.LookForPlayerInSight();
         if (result == SightResult.OutSight)

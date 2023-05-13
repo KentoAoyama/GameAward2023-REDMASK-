@@ -11,6 +11,10 @@ public class AttackBehavior : MonoBehaviour
     private IEnemyWeapon _enemyWeapon;
     private IGuidelineDrawer _guidelineDrawer;
 
+    private float _time;
+    private float _delay;
+    private bool _inAction;
+
     private void Awake()
     {
         if (!_weapon.TryGetComponent(out _enemyWeapon))
@@ -19,6 +23,18 @@ public class AttackBehavior : MonoBehaviour
         }
 
         _weapon.TryGetComponent(out _guidelineDrawer);
+    }
+
+    public void Update()
+    {
+        if (!_inAction) return;
+
+        _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime;
+        if (_time > _delay)
+        {
+            _enemyWeapon.Attack();
+            _inAction = false;
+        }
     }
 
     /// <summary>
@@ -30,10 +46,10 @@ public class AttackBehavior : MonoBehaviour
         _guidelineDrawer?.DrawGuideline();
     }
 
-    public void Attack()
+    public void Attack(float delay)
     {
-        // TODO:攻撃の判定が出るまでディレイが欲しい
-
-        _enemyWeapon.Attack();
+        _inAction = true;
+        _time = 0;
+        _delay = delay;
     }
 }
