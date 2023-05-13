@@ -175,7 +175,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     public void MoveSeachForPlayer()
     {
         _moveBehavior.CancelMoveToTarget();
-        _moveBehavior.StartMoveSearchForPlayer(Params.RunSpeed, Params.TurningPoint, Params.UseRandomTurningPoint);
+        _moveBehavior.StartMoveSearchForPlayer(Params.WalkSpeed, Params.TurningPoint, Params.UseRandomTurningPoint);
     }
 
     /// <summary>
