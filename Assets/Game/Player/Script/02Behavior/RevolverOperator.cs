@@ -200,7 +200,7 @@ namespace Player
                     //最大まで弾を居れたら強制的に構えに戻す
                     if (index == 5 && _playerController.GunSetUp.IsGunSetUp)
                     {
-                        _playerController.PlayerAnimatorControl.GunSet();
+                        _playerController.PlayerAnimatorControl.GunSet(false);
                     }
 
                     // UIで現在選択している弾を装填する

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class RubbleParticleController : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject _breakEffect;
+
     private ParticleSystem _particleSystem;
 
     private void Awake()
@@ -14,10 +17,14 @@ public class RubbleParticleController : MonoBehaviour
     private void OnParticleCollision(GameObject other)
     {
         var eventList = new List<ParticleCollisionEvent>();
-        _particleSystem.GetCollisionEvents(other, eventList);
-        
-        foreach (ParticleCollisionEvent particleCollisionEvent in eventList)
+        var num = _particleSystem.GetCollisionEvents(other, eventList);
+
+        for (int i = 0; i < num; i++)
         {
+            var temp = Instantiate(_breakEffect);
+            temp.transform.position = eventList[i].intersection;
+            temp.GetComponent<ParticleSystem>().Play();
+            Destroy(temp, 2F);
         }
     }
 }

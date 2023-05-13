@@ -89,6 +89,8 @@ namespace Player
             //近接攻撃中は出来ない
             if (_playerController.Proximity.IsProximityNow) return;
 
+
+
             //入力を受けた
             if (_playerController.InputManager.IsPressed[InputType.Avoidance])
             {
@@ -166,22 +168,21 @@ namespace Player
             //TestTExT???????????????????///////////////////////////////////////
             _testAvoidText.SetActive(true);
 
+            _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.Avoid);
+
             //重力を戻す
             _playerController.Rigidbody2D.gravityScale = 1f;
 
+            //回避を実行不可に
             _isCanAvoidance = false;
 
+            //現在回避中
             _isAvoidacneNow = true;
-
-            //時遅を強制解除
-            _playerController.GunSetUp.EmergencyStopSlowTime();
-
-            //構えはじめている最中は、構えはじめを解除
-            _playerController.GunSetUp.CanselSetUpping();
 
             //回避の音
             GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Evade");
 
+            //レイヤーを変更
             _playerController.Player.layer = LayerMask.NameToLayer(_avoidLayerName);
             _playerController.LifeController.IsAvoid = true;
         }
@@ -190,15 +191,25 @@ namespace Player
         /// <summary>
         /// その場回避終了処理
         /// </summary>
-        private void EndThereAvoidance()
+        public void EndThereAvoidance()
         {
             //TestTExT???????????????????///////////////////////////////////////
             _testAvoidText.SetActive(false);
 
+            //アニメーターパラメーターの設定
+            _playerController.PlayerAnimatorControl.SetBoolAvoid(false);
+
             //特定行動中に構えを解除していないかどうかを確認する
             _playerController.GunSetUp.CheckRelesedSetUp();
 
+
             _isAvoidacneNow = false;
+
+            if(_playerController.GunSetUp.IsGunSetUp)
+            {
+                _playerController.PlayerAnimatorControl.GunSet(false);
+            }
+
 
             _playerController.LifeController.IsAvoid = false;
 
