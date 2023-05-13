@@ -1,0 +1,554 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7975405090415444750
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7975405090415444749}
+  - component: {fileID: 7975405090415444748}
+  - component: {fileID: 7975405090415444751}
+  m_Layer: 0
+  m_Name: PerformanceController 4-2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7975405090415444749
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7975405090415444750}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7975405090415444748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7975405090415444750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 016a4cf2f675b4843bbff5fdc0768f90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _performanceEvents:
+  - _isWaitFireInput: 0
+    _time: 4
+    _awake:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 7975405090415444751}
+          m_TargetAssemblyTypeName: PerformanceUtility, Game
+          m_MethodName: FadeIn
+          m_Mode: 4
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 4
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 7975405090415444751}
+          m_TargetAssemblyTypeName: PerformanceUtility, Game
+          m_MethodName: BGMPlay
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: BGM_Result
+            m_BoolArgument: 0
+          m_CallState: 2
+    _text: {fileID: 0}
+    _messageText: 
+    _move: []
+    _animation: []
+  - _isWaitFireInput: 0
+    _time: 5
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: 0
+    _move:
+    - _origin: {fileID: 0}
+      _endPos: {fileID: 0}
+      _ease: 1
+    _animation: []
+  - _isWaitFireInput: 1
+    _time: 2.2
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: 
+    _move:
+    - _origin: {fileID: 0}
+      _endPos: {fileID: 0}
+      _ease: 0
+    _animation:
+    - _animator: {fileID: 0}
+      _name: Idle
+  - _isWaitFireInput: 1
+    _time: 3
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: "\u9577\u3044\u9593\u3000\u305A\u3063\u3068\u305A\u3063\u3068\u9032\u307F\u7D9A\u3051\u3066\u304D\u305F"
+    _move: []
+    _animation: []
+  - _isWaitFireInput: 1
+    _time: 3
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: "\u3053\u306E\u77AC\u9593\u3000\u3053\u306E\u5834\u9762\u3092\u3064\u304F\u308B\u305F\u3081\u306B"
+    _move: []
+    _animation: []
+  - _isWaitFireInput: 1
+    _time: 3
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: 
+    _move: []
+    _animation:
+    - _animator: {fileID: 0}
+      _name: Taget4_StandUp
+  - _isWaitFireInput: 1
+    _time: 3
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: "\u3042\u306A\u305F\u306B\u6551\u308F\u308C\u305F\u3042\u306E\u6642\u304B\u3089"
+    _move: []
+    _animation: []
+  - _isWaitFireInput: 1
+    _time: 3
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: "\u30D2\u30FC\u30ED\u30FC\u306E\u305F\u3081\u306B\u751F\u304D\u3066\u304D\u305F"
+    _move: []
+    _animation: []
+  - _isWaitFireInput: 1
+    _time: 1.5
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: 
+    _move:
+    - _origin: {fileID: 0}
+      _endPos: {fileID: 0}
+      _ease: 0
+    _animation: []
+  - _isWaitFireInput: 1
+    _time: 3
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: "\u4ECA\u307E\u3067\u306E\u3053\u3068\u304C\u4FFA\u306E\u305F\u3081\u3060\u3068\uFF1F"
+    _move: []
+    _animation: []
+  - _isWaitFireInput: 1
+    _time: 1.5
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: 
+    _move:
+    - _origin: {fileID: 0}
+      _endPos: {fileID: 0}
+      _ease: 0
+    _animation: []
+  - _isWaitFireInput: 1
+    _time: 4
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: "\u3042\u3042\u3000\u3053\u306E\u8857\u306B\u306F\u30D2\u30FC\u30ED\u30FC\u304C\u5FC5\u8981\u306A\u3093\u3060"
+    _move: []
+    _animation: []
+  - _isWaitFireInput: 1
+    _time: 3
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: "\u60AA\u3092\u88C1\u304D\u3001\u5F31\u8005\u3092\u52A9\u3051\u308B\u8C61\u5FB4\u304C\u306D"
+    _move: []
+    _animation: []
+  - _isWaitFireInput: 1
+    _time: 3
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: "\u305D\u306E\u305F\u3081\u3060\u3063\u305F\u3089\u306A\u3093\u3060\u3063\u3066\u3059\u308B\u3055"
+    _move: []
+    _animation: []
+  - _isWaitFireInput: 1
+    _time: 1.5
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: 
+    _move:
+    - _origin: {fileID: 0}
+      _endPos: {fileID: 0}
+      _ease: 0
+    _animation: []
+  - _isWaitFireInput: 1
+    _time: 1.5
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: "\u6B63\u7FA9\u306E\u305F\u3081\u306A\u3089"
+    _move: []
+    _animation: []
+  - _isWaitFireInput: 1
+    _time: 4
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: "\u7F6A\u306E\u306A\u3044\u4EBA\u304C\u547D\u3092\u843D\u3068\u305D\u3046\u304C\u95A2\u4FC2\u306A\u3044\u3068\u3044\u3046\u306E\u304B"
+    _move: []
+    _animation: []
+  - _isWaitFireInput: 1
+    _time: 1.5
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: 
+    _move:
+    - _origin: {fileID: 0}
+      _endPos: {fileID: 0}
+      _ease: 0
+    _animation: []
+  - _isWaitFireInput: 1
+    _time: 3
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: "\u30D2\u30FC\u30ED\u30FC\u3063\u3066\u3044\u3046\u306E\u306F\u72A0\u7272\u304C\u3042\u3063\u3066\u59CB\u3081\u3066"
+    _move: []
+    _animation:
+    - _animator: {fileID: 0}
+      _name: "Target2_Idle \uFF12"
+  - _isWaitFireInput: 1
+    _time: 2
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: "\u751F\u307E\u308C\u308B\u3082\u306E\u3067\u3057\u3087\u3046?"
+    _move: []
+    _animation:
+    - _animator: {fileID: 0}
+      _name: "Target2_Idle \uFF12"
+  - _isWaitFireInput: 1
+    _time: 1.5
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: 
+    _move:
+    - _origin: {fileID: 0}
+      _endPos: {fileID: 0}
+      _ease: 0
+    _animation: []
+  - _isWaitFireInput: 1
+    _time: 2
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: "\u304A\u524D\u306F"
+    _move: []
+    _animation:
+    - _animator: {fileID: 0}
+      _name: "Target2_Idle \uFF12"
+  - _isWaitFireInput: 1
+    _time: 4
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: "\u9055\u3046\u9053\u3092\u884C\u304F\u3053\u3068\u306F\u51FA\u6765\u306A\u304B\u3063\u305F\u306E\u304B"
+    _move: []
+    _animation:
+    - _animator: {fileID: 0}
+      _name: "Target2_Idle \uFF12"
+  - _isWaitFireInput: 1
+    _time: 1.5
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: 
+    _move:
+    - _origin: {fileID: 0}
+      _endPos: {fileID: 0}
+      _ease: 0
+    _animation: []
+  - _isWaitFireInput: 1
+    _time: 3
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: "\u30FB\u30FB\u30FB\u30FB\u30FB\u30FB"
+    _move: []
+    _animation: []
+  - _isWaitFireInput: 1
+    _time: 3.3
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: "\u30EC\u30C3\u30C9\u30DE\u30B9\u30AF\u306F\u6700\u9AD8\u306E\u30D2\u30FC\u30ED\u30FC\u306A\u3093\u3060"
+    _move: []
+    _animation: []
+  - _isWaitFireInput: 1
+    _time: 3
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: "\u50D5\u306F\u305F\u3060\u305D\u306E\u7269\u8A9E\u306E\u4E00\u90E8\u306B\u306A\u308B\u3060\u3051\u3067\u3044\u3044"
+    _move: []
+    _animation: []
+  - _isWaitFireInput: 1
+    _time: 1.5
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: 
+    _move:
+    - _origin: {fileID: 0}
+      _endPos: {fileID: 0}
+      _ease: 0
+    _animation: []
+  - _isWaitFireInput: 1
+    _time: 3
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: "\u30B8\u30E7\u30F3\u3000\u304A\u524D\u306F\u3044\u3063\u305F\u3044\u4F55\u8005\u306B\u306A\u308A\u305F\u304B\u3063\u305F\u3093\u3060"
+    _move: []
+    _animation: []
+  - _isWaitFireInput: 1
+    _time: 1.5
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: 
+    _move:
+    - _origin: {fileID: 0}
+      _endPos: {fileID: 0}
+      _ease: 0
+    _animation: []
+  - _isWaitFireInput: 1
+    _time: 3
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: "\u50D5\u306F\u30F4\u30A3\u30E9\u30F3\u3055"
+    _move: []
+    _animation: []
+  - _isWaitFireInput: 1
+    _time: 3
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: "\u30D2\u30FC\u30ED\u30FC\u3092\u5FA9\u6D3B\u3055\u305B\u308B\u5F15\u304D\u91D1\u3060\u3088"
+    _move: []
+    _animation: []
+  - _isWaitFireInput: 1
+    _time: 1.5
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: 
+    _move:
+    - _origin: {fileID: 0}
+      _endPos: {fileID: 0}
+      _ease: 0
+    _animation: []
+  - _isWaitFireInput: 1
+    _time: 3
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: "\u30FB\u30FB\u30FB\u30FB\u30FB\u30FB"
+    _move: []
+    _animation: []
+  - _isWaitFireInput: 1
+    _time: 3
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: "\u304A\u524D\u304C\u61A7\u308C\u305F\u3082\u306E\u306F"
+    _move: []
+    _animation: []
+  - _isWaitFireInput: 1
+    _time: 1.5
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: 
+    _move: []
+    _animation: []
+  - _isWaitFireInput: 1
+    _time: 3
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: "\u507D\u7269\u306E\u30D2\u30FC\u30ED\u30FC\u3060"
+    _move: []
+    _animation: []
+  - _isWaitFireInput: 1
+    _time: 1
+    _awake:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 7975405090415444751}
+          m_TargetAssemblyTypeName: PerformanceUtility, Game
+          m_MethodName: FadeInText
+          m_Mode: 4
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 1
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    _text: {fileID: 0}
+    _messageText: "\u5F15\u304D\u91D1\u3092\u5F15\u3051"
+    _move: []
+    _animation: []
+  - _isWaitFireInput: 1
+    _time: 10
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: "\u5F15\u304D\u91D1\u3092\u5F15\u3051"
+    _move: []
+    _animation: []
+  - _isWaitFireInput: 1
+    _time: 10
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: 
+    _move: []
+    _animation: []
+  _afterFirePerformanceEvents:
+  - _isWaitFireInput: 0
+    _time: 0.1
+    _awake:
+      m_PersistentCalls:
+        m_Calls: []
+    _text: {fileID: 0}
+    _messageText: 
+    _move: []
+    _animation:
+    - _animator: {fileID: 0}
+      _name: Shoot
+  - _isWaitFireInput: 0
+    _time: 4
+    _awake:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 7975405090415444751}
+          m_TargetAssemblyTypeName: PerformanceUtility, Game
+          m_MethodName: FadeOut
+          m_Mode: 4
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 7975405090415444751}
+          m_TargetAssemblyTypeName: PerformanceUtility, Game
+          m_MethodName: GunShoot
+          m_Mode: 4
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    _text: {fileID: 0}
+    _messageText: 
+    _move: []
+    _animation: []
+  _nextSceneName: Title
+--- !u!114 &7975405090415444751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7975405090415444750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c78507d3f39f1840b6e200dce06a46e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _impulse: {fileID: 0}
+  _line: {fileID: 0}
+  _text: {fileID: 0}
+  _fadePanel: {fileID: 0}
+  _cameraPos: {fileID: 0}
+  _shakePower: 0.1
+  _shakeNumber: 50
