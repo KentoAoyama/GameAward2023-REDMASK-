@@ -20,11 +20,17 @@ public class PrepareCut : MonoBehaviour
     [SerializeField]
     private float _inputDelay = 0.5f;
 
+    /// <summary>カットシーンが終わっているか</summary>
+    private bool _cutSceneEnded = false;
     private int _amountId = Shader.PropertyToID("_Amount");
     private InputAction _allButtons = new InputAction(binding: "*/<Button>");
 
+    public bool CutSceneEnded => _cutSceneEnded;
+    
+
     private void Awake()
     {
+        _cutSceneEnded = false;
         _allButtons.Enable();
         Play(GameManager.Instance.CompletedStageManager.GetMaxCompletedStageNumber());
     }
@@ -51,5 +57,8 @@ public class PrepareCut : MonoBehaviour
         await UniTask.WhenAll(temp.AsyncWaitForCompletion().AsUniTask(), temp2.AsyncWaitForCompletion().AsUniTask());
         _iamge.sprite = null;
         _iamge.gameObject.SetActive(false);
+        _cutSceneEnded = true;
+
+        GameManager.Instance.GalleryManager.SetOpenedID(true, index);
     }
 }

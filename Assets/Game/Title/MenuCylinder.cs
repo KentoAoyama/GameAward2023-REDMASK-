@@ -37,8 +37,8 @@ public class MenuCylinder : MonoBehaviour
 
     private void Update()
     {
-        bool left = Keyboard.current.aKey.wasPressedThisFrame;
-        bool right = Keyboard.current.dKey.wasPressedThisFrame;
+        bool left = Keyboard.current.aKey.wasPressedThisFrame || Keyboard.current.leftArrowKey.wasPressedThisFrame;
+        bool right = Keyboard.current.dKey.wasPressedThisFrame || Keyboard.current.rightArrowKey.wasPressedThisFrame;
 
         if (Gamepad.current != null)
         {

@@ -22,6 +22,12 @@ public class MenuPanelController : MonoBehaviour
         set => _panelEnabled = value;
     }
 
+    private bool _cansellable = false;
+
+    public bool Cansellable
+    {
+        set => _cansellable = value;
+    }
     private Animator _canvasAnimator;
 
 
@@ -29,26 +35,30 @@ public class MenuPanelController : MonoBehaviour
     {
         _canvasAnimator = transform.parent.gameObject.GetComponent<Animator>();
         _panelEnabled = false;
+        _cansellable = false;
     }
 
     private void Update()
     {
         if (!_panelEnabled) return;
 
-        // Close
-        bool close = Keyboard.current.cKey.wasPressedThisFrame;
-
-        if (Gamepad.current != null)
+        if (_cansellable)
         {
-            close |= Gamepad.current.bButton.wasPressedThisFrame;
-        }
+            // Close
+            bool close = Keyboard.current.cKey.wasPressedThisFrame;
 
-        if (close)
-        {
-            ClosePanel();
-            GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Back");
-            _cylinder.SylinderEnabled = true;
-            _button.Select();
+            if (Gamepad.current != null)
+            {
+                close |= Gamepad.current.bButton.wasPressedThisFrame;
+            }
+
+            if (close)
+            {
+                ClosePanel();
+                GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Back");
+                _cylinder.SylinderEnabled = true;
+                _button.Select();
+            }
         }
     }
 

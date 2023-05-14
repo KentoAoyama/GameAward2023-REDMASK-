@@ -12,6 +12,8 @@ public class GalleryButton : MonoBehaviour
     private Image _mainImage = default;
     [SerializeField]
     private int _id = default;
+    [SerializeField]
+    private MenuPanelController _menuPanelController = default;
 
     private Button _button = null;
     private Image _image = null;
@@ -40,8 +42,10 @@ public class GalleryButton : MonoBehaviour
     }
     private void OnButtonClick()
     {
+        _mainImage.GetComponent<GalleryMainImage>().MainImageVisible = true;
         _mainImage.sprite = _sprite;
         _mainImage.gameObject.SetActive(true);
+        _menuPanelController.Cansellable = false;
     }
     private void Return()
     {
