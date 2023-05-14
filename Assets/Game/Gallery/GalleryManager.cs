@@ -12,8 +12,8 @@ public class GalleryManager
     [SerializeField] // 保存用
     private bool[] _openedID = new bool[_maxGalleryID]
     {
-        true,true,false,true,
-        true,true,false,true
+        false,false,false,false,
+        false,false,false,false
     };
 
     private readonly string _saveFileName = "GalleryData";
