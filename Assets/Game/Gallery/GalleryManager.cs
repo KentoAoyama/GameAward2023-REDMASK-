@@ -26,6 +26,7 @@ public class GalleryManager
     public void Load()
     {
         var temp = SaveLoadManager.Load<GalleryManager>(_saveFileName);
+        if (temp == null) return;
         this._openedID = temp._openedID;
     }
 
