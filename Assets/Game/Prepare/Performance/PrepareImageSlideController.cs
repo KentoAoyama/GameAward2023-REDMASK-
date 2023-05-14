@@ -30,6 +30,8 @@ public class PrepareImageSlideController : MonoBehaviour
     private Text _leftSideManualTextIamge = default;
     [SerializeField]
     private Text _rightSideManualTextIamge = default;
+    [SerializeField]
+    private PrepareCut _prepareCut = default;
 
     /// <summary> 現在表示している場所 </summary>
     private ReactiveProperty<ScreenArea> _currentScreenArea = new ReactiveProperty<ScreenArea>(ScreenArea.Left);
@@ -58,7 +60,7 @@ public class PrepareImageSlideController : MonoBehaviour
     }
     private async void OnEnable()
     {
-        await UniTask.WaitUntil(() => _prepareInputManager != null && _prepareInputManager.PrepareInputController != null);
+        await UniTask.WaitUntil(() => _prepareInputManager != null && _prepareInputManager.PrepareInputController != null && _prepareCut.CutSceneEnded);
 
         _prepareInputManager.PrepareInputController.Prepare.LeftScroll.started += LeftScroll;
         _prepareInputManager.PrepareInputController.Prepare.RightScroll.started += RightScroll;
