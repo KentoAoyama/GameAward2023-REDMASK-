@@ -1,13 +1,10 @@
 // 日本語対応
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ButtonNavigationController : MonoBehaviour
 {
-    [SerializeField]
-    private EventSystem _eventSystem = default;
     [Header("上入力が発生したときの遷移先ボタン")]
     [SerializeField]
     private Button[] _upButtons = default;
@@ -26,6 +23,7 @@ public class ButtonNavigationController : MonoBehaviour
     private void Awake()
     {
         _thisButton = GetComponent<Button>();
+        Setting();
         _thisButton.onClick.AddListener(async () => { await UniTask.DelayFrame(1); Setting(); });
     }
 
