@@ -2143,6 +2143,7 @@ GameObject:
   - component: {fileID: 7991671935934050337}
   - component: {fileID: 355436344}
   - component: {fileID: 355436345}
+  - component: {fileID: 1406404616}
   m_Layer: 5
   m_Name: Go to Title Button
   m_TagString: Untagged
@@ -2294,6 +2295,24 @@ MonoBehaviour:
   m_EffectColor: {r: 1, g: 0, b: 0, a: 1}
   m_EffectDistance: {x: 3.5, y: -3.5}
   m_UseGraphicAlpha: 1
+--- !u!114 &1406404616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7991671935934050367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac04b6a162e27ff4790b3fbe6e4574fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _upButtons:
+  - {fileID: 7991671936297132111}
+  _downButtons:
+  - {fileID: 7991671936210516574}
+  _rightButtons: []
+  _leftButtons: []
 --- !u!1 &7991671936027463577
 GameObject:
   m_ObjectHideFlags: 0
@@ -2818,6 +2837,7 @@ GameObject:
   - component: {fileID: 7991671936210516574}
   - component: {fileID: 1852803409}
   - component: {fileID: 1852803410}
+  - component: {fileID: 789169486}
   m_Layer: 5
   m_Name: Application quit Button
   m_TagString: Untagged
@@ -2969,6 +2989,23 @@ MonoBehaviour:
   m_EffectColor: {r: 1, g: 0, b: 0, a: 1}
   m_EffectDistance: {x: 3.5, y: -3.5}
   m_UseGraphicAlpha: 1
+--- !u!114 &789169486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7991671936210516572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac04b6a162e27ff4790b3fbe6e4574fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _upButtons:
+  - {fileID: 7991671935934050337}
+  _downButtons: []
+  _rightButtons: []
+  _leftButtons: []
 --- !u!1 &7991671936233184537
 GameObject:
   m_ObjectHideFlags: 0
@@ -3175,6 +3212,7 @@ GameObject:
   - component: {fileID: 7991671936297132111}
   - component: {fileID: 1526614780}
   - component: {fileID: 1526614781}
+  - component: {fileID: 1406404617}
   m_Layer: 5
   m_Name: Audio Setting Button
   m_TagString: Untagged
@@ -3326,6 +3364,24 @@ MonoBehaviour:
   m_EffectColor: {r: 1, g: 0, b: 0, a: 1}
   m_EffectDistance: {x: 3.5, y: -3.5}
   m_UseGraphicAlpha: 1
+--- !u!114 &1406404617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7991671936297132109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac04b6a162e27ff4790b3fbe6e4574fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _upButtons:
+  - {fileID: 7991671937116607726}
+  _downButtons:
+  - {fileID: 7991671935934050337}
+  _rightButtons: []
+  _leftButtons: []
 --- !u!1 &7991671936314073641
 GameObject:
   m_ObjectHideFlags: 0
@@ -4514,6 +4570,7 @@ GameObject:
   - component: {fileID: 7991671936712022362}
   - component: {fileID: 7991671936712022361}
   - component: {fileID: 561643098}
+  - component: {fileID: 1406404619}
   m_Layer: 5
   m_Name: Resume Button
   m_TagString: Untagged
@@ -4651,6 +4708,23 @@ MonoBehaviour:
   m_EffectColor: {r: 1, g: 0, b: 0, a: 1}
   m_EffectDistance: {x: 3.5, y: -3.5}
   m_UseGraphicAlpha: 1
+--- !u!114 &1406404619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7991671936712022359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac04b6a162e27ff4790b3fbe6e4574fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _upButtons: []
+  _downButtons:
+  - {fileID: 7991671937116607726}
+  _rightButtons: []
+  _leftButtons: []
 --- !u!1 &7991671936713807045
 GameObject:
   m_ObjectHideFlags: 0
@@ -5749,6 +5823,7 @@ GameObject:
   - component: {fileID: 7991671937116607726}
   - component: {fileID: 210714642}
   - component: {fileID: 210714643}
+  - component: {fileID: 1406404618}
   m_Layer: 5
   m_Name: Manual Button
   m_TagString: Untagged
@@ -5900,6 +5975,24 @@ MonoBehaviour:
   m_EffectColor: {r: 1, g: 0, b: 0, a: 1}
   m_EffectDistance: {x: 3.5, y: -3.5}
   m_UseGraphicAlpha: 1
+--- !u!114 &1406404618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7991671937116607724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac04b6a162e27ff4790b3fbe6e4574fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _upButtons:
+  - {fileID: 7991671936712022361}
+  _downButtons:
+  - {fileID: 7991671936297132111}
+  _rightButtons: []
+  _leftButtons: []
 --- !u!1 &7991671937124255085
 GameObject:
   m_ObjectHideFlags: 0
