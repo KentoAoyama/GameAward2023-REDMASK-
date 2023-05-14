@@ -41,6 +41,16 @@ public class StateTypeMove : StateTypeBase
         GameManager.Instance.AudioManager.StopSE(_cachedSEIndex);
     }
 
+    public override void OnPause()
+    {
+        GameManager.Instance.AudioManager.PauseSE(_cachedSEIndex);
+    }
+
+    public override void OnResume()
+    {
+        GameManager.Instance.AudioManager.ResumeSE(_cachedSEIndex);
+    }
+
     public override void OnDisable()
     {
         GameManager.Instance.AudioManager.StopSE(_cachedSEIndex);
