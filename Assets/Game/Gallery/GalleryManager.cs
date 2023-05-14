@@ -19,7 +19,7 @@ public class GalleryManager
     private readonly string _saveFileName = "GalleryData";
     private const int _maxGalleryID = 8;
 
-    public void Save()
+    private void Save()
     {
         SaveLoadManager.Save<GalleryManager>(this, _saveFileName);
     }
@@ -34,6 +34,7 @@ public class GalleryManager
         try
         {
             _openedID[id] = value;
+            Save();
         }
         catch (IndexOutOfRangeException)
         {
