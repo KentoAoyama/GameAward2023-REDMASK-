@@ -58,5 +58,7 @@ public class PrepareCut : MonoBehaviour
         _iamge.sprite = null;
         _iamge.gameObject.SetActive(false);
         _cutSceneEnded = true;
+
+        GameManager.Instance.GalleryManager.SetOpenedID(true, index);
     }
 }
