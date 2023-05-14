@@ -3632,6 +3632,7 @@ GameObject:
   - component: {fileID: 901645272}
   - component: {fileID: 901645271}
   - component: {fileID: 901645270}
+  - component: {fileID: 901645273}
   m_Layer: 0
   m_Name: LightMove
   m_TagString: Untagged
@@ -3766,6 +3767,19 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 1.3256378, y: 0.98330164, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!114 &901645273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 901645268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c86f94ea5d9c7444ba40d6b6f8f7dc0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animationSpeedParamName: AnimSpeed
 --- !u!4 &913964050 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 497431026440097303, guid: 93262e76ffd8a5340835eae2e6d10a42, type: 3}
