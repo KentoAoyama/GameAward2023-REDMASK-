@@ -3,6 +3,7 @@ Shader "Custom/Monochrome"
     Properties
     {
         [PerRendererData]_MainTex ("Texture", 2D) = "white" {}
+        [HDR] _MainColor ("Color", Color) = (1, 1, 1, 1)
         [HDR] _MonoColor("MonoColor", Color) = (1, 1, 1, 1)
         [Toggle(NONLIGHTING)]  _NonLighting("NonLighting", Float) = 0
     }
@@ -58,6 +59,7 @@ Shader "Custom/Monochrome"
             SAMPLER(sampler_MainTex);
             TEXTURE2D(_MaskTex);
             SAMPLER(sampler_MaskTex);
+            float4 _MainColor;
             half4 _MainTex_ST;
             half4 _TextureSampleAdd;
             float _MonoBlend;
@@ -107,7 +109,7 @@ Shader "Custom/Monochrome"
 
             float4 frag (v2f i) : SV_Target
             {
-                float4 col = (SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv)  + _TextureSampleAdd) * i.color;
+                float4 col = (SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv)  + _TextureSampleAdd) * i.color * _MainColor;
                 
                 #ifndef NONLIGHTING
                 float4 mask = SAMPLE_TEXTURE2D(_MaskTex, sampler_MaskTex, i.uv);
