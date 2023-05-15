@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UniRx;
 using CriWare;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System;
 
 [Serializable]
@@ -87,7 +88,7 @@ public class AudioManager
             }
         });
 
-        
+        SceneManager.sceneUnloaded += _ => StopAllSE();
     }
     // ここに音を鳴らす関数を書いてください
 
@@ -203,6 +204,18 @@ public class AudioManager
         if (_sePlayer[index].GetStatus() == CriAtomExPlayer.Status.Playing)
         {
             _sePlayer[index].Stop();
+        }
+    }
+
+    /// <summary>すべてのSEを止める</summary>
+    public void StopAllSE()
+    {
+        foreach (var n in _sePlayer)
+        {
+            if (n.GetStatus() == CriAtomExPlayer.Status.Playing)
+            {
+                n.Stop();
+            }
         }
     }
 }
