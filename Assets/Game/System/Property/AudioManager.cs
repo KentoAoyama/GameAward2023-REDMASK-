@@ -205,4 +205,16 @@ public class AudioManager
             _sePlayer[index].Stop();
         }
     }
+
+    /// <summary>すべてのSEを止める</summary>
+    public void StopAllSE()
+    {
+        foreach (var n in _sePlayer)
+        {
+            if (n.GetStatus() == CriAtomExPlayer.Status.Playing)
+            {
+                n.Stop();
+            }
+        }
+    }
 }
