@@ -21,8 +21,6 @@ public class EnemyRifle : MonoBehaviour, IEnemyWeapon, IGuidelineDrawer
     [SerializeField] private int _poolQuantity;
     [Tooltip("弾が発射されるマズル、飛ぶ方向の左右の制御はスケールのxを-1にすることで行う")]
     [SerializeField] protected Transform _muzzle;
-    [Header("攻撃時に再生される音の名前")]
-    [SerializeField] private string _attackSEName;
 
     private EnemyWeaponGuidelineDrawer _guidelineDrawer;
     private Stack<EnemyBullet> _pool;
@@ -95,8 +93,6 @@ public class EnemyRifle : MonoBehaviour, IEnemyWeapon, IGuidelineDrawer
 
         bullet.transform.position = _muzzle.position;
         bullet.SetVelocity(GetBulletDirection());
-
-        GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", _attackSEName);
     }
 
     /// <summary>

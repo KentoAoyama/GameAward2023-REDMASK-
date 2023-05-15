@@ -465,6 +465,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weapon: {fileID: 2324096520020784012}
+  _attackSEName: SE_Enemy_Attack_Shield
 --- !u!114 &8503014304221832852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -496,11 +497,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6d764a382eb6a448b410b08205b39d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerTagName: Player
   _enemyParamsSO: {fileID: 11400000, guid: 551f1fdee32cf314993b4dc2ba225250, type: 2}
   _placedFacingLeft: 0
   _idleWhenUndiscover: 0
-  _text: {fileID: 0}
+  _sightRadius: 9
+  _sightAngle: 270
+  _isIgnoreObstacle: 0
+  _playerFireReactionDistance: 15
+  _playerTagName: Player
+  _debugStateViewText: {fileID: 0}
   _shield: {fileID: 8503014302860041443}
 --- !u!114 &6647060181384297606
 MonoBehaviour:
@@ -515,7 +520,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _eye: {fileID: 8503014302711201555}
-  _controller: {fileID: 0}
 --- !u!1001 &8503014302302568038
 PrefabInstance:
   m_ObjectHideFlags: 0
