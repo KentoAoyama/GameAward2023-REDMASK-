@@ -39,10 +39,8 @@ public class PerformanceEvent
     private string _cueName = "";
 
     private float _timer = 0f;
-    private float _textTimer = 0f;
 
     private int _index = -1;
-    private int _textIndexCount = 0;
 
     private string _currentText = "";
 
@@ -66,7 +64,6 @@ public class PerformanceEvent
         if (_text != null)
         {
             //_text.text = _messageText;
-            _textTimer = _time / _messageText.Length;
             _ = _text.DOText(_messageText, _time - _talkDelay).SetEase(Ease.Linear);
 
             switch (_talkSE)
@@ -158,7 +155,7 @@ public class PerformanceEvent
     {
         _timer += Time.deltaTime;
 
-        if (_messageText.Length < 3) return;
+        if (_messageText.Length < 3 || _cueName == "") return;
         
         if (_currentText != _text.text)
         {
