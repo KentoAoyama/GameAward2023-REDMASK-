@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UniRx;
 using CriWare;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System;
 
 [Serializable]
@@ -87,7 +88,7 @@ public class AudioManager
             }
         });
 
-        
+        SceneManager.sceneUnloaded += _ => StopAllSE();
     }
     // ここに音を鳴らす関数を書いてください
 
