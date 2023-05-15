@@ -31,7 +31,8 @@ namespace Player
         [Tooltip("上半身(後ろ向き)の設定のSprite"), SerializeField] private Sprite _upperBodyBackSprite;
 
 
-        [SerializeField] private GameObject _upperBodyAvoid;
+        [SerializeField] private GameObject _upperBodyAvoidRight;
+        [SerializeField] private GameObject _upperBodyAvoidLeft;
 
         [Header("======下半身の設定======")]
 
@@ -57,14 +58,13 @@ namespace Player
         [Header("腕、順番に入れてね")]
         [Tooltip("腕、順番に入れてね"), SerializeField] private List<GameObject> _armsAavoid = new List<GameObject>();
 
-        public GameObject Arm => _arm;
+        private int _animationScaleX = 1;
+
 
         private int _nowMuzzleNum;
 
 
-        public Transform ArmCenterPos => _arm.transform;
 
-        public int MuzzleNum => _nowMuzzleNum;
 
         private float _angleRight = default;
 
@@ -76,6 +76,13 @@ namespace Player
         private Vector3 _currentMousePos;
 
         private PlayerController _playerController;
+
+        public int AnimationScaleX => _animationScaleX;
+        public Transform ArmCenterPos => _arm.transform;
+
+        public int MuzzleNum => _nowMuzzleNum;
+
+        public GameObject Arm => _arm;
 
         public void Init(PlayerController playerController)
         {
@@ -159,6 +166,8 @@ namespace Player
                 return;
             }
 
+
+
             Vector2 _aimingAngle = default;
 
             // 撃つ方向を保存する
@@ -187,6 +196,15 @@ namespace Player
                     _playerController.RevolverOperator.StopRevolverReLoad();
                     _playerController.Revolver.OffDrawAimingLine(true);
                 }
+            }
+
+            if(_aimingAngle.x>=0)
+            {
+                _animationScaleX = 1;
+            }
+            else
+            {
+                _animationScaleX = -1;
             }
 
             //360度の角度を取得
@@ -250,15 +268,15 @@ namespace Player
 
 
 
-                if(angle >= 0 && angle <= 180)
+                if (angle >= 0 && angle <= 180)
                 {
-                    _upperBodyAvoid.transform.localScale = new Vector3(1, 1, 1);
-                    //_headAvoid.transform.localScale = new Vector3(1, 1, 1);
+                    _upperBodyAvoidRight.SetActive(true);
+                    _upperBodyAvoidLeft.SetActive(false);
                 }
                 else
                 {
-                    _upperBodyAvoid.transform.localScale = new Vector3(-1, 1, 1);
-                    //_headAvoid.transform.localScale = new Vector3(-1, 1, 1);
+                    _upperBodyAvoidRight.SetActive(false);
+                    _upperBodyAvoidLeft.SetActive(true);
                 }
 
                 var i = Mathf.Abs((int)Mathf.Floor(angle / 30));
