@@ -61,10 +61,11 @@ public class PerformanceEvent
         _awake?.Invoke();
 
         // テキストを更新
+        Tween t = default;
         if (_text != null)
         {
             //_text.text = _messageText;
-            _ = _text.DOText(_messageText, _time - _talkDelay).SetEase(Ease.Linear);
+            t = _text.DOText(_messageText, _time - _talkDelay).SetEase(Ease.Linear);
 
             switch (_talkSE)
             {
@@ -135,31 +136,32 @@ public class PerformanceEvent
         });
 
         // このイベントを終了する。
-        FinishEvent(_index);
+        FinishEvent(t);
+    }
+
+    private void FinishEvent(Tween textTween)
+    {
+        if (_text != null)
+            _text.text = " ";
+
         // DOTween をキル
+        textTween.Kill();
         foreach (var e in _mover)
         {
             e?.Kill();
         }
     }
 
-    private void FinishEvent(int index)
-    {
-        if (index != -1)
-            GameManager.Instance.AudioManager.StopSE(index);
-        if (_text != null)
-            _text.text = " ";
-    }
-
     public void Update()
     {
         _timer += Time.deltaTime;
 
-        if (_messageText.Length < 3 || _cueName == "") return;
+        if (_messageText.Length < 3 || _cueName == "" || _talkSE == TalkSE.None) return;
         
         if (_currentText != _text.text)
         {
-            _index = GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", _cueName);
+            Debug.Log("OK");
+            //GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", _cueName);
             _currentText = _text.text;
         }
     }
