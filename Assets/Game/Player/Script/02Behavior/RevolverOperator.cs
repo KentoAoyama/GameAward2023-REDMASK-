@@ -64,7 +64,15 @@ namespace Player
                     _playerController.Revolver.CanFire)
                 {
                     //アニメーションの再生
-                    _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.Fire);
+                    if (_playerController.Avoidance.IsAvoidanceNow)
+                    {
+                        _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.AvoidFire);
+                    }
+                    else
+                    {
+                        _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.Fire);
+                    }
+
 
                     //マズルフラッシュを再生
                     _muzzleFlash.PlayMuzzleFlash();
@@ -174,9 +182,6 @@ namespace Player
                 /////////////////////////////////TEST用!!!!!!!!!!!!!!!!//////////////////////////
                 _setBulletText.SetActive(true);
 
-
-                Debug.Log("F");
-
                 _countSetBulletTime += Time.deltaTime;
                 if (_setBulletTime < _countSetBulletTime)
                 {
@@ -200,7 +205,7 @@ namespace Player
                     //最大まで弾を居れたら強制的に構えに戻す
                     if (index == 5 && _playerController.GunSetUp.IsGunSetUp)
                     {
-                        _playerController.PlayerAnimatorControl.GunSet(false);
+                      //  _playerController.PlayerAnimatorControl.GunSet(false);
                     }
 
                     // UIで現在選択している弾を装填する

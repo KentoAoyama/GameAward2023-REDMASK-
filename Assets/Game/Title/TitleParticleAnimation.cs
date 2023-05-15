@@ -9,6 +9,7 @@ public class TitleParticleAnimation : MonoBehaviour
     private Vector3 _target = new Vector3();
 
     private Vector3 _originalPosition = new Vector3();
+    private bool _isMoving = false;
     private void Awake()
     {
         _originalPosition = transform.position;
@@ -16,13 +17,19 @@ public class TitleParticleAnimation : MonoBehaviour
 
     public void AnimPlay()
     {
+        if (_isMoving) return;
+
         if (transform.position != _target)
         {
-            this.transform.DOMove(_target, 0.5f);
+            _isMoving = true;
+            this.transform.DOMove(_target, 0.45F).
+                OnComplete(() => _isMoving = false);
         }
         else
         {
-            this.transform.DOMove(_originalPosition, 0.5f);
+            _isMoving = true;
+            this.transform.DOMove(_originalPosition, 0.5f)
+                .OnComplete(() => _isMoving = false);
         }
     }
 }

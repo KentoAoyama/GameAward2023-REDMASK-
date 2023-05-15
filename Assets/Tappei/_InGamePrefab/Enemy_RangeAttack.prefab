@@ -296,6 +296,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weapon: {fileID: 8381272835378975573}
+  _attackSEName: SE_Enemy_Attack_Gun
 --- !u!114 &3988215834778814113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -327,11 +328,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47192ee7343431f45a246313a076344f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerTagName: Player
   _enemyParamsSO: {fileID: 11400000, guid: dcbebc8bd73bb224cb873bda1e7e44b5, type: 2}
   _placedFacingLeft: 0
   _idleWhenUndiscover: 0
-  _text: {fileID: 0}
+  _sightRadius: 9
+  _sightAngle: 270
+  _isIgnoreObstacle: 0
+  _playerFireReactionDistance: 15
+  _playerTagName: Player
+  _debugStateViewText: {fileID: 0}
 --- !u!114 &2486729576585183718
 MonoBehaviour:
   m_ObjectHideFlags: 0

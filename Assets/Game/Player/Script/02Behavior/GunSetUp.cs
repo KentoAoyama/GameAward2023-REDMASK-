@@ -84,13 +84,16 @@ namespace Player
 
             if (_playerController.Avoidance.IsAvoidanceNow && !_playerController.GunSetUp.IsGunSetUp && _playerController.InputManager.IsPressed[InputType.GunSetUp] && !_isReserveSetUpAvoid)
             {
+                Debug.Log("dd");
                 _isReserveSetUpAvoid = true;
             }
 
             if (_isReserveSetUpAvoid)
             {
+                Debug.Log("check");
                 if (!_playerController.PlayerAnimatorControl.IsAnimationNow)
                 {
+                    Debug.Log("cc");
                     _isReserveSetUpAvoid = false;
 
                     //èdóÕÇñﬂÇ∑
