@@ -36,6 +36,16 @@ public class PerformanceEvent
     private bool _isFire = false;
     public bool IsFire => _isFire;
 
+    private string _cueName = "";
+
+    private float _timer = 0f;
+
+    private int _index = -1;
+
+    private string _currentText = "";
+
+    private float _talkDelay = 0.5f;
+
     private enum TalkSE
     {
         None,
@@ -51,30 +61,38 @@ public class PerformanceEvent
         _awake?.Invoke();
 
         // テキストを更新
-        int index = -1;
         if (_text != null)
         {
-            _text.text = _messageText;
+            //_text.text = _messageText;
+            _ = _text.DOText(_messageText, _time - _talkDelay).SetEase(Ease.Linear);
 
-            string cueName = "";
             switch (_talkSE)
             {
+                //case TalkSE.Player:
+                //    _cueName = "SE_Talk_Player";
+                //    break;
+                //case TalkSE.Target:
+                //    _cueName = "SE_Talk_Target";
+                //    break;
+                //case TalkSE.Boss:
+                //    _cueName = "SE_Talk_Boss";
+                //    break;
+                //case TalkSE.Robot:
+                //    _cueName = "SE_Talk_Robot";
+                //    break;
                 case TalkSE.Player:
-                    cueName = "SE_Talk_Player";
+                    _cueName = "SE_Talk_Player_solo";
                     break;
                 case TalkSE.Target:
-                    cueName = "SE_Talk_Target";
+                    _cueName = "SE_Talk_Target_solo";
                     break;
                 case TalkSE.Boss:
-                    cueName = "SE_Talk_Boss";
+                    _cueName = "SE_Talk_Boss_solo";
                     break;
                 case TalkSE.Robot:
-                    cueName = "SE_Talk_Robot";
+                    _cueName = "SE_Talk_Robot_solo";
                     break;
             }
-
-            if (_talkSE != TalkSE.None)
-            index = GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", cueName);
         }
         // 移動を開始
         foreach (var e in _move)
@@ -117,7 +135,7 @@ public class PerformanceEvent
         });
 
         // このイベントを終了する。
-        FinishEvent(index);
+        FinishEvent(_index);
         // DOTween をキル
         foreach (var e in _mover)
         {
@@ -128,14 +146,22 @@ public class PerformanceEvent
     private void FinishEvent(int index)
     {
         if (index != -1)
-            Debug.Log("OK");
-        GameManager.Instance.AudioManager.StopSE(index);
+            GameManager.Instance.AudioManager.StopSE(index);
+        if (_text != null)
+            _text.text = " ";
     }
 
-    private float _timer = 0f;
     public void Update()
     {
         _timer += Time.deltaTime;
+
+        if (_messageText.Length < 3 || _cueName == "") return;
+        
+        if (_currentText != _text.text)
+        {
+            _index = GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", _cueName);
+            _currentText = _text.text;
+        }
     }
 
     [Serializable]

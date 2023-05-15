@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1786556986410647660}
   - component: {fileID: 1786556986410647661}
   - component: {fileID: 1786556986410647658}
+  - component: {fileID: 1755121531}
   m_Layer: 0
   m_Name: PerformanceController 3-2
   m_TagString: Untagged
@@ -79,6 +80,7 @@ MonoBehaviour:
     _messageText: 
     _move: []
     _animation: []
+    _talkSE: 0
   - _isWaitFireInput: 0
     _time: 5
     _awake:
@@ -91,6 +93,7 @@ MonoBehaviour:
       _endPos: {fileID: 0}
       _ease: 1
     _animation: []
+    _talkSE: 0
   - _isWaitFireInput: 1
     _time: 1
     _awake:
@@ -105,6 +108,7 @@ MonoBehaviour:
     _animation:
     - _animator: {fileID: 0}
       _name: Idle
+    _talkSE: 0
   - _isWaitFireInput: 1
     _time: 3
     _awake:
@@ -114,6 +118,7 @@ MonoBehaviour:
     _messageText: "\u8FFD\u3044\u8A70\u3081\u305F\u305E\u3001\u304A\u524D\u30673\u4EBA\u76EE\u3060"
     _move: []
     _animation: []
+    _talkSE: 1
   - _isWaitFireInput: 1
     _time: 1
     _awake:
@@ -126,6 +131,7 @@ MonoBehaviour:
       _endPos: {fileID: 0}
       _ease: 0
     _animation: []
+    _talkSE: 0
   - _isWaitFireInput: 1
     _time: 2
     _awake:
@@ -137,6 +143,7 @@ MonoBehaviour:
     _animation:
     - _animator: {fileID: 0}
       _name: Target3_LookBack
+    _talkSE: 0
   - _isWaitFireInput: 1
     _time: 3
     _awake:
@@ -146,6 +153,7 @@ MonoBehaviour:
     _messageText: "\u3064\u3044\u306B\u30D2\u30FC\u30ED\u30FC\u53C2\u4E0A\u304B"
     _move: []
     _animation: []
+    _talkSE: 2
   - _isWaitFireInput: 1
     _time: 4
     _awake:
@@ -155,6 +163,7 @@ MonoBehaviour:
     _messageText: "\u30DC\u30B9\u306E\u8A00\u3063\u3066\u305F\u901A\u308A\u3060\u306A\u3000\u5F85\u3063\u3066\u305F\u3088"
     _move: []
     _animation: []
+    _talkSE: 2
   - _isWaitFireInput: 1
     _time: 1
     _awake:
@@ -167,6 +176,7 @@ MonoBehaviour:
       _endPos: {fileID: 0}
       _ease: 0
     _animation: []
+    _talkSE: 0
   - _isWaitFireInput: 1
     _time: 4
     _awake:
@@ -176,6 +186,7 @@ MonoBehaviour:
     _messageText: "\u5F85\u3063\u3066\u3044\u305F\uFF1F\u3000\u4F55\u3092\u8A00\u3063\u3066\u3044\u308B"
     _move: []
     _animation: []
+    _talkSE: 1
   - _isWaitFireInput: 1
     _time: 1
     _awake:
@@ -188,6 +199,7 @@ MonoBehaviour:
       _endPos: {fileID: 0}
       _ease: 0
     _animation: []
+    _talkSE: 0
   - _isWaitFireInput: 1
     _time: 3
     _awake:
@@ -197,6 +209,7 @@ MonoBehaviour:
     _messageText: "\u2026\u304A\u524D\u306B\u805E\u304D\u305F\u304B\u3063\u305F\u3053\u3068\u304C\u3042\u308B\u3093\u3060"
     _move: []
     _animation: []
+    _talkSE: 2
   - _isWaitFireInput: 1
     _time: 3
     _awake:
@@ -206,6 +219,7 @@ MonoBehaviour:
     _messageText: "\u306A\u305C\u3053\u3093\u306A\u3053\u3068\u3092\u3057\u3066\u3044\u308B\uFF1F"
     _move: []
     _animation: []
+    _talkSE: 2
   - _isWaitFireInput: 1
     _time: 1
     _awake:
@@ -218,6 +232,7 @@ MonoBehaviour:
       _endPos: {fileID: 0}
       _ease: 0
     _animation: []
+    _talkSE: 0
   - _isWaitFireInput: 1
     _time: 2
     _awake:
@@ -227,6 +242,7 @@ MonoBehaviour:
     _messageText: 
     _move: []
     _animation: []
+    _talkSE: 0
   - _isWaitFireInput: 1
     _time: 3
     _awake:
@@ -236,6 +252,7 @@ MonoBehaviour:
     _messageText: "\u305D\u308C\u306F\u4FFA\u304C\u6B63\u7FA9\u306E\u305F\u3081\u306B\u6226\u3046\u30D2\u30FC\u30ED\u30FC\u3060\u304B\u3089\u3060"
     _move: []
     _animation: []
+    _talkSE: 1
   - _isWaitFireInput: 1
     _time: 0.5
     _awake:
@@ -248,6 +265,7 @@ MonoBehaviour:
       _endPos: {fileID: 0}
       _ease: 0
     _animation: []
+    _talkSE: 0
   - _isWaitFireInput: 1
     _time: 2
     _awake:
@@ -257,6 +275,7 @@ MonoBehaviour:
     _messageText: "\u3044\u3084\u3000\u305D\u3046\u3058\u3083\u306A\u3044"
     _move: []
     _animation: []
+    _talkSE: 2
   - _isWaitFireInput: 1
     _time: 3
     _awake:
@@ -266,6 +285,7 @@ MonoBehaviour:
     _messageText: "\u30DE\u30B9\u30AF\u306E\u4E0B\u306E\u304A\u524D\u306B\u805E\u3044\u3066\u308B\u3093\u3060"
     _move: []
     _animation: []
+    _talkSE: 2
   - _isWaitFireInput: 1
     _time: 1
     _awake:
@@ -278,6 +298,7 @@ MonoBehaviour:
       _endPos: {fileID: 0}
       _ease: 0
     _animation: []
+    _talkSE: 0
   - _isWaitFireInput: 1
     _time: 3
     _awake:
@@ -289,6 +310,7 @@ MonoBehaviour:
     _animation:
     - _animator: {fileID: 0}
       _name: "Target2_Idle \uFF12"
+    _talkSE: 0
   - _isWaitFireInput: 1
     _time: 0.5
     _awake:
@@ -301,6 +323,7 @@ MonoBehaviour:
       _endPos: {fileID: 0}
       _ease: 0
     _animation: []
+    _talkSE: 0
   - _isWaitFireInput: 1
     _time: 3.5
     _awake:
@@ -310,6 +333,7 @@ MonoBehaviour:
     _messageText: "\u304A\u524D\u306E\u8A00\u3046\u6B63\u7FA9\u3068\u306F\u3044\u3063\u305F\u3044\u4F55\u306A\u3093\u3060"
     _move: []
     _animation: []
+    _talkSE: 2
   - _isWaitFireInput: 1
     _time: 3.5
     _awake:
@@ -319,6 +343,7 @@ MonoBehaviour:
     _messageText: "\u30DE\u30B9\u30AF\u304C\u7121\u3044\u6642\u304A\u524D\u306F\u30D2\u30FC\u30ED\u30FC\u306A\u306E\u304B?"
     _move: []
     _animation: []
+    _talkSE: 2
   - _isWaitFireInput: 1
     _time: 1
     _awake:
@@ -331,6 +356,7 @@ MonoBehaviour:
       _endPos: {fileID: 0}
       _ease: 0
     _animation: []
+    _talkSE: 0
   - _isWaitFireInput: 1
     _time: 3
     _awake:
@@ -340,6 +366,7 @@ MonoBehaviour:
     _messageText: "\u60AA\u304C\u3044\u308B\u9650\u308A\u3000\u4FFA\u306F\u6226\u3044\u7D9A\u3051\u308B\u2026"
     _move: []
     _animation: []
+    _talkSE: 1
   - _isWaitFireInput: 1
     _time: 0.5
     _awake:
@@ -352,6 +379,7 @@ MonoBehaviour:
       _endPos: {fileID: 0}
       _ease: 0
     _animation: []
+    _talkSE: 0
   - _isWaitFireInput: 1
     _time: 3
     _awake:
@@ -375,6 +403,7 @@ MonoBehaviour:
     _animation:
     - _animator: {fileID: 0}
       _name: Target3_ReadyGun
+    _talkSE: 2
   - _isWaitFireInput: 1
     _time: 4
     _awake:
@@ -384,6 +413,7 @@ MonoBehaviour:
     _messageText: "\u79C1\u6028\u3067\u306F\u306A\u3044\u3000\u60AA\u515A\u3067\u306F\u306A\u3044\u3068\u601D\u3044\u305F\u3044\u3060\u3051\u3060\u308D\u3046"
     _move: []
     _animation: []
+    _talkSE: 2
   - _isWaitFireInput: 1
     _time: 4
     _awake:
@@ -393,6 +423,7 @@ MonoBehaviour:
     _messageText: "\u306A\u3042\u3000\u304A\u524D\u306F\u3044\u3063\u305F\u3044\u4F55\u8005\u306A\u3093\u3060\uFF1F"
     _move: []
     _animation: []
+    _talkSE: 2
   - _isWaitFireInput: 1
     _time: 3
     _awake:
@@ -405,6 +436,7 @@ MonoBehaviour:
       _endPos: {fileID: 0}
       _ease: 0
     _animation: []
+    _talkSE: 0
   - _isWaitFireInput: 1
     _time: 1
     _awake:
@@ -414,6 +446,7 @@ MonoBehaviour:
     _messageText: "\u9ED9\u308C\u2026"
     _move: []
     _animation: []
+    _talkSE: 1
   - _isWaitFireInput: 1
     _time: 1
     _awake:
@@ -423,6 +456,7 @@ MonoBehaviour:
     _messageText: "\u4FFA\u306F\u30D2\u30FC\u30ED\u30FC\u2026"
     _move: []
     _animation: []
+    _talkSE: 1
   - _isWaitFireInput: 1
     _time: 1
     _awake:
@@ -432,6 +466,7 @@ MonoBehaviour:
     _messageText: "\u30EC\u30C3\u30C9\u30DE\u30B9\u30AF\u3060"
     _move: []
     _animation: []
+    _talkSE: 1
   _afterFirePerformanceEvents:
   - _isWaitFireInput: 0
     _time: 0.2
@@ -444,6 +479,7 @@ MonoBehaviour:
     _animation:
     - _animator: {fileID: 0}
       _name: Shoot
+    _talkSE: 0
   - _isWaitFireInput: 0
     _time: 4
     _awake:
@@ -477,6 +513,7 @@ MonoBehaviour:
     _messageText: 
     _move: []
     _animation: []
+    _talkSE: 0
   _nextSceneName: StageSelect
 --- !u!114 &1786556986410647658
 MonoBehaviour:
@@ -497,3 +534,22 @@ MonoBehaviour:
   _cameraPos: {fileID: 0}
   _shakePower: 0.1
   _shakeNumber: 50
+--- !u!114 &1755121531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1786556986410647659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccd6560447d195248be118e5a5fd0bbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _image: {fileID: 0}
+  _fadePanel: {fileID: 0}
+  _sprites:
+  - {fileID: 21300000, guid: c0a3d6a1b52a8df478e49a1f3d3ddc44, type: 3}
+  - {fileID: 21300000, guid: c7817961c730f1747a7c1d4db369b5fd, type: 3}
+  _firstFadeDelay: 0.5
+  _inputDelay: 0
