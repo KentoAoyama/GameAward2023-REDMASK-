@@ -7,6 +7,8 @@ public class AttackBehavior : MonoBehaviour
 {
     [Header("武器のオブジェクト")]
     [SerializeField] private MonoBehaviour _weapon;
+    [Header("攻撃音")]
+    [SerializeField] private string _attackSEName;
 
     private IEnemyWeapon _enemyWeapon;
     private IGuidelineDrawer _guidelineDrawer;
@@ -34,6 +36,7 @@ public class AttackBehavior : MonoBehaviour
         {
             _enemyWeapon.Attack();
             _inAction = false;
+            GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", _attackSEName);
         }
     }
 
