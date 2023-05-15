@@ -8,8 +8,6 @@ public class MenuPanelController : MonoBehaviour
 {
     [SerializeField, Tooltip("このパネルのアニメーションを管理するパラメータ名")]
     private string _animationParameterName = "";
-    [SerializeField, Tooltip("partcleのアニメーション")]
-    private TitleParticleAnimation _particleAnim = default;
     [SerializeField]
     private MenuCylinder _cylinder = default;
     [SerializeField]
@@ -68,7 +66,6 @@ public class MenuPanelController : MonoBehaviour
 
         _canvasAnimator.SetBool(_animationParameterName, true);
         EventSystem.current.SetSelectedGameObject(null);
-        _particleAnim.AnimPlay();
     }
 
     private void ClosePanel()
@@ -79,6 +76,5 @@ public class MenuPanelController : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
         GameManager.Instance.AudioManager.Save();
         _panelEnabled = false;
-        _particleAnim.AnimPlay();
     }
 }
