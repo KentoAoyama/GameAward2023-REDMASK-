@@ -53,6 +53,7 @@ public class Bullet2 : MonoBehaviour, IPausable, IStoreableInChamber
 
     private void Update()
     {
+        // 指定の方向、指定の速度で移動する。
         transform.Translate(_moveDir.normalized * Time.deltaTime * _moveSpeed);
 
         // 左右の補正（行き過ぎた場合、目標地点に強制移動する。）
@@ -72,8 +73,10 @@ public class Bullet2 : MonoBehaviour, IPausable, IStoreableInChamber
             transform.position = pos;
         }
 
+        // 前フレームの座標から現在フレームの座標の間のコライダーをラインキャストを使用して取得する。
         var hits = Physics2D.LinecastAll(_previousPosition, transform.position, _targetLayer);
 
+        // 見つけたIDamageableに対して可能であればDamage()を実行する。
         for (int i = 0; i < hits.Length; i++)
         {
             if (hits[i].collider.TryGetComponent(out IDamageable damageable))
@@ -84,13 +87,14 @@ public class Bullet2 : MonoBehaviour, IPausable, IStoreableInChamber
                     _damaged.Add(damageable);
                     damageable.Damage();
                     _currentHitCount++;
-                } // 何度も呼び出さない為の処理
+                }
 
+                // シールドを貫通しないオブジェクトはシールドに接触した時点で消滅する。
                 if (!IsPenetrateShield && hits[i].collider.tag == _shieldTagName)
                 {
                     Destroy(this.gameObject);
                     return;
-                } // シールドを貫通しないオブジェクトはここで消滅する。
+                }
 
                 // 指定回数ヒットしたらこのオブジェクトを破棄する。
                 // 最大ヒット数が0以下であれば処理しない。
@@ -98,13 +102,14 @@ public class Bullet2 : MonoBehaviour, IPausable, IStoreableInChamber
                 {
                     Destroy(this.gameObject);
                     return;
-                } // 消滅処理
+                }
             }
         }
+        // 設定された全ての目的地に到達したとき、このオブジェクトを非アクティブにする。
         if (_isComplete)
         {
             gameObject.SetActive(false);
-        } // 完了処理
+        }
         _previousPosition = transform.position;
     }
     private void OnEnable()
@@ -138,20 +143,25 @@ public class Bullet2 : MonoBehaviour, IPausable, IStoreableInChamber
     /// </summary>
     public async void StartMove()
     {
+        // 終了条件 下記の条件どれか一つでも満たす場合、移動せず処理を終了する。
         if (_targetPositions == null || _targetPositions.Count == 0 || _moveSpeed < 0f)
         {
             this.gameObject.SetActive(false);
             return;
         }
-
+        // 現在地を開始地点とする。
         Vector2 startPos = transform.position;
         for (int i = 0; i < _targetPositions.Count; i++)
         {
             try
             {
+                // 現在の目的地を取得する。WaitMove等の関数内で現在の目的地を利用するため。
                 _currentTargetPosition = _targetPositions[i];
+                // 目的地への方向ベクトルを取得。Update関数内で移動に使用する。
                 _moveDir = _targetPositions[i] - startPos;
+                // 目的地に到達するまで待機する。
                 await WaitMove(transform, startPos, _targetPositions[i]);
+                // 目的地を新しい開始地点とする。
                 startPos = _targetPositions[i];
             }
             catch (OperationCanceledException)
@@ -159,10 +169,16 @@ public class Bullet2 : MonoBehaviour, IPausable, IStoreableInChamber
                 return;
             }
         }
-        // Destroy(this.gameObject);
         _isComplete = true;
         return;
     }
+
+    /// <summary>
+    /// 指定された地点まで移動するのを待機する。
+    /// </summary>
+    /// <param name="origin"> 原点 </param>
+    /// <param name="startPos"> 開始地点 </param>
+    /// <param name="targetPos"> 目的地の座標 </param>
     private async UniTask WaitMove(Transform origin, Vector2 startPos, Vector2 targetPos)
     {
         if (startPos.x <= targetPos.x && // 右上
