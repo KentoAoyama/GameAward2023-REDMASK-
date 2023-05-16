@@ -31,10 +31,10 @@ public class TitleController : MonoBehaviour
 
     private void Update()
     {
-        // if (EventSystem.current.currentSelectedGameObject == null)
-        // {
-        //     EventSystem.current.SetSelectedGameObject(_lastSelectedObject);
-        // }  
+        if (EventSystem.current.currentSelectedGameObject == null)
+        {
+           EventSystem.current.SetSelectedGameObject(_lastSelectedObject);
+        }  
         if (EventSystem.current.currentSelectedGameObject != _lastSelectedObject)
         {
             _lastSelectedObject = EventSystem.current.currentSelectedGameObject;
