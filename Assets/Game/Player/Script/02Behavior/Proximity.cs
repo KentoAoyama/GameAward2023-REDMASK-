@@ -26,9 +26,6 @@ namespace Player
         [Tooltip("近接攻撃の威力"), SerializeField]
         private float _attackPower = 10f;
 
-        [Header("Test用。後で消す")]
-        [SerializeField] private SpriteRenderer _spriteRenderer;
-
         /// <summary>攻撃実行時間の計測用</summary>
         private float _attackDoTimeCount = 0;
         /// <summaryクールタイムの計測用</summary>
@@ -121,9 +118,6 @@ namespace Player
 
             Debug.Log("近接攻撃はじめ！");
 
-            //試験的に、色を変える    
-            _spriteRenderer.color = Color.blue;
-
             var targets = _playerController.ProximityHitChecker.GetCollider(_playerController.DirectionControler.MovementDirectionX) ;
             Debug.Log(targets.Length);
 
@@ -153,8 +147,6 @@ namespace Player
             _playerController.GunSetUp.CheckRelesedSetUp();
 
             Debug.Log("近接攻撃終わり！");
-            //試験的に、色を変える    
-            _spriteRenderer.color = Color.white;
 
             //攻撃中
             _isAttackNow = false;
