@@ -32,6 +32,7 @@ public class StageComplete : MonoBehaviour
         // GameManager.BulletsCountManagerの情報を保存。
         GameManager.Instance.BulletsCountManager.Save();
 
+        BulletPrepareControl.PrepareType = PrepareType.FromTheBeginning;
         // 完了済みのステージ番号を更新する。
         GameManager.Instance.CompletedStageManager.SetCompletedStage(_stageNumber);
         // 完了済みのステージ番号を保存する。
