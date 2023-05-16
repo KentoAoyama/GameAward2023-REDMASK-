@@ -40,7 +40,7 @@ public class GoToStageButton : MonoBehaviour
                 _stageTypeStageNamePair[i].Type)
             {
                 SceneManager.LoadScene(_stageTypeStageNamePair[i].SceneName);
-                GameManager.Instance.StageSelectManager.SetStage(StageType.NotSet);
+                BulletPrepareControl.PrepareType = PrepareType.TromTheMiddle;
                 break;
             }
         }

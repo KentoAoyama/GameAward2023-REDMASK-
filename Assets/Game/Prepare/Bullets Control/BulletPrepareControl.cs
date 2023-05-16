@@ -11,10 +11,11 @@ using System.Collections.Generic;
 /// </summary>
 public class BulletPrepareControl : MonoBehaviour
 {
+    public static PrepareType PrepareType { get; set; } = PrepareType.FromTheBeginning;
     /// <summary>
     /// シリンダーの状態を表す値
     /// </summary>
-    private ReactiveProperty<BulletType>[] _cylinder ={
+    private static ReactiveProperty<BulletType>[] _cylinder ={
         new ReactiveProperty<BulletType>(BulletType.NotSet),
         new ReactiveProperty<BulletType>(BulletType.NotSet),
         new ReactiveProperty<BulletType>(BulletType.NotSet),
@@ -25,7 +26,7 @@ public class BulletPrepareControl : MonoBehaviour
     /// <summary>
     /// ガンベルトの状態を表す値
     /// </summary>
-    private ReactiveProperty<BulletType>[] _gunBelt = {
+    private static ReactiveProperty<BulletType>[] _gunBelt = {
         new ReactiveProperty<BulletType>(BulletType.NotSet),
         new ReactiveProperty<BulletType>(BulletType.NotSet),
         new ReactiveProperty<BulletType>(BulletType.NotSet),
@@ -34,9 +35,33 @@ public class BulletPrepareControl : MonoBehaviour
         new ReactiveProperty<BulletType>(BulletType.NotSet),
     };
 
-    public IReactiveProperty<BulletType>[] Cylinder => _cylinder;
-    public IReactiveProperty<BulletType>[] GunBelt => _gunBelt;
+    public static IReactiveProperty<BulletType>[] Cylinder => _cylinder;
+    public static IReactiveProperty<BulletType>[] GunBelt => _gunBelt;
 
+    private void Awake()
+    {
+        if (PrepareType == PrepareType.FromTheBeginning)
+        {
+            ReactiveProperty<BulletType>[] c ={
+                new ReactiveProperty<BulletType>(BulletType.NotSet),
+                new ReactiveProperty<BulletType>(BulletType.NotSet),
+                new ReactiveProperty<BulletType>(BulletType.NotSet),
+                new ReactiveProperty<BulletType>(BulletType.NotSet),
+                new ReactiveProperty<BulletType>(BulletType.NotSet),
+                new ReactiveProperty<BulletType>(BulletType.NotSet),
+            };
+            _cylinder = c;
+            ReactiveProperty<BulletType>[] g ={
+                new ReactiveProperty<BulletType>(BulletType.NotSet),
+                new ReactiveProperty<BulletType>(BulletType.NotSet),
+                new ReactiveProperty<BulletType>(BulletType.NotSet),
+                new ReactiveProperty<BulletType>(BulletType.NotSet),
+                new ReactiveProperty<BulletType>(BulletType.NotSet),
+                new ReactiveProperty<BulletType>(BulletType.NotSet),
+            };
+            _gunBelt = g;
+        }
+    }
     /// <summary>
     /// 決められた順番に弾を装填する <br/>
     /// 参考 : https://discord.com/channels/1069273491297271849/1070547785369255996/1088332634402328606
@@ -155,4 +180,9 @@ public class BulletPrepareControl : MonoBehaviour
 public enum StorageSiteType
 {
     GunBelt, Cylinder, Error
+}
+public enum PrepareType
+{
+    FromTheBeginning,
+    TromTheMiddle
 }

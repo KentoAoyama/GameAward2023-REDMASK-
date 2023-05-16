@@ -35,16 +35,16 @@ public class BulletsUIController : MonoBehaviour
     private void Awake()
     {
         // シリンダー UI更新処理を登録
-        for (int i = 0; i < _bulletPrepareControl.Cylinder.Length; i++)
+        for (int i = 0; i < BulletPrepareControl.Cylinder.Length; i++)
         {
             int index = i;
-            _bulletPrepareControl.Cylinder[index].Subscribe(type => CylinderImageUpdate(type, index));
+            BulletPrepareControl.Cylinder[index].Subscribe(type => CylinderImageUpdate(type, index)).AddTo(this);
         }
         // ガンベルト UI更新処理を登録
-        for (int i = 0; i < _bulletPrepareControl.GunBelt.Length; i++)
+        for (int i = 0; i < BulletPrepareControl.GunBelt.Length; i++)
         {
             int index = i;
-            _bulletPrepareControl.GunBelt[index].Subscribe(type => GunBeltImageUpdate(type, index));
+            BulletPrepareControl.GunBelt[index].Subscribe(type => GunBeltImageUpdate(type, index)).AddTo(this);
         }
     }
 
