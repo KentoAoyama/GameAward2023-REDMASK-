@@ -7,10 +7,15 @@ namespace HitSupport
     [System.Serializable]
     public class OverlapBox2D
     {
+        [Header("ˆÊ’u’²®")]
         [SerializeField]
         private Vector2 _offset;
+
+        [Header("‘å‚«‚³")]
         [SerializeField]
         private Vector2 _size;
+
+        [Header("ƒŒƒCƒ„[")]
         [SerializeField]
         private LayerMask _targetLayer;
 
