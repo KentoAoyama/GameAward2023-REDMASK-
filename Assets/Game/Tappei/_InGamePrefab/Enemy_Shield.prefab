@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 5698864505724496121}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.5, z: 0}
-  m_LocalScale: {x: -0.6, y: 0.6, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8503014304221833066}
@@ -209,7 +209,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8503014303464848283}
   - component: {fileID: 8503014303464848285}
-  - component: {fileID: 5755995648504929568}
+  - component: {fileID: 7349167457375388228}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -253,7 +253,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!212 &5755995648504929568
+--- !u!212 &7349167457375388228
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -321,9 +321,9 @@ GameObject:
   - component: {fileID: 8503014304221832855}
   - component: {fileID: 8503014304221832852}
   - component: {fileID: 8503014304221833069}
-  - component: {fileID: 8966515626723575019}
+  - component: {fileID: 6647060181384297606}
   m_Layer: 6
-  m_Name: Enemy_Shield_Left
+  m_Name: Enemy_Shield
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -498,7 +498,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyParamsSO: {fileID: 11400000, guid: 551f1fdee32cf314993b4dc2ba225250, type: 2}
-  _placedFacingLeft: 1
+  _placedFacingLeft: 0
   _idleWhenUndiscover: 0
   _sightRadius: 9
   _sightAngle: 270
@@ -506,8 +506,9 @@ MonoBehaviour:
   _playerFireReactionDistance: 15
   _playerTagName: Player
   _debugStateViewText: {fileID: 0}
+  _renderer: {fileID: 7349167457375388228}
   _shield: {fileID: 8503014302860041443}
---- !u!114 &8966515626723575019
+--- !u!114 &6647060181384297606
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
