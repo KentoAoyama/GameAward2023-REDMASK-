@@ -42,7 +42,6 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     protected ReactiveProperty<StateTypeBase> _currentState = new();
     protected StateRegister _stateRegister = new();
     protected MoveBehavior _moveBehavior;
-    //private EnemyAudioModule _audioModule = new();
     private Transform _player;
     private SightSensor _sightSensor;
     private AttackBehavior _attackBehavior;
@@ -234,6 +233,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     public void Damage()
     {
         if (_isDefeated) return;
+        _currentState.Value.OnDisable();
 
         _isDefeated = true;
         _performanceBehavior.Defeated(_moveBehavior.SpriteDir);
