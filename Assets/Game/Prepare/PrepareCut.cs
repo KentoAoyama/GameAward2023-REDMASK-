@@ -46,7 +46,10 @@ public class PrepareCut : MonoBehaviour
             return;
         }
         _iamge.gameObject.SetActive(true);
-        _iamge.sprite = Array.Find(_sprites, x => x.Key == index).Sprite;
+        var spriteData = Array.Find(_sprites, x => x.Key == index);
+        _iamge.sprite = spriteData.Sprite;
+        _iamge.color = spriteData.Color;
+
         _iamge.material.SetFloat(_amountId, -1F);
         _fadePanel.color = Color.black;
 
@@ -73,12 +76,14 @@ public class PrepareCut : MonoBehaviour
     }
 
     [Serializable]
-    struct KeySpritePair
+    class KeySpritePair
     {
         [SerializeField]
-        private int key;
+        private int key = default(int);
         [SerializeField]
-        private Sprite sprite;
+        private Sprite sprite = default;
+        [SerializeField]
+        private Color color = Color.white;
 
         public int Key 
         { 
@@ -90,6 +95,12 @@ public class PrepareCut : MonoBehaviour
         {
             get => sprite;
             set => sprite = value;
+        }
+
+        public Color Color
+        {
+            get => color;
+            set => color = value;
         }
     }
 }
