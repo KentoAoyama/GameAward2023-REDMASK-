@@ -28,19 +28,73 @@ public class PerformanceEvent
     private PerformanceMovement[] _move = default;
     [SerializeField]
     private PerformanceAnimation[] _animation = default;
+    [SerializeField]
+    private TalkSE _talkSE = default;
 
     private List<TweenerCore<Vector3, Vector3, VectorOptions>> _mover = new List<TweenerCore<Vector3, Vector3, VectorOptions>>();
 
-    private bool _isFire = false;   
+    private bool _isFire = false;
     public bool IsFire => _isFire;
+
+    private string _cueName = "";
+
+    private float _timer = 0f;
+
+    private int _index = -1;
+
+    private string _currentText = "";
+
+    private float _talkDelay = 0.5f;
+
+    private enum TalkSE
+    {
+        None,
+        Player,
+        Target,
+        Boss,
+        Robot
+    }
 
     public async UniTask Execute()
     {
         // 登録されたUnityEventを実行
         _awake?.Invoke();
+
         // テキストを更新
+        Tween t = default;
         if (_text != null)
-            _text.text = _messageText;
+        {
+            //_text.text = _messageText;
+            t = _text.DOText(_messageText, _time - _talkDelay).SetEase(Ease.Linear);
+
+            switch (_talkSE)
+            {
+                //case TalkSE.Player:
+                //    _cueName = "SE_Talk_Player";
+                //    break;
+                //case TalkSE.Target:
+                //    _cueName = "SE_Talk_Target";
+                //    break;
+                //case TalkSE.Boss:
+                //    _cueName = "SE_Talk_Boss";
+                //    break;
+                //case TalkSE.Robot:
+                //    _cueName = "SE_Talk_Robot";
+                //    break;
+                case TalkSE.Player:
+                    _cueName = "SE_Talk_Player_solo";
+                    break;
+                case TalkSE.Target:
+                    _cueName = "SE_Talk_Target_solo";
+                    break;
+                case TalkSE.Boss:
+                    _cueName = "SE_Talk_Boss_solo";
+                    break;
+                case TalkSE.Robot:
+                    _cueName = "SE_Talk_Robot_solo";
+                    break;
+            }
+        }
         // 移動を開始
         foreach (var e in _move)
         {
@@ -82,18 +136,33 @@ public class PerformanceEvent
         });
 
         // このイベントを終了する。
+        FinishEvent(t);
+    }
+
+    private void FinishEvent(Tween textTween)
+    {
+        if (_text != null)
+            _text.text = " ";
 
         // DOTween をキル
+        textTween.Kill();
         foreach (var e in _mover)
         {
             e?.Kill();
         }
     }
 
-    private float _timer = 0f;
     public void Update()
     {
         _timer += Time.deltaTime;
+
+        if (_messageText.Length < 3 || _cueName == "" || _talkSE == TalkSE.None) return;
+        
+        if (_currentText != _text.text)
+        {
+            GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", _cueName);
+            _currentText = _text.text;
+        }
     }
 
     [Serializable]

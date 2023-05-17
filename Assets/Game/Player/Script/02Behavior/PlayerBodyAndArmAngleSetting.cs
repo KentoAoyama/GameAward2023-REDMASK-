@@ -14,6 +14,11 @@ namespace Player
         [Header("頭のイラスト、順番に入れてね")]
         [Tooltip("頭のイラスト、順番に入れてね"), SerializeField] private List<Sprite> _heads = new List<Sprite>();
 
+        [Header("回避中の頭のイラスト")]
+        [Tooltip("頭のイラスト、順番に入れてね"), SerializeField] private List<Sprite> _headsAvoid = new List<Sprite>();
+
+        [SerializeField] private GameObject _headAvoid;
+
         [Header("======上半身の設定======")]
 
         [Header("上半身(前向き)の設定のSpriteRenderer")]
@@ -24,6 +29,10 @@ namespace Player
 
         [Header("上半身(後ろ向き)の設定のSprite")]
         [Tooltip("上半身(後ろ向き)の設定のSprite"), SerializeField] private Sprite _upperBodyBackSprite;
+
+
+        [SerializeField] private GameObject _upperBodyAvoidRight;
+        [SerializeField] private GameObject _upperBodyAvoidLeft;
 
         [Header("======下半身の設定======")]
 
@@ -37,8 +46,8 @@ namespace Player
         [Tooltip("下半身(後ろ向き)の設定のSprite"), SerializeField] private Sprite _downBodyBackSprite;
 
         [Header("======腕の設定======")]
-        [Header("腕のオブジェクト")]
-        [Tooltip("腕のオブジェクト"), SerializeField] private GameObject _arm;
+        [Header("通常の腕のオブジェクト")]
+        [Tooltip("通常の腕のオブジェクト"), SerializeField] private GameObject _arm;
 
         [Header("腕のSprite")]
         [Tooltip("腕のSprite"), SerializeField] private SpriteRenderer _armSprite;
@@ -46,12 +55,16 @@ namespace Player
         [Header("腕、順番に入れてね")]
         [Tooltip("腕、順番に入れてね"), SerializeField] private List<GameObject> arms = new List<GameObject>();
 
+        [Header("腕、順番に入れてね")]
+        [Tooltip("腕、順番に入れてね"), SerializeField] private List<GameObject> _armsAavoid = new List<GameObject>();
+
+        private int _animationScaleX = 1;
+
+
         private int _nowMuzzleNum;
 
 
-        public Transform ArmCenterPos => _arm.transform;
 
-        public int MuzzleNum => _nowMuzzleNum;
 
         private float _angleRight = default;
 
@@ -63,6 +76,13 @@ namespace Player
         private Vector3 _currentMousePos;
 
         private PlayerController _playerController;
+
+        public int AnimationScaleX => _animationScaleX;
+        public Transform ArmCenterPos => _arm.transform;
+
+        public int MuzzleNum => _nowMuzzleNum;
+
+        public GameObject Arm => _arm;
 
         public void Init(PlayerController playerController)
         {
@@ -135,10 +155,18 @@ namespace Player
 
         public void Update()
         {
-            if(!_playerController.GunSetUp.IsGunSetUp || _playerController.PlayerAnimatorControl.IsAnimationNow)
+            if (GameManager.Instance.PauseManager.PauseCounter > 0)
+            {
+                return;
+            } // ポーズ中は何もできない
+
+
+            if (!_playerController.GunSetUp.IsGunSetUp || _playerController.PlayerAnimatorControl.IsAnimationNow)
             {
                 return;
             }
+
+
 
             Vector2 _aimingAngle = default;
 
@@ -149,7 +177,6 @@ namespace Player
                 {
                     _aimingAngle = _playerController.InputManager.GetValue<Vector2>(InputType.LookingAngleGamePad);
                     _playerController.RevolverOperator.StopRevolverReLoad();
-                    _playerController.PlayerAnimatorControl.GunSet();
                     _playerController.Revolver.OffDrawAimingLine(true);
                 }
             }
@@ -164,60 +191,103 @@ namespace Player
 
                 float distance = Vector2.Distance(mouseDir, _currentMousePos);
                 _currentMousePos = mouseDir;
-                if(distance> 3f)
+                if (distance > 3f)
                 {
                     _playerController.RevolverOperator.StopRevolverReLoad();
-                    _playerController.PlayerAnimatorControl.GunSet();
                     _playerController.Revolver.OffDrawAimingLine(true);
                 }
+            }
+
+            if(_aimingAngle.x>=0)
+            {
+                _animationScaleX = 1;
+            }
+            else
+            {
+                _animationScaleX = -1;
             }
 
             //360度の角度を取得
             float armAngle = Vector2ToAngle(_playerController.Move.MoveHorizontalDir, _aimingAngle, false);
 
-            //腕の角度を変更
-            _arm.transform.rotation = Quaternion.Euler(0f, 0f, armAngle);
-
-
-
-            //真上を基準とした角度を取得
-            float angle = Vector2ToAngle(_playerController.Move.MoveHorizontalDir, _aimingAngle, true);
-            var i = Mathf.Abs((int)Mathf.Floor(angle / 30));
-
-            //頭のSpriteを変更        
-            _headSprite.sprite = _heads[i];
-            //腕のを変更
-            arms.ForEach(i => i.SetActive(false));
-            arms[i].SetActive(true);
-
-            _nowMuzzleNum = i;
-
-
-            if (_playerController.Move.MoveHorizontalDir > 0)
+            if (!_playerController.Avoidance.IsAvoidanceNow)
             {
-                if (0 <= angle && angle < 180)
+                //腕の角度を変更
+                _arm.transform.rotation = Quaternion.Euler(0f, 0f, armAngle);
+
+                //真上を基準とした角度を取得
+                float angle = Vector2ToAngle(_playerController.Move.MoveHorizontalDir, _aimingAngle, true);
+                var i = Mathf.Abs((int)Mathf.Floor(angle / 30));
+
+                //頭のSpriteを変更        
+                _headSprite.sprite = _heads[i];
+                //腕のを変更
+                arms.ForEach(i => i.SetActive(false));
+                arms[i].SetActive(true);
+
+                _nowMuzzleNum = i;
+
+
+                if (_playerController.Move.MoveHorizontalDir > 0)
                 {
-                    _upperBodySpriteRenderer.sprite = _upperBodySprite;
-                    _downBodySpriteRenderer.sprite = _downBodySprite;
+                    if (0 <= angle && angle < 180)
+                    {
+                        _upperBodySpriteRenderer.sprite = _upperBodySprite;
+                        _downBodySpriteRenderer.sprite = _downBodySprite;
+                    }
+                    else
+                    {
+                        _upperBodySpriteRenderer.sprite = _upperBodyBackSprite;
+                        _downBodySpriteRenderer.sprite = _downBodyBackSprite;
+                    }
                 }
                 else
                 {
-                    _upperBodySpriteRenderer.sprite = _upperBodyBackSprite;
-                    _downBodySpriteRenderer.sprite = _downBodyBackSprite;
+                    if (0 <= angle && angle < 180)
+                    {
+                        _upperBodySpriteRenderer.sprite = _upperBodyBackSprite;
+                        _downBodySpriteRenderer.sprite = _downBodyBackSprite;
+                    }
+                    else
+                    {
+                        _upperBodySpriteRenderer.sprite = _upperBodySprite;
+                        _downBodySpriteRenderer.sprite = _downBodySprite;
+                    }
                 }
             }
             else
             {
-                if (0 <= angle && angle < 180)
+                //360度の角度を取得
+                armAngle = Vector2ToAngle(_playerController.Move.MoveHorizontalDir, _aimingAngle, false);
+
+                //腕の角度を変更
+                _arm.transform.rotation = Quaternion.Euler(0f, 0f, armAngle);
+
+                //真上を基準とした角度を取得
+                float angle = Vector2ToAngle(_playerController.Move.MoveHorizontalDir, _aimingAngle, true);
+
+
+
+                if (angle >= 0 && angle <= 180)
                 {
-                    _upperBodySpriteRenderer.sprite = _upperBodyBackSprite;
-                    _downBodySpriteRenderer.sprite = _downBodyBackSprite;
+                    _upperBodyAvoidRight.SetActive(true);
+                    _upperBodyAvoidLeft.SetActive(false);
                 }
                 else
                 {
-                    _upperBodySpriteRenderer.sprite = _upperBodySprite;
-                    _downBodySpriteRenderer.sprite = _downBodySprite;
+                    _upperBodyAvoidRight.SetActive(false);
+                    _upperBodyAvoidLeft.SetActive(true);
                 }
+
+                var i = Mathf.Abs((int)Mathf.Floor(angle / 30));
+
+                //頭のSpriteを変更        
+                _headSprite.sprite = _headsAvoid[0];
+                //腕のを変更
+                _armsAavoid.ForEach(i => i.SetActive(false));
+                _armsAavoid[i].SetActive(true);
+
+                _nowMuzzleNum = i;
             }
         }
     }

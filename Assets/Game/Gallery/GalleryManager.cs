@@ -12,20 +12,21 @@ public class GalleryManager
     [SerializeField] // 保存用
     private bool[] _openedID = new bool[_maxGalleryID]
     {
-        true,true,false,true,
-        true,true,false,true
+        false,false,false,false,
+        false,false,false,false
     };
 
     private readonly string _saveFileName = "GalleryData";
     private const int _maxGalleryID = 8;
 
-    public void Save()
+    private void Save()
     {
         SaveLoadManager.Save<GalleryManager>(this, _saveFileName);
     }
     public void Load()
     {
         var temp = SaveLoadManager.Load<GalleryManager>(_saveFileName);
+        if (temp == null) return;
         this._openedID = temp._openedID;
     }
 
@@ -34,6 +35,7 @@ public class GalleryManager
         try
         {
             _openedID[id] = value;
+            Save();
         }
         catch (IndexOutOfRangeException)
         {

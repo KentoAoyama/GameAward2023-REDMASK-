@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Cysharp.Threading.Tasks;
 
 namespace Player
 {
@@ -11,26 +12,9 @@ namespace Player
         [Header("構えるまでの時間(秒)")]
         [SerializeField] private float _setUpTime = 0.2f;
 
-        [Header("ゲージの最大値(秒)")]
-        [SerializeField] private float _gageMax = 5f;
-
-        [Header("ゲージ回復の速さ。1秒*この値だよ")]
-        [SerializeField] private float _gageHealPercent = 1f;
-
-        [Header("ゲージを回復するまでの空き時間")]
-        [SerializeField] private float _gageHealWaitTime = 1f;
-
-        [Header("ゲージ用のスライダー")]
-        [SerializeField] private Slider _gageSlider;
-
         [Header("Test用、時遅いのText")]
         [SerializeField]
         private GameObject _testSlowTimeText;
-
-        /// <summary>現在のゲージ量</summary>
-        private float _nowGage = 0;
-
-        private float _gageHealWaitTimeCount = 0;
 
         private float _setUpTimeCount = 0;
 
@@ -50,49 +34,95 @@ namespace Player
         private bool _isGunSetUping = false;
 
         private bool _isNoGage = false;
+
+        private bool _isReserveSetUpAvoid = false;
+
         public bool IsGunSetUp => _isGunSetUp;
 
         public bool IsGunSetUpping => _isGunSetUping;
 
+
+        public bool IsPause { get; private set; } = false;
+
+        public async void Pause()
+        {
+            await UniTask.WaitUntil(() => _playerController != null);
+            // Updateを停止する
+            IsPause = true;
+        }
+        public void Resume()
+        {
+            // Updateを再開する
+            IsPause = false;
+
+            CheckRelesedSetUp();
+
+
+        }
+
         public void Init(PlayerController playerController)
         {
             _playerController = playerController;
-
-            _nowGage = _gageMax;
-
-            _gageSlider.maxValue = _gageMax;
         }
 
 
         public void UpData()
         {
+            if (GameManager.Instance.PauseManager.PauseCounter > 0)
+            {
+                return;
+            } // ポーズ中は何もできない
+
             if (!_playerController.GroungChecker.IsHit(_playerController.Move.MoveHorizontalDir))
             {
                 return;
             }   //空中では出来ない
 
 
-            //
-            if (_playerController.Proximity.IsProximityNow || _playerController.Avoidance.IsAvoidanceNow) return;
+            // 近接攻撃中、
+            if (_playerController.Proximity.IsProximityNow) return;
+
+            if (_playerController.Avoidance.IsAvoidanceNow && !_playerController.GunSetUp.IsGunSetUp && _playerController.InputManager.IsPressed[InputType.GunSetUp] && !_isReserveSetUpAvoid)
+            {
+                Debug.Log("dd");
+                _isReserveSetUpAvoid = true;
+            }
+
+            if (_isReserveSetUpAvoid)
+            {
+                Debug.Log("check");
+                if (!_playerController.PlayerAnimatorControl.IsAnimationNow)
+                {
+                    Debug.Log("cc");
+                    _isReserveSetUpAvoid = false;
+
+                    //重力を戻す
+                    _playerController.Rigidbody2D.gravityScale = 1f;
+
+                    _isGunSetUp = true;
+                    _isGunSetUping = false;
+
+                    if (!_isSlowTimeNow)
+                    {
+                        DoSlow();
+                    }
+
+                    _playerController.PlayerAnimatorControl.GunSet(true);
+                }
+            }
+
 
 
             //構えの入力を離した場合
             if (_playerController.InputManager.IsReleased[InputType.GunSetUp])
             {
+                EndSlowTime();
+
                 //アニメーションを設定
                 _playerController.PlayerAnimatorControl.GunSetEnd();
 
-                //ゲージが余っていた時に時遅を解除
-                if (_nowGage > 0)
-                {
-                    EndSlowTime();
-                }
-
                 //構えにかかる時間の計測をリセット
                 _setUpTimeCount = 0;
-
-                //ゲージを回復するまでの計測をリセット
-                _gageHealWaitTimeCount = 0;
 
                 //構え、状態を解除
                 _isGunSetUp = false;
@@ -106,16 +136,19 @@ namespace Player
                 //構え中、のboolをfalseに
                 _isCanselSutUping = false;
 
+
+                _playerController.Avoidance.EndThereAvoidance();
             }
 
             //構えのボタンを押したら
-            if (_playerController.InputManager.IsPressed[InputType.GunSetUp])
+            if (_playerController.InputManager.IsPressed[InputType.GunSetUp] )
             {
                 //構えてる最中
                 _isGunSetUping = true;
             }
 
 
+            //構えてはじめている間の処理。一定時間構えボタンを押していたら構える
             if (_isGunSetUping)
             {
                 if (_isGunSetUp || _isCanselSutUping)
@@ -133,60 +166,26 @@ namespace Player
                     _isGunSetUp = true;
                     _isGunSetUping = false;
 
-                    if (_nowGage > 0)
-                    {
-                        DoSlow();
-                        _playerController.PlayerAnimatorControl.GunSet();
+                    DoSlow();
+                    _playerController.PlayerAnimatorControl.GunSet(false);
 
-                        _isNoGage = false;
-                    }
+                    _isNoGage = false;
                 }
+
+                //速度の減速処理
+                _playerController.Move.VelocityDeceleration();
 
             }   //構えボタンを押したら構える
 
 
-
+            //構えている最中の処理 
+            //構えてる間、ゲージを減らす
             if (_isGunSetUp)
             {
-                if (!_isNoGage)
-                {
-                    _nowGage -= Time.deltaTime;
+                //速度の減速処理
+                _playerController.Move.VelocityDeceleration();
 
-                    _gageSlider.value = _nowGage;
-
-                    if (_nowGage <= 0)
-                    {
-                        _nowGage = 0;
-
-                        EndSlowTime();
-                    }
-                }
-
-            }   //構えてる間、ゲージを減らす
-            else
-            {
-                if (_gageHealWaitTimeCount < _gageHealWaitTime)
-                {
-                    _gageHealWaitTimeCount += Time.deltaTime;
-
-                }   //ゲージを回復するまでの時間を計測
-                else
-                {
-                    if (_nowGage < _gageMax)
-                    {
-                        //ゲージを回復
-                        _nowGage += Time.deltaTime * _gageHealPercent;
-
-                        _gageSlider.value = _nowGage;
-
-
-                        if (Mathf.Abs(_gageMax - _nowGage) < 0.3f)
-                        {
-                            _nowGage = _gageMax;
-                        }
-                    }
-                }
-            }
+            }       //構えてないときの処理。ゲージを回復する
         }
 
 
@@ -204,12 +203,7 @@ namespace Player
 
                     _setUpTimeCount = 0;
 
-                    _gageHealWaitTimeCount = 0;
-
-                    if (_nowGage > 0)
-                    {
-                        EndSlowTime();
-                    }
+                    EndSlowTime();
 
                     _isEmergencyStopSlowTime = false;
                     _isCanselSutUping = false;

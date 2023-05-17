@@ -24,16 +24,18 @@ public class TitleController : MonoBehaviour
     {
         GameManager.Instance.AudioManager.Load();
         GameManager.Instance.AudioManager.PlayBGM("CueSheet_Gun", "BGM_Title");
+        GameManager.Instance.GalleryManager.Load();
+
         Setup();
     }
 
     private void Update()
     {
-        if (EventSystem.current.currentSelectedGameObject == null)
-        {
-            EventSystem.current.SetSelectedGameObject(_lastSelectedObject);
-        }  
-        else if (EventSystem.current.currentSelectedGameObject != _lastSelectedObject)
+        // if (EventSystem.current.currentSelectedGameObject == null)
+        // {
+        //     EventSystem.current.SetSelectedGameObject(_lastSelectedObject);
+        // }  
+        if (EventSystem.current.currentSelectedGameObject != _lastSelectedObject)
         {
             _lastSelectedObject = EventSystem.current.currentSelectedGameObject;
         }

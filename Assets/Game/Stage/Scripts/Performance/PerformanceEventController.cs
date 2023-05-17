@@ -22,6 +22,8 @@ public class PerformanceEventController : MonoBehaviour
 
     private async void Awake()
     {
+        GameManager.Instance.AudioManager.StopBGM();
+
         for (_currentIndex = 0; _currentIndex < _performanceEvents.Length; _currentIndex++)
         {
             await _performanceEvents[_currentIndex].Execute();

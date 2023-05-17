@@ -26,6 +26,8 @@ public class PerformanceUtility : MonoBehaviour
     [SerializeField]
     private int _shakeNumber = 50;
 
+    int seIndex = -1;
+
     private void Start()
     {
         _line.enabled = false;
@@ -46,6 +48,21 @@ public class PerformanceUtility : MonoBehaviour
     {
         Debug.Log("SEçƒê∂");
         GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Enemy_Damage");
+    }
+
+    public void BackGroundInsidePlay()
+    {
+        seIndex = GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_BackGround_Outside");
+    }
+
+    public void BackGroundOutsidePlay()
+    {
+        seIndex = GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_BackGround_Outside");
+    }
+
+    public void BackGroundStop()
+    {
+        GameManager.Instance.AudioManager.StopSE(seIndex);
     }
 
     public void GunShoot(float interval)

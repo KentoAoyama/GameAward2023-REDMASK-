@@ -23,10 +23,14 @@ namespace Player
         [Header("排莢にかかる時間")]
         [SerializeField] private float _excretedPodsTime = 1;
 
-        private float _countExcretedPodsTime = 0;
-
         [Header("排莢にかかる時間")]
         [SerializeField] private float _setBulletTime = 1;
+
+        [Header("マズルフラッシュ")]
+        [SerializeField] private MuzzleFlashController _muzzleFlash;
+
+
+        private float _countExcretedPodsTime = 0;
 
         private float _countSetBulletTime = 0;
 
@@ -47,7 +51,7 @@ namespace Player
                 return;
             } // ポーズ中は何もできない
 
-            if ( _playerController.Proximity.IsProximityNow)
+            if (_playerController.Proximity.IsProximityNow)
             {
                 return;
             }//近接攻撃中はできない
@@ -60,10 +64,23 @@ namespace Player
                     _playerController.Revolver.CanFire)
                 {
                     //アニメーションの再生
-                    _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.Fire);
+                    if (_playerController.Avoidance.IsAvoidanceNow)
+                    {
+                        _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.AvoidFire);
+                    }
+                    else
+                    {
+                        _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.Fire);
+                    }
 
+
+                    //マズルフラッシュを再生
+                    _muzzleFlash.PlayMuzzleFlash();
+
+                    //発砲処理
                     _playerController.Revolver.Fire();
 
+                    //リロードの中断処理
                     StopRevolverReLoad();
 
                     //特定行動中に構えを解除していないかどうかを確認する
@@ -73,7 +90,7 @@ namespace Player
                 }
             }
 
-            if(_playerController.Avoidance.IsAvoidanceNow)
+            if (_playerController.Avoidance.IsAvoidanceNow)
             {
                 return;
             } //回避中はできない
@@ -165,17 +182,14 @@ namespace Player
                 /////////////////////////////////TEST用!!!!!!!!!!!!!!!!//////////////////////////
                 _setBulletText.SetActive(true);
 
-
-                Debug.Log("F");
-
                 _countSetBulletTime += Time.deltaTime;
                 if (_setBulletTime < _countSetBulletTime)
                 {
                     /////////////////////////////////TEST用!!!!!!!!!!!!!!!!//////////////////////////
                     _setBulletText.SetActive(false);
 
-                //弾を籠めるアニメーション
-                _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.ReLoad);
+                    //弾を籠めるアニメーション
+                    _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.ReLoad);
                     Debug.Log("N");
 
                     //特定行動中に構えを解除していないかどうかを確認する
@@ -189,9 +203,9 @@ namespace Player
 
 
                     //最大まで弾を居れたら強制的に構えに戻す
-                    if(index==5 && _playerController.GunSetUp.IsGunSetUp)
+                    if (index == 5 && _playerController.GunSetUp.IsGunSetUp)
                     {
-                        _playerController.PlayerAnimatorControl.GunSet();
+                      //  _playerController.PlayerAnimatorControl.GunSet(false);
                     }
 
                     // UIで現在選択している弾を装填する

@@ -9,14 +9,28 @@ namespace Player
     public class Move
     {
 
-        [Header("移動方向、検出")]
+        [Header("===坂道検出の設定===")]
         [Header("地面のレイヤー")]
         [SerializeField] private LayerMask _ground;
         [Header("地面を検知するRayの長さ")]
         [SerializeField] private float _rayLong = 1.2f;
-        [Header("地面を検知するRayの長さ")]
+        [Header("前後、真下のRayのOffSet")]
         [SerializeField] private float _rayOffSetX = 0.2f;
+        [Header("足元化から前方向のRayの長さ")]
+        [SerializeField] private float _frontRayLong = 1.2f;
+        [Header("足元化から前方向のRayのOffSet")]
+        [SerializeField] private Vector2 _frontRayOffSetX = default;
 
+        [Header("前後、真下のRayのOffSet")]
+        [SerializeField] private float _midleRayOffSetX = 0.1f;
+
+        [Header("右側斜めのRayのOffSet")]
+        [SerializeField] private Vector2 _crossRightRayOffSetX = default;
+
+        [Header("左側斜めのRayのOffSet")]
+        [SerializeField] private Vector2 _crossLeftRayOffSetX = default;
+
+        [Header("===移動の設定===")]
         [Header("水平移動")]
         [Header("地上 : 移動開始")]
         [Tooltip("低速移動速度"), SerializeField]
@@ -54,7 +68,13 @@ namespace Player
         private float _countTime = 0;
         private float _time = 0.7f;
 
+        private bool _isSound = false;
+
+        private int _moveSoundIndex = -1;
+
         private PlayerController _playerController;
+
+        public int MoveSoundIndex => _moveSoundIndex;
 
         /// <summary>
         /// 移動できるかどうかを表す値 <br/>
@@ -106,72 +126,183 @@ namespace Player
 
         public bool CheckMoveDir(float inputH)
         {
-            if (_isJump)
-            {
-                _countTime += Time.deltaTime;
-                if (_time < _countTime)
-                {
-                    _isJump = false;
-                    _countTime = 0;
-                }
-                return false;
-            }
+            //足元から正面にRayを飛ばす
+            RaycastHit2D frontRay = Physics2D.Raycast((Vector2)_playerController.Player.transform.position + _frontRayOffSetX,
+                                     Vector2.right,
+                                    _frontRayLong, _ground);
 
-            //プレイヤーから、下方向(手前、後ろ)にRayを打つ
-            RaycastHit2D hitPluseX;
-            RaycastHit2D hitMinusX;
+            RaycastHit2D frontRayL = Physics2D.Raycast((Vector2)_playerController.Player.transform.position + _frontRayOffSetX,
+                         Vector2.left,
+                        _frontRayLong, _ground);
 
-            Vector2 rayStartPlus = new Vector2(_rayOffSetX + _playerController.Player.transform.position.x, _playerController.Player.transform.position.y);
-            Vector2 rayStartMinus = new Vector2(-_rayOffSetX + _playerController.Player.transform.position.x, _playerController.Player.transform.position.y);
 
-            hitPluseX = Physics2D.Raycast(rayStartPlus, Vector2.down, _rayLong, _ground);
-            hitMinusX = Physics2D.Raycast(rayStartMinus, Vector2.down, _rayLong, _ground);
+            //プレイヤーから、下方向(手前)にRayを打つ
+            RaycastHit2D hitPluseX = Physics2D.Raycast(new Vector2(_rayOffSetX + _playerController.Player.transform.position.x, _playerController.Player.transform.position.y),
+                                    Vector2.down,
+                                    _rayLong,
+                                    _ground);
 
-            Debug.DrawRay(rayStartPlus, Vector2.down * _rayLong, Color.blue);
-            Debug.DrawRay(rayStartMinus, Vector2.down * _rayLong, Color.blue);
 
+            //プレイヤーから、下方向(後ろ)にRayを打つ
+            RaycastHit2D hitMinusX = Physics2D.Raycast(new Vector2(-_rayOffSetX + _playerController.Player.transform.position.x, _playerController.Player.transform.position.y),
+                                    Vector2.down,
+                                    _rayLong,
+                                    _ground);
+
+
+            //前方向にRay
+            // Debug.DrawRay((Vector2)_playerController.Player.transform.position + _frontRayOffSetX, Vector2.right * _frontRayLong, Color.green);
+            //Debug.DrawRay((Vector2)_playerController.Player.transform.position + _frontRayOffSetX, Vector2.left * _frontRayLong, Color.green);
+
+            //Debug.DrawRay(new Vector2(_rayOffSetX + _playerController.Player.transform.position.x, _playerController.Player.transform.position.y), Vector2.down * _rayLong, Color.yellow);
+            // Debug.DrawRay(new Vector2(-_rayOffSetX + _playerController.Player.transform.position.x, _playerController.Player.transform.position.y), Vector2.down * _rayLong, Color.yellow);
 
             Vector2 moveDir = Vector2.right * inputH;
 
+            float angle = 0;
 
-            //真上と、法線の角度を求める
-            float angle = Vector3.Angle(Vector2.up, hitPluseX.normal);
 
-            if (hitPluseX.normal.x > 0)
+            Vector2 dirR = (Vector2)_playerController.Player.transform.position + _crossRightRayOffSetX - (Vector2)_playerController.Player.transform.position;
+            Vector2 dirL = (Vector2)_playerController.Player.transform.position + _crossLeftRayOffSetX - (Vector2)_playerController.Player.transform.position;
+
+            RaycastHit2D hitCrossR = Physics2D.Raycast(_playerController.Player.transform.position,
+                               dirR,
+                               _rayLong,
+                               _ground);
+
+            RaycastHit2D hitCrossL = Physics2D.Raycast(_playerController.Player.transform.position,
+                   dirL,
+                   _rayLong,
+                   _ground);
+
+            Debug.DrawRay(_playerController.Player.transform.position, dirL * _rayLong, Color.red);
+            Debug.DrawRay(_playerController.Player.transform.position, dirR * _rayLong, Color.red);
+
+            if (_playerController.Player.transform.localScale.x == 1)
             {
-                angle = 360 - angle;
-            }   //左上に進む坂に対応させる
+                //右側を登っている。
+                if (hitCrossR.normal.x < 0)
+                {
+                    //真上と、法線の角度を求める
+                    angle = Vector3.Angle(Vector2.up, hitCrossR.normal);
 
-            float angleDown = Vector3.Angle(Vector2.up, hitMinusX.normal);
+                    if (hitCrossR.normal.x > 0)
+                    {
+                        angle = 360 - angle;
+                    }   //左上に進む坂に対応させる
 
-            if (hitMinusX.normal.x > 0)
+                    dir = Quaternion.AngleAxis(angle, Vector3.forward) * moveDir;
+
+                    Debug.Log($"右側を登っている");
+                    return true;
+                }
+
+                //左側の坂を下っている。
+                if (hitCrossL.normal.x > 0)
+                {
+                    //真上と、法線の角度を求める
+                    angle = Vector3.Angle(Vector2.up, hitCrossL.normal);
+
+                    if (hitCrossL.normal.x > 0)
+                    {
+                        angle = 360 - angle;
+                    }   //左上に進む坂に対応させる
+
+                    dir = Quaternion.AngleAxis(angle, Vector3.forward) * moveDir;
+
+                    Debug.Log($"左側の坂を下っている");
+                    return true;
+                }
+
+                //左側の坂を下り終えそうなとき
+                //"右側の法線が真上" && "左側のRayが当たっている"
+                if (hitCrossR.normal.x == 0 && hitCrossL.normal.x > 0)
+                {
+                    //真上と、法線の角度を求める
+                    angle = Vector3.Angle(Vector2.up, hitCrossL.normal);
+
+                    if (hitCrossL.normal.x > 0)
+                    {
+                        angle = 360 - angle;
+                    }   //左上に進む坂に対応させる
+
+                    dir = Quaternion.AngleAxis(angle, Vector3.forward) * moveDir;
+
+                    Debug.Log($"左側の坂を下り終えそうなとき");
+                    return true;
+                }
+
+                //右側の坂を登り終えそうなとき
+                //"右側の法線が真上" && "左側のRayが当たってない"　|| "左側の法線が左向き"
+                if (hitCrossR.normal.x == 0 && (!hitCrossL || hitCrossL.normal.x < 0))
+                {
+                    Debug.Log($"右側の坂を登り終えそうなとき");
+                    return false;
+                }
+            }
+            else　//プレイヤーが左向きの時
             {
-                angleDown = 360 - angleDown;
-            }   //左上に進む坂に対応させる
+                //左側の坂を登っている
+                if (hitCrossL.normal.x > 0)
+                {
+                    //真上と、法線の角度を求める
+                    angle = Vector3.Angle(Vector2.up, hitCrossL.normal);
 
+                    if (hitCrossL.normal.x > 0)
+                    {
+                        angle = 360 - angle;
+                    }   //左上に進む坂に対応させる
 
-            //法線が斜めの物を優先してとる
-            if (hitPluseX.normal.x != 0)
-            {
-                dir = Quaternion.AngleAxis(angle, Vector3.forward) * moveDir;
-            }   
-            else
-            {
-                dir = Quaternion.AngleAxis(angleDown, Vector3.forward) * moveDir;
+                    dir = Quaternion.AngleAxis(angle, Vector3.forward) * moveDir;
+
+                    Debug.Log($"左側の坂を登っている");
+                    return true;
+                }
+
+                //右側を下っている
+                if (hitCrossR.normal.x < 0)
+                {
+                    //真上と、法線の角度を求める
+                    angle = Vector3.Angle(Vector2.up, hitCrossR.normal);
+
+                    if (hitCrossR.normal.x > 0)
+                    {
+                        angle = 360 - angle;
+                    }   //左上に進む坂に対応させる
+
+                    dir = Quaternion.AngleAxis(angle, Vector3.forward) * moveDir;
+
+                    Debug.Log($"右側を下っている");
+                    return true;
+                }
+
+                //右側の坂を下り終えそうなとき
+                //"左側の法線が真上" && "右側のRayが当たっている"
+                if (hitCrossL.normal.x == 0 && hitCrossR.normal.x < 0)
+                {
+                    //真上と、法線の角度を求める
+                    angle = Vector3.Angle(Vector2.up, hitCrossL.normal);
+
+                    if (hitCrossL.normal.x > 0)
+                    {
+                        angle = 360 - angle;
+                    }   //左上に進む坂に対応させる
+
+                    dir = Quaternion.AngleAxis(angle, Vector3.forward) * moveDir;
+
+                    Debug.Log($"右側上り坂Hit");
+                    return true;
+                }
+
+                //左側の坂を登り終えそうなとき
+                //"左側の法線が真上" && "右側のRayが当たってない"　|| "右側の法線が左向き"
+                if (hitCrossL.normal.x == 0 && (!hitCrossR || hitCrossR.normal.x > 0))
+                {
+                    return false;
+                }
             }
 
-
-
-
-            if (hitPluseX.collider == null && hitMinusX.collider == null)
-            {
-                return false;
-            }
-            else
-            {
-                Debug.DrawRay(_playerController.Player.transform.position, dir * _rayLong, Color.red);
-                return true;
-            }
+            return false;
         }
 
         public void Update()
@@ -180,6 +311,12 @@ namespace Player
             if (IsPause || _playerController.Avoidance.IsAvoidanceNow || _playerController.Proximity.IsProximityNow
                 || _playerController.GunSetUp.IsGunSetUp || _playerController.GunSetUp.IsGunSetUpping)
             {
+                if (_isSound)
+                {
+                    _isSound = false;
+                    GameManager.Instance.AudioManager.StopSE(_moveSoundIndex);
+                }
+
                 return;
             }
 
@@ -189,7 +326,11 @@ namespace Player
             if (_playerController.InputManager.IsExist[InputType.MoveHorizontal] && CanMove)
             {
 
-
+                if (!_isSound && !_isJump)
+                {
+                    _isSound = true;
+                    _moveSoundIndex = GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Run");
+                }
 
                 // 1フレーム前の水平移動方向（入力方向）を保存しておく
                 _previousDir = _moveHorizontalDir;
@@ -249,6 +390,12 @@ namespace Player
             // 入力がないとき、現在速度を減算する。
             else
             {
+                if (_isSound)
+                {
+                    _isSound = false;
+                    GameManager.Instance.AudioManager.StopSE(_moveSoundIndex);
+                }
+
                 if (_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX))
                 {
                     _currentHorizontalSpeed -= Time.deltaTime * _landDeceleration * _moveHorizontalDir * gameTime;
@@ -290,7 +437,7 @@ namespace Player
                 {
                     _playerController.Rigidbody2D.velocity =
                             new Vector2(_currentHorizontalSpeed,
-                           _playerController.Rigidbody2D.velocity.y);
+                           -1);
                 }
             }
             else
@@ -302,29 +449,37 @@ namespace Player
             }
 
 
-            if (CanJump)
-            {
-                // ジャンプ処理
-                if (_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX) &&
-                    _playerController.InputManager.IsPressed[InputType.Jump])
-                {
-                    //音を鳴らす
-                    GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Jump");
+            //if (CanJump)
+            //{
+            //    // ジャンプ処理
+            //    if (_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX) &&
+            //        _playerController.InputManager.IsPressed[InputType.Jump])
+            //    {
 
-                    //ジャンプのアニメーション
-                    _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.Jump);
+            //        if (_isSound)
+            //        {
+            //            Debug.Log("StopSound");
+            //            _isSound = false;
+            //            GameManager.Instance.AudioManager.StopSE(_moveSoundIndex);
+            //        }
 
-                    _playerController.Rigidbody2D.velocity =
-                    new Vector2(
-                        _playerController.Rigidbody2D.velocity.x,
-                        _jumpPower);
+            //        //音を鳴らす
+            //        GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Jump");
 
-                    _isJump = true;
+            //        //ジャンプのアニメーション
+            //        _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.Jump);
 
-                    //リロードを中断する
-                    _playerController.RevolverOperator.StopRevolverReLoad();
-                }
-            }
+            //        _playerController.Rigidbody2D.velocity =
+            //        new Vector2(
+            //            _playerController.Rigidbody2D.velocity.x,
+            //            _jumpPower);
+
+            //        _isJump = true;
+
+            //        //リロードを中断する
+            //        _playerController.RevolverOperator.StopRevolverReLoad();
+            //    }
+            //}
 
             //下方向に
             if (!_isJump && _playerController.GroungChecker.IsHit(_moveHorizontalDir))
@@ -368,9 +523,11 @@ namespace Player
             {
                 _playerController.Rigidbody2D.velocity =
                         new Vector2(_currentHorizontalSpeed,
-                       _playerController.Rigidbody2D.velocity.y);
+                       -1);
             }
         }
+
+
 
 
         /// <summary>

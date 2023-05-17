@@ -27,17 +27,18 @@ public class BulletSubtractionButton : MonoBehaviour
 
         if (_storageSiteType == StorageSiteType.Cylinder)
         {
-            _bulletPrepareControl.Cylinder[_index].
-                Subscribe(value => button.interactable = value != Bullet.BulletType.NotSet);
+            BulletPrepareControl.Cylinder[_index].
+                Subscribe(value => button.interactable = value != Bullet.BulletType.NotSet).AddTo(this);
         }
         else if (_storageSiteType == StorageSiteType.GunBelt)
         {
-            _bulletPrepareControl.GunBelt[_index].
-                Subscribe(value => button.interactable = value != Bullet.BulletType.NotSet);
+            BulletPrepareControl.GunBelt[_index].
+                Subscribe(value => button.interactable = value != Bullet.BulletType.NotSet).AddTo(this);
         }
     }
     private void BulletSubtraction()
     {
+        GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Bullets_Selection");
         _bulletPrepareControl.PullBullet(_storageSiteType, _index);
         GameObject a = null;
         if (_storageSiteType == StorageSiteType.Cylinder)

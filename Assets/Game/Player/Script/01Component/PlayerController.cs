@@ -16,18 +16,9 @@ namespace Player
     [RequireComponent(typeof(Rigidbody2D))]
     public class PlayerController : MonoBehaviour, IPausable, IDamageable
     {
-
-        [SerializeField]
-        public GameObject _camerad;
-
-        [Header("Test用。GameOverのUI")]
-        [Tooltip("Test用。GameOverのUI"), SerializeField] private GameObject _gameOverUI;
-
         [Header("プレイヤーのオブジェクト")]
         [Tooltip("プレイヤーのオブジェクト"), SerializeField]
         private GameObject _player;
-
-
 
         [Header("プレイヤーのアニメーター")]
         [Tooltip("プレイヤーのアニメーター"), SerializeField]
@@ -40,41 +31,73 @@ namespace Player
         [Header("演出用のテキスト"), SerializeField]
         private Text _performanceText = default;
 
-
+        [Header("プレイヤーのUIを管理するクラス")]
         [Tooltip("プレイヤーのUIを管理するクラス"), SerializeField]
         private UIController _uIController;
 
+        [Header("アニメーションの設定")]
         [Tooltip("アニメーター制御"), SerializeField]
         private PlayerAnimationControl _playerAnimatorControl = default;
+
+        [Header("構えの設定")]
         [Tooltip("腕のアニメーション"), SerializeField]
         private PlayerBodyAndArmAngleSetting _bodyAngleSetting = default;
+
+        [Header("移動の設定")]
         [Tooltip("移動制御"), SerializeField]
         private Move _move = default;
-        [Tooltip("接地判定"), SerializeField]
-        private OverlapCircle2D _groungChecker = default;
+
+        [Header("移動方向の設定")]
         [Tooltip("移動方向、"), SerializeField, HideInInspector]
         private DirectionControl _directionControler = default;
+
+        [Header("接地判定")]
+        [Tooltip("接地判定"), SerializeField]
+        private OverlapCircle2D _groungChecker = default;
+
+        [Header("構えの設定")]
+        [Tooltip("構え"), SerializeField]
+        private GunSetUp _gunSetUp = default;
+
+        [Header("リボルバー制御")]
         [Tooltip("リボルバー制御"), SerializeField]
         private RevolverOperator _revolverOperator = default;
+
+        [Header("リボルバー")]
         [Tooltip("リボルバー"), SerializeField]
         private Revolver _revolver = default;
+
+        [Header("弾の所持数制御")]
         [Tooltip("弾の所持数制御"), SerializeField]
         private BulletCountManager _bulletCountManager = default;
+
+        [Header("弾の情報を保持,提供するクラス")]
         [Tooltip("弾の情報を保持,提供するクラス"), SerializeField]
         private BulletDataBase _bulletDataBase = default;
+
+        [Header("ライフの設定")]
         [Tooltip("ライフ制御"), SerializeField]
         private LifeController _lifeController = default;
+
+        [Header("回避の設定")]
         [Tooltip("回避制御"), SerializeField]
         private Avoidance _avoidance = default;
 
-        [Tooltip("攻撃当たり判定"), SerializeField]
-        private OverlapBox2D _proximityHitChecker = default;
+        [Header("近接攻撃の設定")]
         [Tooltip("近接攻撃"), SerializeField]
         private Proximity _proximity = default;
+
+        [Header("近接攻撃の当たり判定の設定")]
+        [Tooltip("攻撃当たり判定"), SerializeField]
+        private OverlapBox2D _proximityHitChecker = default;
+
+        [Header("カメラの振動の設定")]
         [Tooltip("カメラ制御"), SerializeField]
         private CameraShake _camraControl = default;
-        [Tooltip("構え"), SerializeField]
-        private GunSetUp _gunSetUp = default;
+
+        [Header("カメラの設定。視点の方向に動く")]
+        [Tooltip("カメラ制御"), SerializeField]
+        private CameraLookControl _camraLookControl = default;
 
 
         private Rigidbody2D _rigidbody2D = null;
@@ -103,9 +126,7 @@ namespace Player
         public OverlapBox2D ProximityHitChecker => _proximityHitChecker;
         public Animator PlayerAnim => _playerAnim;
         public Proximity Proximity => _proximity;
-
         public CameraShake CameraControl => _camraControl;
-
         public GunSetUp GunSetUp => _gunSetUp;
         public PlayerBodyAndArmAngleSetting BodyAnglSetteing => _bodyAngleSetting;
 
@@ -131,6 +152,7 @@ namespace Player
             _camraControl.Init(this);
             _bodyAngleSetting.Init(this);
             _gunSetUp.Init(this);
+            _camraLookControl.Init(this);
 
             IsSetUp = true;
 
@@ -149,15 +171,21 @@ namespace Player
                 _avoidance.Update();          // 回避制御
                 _proximity.Update();          //近接攻撃
 
-                _gunSetUp.UpData();
+                _gunSetUp.UpData();           //構えの制御
 
                 //_camraControl.CameraShakeSpeed(); //カメラの再生速度
 
-                _bodyAngleSetting.Update();
+                _camraLookControl.CameraLook();//カメラの位置の制御
 
+                _bodyAngleSetting.Update();  　//構えの腕の角度の制御
+
+
+                //アニメーターパラメータの設定
                 _playerAnimatorControl.SetAnimatorParameters();
             }
         }
+
+
         private void OnDrawGizmosSelected()
         {
             _groungChecker.OnDrawGizmos(transform, DirectionControler.MovementDirectionX);
@@ -262,6 +290,9 @@ namespace Player
 
             //回避モーションの一時停止
             _avoidance.Pause();
+            _gunSetUp.Pause();
+
+            _playerAnim.speed = 0;
 
             //カメラの振動一時停止
             _camraControl.Pause();
@@ -275,6 +306,9 @@ namespace Player
 
             //回避モーションの再開
             _avoidance.Resume();
+            _gunSetUp.Resume();
+
+            _playerAnim.speed = 1;
 
             //カメラの振動の再開
             _camraControl.Pause();
@@ -288,6 +322,8 @@ namespace Player
             //死体撃ちで、2回呼ばれないようにする
             if (!_isDead)
             {
+                GameManager.Instance.AudioManager.StopSE(_move.MoveSoundIndex);
+
                 //音を鳴らす
                 GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Damage");
 
@@ -297,8 +333,8 @@ namespace Player
                 //死亡した
                 _isDead = true;
 
-                //GameOverのUIを出す
-                _gameOverUI.SetActive(true);
+                //死亡アニメーションの再生
+                _playerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.Dead);
 
                 //近接攻撃中に当たったら、近接攻撃を強制終了させる
                 _proximity.AttackEnd();
@@ -314,9 +350,6 @@ namespace Player
         public void TestRetry()
         {
             _isDead = false;
-
-            //GameOverのUIを消す
-            _gameOverUI.SetActive(false);
         }
 
         // 以下はタイムラインから呼び出す事を想定して作成したメソッド群
