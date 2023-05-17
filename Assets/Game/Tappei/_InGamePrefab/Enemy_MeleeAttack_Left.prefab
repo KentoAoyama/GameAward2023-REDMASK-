@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 203524492051712725}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.5, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 1}
+  m_LocalScale: {x: -0.6, y: 0.6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4631331079718261117}
@@ -107,7 +107,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4631331078965245614}
   - component: {fileID: 4631331078965245615}
-  - component: {fileID: 51713875829038607}
+  - component: {fileID: 1273740427334642712}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -150,7 +150,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!212 &51713875829038607
+--- !u!212 &1273740427334642712
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -218,9 +218,9 @@ GameObject:
   - component: {fileID: 4631331079718261056}
   - component: {fileID: 4631331079718261063}
   - component: {fileID: 4631331079718261062}
-  - component: {fileID: -4842230349947939801}
+  - component: {fileID: -3756041871909875656}
   m_Layer: 6
-  m_Name: Enemy_MeleeAttack
+  m_Name: Enemy_MeleeAttack_Left
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -395,7 +395,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyParamsSO: {fileID: 11400000, guid: 59e0555cd4dd32649959daebff9ba6df, type: 2}
-  _placedFacingLeft: 0
+  _placedFacingLeft: 1
   _idleWhenUndiscover: 0
   _sightRadius: 9
   _sightAngle: 270
@@ -403,7 +403,8 @@ MonoBehaviour:
   _playerFireReactionDistance: 15
   _playerTagName: Player
   _debugStateViewText: {fileID: 0}
---- !u!114 &-4842230349947939801
+  _renderer: {fileID: 1273740427334642712}
+--- !u!114 &-3756041871909875656
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
