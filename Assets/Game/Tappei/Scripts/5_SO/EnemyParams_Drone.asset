@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24b379ef9d371c243b6c6ff6ca95fc63, type: 3}
+  m_Name: EnemyParams_Drone
+  m_EditorClassIdentifier: 
+  _discoverAnimClip: {fileID: 7400000, guid: b5e4434aa1b1ad843a8c52062108af9f, type: 2}
+  _deadAnimClip: {fileID: 0}
+  _attackAnimClip: {fileID: 7400000, guid: 7dfff528769a45c48821cb2e46be6d64, type: 2}
+  _walkSEName: SE_Enemy_Fly
+  _runSEName: SE_Enemy_Fly
+  _attackDelay: 0
+  _walkSpeed: 2
+  _runSpeed: 6
+  _turningPoint: 3
+  _useRandomTurningPoint: 0
+  _attackRange: 7
+  _attackRate: 0.5
+  _minIdleStateTimer: 1
+  _maxIdleStateTimer: 2
