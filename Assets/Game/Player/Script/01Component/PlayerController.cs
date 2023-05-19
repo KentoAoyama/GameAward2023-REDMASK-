@@ -333,9 +333,6 @@ namespace Player
                 //死亡した
                 _isDead = true;
 
-                //死亡アニメーションの再生
-                _playerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.Dead);
-
                 //近接攻撃中に当たったら、近接攻撃を強制終了させる
                 _proximity.AttackEnd();
 
@@ -344,6 +341,9 @@ namespace Player
 
                 //時が遅くなっているのを解除
                 GameManager.Instance.ShaderPropertyController.MonochromeController.SetMonoBlend(0, 0.2f);
+
+                //死亡アニメーションの再生
+                _playerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.Dead);
             }
         }
 
