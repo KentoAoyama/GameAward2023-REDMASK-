@@ -12,8 +12,6 @@ public class MenuPanelController : MonoBehaviour
     private MenuCylinder _cylinder = default;
     [SerializeField]
     private Button _button = default;
-    [SerializeField, Tooltip("何もないボタン")]
-    Selectable _selectable = default;
 
     private bool _panelEnabled = false;
 
@@ -67,7 +65,7 @@ public class MenuPanelController : MonoBehaviour
         if (_panelEnabled) return;
 
         _canvasAnimator.SetBool(_animationParameterName, true);
-        EventSystem.current.SetSelectedGameObject(_selectable.gameObject);
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     private void ClosePanel()
@@ -75,7 +73,7 @@ public class MenuPanelController : MonoBehaviour
         if (!_panelEnabled) return;
 
         _canvasAnimator.SetBool(_animationParameterName, false);
-        EventSystem.current.SetSelectedGameObject(_selectable.gameObject);
+        EventSystem.current.SetSelectedGameObject(null);
         GameManager.Instance.AudioManager.Save();
         _panelEnabled = false;
     }

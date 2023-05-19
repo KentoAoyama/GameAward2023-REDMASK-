@@ -354,6 +354,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac04b6a162e27ff4790b3fbe6e4574fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _eventSystem: {fileID: 2102130709}
   _upButtons:
   - {fileID: 1835416234}
   - {fileID: 2093902926}
@@ -2092,6 +2093,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac04b6a162e27ff4790b3fbe6e4574fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _eventSystem: {fileID: 2102130709}
   _upButtons:
   - {fileID: 24407103}
   - {fileID: 1835416234}
@@ -3144,6 +3146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac04b6a162e27ff4790b3fbe6e4574fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _eventSystem: {fileID: 2102130709}
   _upButtons:
   - {fileID: 1728857289}
   - {fileID: 453166491}
@@ -3505,6 +3508,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac04b6a162e27ff4790b3fbe6e4574fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _eventSystem: {fileID: 2102130709}
   _upButtons:
   - {fileID: 1771986359}
   - {fileID: 1756380090}
@@ -4014,6 +4018,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac04b6a162e27ff4790b3fbe6e4574fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _eventSystem: {fileID: 2102130709}
   _upButtons: []
   _downButtons:
   - {fileID: 865138530}
@@ -4167,7 +4172,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 986847802}
-  - {fileID: 1060986386}
   m_Father: {fileID: 1352464139}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4191,21 +4195,12 @@ MonoBehaviour:
   _iamge: {fileID: 1010448471}
   _fadePanel: {fileID: 986847803}
   _sprites:
-  - key: 0
-    sprite: {fileID: 21300000, guid: 0a773ceeb3522ab458fa6bb8356e8bd4, type: 3}
-    color: {r: 0.8301887, g: 0.8301887, b: 0.8301887, a: 1}
-  - key: 1
-    sprite: {fileID: 21300000, guid: 42f020c5e7110534abf0974281f4b042, type: 3}
-    color: {r: 1, g: 1, b: 1, a: 0}
-  - key: 2
-    sprite: {fileID: 21300000, guid: 29c5d1bc8767c6e49a2a285a9bd908a5, type: 3}
-    color: {r: 1, g: 1, b: 1, a: 0}
-  - key: 5
-    sprite: {fileID: 21300000, guid: a72e796f88d52144e88277717a489ff3, type: 3}
-    color: {r: 1, g: 1, b: 1, a: 0}
+  - {fileID: 21300000, guid: 42f020c5e7110534abf0974281f4b042, type: 3}
+  - {fileID: 0}
+  - {fileID: 21300000, guid: c0a3d6a1b52a8df478e49a1f3d3ddc44, type: 3}
+  - {fileID: 0}
   _firstFadeDelay: 5
   _inputDelay: 0
-  _text: {fileID: 1060986387}
 --- !u!114 &1010448471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4219,7 +4214,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 4e13d94e36977894cb1147dbb9676822, type: 2}
-  m_Color: {r: 0.8392157, g: 0.8392157, b: 0.8392157, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4475,6 +4470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac04b6a162e27ff4790b3fbe6e4574fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _eventSystem: {fileID: 2102130709}
   _upButtons: []
   _downButtons:
   - {fileID: 865138530}
@@ -4753,6 +4749,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac04b6a162e27ff4790b3fbe6e4574fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _eventSystem: {fileID: 2102130709}
   _upButtons:
   - {fileID: 1779063894}
   _downButtons:
@@ -4882,102 +4879,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1052319514}
   m_CullTransparentMesh: 1
---- !u!1 &1060986385
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1060986386}
-  - component: {fileID: 1060986388}
-  - component: {fileID: 1060986387}
-  - component: {fileID: 1060986389}
-  m_Layer: 5
-  m_Name: Text (Legacy)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1060986386
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1060986385}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.015, y: 0.015, z: 0.015}
-  m_ConstrainProportionsScale: 1
-  m_Children: []
-  m_Father: {fileID: 1010448469}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 5.15, y: -4.4}
-  m_SizeDelta: {x: 160, y: 30}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1060986387
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1060986385}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FontData:
-    m_Font: {fileID: 12800000, guid: 1ebb9820a19eb2144b66a6d63182d9a1, type: 3}
-    m_FontSize: 46
-    m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 0
-    m_MaxSize: 239
-    m_Alignment: 1
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 1
-    m_VerticalOverflow: 1
-    m_LineSpacing: 1
-  m_Text: Press Any Button
---- !u!222 &1060986388
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1060986385}
-  m_CullTransparentMesh: 1
---- !u!114 &1060986389
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1060986385}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
-  m_EffectDistance: {x: 1, y: -1}
-  m_UseGraphicAlpha: 1
 --- !u!1 &1081765661
 GameObject:
   m_ObjectHideFlags: 0
@@ -7022,6 +6923,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac04b6a162e27ff4790b3fbe6e4574fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _eventSystem: {fileID: 2102130709}
   _upButtons:
   - {fileID: 1046985974}
   _downButtons:
@@ -7345,6 +7247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac04b6a162e27ff4790b3fbe6e4574fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _eventSystem: {fileID: 2102130709}
   _upButtons: []
   _downButtons:
   - {fileID: 1779063894}
@@ -7545,6 +7448,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac04b6a162e27ff4790b3fbe6e4574fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _eventSystem: {fileID: 2102130709}
   _upButtons:
   - {fileID: 2032651124}
   - {fileID: 1835416234}
@@ -8012,6 +7916,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac04b6a162e27ff4790b3fbe6e4574fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _eventSystem: {fileID: 2102130709}
   _upButtons: []
   _downButtons:
   - {fileID: 865138530}
@@ -8211,6 +8116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac04b6a162e27ff4790b3fbe6e4574fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _eventSystem: {fileID: 2102130709}
   _upButtons: []
   _downButtons:
   - {fileID: 865138530}
@@ -8407,6 +8313,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac04b6a162e27ff4790b3fbe6e4574fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _eventSystem: {fileID: 2102130709}
   _upButtons:
   - {fileID: 1705324383}
   - {fileID: 980038293}
@@ -8739,6 +8646,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac04b6a162e27ff4790b3fbe6e4574fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _eventSystem: {fileID: 2102130709}
   _upButtons:
   - {fileID: 2093902926}
   - {fileID: 1027196389}
@@ -9656,6 +9564,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac04b6a162e27ff4790b3fbe6e4574fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _eventSystem: {fileID: 2102130709}
   _upButtons:
   - {fileID: 1835416234}
   - {fileID: 2093902926}
@@ -10109,6 +10018,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac04b6a162e27ff4790b3fbe6e4574fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _eventSystem: {fileID: 2102130709}
   _upButtons: []
   _downButtons:
   - {fileID: 1835416234}
@@ -10322,6 +10232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac04b6a162e27ff4790b3fbe6e4574fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _eventSystem: {fileID: 2102130709}
   _upButtons:
   - {fileID: 1661138023}
   _downButtons: []
