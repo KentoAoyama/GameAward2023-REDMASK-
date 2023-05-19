@@ -29,6 +29,13 @@ namespace Player
         [TagName, SerializeField]
         private string _gameZone = default;
 
+        [Tooltip("ガイドライン用レイヤーマスク"), SerializeField]
+        private LayerMask _guidelineLayerMaskForRefrect = default;
+        [Tooltip("ガイドライン用レイヤーマスク"), SerializeField]
+        private LayerMask _bulletLayerMaskForRefrect = default;
+        [TagName, SerializeField]
+        private string _gameZoneForRefrect = default;
+
         private PlayerController _playerController = null;
         /// <summary> シリンダーを表現する値 </summary>
         private IStoreableInChamber[] _cylinder = new IStoreableInChamber[6];
@@ -312,7 +319,7 @@ namespace Player
                     for (int i = 0; i < reflect.MaxWallCollisionCount; i++)
                     {
                         // 位置の計算についてメモ(レイが対象に埋まるのでちょっとずらす)
-                        hit = Physics2D.Raycast(pos + dir * 0.01f, dir, length, _guidelineLayerMask);
+                        hit = Physics2D.Raycast(pos + dir * 0.01f, dir, length, _guidelineLayerMaskForRefrect);
 
                         if (hit.collider != null) // レイが当たった時の処理
                         {
@@ -321,7 +328,7 @@ namespace Player
                             pos = hit.point;                                   // 位置を更新
                             dir = Vector2.Reflect(dir, hit.normal.normalized); // 角度を反転
 
-                            if (hit.collider.tag == _gameZone)
+                            if (hit.collider.tag == _gameZoneForRefrect)
                             {
                                 break;
                             }
@@ -390,7 +397,7 @@ namespace Player
                     for (int i = 0; i < reflect.MaxWallCollisionCount; i++)
                     {
                         // 位置の計算についてメモ(レイが対象に埋まるのでちょっとずらす)
-                        hit = Physics2D.Raycast(pos + dir * 0.01f, dir, 1000f, _bulletLayerMask);
+                        hit = Physics2D.Raycast(pos + dir * 0.01f, dir, 1000f, _bulletLayerMaskForRefrect);
 
                         if (hit.collider != null) // レイが当たった時の処理
                         {
@@ -398,7 +405,7 @@ namespace Player
                             pos = hit.point;                                   // 位置を更新
                             dir = Vector2.Reflect(dir, hit.normal.normalized); // 角度を反転
 
-                            if (hit.collider.tag == _gameZone)
+                            if (hit.collider.tag == _gameZoneForRefrect)
                             {
                                 break;
                             }
