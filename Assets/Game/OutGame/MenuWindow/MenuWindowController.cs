@@ -12,12 +12,23 @@ public class MenuWindowController : MonoBehaviour
 
     private GameObject _previousSelectedObject = null;
 
-    private void Start()
+    private void OnEnable()
     {
+        EventSystem.current.SetSelectedGameObject(_firstSelectedObject);
         _previousSelectedObject = _firstSelectedObject;
         if (_firstSelectedObject.TryGetComponent(out Outline currentOutline))
         {
             currentOutline.enabled = true;
+        }
+    }
+    private void OnDisable()
+    {
+        for (int i = 0; i < _mainButtons.Length; i++)
+        {
+            if (_mainButtons[i].TryGetComponent(out Outline outline))
+            {
+                outline.enabled = false;
+            }
         }
     }
     private void Update()
