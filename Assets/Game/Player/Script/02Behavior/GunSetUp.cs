@@ -144,38 +144,52 @@ namespace Player
             if (_playerController.InputManager.IsPressed[InputType.GunSetUp] )
             {
                 //構えてる最中
-                _isGunSetUping = true;
+                //_isGunSetUping = true;
+
+                _isGunSetUp = true;
+
+                //重力を戻す
+                _playerController.Rigidbody2D.gravityScale = 1f;
+
+                _isGunSetUp = true;
+                _isGunSetUping = false;
+
+                DoSlow();
+                _playerController.PlayerAnimatorControl.GunSet(false);
+
+                _isNoGage = false;
+
             }
 
 
             //構えてはじめている間の処理。一定時間構えボタンを押していたら構える
-            if (_isGunSetUping)
-            {
-                if (_isGunSetUp || _isCanselSutUping)
-                {
-                    return;
-                }
+            //if (_isGunSetUping)
+            //{
+            //    if (_isGunSetUp || _isCanselSutUping)
+            //    {
+            //        return;
+            //    }
 
-                _setUpTimeCount += Time.deltaTime;
+            //    _setUpTimeCount += Time.deltaTime;
 
-                if (_setUpTimeCount >= _setUpTime)
-                {
-                    //重力を戻す
-                    _playerController.Rigidbody2D.gravityScale = 1f;
+            //    if (_setUpTimeCount >= _setUpTime)
+            //    {
+            //        //重力を戻す
+            //        _playerController.Rigidbody2D.gravityScale = 1f;
 
-                    _isGunSetUp = true;
-                    _isGunSetUping = false;
+            //        _isGunSetUp = true;
+            //        _isGunSetUping = false;
 
-                    DoSlow();
-                    _playerController.PlayerAnimatorControl.GunSet(false);
+            //        DoSlow();
+            //        _playerController.PlayerAnimatorControl.GunSet(false);
 
-                    _isNoGage = false;
-                }
+            //        _isNoGage = false;
+            //    }
 
-                //速度の減速処理
-                _playerController.Move.VelocityDeceleration();
+            //    //速度の減速処理
+            //    _playerController.Move.VelocityDeceleration();
 
-            }   //構えボタンを押したら構える
+            //}   //構えボタンを押したら構える
 
 
             //構えている最中の処理 

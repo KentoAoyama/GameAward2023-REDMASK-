@@ -75,7 +75,10 @@ namespace Player
             _playerController = playerController;
             _camera = _playerController.Camera.GetCinemachineComponent<CinemachineTransposer>();
 
-            if(_cameraType==CameraType.Camera1)
+            //nullチェック
+            if (_camera == null || _camera1 == null || _camera2 == null) return;
+
+            if (_cameraType == CameraType.Camera1)
             {
                 _camera1.Priority = 10;
                 _camera2.Priority = 0;

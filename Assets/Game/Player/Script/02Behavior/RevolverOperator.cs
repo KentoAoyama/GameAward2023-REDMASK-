@@ -74,6 +74,8 @@ namespace Player
                     }
 
 
+                    ReactionMessageSender.SendMessage(_playerController.Player.transform);
+
                     //マズルフラッシュを再生
                     _muzzleFlash.PlayMuzzleFlash();
 
