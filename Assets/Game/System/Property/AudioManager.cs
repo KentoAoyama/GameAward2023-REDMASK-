@@ -238,7 +238,7 @@ public class AudioManager
     {
         for (int i = 0; i < _sePlayerData.Count; i++)
         {
-            if (_sePlayerData[i].Player.GetStatus() == CriAtomExPlayer.Status.Playing && _sePlayerData[i].CueInfo.length == -1)
+            if (_sePlayerData[i].Player.GetStatus() == CriAtomExPlayer.Status.Playing && _sePlayerData[i].CueInfo.length <= -1)
             {
                 _sePlayerData[i].Player.Stop();
             }
