@@ -1197,7 +1197,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.06019783, y: 0.1314019}
+  m_Offset: {x: -0.002667427, y: 0.1314019}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0.02, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -1208,7 +1208,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 62.848263, y: 0.7674773}
+  m_Size: {x: 62.963326, y: 0.7674773}
   m_EdgeRadius: 0
 --- !u!212 &518290219
 SpriteRenderer:
@@ -2724,6 +2724,10 @@ PrefabInstance:
     - target: {fileID: 4514520410212876862, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: _move._landDeceleration
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4514520410212876862, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+      propertyPath: _avoidance._avoidanceCoolTime
+      value: 0.8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
@@ -4915,7 +4919,7 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
