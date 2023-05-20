@@ -290,6 +290,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 361925564566498033, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
+      propertyPath: field of view
+      value: 70
+      objectReference: {fileID: 0}
     - target: {fileID: 361925564566498039, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
       propertyPath: m_Name
       value: Main Camera for stage
@@ -547,7 +551,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1238947727}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &335529372
 BoxCollider2D:
@@ -590,6 +594,14 @@ PrefabInstance:
     - target: {fileID: 4631331079718261061, guid: 3fff90f2e04efde4e9d2d1815dbf7825, type: 3}
       propertyPath: m_Name
       value: Enemy_MeleeAttack_Left (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4631331079718261062, guid: 3fff90f2e04efde4e9d2d1815dbf7825, type: 3}
+      propertyPath: _sightRadius
+      value: 4.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4631331079718261062, guid: 3fff90f2e04efde4e9d2d1815dbf7825, type: 3}
+      propertyPath: _idleWhenUndiscover
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4631331079718261117, guid: 3fff90f2e04efde4e9d2d1815dbf7825, type: 3}
       propertyPath: m_RootOrder
@@ -1383,6 +1395,68 @@ Transform:
   m_Father: {fileID: 417378890}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &867601554
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 867601555}
+  - component: {fileID: 867601556}
+  m_Layer: 0
+  m_Name: CameraCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &867601555
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 867601554}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1238947727}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!60 &867601556
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 867601554}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 64.11098, y: 5.962632}
+      - {x: -9.837811, y: 5.5322943}
+      - {x: -9.923839, y: -4.226848}
+      - {x: 57.124126, y: -4.2244253}
+      - {x: 63.902332, y: -4.1633596}
 --- !u!1 &922699166
 GameObject:
   m_ObjectHideFlags: 0
@@ -1575,6 +1649,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_MeleeAttack_Left
       objectReference: {fileID: 0}
+    - target: {fileID: 4631331079718261062, guid: 3fff90f2e04efde4e9d2d1815dbf7825, type: 3}
+      propertyPath: _sightRadius
+      value: 17.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4631331079718261062, guid: 3fff90f2e04efde4e9d2d1815dbf7825, type: 3}
+      propertyPath: _idleWhenUndiscover
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4631331079718261117, guid: 3fff90f2e04efde4e9d2d1815dbf7825, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -1628,6 +1710,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1125177468}
     m_Modifications:
+    - target: {fileID: 3988215834778814112, guid: d32970ed9bf4cbf408bbbe01fb30baae, type: 3}
+      propertyPath: _idleWhenUndiscover
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3988215834778814119, guid: d32970ed9bf4cbf408bbbe01fb30baae, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -1688,6 +1774,10 @@ PrefabInstance:
     - target: {fileID: 441480886372639654, guid: d1bddacea114d3a4c9ec9ca27a156d84, type: 3}
       propertyPath: m_Name
       value: Enemy_Drone_Left (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 441480886372639655, guid: d1bddacea114d3a4c9ec9ca27a156d84, type: 3}
+      propertyPath: _idleWhenUndiscover
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 441480886372639678, guid: d1bddacea114d3a4c9ec9ca27a156d84, type: 3}
       propertyPath: m_RootOrder
@@ -1814,7 +1904,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1557385379411257987, guid: 23de31fe1524f6c47b460c9789f55a99, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1557385379411257987, guid: 23de31fe1524f6c47b460c9789f55a99, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1882,6 +1972,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1125177468}
     m_Modifications:
+    - target: {fileID: 3988215834778814112, guid: d32970ed9bf4cbf408bbbe01fb30baae, type: 3}
+      propertyPath: _sightRadius
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3988215834778814112, guid: d32970ed9bf4cbf408bbbe01fb30baae, type: 3}
+      propertyPath: _idleWhenUndiscover
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3988215834778814119, guid: d32970ed9bf4cbf408bbbe01fb30baae, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -2136,7 +2234,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1238947727}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &1159524047
 BoxCollider2D:
@@ -2276,6 +2374,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 867601555}
   - {fileID: 1159524046}
   - {fileID: 335529371}
   - {fileID: 1728260642}
@@ -2616,7 +2715,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1238947727}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1863510132
 GameObject:
@@ -2674,7 +2773,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1238947727}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1925263470
 PrefabInstance:
@@ -2686,6 +2785,14 @@ PrefabInstance:
     - target: {fileID: 441480886372639654, guid: d1bddacea114d3a4c9ec9ca27a156d84, type: 3}
       propertyPath: m_Name
       value: Enemy_Drone_Left
+      objectReference: {fileID: 0}
+    - target: {fileID: 441480886372639655, guid: d1bddacea114d3a4c9ec9ca27a156d84, type: 3}
+      propertyPath: _sightRadius
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 441480886372639655, guid: d1bddacea114d3a4c9ec9ca27a156d84, type: 3}
+      propertyPath: _idleWhenUndiscover
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 441480886372639678, guid: d1bddacea114d3a4c9ec9ca27a156d84, type: 3}
       propertyPath: m_RootOrder
