@@ -4,7 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class PerformanceUtility : MonoBehaviour
 {
@@ -26,12 +28,27 @@ public class PerformanceUtility : MonoBehaviour
     [SerializeField]
     private int _shakeNumber = 50;
 
-    int seIndex = -1;
+    [Header("à⁄çsÇ∑ÇÈÉVÅ[Éì")]
+    [SerializeField, SceneName]
+    private string _sceneName;
+
+    int _seIndex = -1;
 
     private void Start()
     {
+        if (_line != null)
         _line.enabled = false;
+
+        if (_fadePanel != null)
         _fadePanel.gameObject.SetActive(true);
+    }
+
+    private void Update()
+    {
+        if (Keyboard.current.pKey.wasPressedThisFrame)
+        {
+            TrueEnding();
+        }
     }
 
     public void FadeIn(float duration)
@@ -51,17 +68,17 @@ public class PerformanceUtility : MonoBehaviour
 
     public void BackGroundInsidePlay()
     {
-        seIndex = GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_BackGround_Outside");
+        _seIndex = GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_BackGround_Outside");
     }
 
     public void BackGroundOutsidePlay()
     {
-        seIndex = GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_BackGround_Outside");
+        _seIndex = GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_BackGround_Outside");
     }
 
     public void BackGroundStop()
     {
-        GameManager.Instance.AudioManager.StopSE(seIndex);
+        GameManager.Instance.AudioManager.StopSE(_seIndex);
     }
 
     public void GunShoot(float interval)
@@ -71,6 +88,11 @@ public class PerformanceUtility : MonoBehaviour
         GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Attack_Gun");
 
         StartCoroutine(Shoot(interval));
+    }
+
+    public void GunShootSEPlay()
+    {
+        GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Attack_Gun");
     }
 
     private IEnumerator Shoot(float interval)
@@ -103,6 +125,6 @@ public class PerformanceUtility : MonoBehaviour
 
     public void TrueEnding()
     {
-        Debug.Log("TrueEnding!!");
+        SceneManager.LoadScene(_sceneName);
     }
 }

@@ -160,7 +160,7 @@ public class PerformanceEvent
         
         if (_currentText != _text.text)
         {
-            GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", _cueName);
+            //GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", _cueName);
             _currentText = _text.text;
         }
     }
