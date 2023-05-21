@@ -16,6 +16,7 @@ public class EnemyBullet : MonoBehaviour, IPausable, IDamageable
     [SerializeField, TagName] private string WallTagName;
     [Header("弾の設定")]
     [SerializeField] private float _speed;
+    [SerializeField] private Transform _sprite;
 
     private Transform _transform;
     private Stack<EnemyBullet> _pool;
@@ -49,6 +50,7 @@ public class EnemyBullet : MonoBehaviour, IPausable, IDamageable
             }
             else
             {
+                _sprite.right = _velocity;
                 _transform.Translate(_velocity * deltaTime);
             }
         });
