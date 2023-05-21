@@ -7,7 +7,7 @@ public class MenuResumeButton : MonoBehaviour
     private void Update()
     {
         if ((Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame) ||
-            (Gamepad.current != null && Gamepad.current.startButton.wasPressedThisFrame))
+            (Gamepad.current != null && (Gamepad.current.startButton.wasPressedThisFrame || Gamepad.current.bButton.wasPressedThisFrame)))
         {
             gameObject.SetActive(false);
         }
