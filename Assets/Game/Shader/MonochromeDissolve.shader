@@ -71,6 +71,8 @@ Shader "Custom/MonochromeDissolve"
                 // sample the texture
                 float4 col = tex2D(_MainTex, i.uv);
                 float alpha = tex2D(_DissolveTex, i.duv).r;
+                
+                col *= i.color;
 
                 float mono = Monochrome(col.rgb);
                 //col.rgb = Monochrome(col.rgb);
@@ -86,7 +88,6 @@ Shader "Custom/MonochromeDissolve"
                     float value = clamp((_Amount + 1) / (alpha), -1, 1);
                     col.rgb = lerp(mono + _MonoColor2, mono + _MonoColor1, value);
                 }
-                col *= i.color;
                 col.rgb *= col.a;
 
                 return col;

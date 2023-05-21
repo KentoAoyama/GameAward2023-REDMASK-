@@ -167,7 +167,7 @@ public class AudioManager
     {
         for (int i = 0; i < _sePlayerData.Count; i++)
         {
-            if (_sePlayerData[i].Player.GetStatus() != CriAtomExPlayer.Status.Playing)
+            if (_sePlayerData[i].Player.GetStatus() != CriAtomExPlayer.Status.Playing || _sePlayerData[i].Player.GetStatus() != CriAtomExPlayer.Status.Prep)
             {
                 var temp = CriAtom.GetCueSheet(cueSheetName).acb;
 
@@ -177,6 +177,7 @@ public class AudioManager
 
                 if (_sePlayerData[i].Player.GetStatus() == CriAtomExPlayer.Status.Error)
                 {
+                    _sePlayerData[i].Player.Stop();
                     _sePlayerData[i].Player.Dispose();
                     _sePlayerData.Remove(_sePlayerData[i]);
 
@@ -206,7 +207,7 @@ public class AudioManager
     {
         if (index < 0) return;
 
-        if (_sePlayerData[index].Player.GetStatus() == CriAtomExPlayer.Status.Playing)
+        if (_sePlayerData[index].Player.GetStatus() == CriAtomExPlayer.Status.Playing || _sePlayerData[index].Player.GetStatus() == CriAtomExPlayer.Status.Prep)
         {
             _sePlayerData[index].Player.Pause();
         }
@@ -227,7 +228,7 @@ public class AudioManager
     {
         if (index < 0) return;
 
-        if (_sePlayerData[index].Player.GetStatus() == CriAtomExPlayer.Status.Playing)
+        if (_sePlayerData[index].Player.GetStatus() == CriAtomExPlayer.Status.Playing || _sePlayerData[index].Player.GetStatus() == CriAtomExPlayer.Status.Prep)
         {
             _sePlayerData[index].Player.Stop();
         }
@@ -238,7 +239,7 @@ public class AudioManager
     {
         for (int i = 0; i < _sePlayerData.Count; i++)
         {
-            if (_sePlayerData[i].Player.GetStatus() == CriAtomExPlayer.Status.Playing && _sePlayerData[i].CueInfo.length <= -1)
+            if (_sePlayerData[i].CueInfo.length <= -1)
             {
                 _sePlayerData[i].Player.Stop();
             }

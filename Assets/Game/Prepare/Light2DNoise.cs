@@ -5,7 +5,7 @@ using UnityEngine.Rendering.Universal;
 
 public class Light2DNoise : MonoBehaviour
 {
-    [SerializeField, ]
+    [SerializeField]
     private AnimationCurve _animCurve = new AnimationCurve();
     [SerializeField]
     private float _animLoopTime = 10F;
@@ -23,7 +23,6 @@ public class Light2DNoise : MonoBehaviour
     {
         _timer += Time.deltaTime;
 
-        Debug.Log($"{_originalLightIntensity} {_animCurve.Evaluate(_timer / _animLoopTime)}");
         _light.intensity = _originalLightIntensity * Mathf.Clamp01(_animCurve.Evaluate(_timer / _animLoopTime));
 
         if (_timer > _animLoopTime)
