@@ -41,13 +41,13 @@ namespace UI
         /// <summary> テキストのディクショナリ </summary>
         private Dictionary<BulletType, Text> _bulletCountTexts = new Dictionary<BulletType, Text>();
         /// <summary> 現在選択している弾の種類 </summary>
-        private BulletType _currentSelectBulletType = BulletType.NotSet;
+        private ReactiveProperty<BulletType> _currentSelectBulletType = new ReactiveProperty<BulletType>(BulletType.NotSet);
 
-        public BulletType CurrentSelectBulletType => _currentSelectBulletType;
+        public IReadOnlyReactiveProperty<BulletType> CurrentSelectBulletType => _currentSelectBulletType;
 
         public void Init(InputManager inputManager, BulletCountManager bulletsManager)
         {
-            _currentSelectBulletType = BulletType.StandardBullet;
+            _currentSelectBulletType.Value = BulletType.StandardBullet;
             _inputManager = inputManager;
             _bulletsManager = bulletsManager;
             // ディクショナリのセットアップ
@@ -60,9 +60,17 @@ namespace UI
             _bulletCountTexts.Add(BulletType.PenetrateBullet, _penetrateBulletCountText);
             _bulletCountTexts.Add(BulletType.ReflectBullet, _reflectBulletCountText);
             // いろいろ変化したときに実行するメソッドをサブスクライブする。
-            _bulletsManager.StandardBulletCount.Subscribe(num => _standardBulletCountText.text = $"標準弾の所持数 :{num.ToString("00")}");
-            _bulletsManager.PenetrateBulletCount.Subscribe(num => _penetrateBulletCountText.text = $"貫通弾の所持数 :{num.ToString("00")}");
-            _bulletsManager.ReflectBulletCount.Subscribe(num => _reflectBulletCountText.text = $"反射弾の所持数 :{num.ToString("00")}");
+            _bulletsManager.StandardBulletCount.Subscribe(num => _standardBulletCountText.text = $"{num.ToString("00")}");
+            _bulletsManager.PenetrateBulletCount.Subscribe(num => _penetrateBulletCountText.text = $"{num.ToString("00")}");
+            _bulletsManager.ReflectBulletCount.Subscribe(num => _reflectBulletCountText.text = $"{num.ToString("00")}");
+
+            _currentSelectBulletType.Subscribe(value =>
+            {
+                foreach (var e in _bulletCountTexts) e.Value.enabled = false;
+                _bulletCountTexts[value].enabled = true;
+                foreach (var e in _bulletIcons) e.Value.enabled = false;
+                _bulletIcons[value].enabled = true;
+            });
         }
         public void Update()
         {
@@ -79,26 +87,29 @@ namespace UI
         {
             if (inputValue > 0) // 右入力が発生したとき
             {
-                _currentSelectBulletType++;
+                var a = _currentSelectBulletType.Value;
+                a++;
+                a = a >= BulletType.ShellCase ? BulletType.NotSet + 1 : a;
+                _currentSelectBulletType.Value = a;
                 // 加算後の値を範囲内に収める処理。（範囲外になった場合、BulletType.NotSetの次の値を代入する。）
-                _currentSelectBulletType = _currentSelectBulletType >= BulletType.ShellCase ? BulletType.NotSet + 1 : _currentSelectBulletType;
-                return _currentSelectBulletType;
+                return _currentSelectBulletType.Value;
 
             }
             else // 左入力が発生したとき
             {
-                _currentSelectBulletType--;
-                // 減産後の値を範囲内に収める処理。（範囲外になった場合、BulletType.Endの一つ前の値を代入する。）
-                _currentSelectBulletType = _currentSelectBulletType > BulletType.NotSet ? _currentSelectBulletType : BulletType.ShellCase - 1;
-                return _currentSelectBulletType;
+                var a = _currentSelectBulletType.Value;
+                a--;
+                a = a > BulletType.NotSet ? a : BulletType.ShellCase - 1;
+                _currentSelectBulletType.Value = a;
+                return _currentSelectBulletType.Value;
             }
         }
         /// <summary> 矢印のx座標を,選択している弾のアイコンのx座標と同じにする。 </summary>
         private void UpdateArrayPos(BulletType type)
         {
-            var pos = _currentSelectedArrowImage.transform.position;
-            pos.x = _bulletIcons[type].transform.position.x;
-            _currentSelectedArrowImage.transform.position = pos;
+            //var pos = _currentSelectedArrowImage.transform.position;
+            //pos.x = _bulletIcons[type].transform.position.x;
+            //_currentSelectedArrowImage.transform.position = pos;
         }
     }
 }
