@@ -207,20 +207,20 @@ namespace Player
                     //最大まで弾を居れたら強制的に構えに戻す
                     if (index == 5 && _playerController.GunSetUp.IsGunSetUp)
                     {
-                      //  _playerController.PlayerAnimatorControl.GunSet(false);
+                        //  _playerController.PlayerAnimatorControl.GunSet(false);
                     }
 
                     // UIで現在選択している弾を装填する
                     if (_playerController.BulletDataBase.Bullets.TryGetValue(
-                            _playerController.UIController.BulletSelectUIPresenter.CurrentSelectBulletType,
+                            _playerController.UIController.BulletSelectUIPresenter.CurrentSelectBulletType.Value,
                             out Bullet2 bullet))
                     {
                         // 弾を減らす。弾を減らせなかった場合、処理しない。
-                        if (_playerController.BulletCountManager.ReduceOneBullet(_playerController.UIController.BulletSelectUIPresenter.CurrentSelectBulletType))
+                        if (_playerController.BulletCountManager.ReduceOneBullet(_playerController.UIController.BulletSelectUIPresenter.CurrentSelectBulletType.Value))
                         {
                             _playerController.Revolver.Cylinder[index] = bullet;
                             _playerController.Revolver.OnChamberStateChanged
-                                (index, _playerController.UIController.BulletSelectUIPresenter.CurrentSelectBulletType);
+                                (index, _playerController.UIController.BulletSelectUIPresenter.CurrentSelectBulletType.Value);
                         }
                     }
                     else // 弾の取得に失敗した場合の処理
