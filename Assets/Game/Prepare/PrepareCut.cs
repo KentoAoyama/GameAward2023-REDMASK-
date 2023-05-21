@@ -13,12 +13,16 @@ public class PrepareCut : MonoBehaviour
     [SerializeField]
     private Image _fadePanel = default;
     [SerializeField]
-    private Sprite[] _sprites = default;
+    private KeySpritePair[] _sprites = default;
     [Space, Header("AnimDelay")]
     [SerializeField]
     private float _firstFadeDelay = 1f;
     [SerializeField]
     private float _inputDelay = 0.5f;
+    [SerializeField]
+    private Text _text = default;
+    [SerializeField]
+    private int _testIndex = -1;
 
     /// <summary>カットシーンが終わっているか</summary>
     private bool _cutSceneEnded = false;
@@ -33,17 +37,26 @@ public class PrepareCut : MonoBehaviour
         _cutSceneEnded = false;
         _allButtons.Enable();
         Play(GameManager.Instance.CompletedStageManager.GetMaxCompletedStageNumber());
+        _text.color = new Color(1, 1, 1, 0);
     }
 
     public async void Play(int index)
     {
-        if (index >= _sprites.Length || index < 0)
+        if (_testIndex > -1)
+        {
+            index = _testIndex;
+        }
+
+        if (index < 0)
         {
             Debug.LogError("index が範囲外です。");
             return;
         }
         _iamge.gameObject.SetActive(true);
-        _iamge.sprite = _sprites[index];
+        var spriteData = Array.Find(_sprites, x => x.Key == index);
+        _iamge.sprite = spriteData.Sprite;
+        _iamge.color = spriteData.Color;
+
         _iamge.material.SetFloat(_amountId, -1F);
         _fadePanel.color = Color.black;
 
@@ -51,14 +64,50 @@ public class PrepareCut : MonoBehaviour
         await _fadePanel.DOFade(0F, 0.1F);
         await DOTween.To(() => -1F, x => _iamge.material.SetFloat(_amountId, x), 1f, _firstFadeDelay);
         await UniTask.Delay(TimeSpan.FromSeconds(_inputDelay));
-        await UniTask.WaitUntil(() => _allButtons.IsPressed());
+
+        var text = _text.DOFade(1.0F, 1.0F);
+        var press = UniTask.WaitUntil(() => _allButtons.IsPressed());
+        await UniTask.WhenAll(text.AsyncWaitForCompletion().AsUniTask(), press);
+
+        var textFade = _text.DOFade(0.0F, 0.3F);
         var temp = DOTween.To(() => 1F, x => _iamge.material.SetFloat(_amountId, x), -1f, _firstFadeDelay);
         var temp2 = _iamge.DOFade(0f, _firstFadeDelay);
-        await UniTask.WhenAll(temp.AsyncWaitForCompletion().AsUniTask(), temp2.AsyncWaitForCompletion().AsUniTask());
+        await UniTask.WhenAll(temp.AsyncWaitForCompletion().AsUniTask(), temp2.AsyncWaitForCompletion().AsUniTask(), textFade.AsyncWaitForCompletion().AsUniTask());
+
+        _text.gameObject.SetActive(false);
         _iamge.sprite = null;
         _iamge.gameObject.SetActive(false);
         _cutSceneEnded = true;
 
         GameManager.Instance.GalleryManager.SetOpenedID(true, index);
+    }
+
+    [Serializable]
+    class KeySpritePair
+    {
+        [SerializeField]
+        private int key = default(int);
+        [SerializeField]
+        private Sprite sprite = default;
+        [SerializeField]
+        private Color color = Color.white;
+
+        public int Key 
+        { 
+            get => key;
+            set => key = value;
+        }
+
+        public Sprite Sprite
+        {
+            get => sprite;
+            set => sprite = value;
+        }
+
+        public Color Color
+        {
+            get => color;
+            set => color = value;
+        }
     }
 }
