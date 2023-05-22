@@ -12,6 +12,8 @@ public class MenuWindowController : MonoBehaviour
 
     private GameObject _previousSelectedObject = null;
 
+    public static PrepareDevice CurrentDevice { get; private set; } = PrepareDevice.GamePad;
+
     private void OnEnable()
     {
         EventSystem.current.SetSelectedGameObject(_firstSelectedObject);
@@ -33,6 +35,9 @@ public class MenuWindowController : MonoBehaviour
     }
     private void Update()
     {
+        // 操作デバイスを更新する
+        CurrentDevice = PrepareDeviceManager.MonitorInput();
+
         if (EventSystem.current.currentSelectedGameObject == null)
         {
             EventSystem.current.SetSelectedGameObject(_previousSelectedObject);
