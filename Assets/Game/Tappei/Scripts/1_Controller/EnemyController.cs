@@ -270,8 +270,6 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     /// </summary>
     public void Jump()
     {
-
-
         GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Enemy_Discover");
         _moveBehavior.Jump();
         DOVirtual.DelayedCall(1.0f, () => 
