@@ -11,6 +11,8 @@ public class Command : MonoBehaviour
 
     void Update()
     {
+        if (Gamepad.current == null) return;
+
         if (Gamepad.current.dpad.up.wasPressedThisFrame)
         {
             _q.Enqueue(1);
