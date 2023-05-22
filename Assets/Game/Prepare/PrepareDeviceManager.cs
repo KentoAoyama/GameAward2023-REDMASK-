@@ -16,7 +16,7 @@ public class PrepareDeviceManager : MonoBehaviour
         var input = MonitorInput();
         if (input != PrepareDevice.None) _currentDevice.Value = input;
     }
-    private PrepareDevice MonitorInput()
+    public static PrepareDevice MonitorInput()
     {
         if (Keyboard.current.anyKey.wasPressedThisFrame ||
             Mouse.current != null && (
