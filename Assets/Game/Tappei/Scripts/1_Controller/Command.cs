@@ -53,7 +53,6 @@ public class Command : MonoBehaviour
 
             if (ok)
             {
-                Debug.Log("command");
                 D();
             }
         }
@@ -63,7 +62,7 @@ public class Command : MonoBehaviour
     {
         foreach(var v in GameObject.FindGameObjectsWithTag("Enemy"))
         {
-            v.GetComponent<IDamageable>().Damage();
+            v.GetComponent<EnemyController>().Jump();
         }
     }
 }

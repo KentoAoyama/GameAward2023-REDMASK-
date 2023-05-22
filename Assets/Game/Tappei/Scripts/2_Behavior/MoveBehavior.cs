@@ -26,6 +26,11 @@ public class MoveBehavior : MonoBehaviour
     private bool _isPause;
 
     /// <summary>
+    /// commandで使用
+    /// </summary>
+    private bool _isJumping;
+
+    /// <summary>
     /// Spriteの左右の向きに合わせた処理をする際に使う
     /// 右向き: 1 左向き: -1
     /// </summary>
@@ -174,9 +179,19 @@ public class MoveBehavior : MonoBehaviour
     /// </summary>
     public void Idle()
     {
-        if (_isPause) return;
+        if (_isPause || _isJumping) return;
 
         bool onGround = _detectorModule.DetectOnGroundIdle(_transform.position, out Vector3 hitPos);
         _rigidbodyModule.UpdateKinematic(onGround);
+    }
+
+    /// <summary>
+    /// commandで使用可能
+    /// </summary>
+    public void Jump()
+    {
+        _isJumping = true;
+        CancelMoveToTarget();
+        _rigidbodyModule.AddForce();
     }
 }
