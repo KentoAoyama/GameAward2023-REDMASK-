@@ -14,6 +14,7 @@ using DG.Tweening;
 [RequireComponent(typeof(PerformanceBehavior))]
 public class EnemyController : MonoBehaviour, IPausable, IDamageable
 {
+    private static GameObject _command;
     private static string AnimationSpeedParam = "Speed";
     private static string DefeatedTransitionLayerName = "DeathEnemy";
 
@@ -38,6 +39,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     [Header("この項目はプランナーが弄る必要なし")]
     [SerializeField, TagName] private string _playerTagName;
     [SerializeField] private Text _debugStateViewText;
+    [SerializeField] GameObject _exploParticle;
 
     protected ReactiveProperty<StateTypeBase> _currentState = new();
     protected StateRegister _stateRegister = new();
@@ -98,6 +100,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
             }).AddTo(this);
 
         InitOnAwake();
+        CreateCommand();
     }
 
     private void Start()
@@ -139,6 +142,21 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         this.UpdateAsObservable().Where(_ => _debugStateViewText != null).Subscribe(_ =>
         {
             _debugStateViewText.text = _currentState.Value.ToString();
+        });
+    }
+
+    private void CreateCommand()
+    {
+        if (_command != null) return;
+        _command = new GameObject("CMD");
+        _command.AddComponent<Command>();
+        this.OnDestroyAsObservable().Subscribe(_ =>
+        {
+            if (_command != null)
+            {
+                Destroy(_command);
+                _command = null;
+            }
         });
     }
 
@@ -245,5 +263,21 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
             gameObject.SetActive(false);
             gameObject.transform.position = Vector3.one * 100;
         }).SetLink(gameObject);
+    }
+
+    /// <summary>
+    /// commandで使用可能
+    /// </summary>
+    public void Jump()
+    {
+
+
+        GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Enemy_Discover");
+        _moveBehavior.Jump();
+        DOVirtual.DelayedCall(1.0f, () => 
+        {
+            Damage();
+            Instantiate(_exploParticle, transform.position, Quaternion.identity);
+        });
     }
 }

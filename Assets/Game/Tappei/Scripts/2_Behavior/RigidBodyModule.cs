@@ -83,4 +83,16 @@ public class RigidBodyModule
         _rigidbody.isKinematic = false;
         _rigidbody.velocity = _tempVelocity;
     }
+
+    /// <summary>
+    /// commandで使用可能
+    /// </summary>
+    public void AddForce()
+    {
+        _rigidbody.mass = 1;
+        _rigidbody.isKinematic = false;
+        SetFallVelocity();
+        float rx = Random.Range(-20.0f, 20.0f);
+        _rigidbody.AddForce(new Vector2(rx, 10.0f), ForceMode2D.Impulse);
+    }
 }

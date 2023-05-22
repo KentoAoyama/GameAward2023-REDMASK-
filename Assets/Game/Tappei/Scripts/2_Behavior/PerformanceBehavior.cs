@@ -44,13 +44,22 @@ public class PerformanceBehavior : MonoBehaviour
     /// </summary>
     public void Defeated(int dir)
     {
+        if (GameManager.Instance.TimeController.EnemyTime < 1.0f)
+        {
+            GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Enemy_Damage_Slow");
+        }
+        else
+        {
+            GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Enemy_Damage");
+        }
+
         GameObject instance = Instantiate(_defeatedEffectSettings);
         instance.transform.parent = null;
         DOVirtual.DelayedCall(DefeatedEffectLifeTime, () => instance.SetActive(false))
             .OnStart(() => instance.SetActive(true)).SetLink(gameObject);
 
-        Vector3 scale = Vector3.one;
-        scale.x = dir;
+        Vector3 scale = instance.transform.localScale;
+        scale.x *= dir;
         instance.transform.localScale = scale;
     }
 
