@@ -10,13 +10,5 @@ public class StateTypeDefeated : StateTypeBase
     protected override void Enter()
     {
         Controller.PlayAnimation(AnimationName.Dead);
-        if(GameManager.Instance.TimeController.EnemyTime < 1.0f)
-        {
-            GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Enemy_Damage_Slow");
-        }
-        else
-        {
-            GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Enemy_Damage");
-        }
     }
 }
