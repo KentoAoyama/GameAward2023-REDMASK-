@@ -167,7 +167,8 @@ public class AudioManager
     {
         for (int i = 0; i < _sePlayerData.Count; i++)
         {
-            if (_sePlayerData[i].Player.GetStatus() != CriAtomExPlayer.Status.Playing || _sePlayerData[i].Player.GetStatus() != CriAtomExPlayer.Status.Prep)
+            // PlayerのStatusがPrepかPlayingじゃないときにならす
+            if (!(_sePlayerData[i].Player.GetStatus() == CriAtomExPlayer.Status.Playing || _sePlayerData[i].Player.GetStatus() == CriAtomExPlayer.Status.Prep))
             {
                 var temp = CriAtom.GetCueSheet(cueSheetName).acb;
 
