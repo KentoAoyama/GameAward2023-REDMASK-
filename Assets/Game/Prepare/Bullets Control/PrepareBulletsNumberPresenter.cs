@@ -27,18 +27,17 @@ public class PrepareBulletsNumberPresenter : MonoBehaviour
         _standardDisposable =
         GameManager.Instance.BulletsCountManager.
             BulletCountHome[BulletType.StandardBullet].Subscribe(value =>
-            _standardBulletNum.text = $"標準弾の残りの数\n{value}");
+            _standardBulletNum.text = $"{value}");
 
         _penetrateDisposable =
         GameManager.Instance.BulletsCountManager.
             BulletCountHome[BulletType.PenetrateBullet].Subscribe(value =>
-            _penetrateBulletNum.text = $"貫通弾の残りの数\n{value}");
+            _penetrateBulletNum.text = $"{value}");
 
         _reflectDisposable =
         GameManager.Instance.BulletsCountManager.
             BulletCountHome[BulletType.ReflectBullet].Subscribe(value =>
-            _reflectBulletNum.text = $"反射" +
-            $"弾の残りの数\n{value}");
+            _reflectBulletNum.text = $"{value}");
     }
     private void OnDisable()
     {

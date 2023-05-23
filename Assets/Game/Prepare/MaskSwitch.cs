@@ -13,7 +13,7 @@ public class MaskSwitch : MonoBehaviour
 
     private Image _maskImage = null;
     private Button _button = null;
-    private BoolReactiveProperty _isSet = new BoolReactiveProperty(false);
+    private BoolReactiveProperty _isSet = new BoolReactiveProperty(true);
 
     public IReadOnlyReactiveProperty<bool> IsSet => _isSet;
 
@@ -25,9 +25,9 @@ public class MaskSwitch : MonoBehaviour
     }
     private void Switch()
     {
-        _maskImage.color = _isSet.Value ? Color.white : Color.clear;
-        _button.interactable = false;
-        _eventSystem.SetSelectedGameObject(_nextSelectedButton);
-        _isSet.Value ^= true;
+        //_maskImage.color = _isSet.Value ? Color.white : Color.clear;
+        //_button.interactable = false;
+        //_eventSystem.SetSelectedGameObject(_nextSelectedButton);
+        //_isSet.Value ^= true;
     }
 }
