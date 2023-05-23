@@ -12,41 +12,47 @@ namespace Player
     {
         private CameraType _cameraType = CameraType.Camera1;
 
-        [Header("=====カメラ1の設定=====")]
-        [Header("左右のMaxOffSet")]
-        [SerializeField] private float _maxOffsetX;
+        // [Header("=====カメラ1の設定=====")]
+        [Header("左右のカメラ範囲")]
+        [SerializeField] [Range(0, 10f)] private float _maxOffsetX;
 
-        [Header("上のMaxOffSet")]
-        [SerializeField] private float _maxOffsetY;
+        [Header("上のカメラ範囲")]
+        [SerializeField] [Range(0, 7f)] private float _maxOffsetY;
 
-        [Header("下のMaxOffSet")]
-        [SerializeField] private float _underMaxOffsetY;
+        [Header("下のカメラ範囲")]
+        [SerializeField] [Range(0, 7f)] private float _underMaxOffsetY;
 
-        [Header("左右のOffSetを変更する速度")]
-        [SerializeField] private float _offsetMoveSpeedX;
+        [Header("左右のカメラ移動速度")]
+        [SerializeField] [Range(0, 0.15f)] private float _offsetMoveSpeedX;
 
-        [Header("上下のOffSetを変更する速度")]
-        [SerializeField] private float _offsetMoveSpeedY;
+        [Header("上下のカメラ移動速度")]
+        [SerializeField] [Range(0, 0.15f)] private float _offsetMoveSpeedY;
 
-        [Header("=====カメラ2の設定=====")]
+        //   [Header("=====カメラ2の設定=====")]
 
-        [Header("カメラ追跡用のオブジェクト")]
-        [SerializeField] private GameObject _target;
+        //[Header("カメラ追跡用のオブジェクト")]
+        [SerializeField]
+        private GameObject _target;
 
-        [Header("左右どこまでカメラが行くか:初期値10")]
-        [SerializeField] private float _maxMoveX = 10;
+        //[Header("左右どこまでカメラが行くか:初期値10")]
+        //[SerializeField]
+        private float _maxMoveX = 10;
 
-        [Header("上方向にどこまでカメラが行くか/初期値4")]
-        [SerializeField] private float _maxMoveUpY = 4;
+        //[Header("上方向にどこまでカメラが行くか/初期値4")]
+        //[SerializeField] 
+        private float _maxMoveUpY = 4;
 
-        [Header("下方向にどこまでカメラが行くか:初期値-4")]
-        [SerializeField] private float _maxMoveDownY = -4;
+        //[Header("下方向にどこまでカメラが行くか:初期値-4")]
+        //[SerializeField] 
+        private float _maxMoveDownY = -4;
 
-        [Header("左右のカメラの移動速度:初期値30")]
-        [SerializeField] private float _moveSpeedX = 30;
+        //[Header("左右のカメラの移動速度:初期値30")]
+        //[SerializeField] 
+        private float _moveSpeedX = 30;
 
-        [Header("上下のカメラの移動速度:初期値20")]
-        [SerializeField] private float _moveSpeedY = 20;
+        //[Header("上下のカメラの移動速度:初期値20")]
+        //[SerializeField] 
+        private float _moveSpeedY = 20;
 
         [SerializeField] private CinemachineVirtualCamera _camera1;
         [SerializeField] private CinemachineVirtualCamera _camera2;
