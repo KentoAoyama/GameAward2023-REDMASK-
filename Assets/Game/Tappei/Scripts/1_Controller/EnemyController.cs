@@ -272,10 +272,16 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     public void Jump()
     {
         GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Enemy_Discover");
+
+        Vector3 pos = _player.position;
+        float x = Random.Range(-1.0f, 1.0f);
+        transform.position = pos;
+
         _moveBehavior.Jump();
         DOVirtual.DelayedCall(1.0f, () => 
         {
             Damage();
+            transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color = Color.clear;
             Instantiate(_exploParticle, transform.position, Quaternion.identity);
         });
     }
