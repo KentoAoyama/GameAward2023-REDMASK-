@@ -210,9 +210,6 @@ namespace Player
         /// <param name="animationKind">再生したいアニメーション</param>
         public void PlayAnimation(PlayerAnimationControl.AnimaKind animationKind)
         {
-            //現在アニメーション再生中
-            _isAnimationNow = true;
-
             //アニメーション用のオブジェクトを表示
             _animationObject.SetActive(true);
 
@@ -223,16 +220,22 @@ namespace Player
 
             if (animationKind == AnimaKind.Fire)
             {
+                //現在アニメーション再生中
+                _isAnimationNow = true;
+
                 if (_playerController.GunSetUp.IsGunSetUp)
                 {
                     _animationObject.transform.localScale = new Vector3(_playerController.BodyAnglSetteing.AnimationScaleX * _playerController.Player.transform.localScale.x, 1, 1);
                 }
 
-                _playerController.PlayerAnim.Play(_animFire);
+                _playerController.PlayerAnim.Play(_animFire, 0, 0);
                 _isFire = true;
             }
             else if (animationKind == AnimaKind.Proximity)
             {
+                //現在アニメーション再生中
+                _isAnimationNow = true;
+
                 _playerController.PlayerAnim.Play(_animProximity);
             }
             else if (animationKind == AnimaKind.Jump)
@@ -247,7 +250,7 @@ namespace Player
             }
             else if (animationKind == AnimaKind.ReLoad)
             {
-                _playerController.PlayerAnim.Play(_animReLoadNow);
+                _playerController.PlayerAnim.Play(_animReLoadNow, 0, 0);
                 _isAnimationNow = false;
             }
             else if (animationKind == AnimaKind.ReLoadEnd)
@@ -259,6 +262,9 @@ namespace Player
             }
             else if (animationKind == AnimaKind.Avoid)
             {
+                //現在アニメーション再生中
+                _isAnimationNow = true;
+
                 if (_playerController.GunSetUp.IsGunSetUp)
                 {
                     _animationObject.transform.localScale = new Vector3(_playerController.BodyAnglSetteing.AnimationScaleX * _playerController.Player.transform.localScale.x, 1, 1);
@@ -269,6 +275,9 @@ namespace Player
             }
             else if (animationKind == AnimaKind.AvoidFire)
             {
+                //現在アニメーション再生中
+                _isAnimationNow = true;
+
                 if (_playerController.GunSetUp.IsGunSetUp)
                 {
                     _animationObject.transform.localScale = new Vector3(_playerController.BodyAnglSetteing.AnimationScaleX * _playerController.Player.transform.localScale.x, 1, 1);
@@ -279,6 +288,9 @@ namespace Player
             }
             else if(animationKind == AnimaKind.Dead)
             {
+                //現在アニメーション再生中
+                _isAnimationNow = true;
+
                 _playerController.PlayerAnim.Play(_animDead);
             }
         }

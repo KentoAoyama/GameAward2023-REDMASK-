@@ -30,15 +30,24 @@ namespace Player
         [SerializeField] private MuzzleFlashController _muzzleFlash;
 
 
+        /// <summary>空の弾を取り出す時間を計測する</summary>
         private float _countExcretedPodsTime = 0;
 
+        /// <summary>弾を籠める時間を計測する</summary>
         private float _countSetBulletTime = 0;
 
         private bool _isExcretedPods = false;
+
+
         private bool _isSetBullet = false;
 
+        /// <summary>現在発砲中かどうか</summary>
+        private bool _isFireNow = false;
 
+        /// <summary>現在、リロード中かどうか</summary>
         private bool _isReLoadNow = false;
+
+        public bool IsFireNow { get => _isFireNow; set => _isFireNow = value; }
 
         public void Init(PlayerController playerController)
         {
@@ -56,97 +65,117 @@ namespace Player
                 return;
             }//近接攻撃中はできない
 
-
+            //構えているとき
             if (_playerController.GunSetUp.IsGunSetUp)
             {
-                // 撃てる状態かつ、撃つ入力が発生したとき 銃を撃つ
-                if (_playerController.InputManager.GetValue<float>(InputType.Fire1) > 0.49f &&
-                    _playerController.Revolver.CanFire)
+                //撃てる球があるとき
+                if (CheckBullet(BulletType.StandardBullet) > 0 || CheckBullet(BulletType.PenetrateBullet) > 0 || CheckBullet(BulletType.ReflectBullet) > 0)
                 {
-                    //アニメーションの再生
-                    if (_playerController.Avoidance.IsAvoidanceNow)
+                    // 撃てる状態かつ、撃つ入力が発生したとき 銃を撃つ
+                    if (_playerController.InputManager.GetValue<float>(InputType.Fire1) > 0.49f &&
+                    _playerController.Revolver.CanFire)
                     {
-                        _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.AvoidFire);
+
+                        //打てる球があるかどうかの確認
+                        int count = 0;
+
+                        foreach (var cylinder in _playerController.Revolver.Cylinder)
+                        {
+                            if (cylinder == null)
+                            {
+                                continue;
+                            }
+
+                            if (cylinder.Type != BulletType.ShellCase)
+                            {
+                                count++;
+                            }
+                        }
+
+                        if (count == 0) return;
+
+
+                        //アニメーションの再生
+                        if (_playerController.Avoidance.IsAvoidanceNow) _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.AvoidFire);
+                        else _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.Fire);
+
+                        //敵にプレイヤーの位置を通達
+                        ReactionMessageSender.SendMessage(_playerController.Player.transform);
+
+                        _isFireNow = true;
+
+                        //マズルフラッシュを再生
+                        _muzzleFlash.PlayMuzzleFlash();
+
+                        //発砲処理
+                        _playerController.Revolver.Fire();
+
+                        //リロードの中断処理
+                        StopRevolverReLoad();
+
+                        return;
                     }
-                    else
-                    {
-                        _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.Fire);
-                    }
-
-
-                    ReactionMessageSender.SendMessage(_playerController.Player.transform);
-
-                    //マズルフラッシュを再生
-                    _muzzleFlash.PlayMuzzleFlash();
-
-                    //発砲処理
-                    _playerController.Revolver.Fire();
-
-                    //リロードの中断処理
-                    StopRevolverReLoad();
-
-                    //特定行動中に構えを解除していないかどうかを確認する
-                    _playerController.GunSetUp.CheckRelesedSetUp();
-
-                    return;
                 }
             }
 
-            if (_playerController.Avoidance.IsAvoidanceNow)
+            if (_playerController.Avoidance.IsAvoidanceNow || _isFireNow)
             {
                 return;
             } //回避中はできない
 
-            // リロード処理
-            if (_playerController.InputManager.IsPressed[InputType.LoadBullet])
+            int numBullet = CheckBullet(BulletType.PenetrateBullet) + CheckBullet(BulletType.ReflectBullet) + CheckBullet(BulletType.StandardBullet + CheckBullet(BulletType.ShellCase));
+
+            //薬室が、空か空薬莢のある場合のみリロード処理をする
+            if (CheckBullet(BulletType.ShellCase) > 0 || numBullet!=6)
             {
-                //排出、弾を籠めている最中に押して何度も呼ばれないようにする
-                if (_isExcretedPods || _isSetBullet) return;
-
-                _playerController.Revolver.OffDrawAimingLine(false);
-
-                _isReLoadNow = true;
-
-                //時遅を強制解除
-                _playerController.GunSetUp.EmergencyStopSlowTime();
-
-                //構えはじめている最中は、構えはじめを解除
-                _playerController.GunSetUp.CanselSetUpping();
-
-                bool isShallCase = false;
-
-                foreach (var cylinder in _playerController.Revolver.Cylinder)
+                if (_playerController.InputManager.IsPressed[InputType.LoadBullet])
                 {
-                    if (cylinder == null)
+                    //排出、弾を籠めている最中に押して何度も呼ばれないようにする
+                    if (_isExcretedPods || _isSetBullet) return;
+
+                    _playerController.Revolver.OffDrawAimingLine(false);
+
+                    _isReLoadNow = true;
+
+                    //特定行動中に構えを解除していないかどうかを確認する
+                    _playerController.GunSetUp.CanselSetUpping();
+
+                    bool isShallCase = false;
+
+                    foreach (var cylinder in _playerController.Revolver.Cylinder)
                     {
-                        continue;
+                        if (cylinder == null)
+                        {
+                            continue;
+                        }
+
+                        if (cylinder.Type == BulletType.ShellCase)
+                        {
+                            isShallCase = true;
+                        }
+
                     }
 
-                    if (cylinder.Type == BulletType.ShellCase)
+
+                    //空の薬莢が残っていたら排出
+                    if (isShallCase)
                     {
-                        isShallCase = true;
-                    }
-
-                }
-
-                //空の薬莢が残っていたら排出
-                if (isShallCase)
-                {
-                    _isExcretedPods = true;
-                }
-                else
-                {
-                    // 空いているチャンバーを検索する。
-                    var index = FindEmptyChamber();
-
-                    if (index != -1) // 空いているチャンバーが見つかった場合の処理
-                    {
-                        _isSetBullet = true;
+                        _isExcretedPods = true;
                     }
                     else
                     {
-                        return;
-                    }  //チェンバーが空いていないので何もしない
+                        // 空いているチャンバーを検索する。
+                        var index = FindEmptyChamber();
+
+                        if (index != -1) // 空いているチャンバーが見つかった場合の処理
+                        {
+                            _isSetBullet = true;
+                        }
+                        else
+                        {
+                            return;
+                        }  //チェンバーが空いていないので何もしない
+                    }
                 }
             }
 
@@ -239,6 +268,29 @@ namespace Player
             }
         }
 
+        /// <summary>引数で与えた弾が何発あるかを確認する</summary>
+        /// <param name="bulletType"></param>
+        /// <returns></returns>
+        public int CheckBullet(BulletType bulletType)
+        {
+            //打てる球があるかどうかの確認
+            int count = 0;
+
+            foreach (var cylinder in _playerController.Revolver.Cylinder)
+            {
+                if (cylinder == null)
+                {
+                    continue;
+                }
+
+                if (cylinder.Type == bulletType)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
 
 
 

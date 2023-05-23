@@ -26,8 +26,6 @@ namespace Player
 
         private bool _isEmergencyStopSlowTime = false;
 
-        private bool _isCanselSutUping = false;
-
         /// <summary>構えているかどうか</summary>
         private bool _isGunSetUp = false;
 
@@ -133,10 +131,6 @@ namespace Player
                 //緊急で解除する、をFalseに
                 _isEmergencyStopSlowTime = false;
 
-                //構え中、のboolをfalseに
-                _isCanselSutUping = false;
-
-
                 _playerController.Avoidance.EndThereAvoidance();
             }
 
@@ -145,6 +139,9 @@ namespace Player
             {
                 //構えてる最中
                 //_isGunSetUping = true;
+
+                //リロードを中断する
+                _playerController.RevolverOperator.StopRevolverReLoad();
 
                 _isGunSetUp = true;
 
@@ -203,6 +200,7 @@ namespace Player
         }
 
 
+        /// <summary>構えがボタンを話したかどうかを確認する</summary>
         public void CheckRelesedSetUp()
         {
             if (!_playerController.InputManager.IsExist[InputType.GunSetUp])
@@ -220,7 +218,6 @@ namespace Player
                     EndSlowTime();
 
                     _isEmergencyStopSlowTime = false;
-                    _isCanselSutUping = false;
                 }
 
             }     //構えボタンを離したら構えを解除
@@ -266,10 +263,18 @@ namespace Player
 
         public void CanselSetUpping()
         {
-            if (_isGunSetUp || _isCanselSutUping) return;
+            _playerController.PlayerAnimatorControl.GunSetEnd();
+
 
             _isGunSetUping = false;
-            _isCanselSutUping = true;
+
+            _setUpTimeCount = 0;
+
+            _isEmergencyStopSlowTime = false;
+
+            EndSlowTime();
+
+            _isGunSetUp = false;
         }
 
         public void EmergencyStopSlowTime()
