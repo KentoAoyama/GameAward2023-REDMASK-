@@ -256,6 +256,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         _isDefeated = true;
         _performanceBehavior.Defeated(_moveBehavior.SpriteDir);
         gameObject.layer = LayerMask.NameToLayer(DefeatedTransitionLayerName);
+        _attackBehavior.enabled = false;
 
         // 一定時間経過後、非表示にして画面外に移動させる
         DOVirtual.DelayedCall(Params.DefeatedStateTransitionDelay, () =>
