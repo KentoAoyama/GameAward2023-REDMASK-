@@ -10,8 +10,7 @@ namespace Player
     [System.Serializable]
     public class CameraLookControl
     {
-        [Header("=====ƒJƒƒ‰‚ÌØ‚è‘Ö‚¦=====")]
-        [SerializeField] private CameraType _cameraType = CameraType.Camera2;
+        private CameraType _cameraType = CameraType.Camera1;
 
         [Header("=====ƒJƒƒ‰1‚Ìİ’è=====")]
         [Header("¶‰E‚ÌMaxOffSet")]
@@ -121,7 +120,7 @@ namespace Player
                 Vector2 centerPosition = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width / 2f, Screen.height / 2f));
 
 
-                move = (Vector2)mouseWorldPos - centerPosition;
+                move = (Vector2)mouseWorldPos - (Vector2)_playerController.Player.transform.position;
 
                 //   move = mouseWorldPos - _playerController.BodyAnglSetteing.Arm.transform.position;
             }

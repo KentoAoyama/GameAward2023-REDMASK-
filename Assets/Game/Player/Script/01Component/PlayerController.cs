@@ -342,6 +342,9 @@ namespace Player
                 //時が遅くなっているのを解除
                 GameManager.Instance.ShaderPropertyController.MonochromeController.SetMonoBlend(0, 0.2f);
 
+                // 時間の速度をもとの状態に戻す。
+                GameManager.Instance.TimeController.ChangeTimeSpeed(false);
+
                 //死亡アニメーションの再生
                 _playerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.Dead);
             }

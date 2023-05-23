@@ -307,16 +307,16 @@ namespace Player
 
         public void Update()
         {
-            //回避中は移動不可、の条件を追加した
+            //ポーズ中、回避中、近接攻撃中、構え中、発砲中
+            //に移動不可
             if (IsPause || _playerController.Avoidance.IsAvoidanceNow || _playerController.Proximity.IsProximityNow
-                || _playerController.GunSetUp.IsGunSetUp || _playerController.GunSetUp.IsGunSetUpping)
+                || _playerController.GunSetUp.IsGunSetUp || _playerController.RevolverOperator.IsFireNow)
             {
                 if (_isSound)
                 {
                     _isSound = false;
                     GameManager.Instance.AudioManager.StopSE(_moveSoundIndex);
                 }
-
                 return;
             }
 
@@ -342,6 +342,9 @@ namespace Player
                 {
                     _playerController.RevolverOperator.StopRevolverReLoad();
                 }
+
+
+                Debug.Log(_moveHorizontalDir);
 
                 _playerController.PlayerAnimatorControl.SetPlayerDir(_moveHorizontalDir);
                 // 入力方向が切り替わった時の処理
@@ -448,38 +451,6 @@ namespace Player
                        _playerController.Rigidbody2D.velocity.y);
             }
 
-
-            //if (CanJump)
-            //{
-            //    // ジャンプ処理
-            //    if (_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX) &&
-            //        _playerController.InputManager.IsPressed[InputType.Jump])
-            //    {
-
-            //        if (_isSound)
-            //        {
-            //            Debug.Log("StopSound");
-            //            _isSound = false;
-            //            GameManager.Instance.AudioManager.StopSE(_moveSoundIndex);
-            //        }
-
-            //        //音を鳴らす
-            //        GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Jump");
-
-            //        //ジャンプのアニメーション
-            //        _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.Jump);
-
-            //        _playerController.Rigidbody2D.velocity =
-            //        new Vector2(
-            //            _playerController.Rigidbody2D.velocity.x,
-            //            _jumpPower);
-
-            //        _isJump = true;
-
-            //        //リロードを中断する
-            //        _playerController.RevolverOperator.StopRevolverReLoad();
-            //    }
-            //}
 
             //下方向に
             if (!_isJump && _playerController.GroungChecker.IsHit(_moveHorizontalDir))
