@@ -180,6 +180,15 @@ namespace Player
 
             if (_playerController.Player.transform.localScale.x == 1)
             {
+                //右側の坂を登り終えそうなとき
+                //"右側の法線が真上" && "左側のRayが当たってない"　|| "左側の法線が左向き"
+                if (hitCrossR.normal.x == 0 && (!hitCrossL || hitCrossL.normal.x < 0))
+                {
+                    Debug.Log($"右側の坂を登り終えそうなとき");
+                    return false;
+                }
+
+
                 //右側を登っている。
                 if (hitCrossR.normal.x < 0)
                 {
@@ -232,16 +241,20 @@ namespace Player
                     return true;
                 }
 
-                //右側の坂を登り終えそうなとき
-                //"右側の法線が真上" && "左側のRayが当たってない"　|| "左側の法線が左向き"
-                if (hitCrossR.normal.x == 0 && (!hitCrossL || hitCrossL.normal.x < 0))
-                {
-                    Debug.Log($"右側の坂を登り終えそうなとき");
-                    return false;
-                }
+
             }
             else　//プレイヤーが左向きの時
             {
+
+                //左側の坂を登り終えそうなとき
+                //"左側の法線が真上" && "右側のRayが当たってない"　|| "右側の法線が左向き"
+                if (hitCrossL.normal.x == 0 && (!hitCrossR || hitCrossR.normal.x > 0))
+                {
+                    return false;
+                }
+
+
+
                 //左側の坂を登っている
                 if (hitCrossL.normal.x > 0)
                 {
@@ -294,12 +307,7 @@ namespace Player
                     return true;
                 }
 
-                //左側の坂を登り終えそうなとき
-                //"左側の法線が真上" && "右側のRayが当たってない"　|| "右側の法線が左向き"
-                if (hitCrossL.normal.x == 0 && (!hitCrossR || hitCrossR.normal.x > 0))
-                {
-                    return false;
-                }
+
             }
 
             return false;
@@ -437,7 +445,7 @@ namespace Player
                 {
                     _playerController.Rigidbody2D.velocity =
                             new Vector2(_currentHorizontalSpeed,
-                           _playerController.Rigidbody2D.velocity.y);
+                           -1);
                 }
             }
             else
