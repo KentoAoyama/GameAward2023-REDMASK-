@@ -14,6 +14,7 @@ public class GalleryController : MonoBehaviour
 
     private void OnEnable()
     {
+        GameManager.Instance.GalleryManager.Load();
         SetupImages();
     }
     public void SetupImages()
