@@ -13,5 +13,11 @@ namespace Bullet
 
         /// <summary> 反射弾は盾を貫通しない </summary>
         protected override bool IsPenetrateShield => false;
+
+        protected override void Start()
+        {
+            _previousPosition = transform.position;
+            GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Bullets_Refrection_WallHit");
+        }
     }
 }
