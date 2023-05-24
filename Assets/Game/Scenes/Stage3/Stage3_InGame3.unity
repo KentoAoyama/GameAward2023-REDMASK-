@@ -134,9 +134,9 @@ GameObject:
   - component: {fileID: 123900381}
   - component: {fileID: 123900383}
   - component: {fileID: 123900382}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: middle floor (1)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -464,11 +464,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 361925564566498032, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.5999999
+      value: -6.699998
       objectReference: {fileID: 0}
     - target: {fileID: 361925564566498032, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.0059087
+      value: 1.7059088
       objectReference: {fileID: 0}
     - target: {fileID: 361925564566498032, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -508,7 +508,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 361925564566498033, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
       propertyPath: field of view
-      value: 70
+      value: 56.39
+      objectReference: {fileID: 0}
+    - target: {fileID: 361925564566498033, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
+      propertyPath: orthographic size
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 361925564566498039, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
       propertyPath: m_Name
@@ -668,11 +672,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 328675651, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.9790244
+      value: -3.2627983
       objectReference: {fileID: 0}
     - target: {fileID: 328675651, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.5
+      value: 3.2
       objectReference: {fileID: 0}
     - target: {fileID: 364362234, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: m_FollowOffset.x
@@ -1023,9 +1027,9 @@ GameObject:
   - component: {fileID: 1009720450}
   - component: {fileID: 1009720452}
   - component: {fileID: 1009720451}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: middle floor
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
