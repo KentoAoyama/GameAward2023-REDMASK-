@@ -33,7 +33,7 @@ public class Bullet2 : MonoBehaviour, IPausable, IStoreableInChamber
     private Vector2 _currentTargetPosition = default;
     private bool _isComplete = false;
 
-    private Vector2 _previousPosition = default;
+    protected Vector2 _previousPosition = default;
     private Vector2 _moveDir = default;
     /// <summary>
     /// 敵のシールドを貫くかどうかを表現する値
@@ -46,10 +46,9 @@ public class Bullet2 : MonoBehaviour, IPausable, IStoreableInChamber
     public float GuidelineLength => _guidelineLength;
     public Sprite CylinderUISprite => _cylinderUISprite;
 
-    private void Start()
+    protected virtual void Start()
     {
         _previousPosition = transform.position;
-        GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Bullets_Refrection_WallHit");
     }
 
     private void Update()
