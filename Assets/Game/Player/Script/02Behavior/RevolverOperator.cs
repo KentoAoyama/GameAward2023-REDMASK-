@@ -60,7 +60,7 @@ namespace Player
                 return;
             } // ポーズ中は何もできない
 
-            if (_playerController.Proximity.IsProximityNow)
+            if (_playerController.Proximity.IsProximityNow|| !_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX))
             {
                 return;
             }//近接攻撃中はできない
