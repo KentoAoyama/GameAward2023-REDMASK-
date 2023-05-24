@@ -6,8 +6,6 @@ using UnityEngine.UI;
 public class SelectTransitionOnClickButton : MonoBehaviour
 {
     [SerializeField]
-    private EventSystem _eventSystem = default;
-    [SerializeField]
     private GameObject _nextSelectButton = default;
     private void Awake()
     {
