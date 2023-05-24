@@ -29,6 +29,7 @@ namespace Player
         [Header("マズルフラッシュ")]
         [SerializeField] private MuzzleFlashController _muzzleFlash;
 
+        [SerializeField] private CartridgeController _cartridgeController;
 
         /// <summary>空の弾を取り出す時間を計測する</summary>
         private float _countExcretedPodsTime = 0;
@@ -60,7 +61,7 @@ namespace Player
                 return;
             } // ポーズ中は何もできない
 
-            if (_playerController.Proximity.IsProximityNow|| !_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX))
+            if (_playerController.Proximity.IsProximityNow || !_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX))
             {
                 return;
             }//近接攻撃中はできない
@@ -126,7 +127,7 @@ namespace Player
             int numBullet = CheckBullet(BulletType.PenetrateBullet) + CheckBullet(BulletType.ReflectBullet) + CheckBullet(BulletType.StandardBullet + CheckBullet(BulletType.ShellCase));
 
             //薬室が、空か空薬莢のある場合のみリロード処理をする
-            if (CheckBullet(BulletType.ShellCase) > 0 || numBullet!=6)
+            if (CheckBullet(BulletType.ShellCase) > 0 || numBullet != 6)
             {
                 if (_playerController.InputManager.IsPressed[InputType.LoadBullet])
                 {
@@ -194,9 +195,13 @@ namespace Player
                     /////////////////////////////////TEST用!!!!!!!!!!!!!!!!//////////////////////////
                     _excretedText.SetActive(false);
 
+                    //薬莢排出の処理
+                    _cartridgeController.CartridgePlay(CheckBullet(BulletType.ShellCase));
+
                     // 排莢する
                     var cylinder = _playerController.Revolver.EjectShellsAll();
                     _countExcretedPodsTime = 0;
+
 
                     _isExcretedPods = false;
 
