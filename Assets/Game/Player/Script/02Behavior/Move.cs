@@ -343,9 +343,6 @@ namespace Player
                     _playerController.RevolverOperator.StopRevolverReLoad();
                 }
 
-
-                Debug.Log(_moveHorizontalDir);
-
                 _playerController.PlayerAnimatorControl.SetPlayerDir(_moveHorizontalDir);
                 // 入力方向が切り替わった時の処理
                 if (Mathf.Abs(_previousDir - _moveHorizontalDir) > 0.1f)
@@ -440,7 +437,7 @@ namespace Player
                 {
                     _playerController.Rigidbody2D.velocity =
                             new Vector2(_currentHorizontalSpeed,
-                           -1);
+                           _playerController.Rigidbody2D.velocity.y);
                 }
             }
             else

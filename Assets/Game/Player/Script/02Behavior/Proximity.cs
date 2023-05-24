@@ -56,7 +56,7 @@ namespace Player
                 return;
             } // ポーズ中は何もできない
 
-            if (_playerController.Avoidance.IsAvoidanceNow)
+            if (_playerController.Avoidance.IsAvoidanceNow || _playerController.RevolverOperator.IsFireNow)
             {
                 return;
             } //回避中はできない

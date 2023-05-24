@@ -87,7 +87,7 @@ namespace Player
             if (IsPause) return;
 
             //近接攻撃中は出来ない
-            if (_playerController.Proximity.IsProximityNow) return;
+            if (_playerController.Proximity.IsProximityNow || !_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX)) return;
 
 
 
@@ -169,6 +169,8 @@ namespace Player
             _testAvoidText.SetActive(true);
 
             _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.Avoid);
+
+            _playerController.RevolverOperator.IsFireNow = false;
 
             //重力を戻す
             _playerController.Rigidbody2D.gravityScale = 1f;
