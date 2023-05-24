@@ -28,38 +28,10 @@ namespace Player
         [Header("上下のカメラ移動速度")]
         [SerializeField] [Range(0, 0.15f)] private float _offsetMoveSpeedY;
 
-        //   [Header("=====カメラ2の設定=====")]
-
-        //[Header("カメラ追跡用のオブジェクト")]
-        [SerializeField]
-        private GameObject _target;
-
-        //[Header("左右どこまでカメラが行くか:初期値10")]
-        //[SerializeField]
-        private float _maxMoveX = 10;
-
-        //[Header("上方向にどこまでカメラが行くか/初期値4")]
-        //[SerializeField] 
-        private float _maxMoveUpY = 4;
-
-        //[Header("下方向にどこまでカメラが行くか:初期値-4")]
-        //[SerializeField] 
-        private float _maxMoveDownY = -4;
-
-        //[Header("左右のカメラの移動速度:初期値30")]
-        //[SerializeField] 
-        private float _moveSpeedX = 30;
-
-        //[Header("上下のカメラの移動速度:初期値20")]
-        //[SerializeField] 
-        private float _moveSpeedY = 20;
-
         [SerializeField] private CinemachineVirtualCamera _camera1;
-        [SerializeField] private CinemachineVirtualCamera _camera2;
-
 
         /// <summary>初期の位置</summary>
-        private Vector2 _offsetStart;
+        [SerializeField] private Vector2 _offsetStart;
 
         private float _beforX = 1;
 
@@ -71,8 +43,6 @@ namespace Player
         enum CameraType
         {
             Camera1,
-            Camera2,
-
         }
 
         public void Init(PlayerController playerController)
@@ -81,20 +51,7 @@ namespace Player
             _camera = _playerController.Camera.GetCinemachineComponent<CinemachineTransposer>();
 
             //nullチェック
-            if (_camera == null || _camera1 == null || _camera2 == null) return;
-
-            if (_cameraType == CameraType.Camera1)
-            {
-                _camera1.Priority = 10;
-                _camera2.Priority = 0;
-            }
-            else
-            {
-                _camera1.Priority = 0;
-                _camera2.Priority = 10;
-            }
-
-            _offsetStart = _camera.m_FollowOffset;
+            if (_camera == null || _camera1 == null) return;
 
             _beforX = _playerController.Player.transform.localScale.x;
         }
@@ -103,11 +60,6 @@ namespace Player
         public void CameraLook()
         {
             Vector2 move = default;
-
-            if (_beforX != _playerController.Player.transform.localScale.x)
-            {
-                _target.transform.localPosition = new Vector3(-_target.transform.localPosition.x, _target.transform.localPosition.y, _target.transform.localPosition.z);
-            }
 
             _beforX = _playerController.Player.transform.localScale.x;
 
@@ -141,27 +93,6 @@ namespace Player
                     {
                         _camera.m_FollowOffset.x += _offsetMoveSpeedX;
                     }
-
-
-                    if (_playerController.Player.transform.localScale.x == 1)
-                    {
-                        if (_target.transform.localPosition.x < _maxMoveX)
-                        {
-                            float x = (_target.transform.localPosition.x + Time.deltaTime * _moveSpeedX);
-                            _target.transform.localPosition = new Vector3(x, _target.transform.localPosition.y, _target.transform.localPosition.z);
-                        }
-                    }
-                    else
-                    {
-                        if (_target.transform.localPosition.x > -_maxMoveX)
-                        {
-                            float x = (_target.transform.localPosition.x - Time.deltaTime * _moveSpeedX);
-                            _target.transform.localPosition = new Vector3(x, _target.transform.localPosition.y, _target.transform.localPosition.z);
-                        }
-                    }
-
-
-
                 }
                 else if (move.x < -0.2f)
                 {
@@ -169,36 +100,10 @@ namespace Player
                     {
                         _camera.m_FollowOffset.x -= _offsetMoveSpeedX;
                     }
-
-                    if (_playerController.Player.transform.localScale.x == 1)
-                    {
-                        if (_target.transform.localPosition.x > -_maxMoveX)
-                        {
-                            float x = (_target.transform.localPosition.x - Time.deltaTime * _moveSpeedX);
-                            _target.transform.localPosition = new Vector3(x, _target.transform.localPosition.y, _target.transform.localPosition.z);
-                        }
-                    }
-                    else
-                    {
-                        if (_target.transform.localPosition.x < _maxMoveX)
-                        {
-                            float x = (_target.transform.localPosition.x + Time.deltaTime * _moveSpeedX);
-                            _target.transform.localPosition = new Vector3(x, _target.transform.localPosition.y, _target.transform.localPosition.z);
-                        }
-                    }
                 }
                 else
                 {
-                    if (_target.transform.localPosition.x < -1)
-                    {
-                        float x = (_target.transform.localPosition.x + Time.deltaTime * _moveSpeedX);
-                        _target.transform.localPosition = new Vector3(x, _target.transform.localPosition.y, _target.transform.localPosition.z);
-                    }
-                    if (_target.transform.localPosition.x > 1)
-                    {
-                        float x = (_target.transform.localPosition.x - Time.deltaTime * _moveSpeedX);
-                        _target.transform.localPosition = new Vector3(x, _target.transform.localPosition.y, _target.transform.localPosition.z);
-                    }
+
                 }
 
                 if (move.y > 0.1f)
@@ -208,11 +113,6 @@ namespace Player
                         _camera.m_FollowOffset.y += _offsetMoveSpeedY;
                     }
 
-                    if (_target.transform.localPosition.y < _maxMoveUpY)
-                    {
-                        float y = _target.transform.localPosition.y + Time.deltaTime * _moveSpeedY;
-                        _target.transform.localPosition = new Vector3(_target.transform.localPosition.x, y, _target.transform.localPosition.z);
-                    }
                 }
                 else if (move.y < -0.1f)
                 {
@@ -221,58 +121,43 @@ namespace Player
                         _camera.m_FollowOffset.y -= _offsetMoveSpeedY;
                     }
 
-                    if (_target.transform.localPosition.y > _maxMoveDownY)
-                    {
-                        float y = _target.transform.localPosition.y - Time.deltaTime * _moveSpeedY;
-                        _target.transform.localPosition = new Vector3(_target.transform.localPosition.x, y, _target.transform.localPosition.z);
-                    }
                 }
                 else
                 {
-                    if (_target.transform.localPosition.y < -1)
-                    {
-                        float y = _target.transform.localPosition.y + Time.deltaTime * _moveSpeedY;
-                        _target.transform.localPosition = new Vector3(_target.transform.localPosition.x, y, _target.transform.localPosition.z);
-                    }
 
-                    if (_target.transform.localPosition.y > 1)
-                    {
-                        float y = _target.transform.localPosition.y - Time.deltaTime * _moveSpeedY;
-                        _target.transform.localPosition = new Vector3(_target.transform.localPosition.x, y, _target.transform.localPosition.z);
-                    }
                 }
             }
             else
             {
-                if (_offsetStart.x > _camera.m_FollowOffset.x)
-                {
-                    _camera.m_FollowOffset.x += _offsetMoveSpeedX;
-                }
-                else if (_offsetStart.x < _camera.m_FollowOffset.x)
-                {
-                    _camera.m_FollowOffset.x -= _offsetMoveSpeedX;
-                }
+                //if (_offsetStart.x > _camera.m_FollowOffset.x)
+                //{
+                //    _camera.m_FollowOffset.x += _offsetMoveSpeedX;
+                //}
+                //else if (_offsetStart.x < _camera.m_FollowOffset.x)
+                //{
+                //    _camera.m_FollowOffset.x -= _offsetMoveSpeedX;
+                //}
 
-                if (Mathf.Abs(_camera.m_FollowOffset.x - _offsetStart.x) < 0.1f)
-                {
-                    _camera.m_FollowOffset.x = _offsetStart.x;
-                }
+                //if (Mathf.Abs(_camera.m_FollowOffset.x - _offsetStart.x) < 0.1f)
+                //{
+                //    _camera.m_FollowOffset.x = _offsetStart.x;
+                //}
 
 
 
-                if (_offsetStart.y > _camera.m_FollowOffset.y)
-                {
-                    _camera.m_FollowOffset.y += _offsetMoveSpeedY;
-                }
-                else if (_offsetStart.y < _camera.m_FollowOffset.y)
-                {
-                    _camera.m_FollowOffset.y -= _offsetMoveSpeedY;
-                }
+                //if (_offsetStart.y > _camera.m_FollowOffset.y)
+                //{
+                //    _camera.m_FollowOffset.y += _offsetMoveSpeedY;
+                //}
+                //else if (_offsetStart.y < _camera.m_FollowOffset.y)
+                //{
+                //    _camera.m_FollowOffset.y -= _offsetMoveSpeedY;
+                //}
 
-                if (Mathf.Abs(_camera.m_FollowOffset.y - _offsetStart.y) < 0.1f)
-                {
-                    _camera.m_FollowOffset.y = _offsetStart.y;
-                }
+                //if (Mathf.Abs(_camera.m_FollowOffset.y - _offsetStart.y) < 0.1f)
+                //{
+                //    _camera.m_FollowOffset.y = _offsetStart.y;
+                //}
 
             }
         }
