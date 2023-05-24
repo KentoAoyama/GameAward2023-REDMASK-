@@ -92,7 +92,7 @@ public class RigidBodyModule
         _rigidbody.mass = 1;
         _rigidbody.isKinematic = false;
         SetFallVelocity();
-        float rx = Random.Range(-20.0f, 20.0f);
+        float rx = Random.Range(-5.0f, 5.0f);
         _rigidbody.AddForce(new Vector2(rx, 10.0f), ForceMode2D.Impulse);
     }
 }

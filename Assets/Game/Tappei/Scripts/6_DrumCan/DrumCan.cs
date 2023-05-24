@@ -12,6 +12,8 @@ public class DrumCan : MonoBehaviour, IPausable, IDamageable
     [SerializeField] LayerMask _hitLayerMask;
     [Tooltip("障害物となるオブジェクトのレイヤーを割りあてる")]
     [SerializeField] LayerMask _obstacleLayerMask;
+    [Tooltip("爆発エフェクト")]
+    [SerializeField] GameObject _bombParticle;
 
     private Animator _animator;
     /// <summary>
@@ -37,9 +39,9 @@ public class DrumCan : MonoBehaviour, IPausable, IDamageable
 
     public void Damage()
     {
-        // TODO:アニメーション再生後、消える(ポーズとときおそに対応させる)
+        Instantiate(_bombParticle, transform.position, Quaternion.identity);
         gameObject.SetActive(false);
-        // TOOD:音の再生
+        GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Gimmick_ExplosionDrum");
 
         Collider2D[] results = Physics2D.OverlapCircleAll(_rayOrigin, _radius, _hitLayerMask);
         if (results.Length == 0) return;
