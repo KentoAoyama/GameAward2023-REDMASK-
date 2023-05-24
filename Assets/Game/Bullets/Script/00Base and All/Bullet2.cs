@@ -49,6 +49,7 @@ public class Bullet2 : MonoBehaviour, IPausable, IStoreableInChamber
     private void Start()
     {
         _previousPosition = transform.position;
+        GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Bullets_Refrection_WallHit");
     }
 
     private void Update()
