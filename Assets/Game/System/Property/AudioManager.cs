@@ -168,7 +168,8 @@ public class AudioManager
         for (int i = 0; i < _sePlayerData.Count; i++)
         {
             // PlayerのStatusがPrepかPlayingじゃないときにならす
-            if (!(_sePlayerData[i].Player.GetStatus() == CriAtomExPlayer.Status.Playing || _sePlayerData[i].Player.GetStatus() == CriAtomExPlayer.Status.Prep))
+            if (_sePlayerData[i].Player.GetStatus() == CriAtomExPlayer.Status.PlayEnd ||
+                _sePlayerData[i].Player.GetStatus() == CriAtomExPlayer.Status.Stop)
             {
                 var temp = CriAtom.GetCueSheet(cueSheetName).acb;
 
@@ -176,16 +177,15 @@ public class AudioManager
                 _sePlayerData[i].SetCue(temp, cueName);
                 _sePlayerData[i].Start();
 
-                if (_sePlayerData[i].Player.GetStatus() == CriAtomExPlayer.Status.Error)
-                {
-                    _sePlayerData[i].Player.Stop();
-                    _sePlayerData[i].Player.Dispose();
-                    _sePlayerData.Remove(_sePlayerData[i]);
-
-                    continue;
-                }
-
                 return i;
+            }
+            else if (_sePlayerData[i].Player.GetStatus() == CriAtomExPlayer.Status.Error)
+            {
+                _sePlayerData[i].Player.Stop();
+                _sePlayerData[i].Player.Dispose();
+                _sePlayerData.Remove(_sePlayerData[i]);
+
+                continue;
             }
         }
 
