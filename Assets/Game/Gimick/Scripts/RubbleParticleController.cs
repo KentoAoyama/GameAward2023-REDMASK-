@@ -47,7 +47,5 @@ public class RubbleParticleController : MonoBehaviour, IDamageable
         {
             other.GetComponent<IDamageable>().Damage();
         }
-
-        Debug.Log(other.name);
     }
 }
