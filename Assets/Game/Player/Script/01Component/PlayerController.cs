@@ -145,6 +145,8 @@ namespace Player
 
         public bool IsSetUp { get; private set; } = false;
 
+       
+
         private void Start()
         {
             _rigidbody2D = GetComponent<Rigidbody2D>();
@@ -293,6 +295,8 @@ namespace Player
         private void OnDisable()
         {
             GameManager.Instance.PauseManager.Lift(this);
+
+            _move.StopMoveSE();
         }
 
         public async void Pause()
