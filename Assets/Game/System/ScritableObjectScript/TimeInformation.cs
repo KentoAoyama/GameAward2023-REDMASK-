@@ -19,6 +19,9 @@ public class TimeInformation : ScriptableObject
     [Header("カメラの時遅の倍率")]
     [Tooltip("カメラの時遅の倍率"), SerializeField] private float _cameraSpeed = 0.5f;
 
+    //[Header("ヒットストップの時間")]
+    //[Tooltip("ヒットストップの時間"), SerializeField] private float _hitStopTime = 0.5f;
+
     public float PlayerSlowSpeed => _playerSlowSpeed;
 
     public float EnemySlowSpeed => _enemySpeed;
@@ -26,5 +29,7 @@ public class TimeInformation : ScriptableObject
     public float BulletSlowSpeed => _bulletSpeed;
 
     public float CameraSpeed => _cameraSpeed;
+
+    //public float HitStopTime => _hitStopTime;
 
 }
