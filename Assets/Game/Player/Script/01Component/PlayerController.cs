@@ -337,8 +337,6 @@ namespace Player
             //死体撃ちで、2回呼ばれないようにする
             if (!_isDead)
             {
-                //ヒットストップを止める
-                GameManager.Instance.TimeController.EmagencyStopHitStop();
 
                 //なってる音をすべて止める
                 GameManager.Instance.AudioManager.StopSE(_move.MoveSoundIndex);
