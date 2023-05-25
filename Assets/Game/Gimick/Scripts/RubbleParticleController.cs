@@ -8,13 +8,14 @@ public class RubbleParticleController : MonoBehaviour, IDamageable
     private GameObject _breakEffect;
 
     private ParticleSystem _particleSystem;
+    [SerializeField]
     private SpriteRenderer _renderer;
+    [SerializeField]
+    private Sprite _holeSprite;
 
     private void Awake()
     {
         _particleSystem = GetComponent<ParticleSystem>();
-        _renderer = GetComponent<SpriteRenderer>();
-        _renderer.enabled = false;
     }
 
     void IDamageable.Damage()
@@ -25,7 +26,7 @@ public class RubbleParticleController : MonoBehaviour, IDamageable
     public void RubblePlay()
     {
         _particleSystem.Play();
-        _renderer.enabled = true;
+        _renderer.sprite = _holeSprite;
         GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Gimmick_BrokenCeiling");
     }
 
