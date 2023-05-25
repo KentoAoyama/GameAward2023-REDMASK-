@@ -103,6 +103,8 @@ public class Bullet2 : MonoBehaviour, IPausable, IStoreableInChamber
                     Destroy(this.gameObject);
                     return;
                 }
+
+                
             }
         }
         // 設定された全ての目的地に到達したとき、このオブジェクトを非アクティブにする。

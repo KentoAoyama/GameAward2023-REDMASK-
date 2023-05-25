@@ -11,6 +11,11 @@ public class PlayerDeadAnimEvent : MonoBehaviour
         _deadPanel.SetActive(false);
     }
 
+    public void DeadSound()
+    {
+        //‰¹‚ð–Â‚ç‚·
+        GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Death");
+    }
 
     public void Dead()
     {

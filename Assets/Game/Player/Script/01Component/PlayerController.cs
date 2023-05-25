@@ -99,6 +99,19 @@ namespace Player
         [Tooltip("カメラ制御"), SerializeField]
         private CameraLookControl _camraLookControl = default;
 
+        private static PlayerController _playerController = null;
+
+        public static PlayerController CurentPlayerController => _playerController;
+
+        private void Awake()
+        {
+            _playerController = this;
+        }
+
+        private void OnDestroy()
+        {
+            _playerController = null;
+        }
 
         private Rigidbody2D _rigidbody2D = null;
 
@@ -159,6 +172,8 @@ namespace Player
         }
         private void Update()
         {
+            _playerAnim.speed = GameManager.Instance.TimeController.PlayerTime;
+
             if (!_isDead)
             {
                 DeviceManager.Update();       // デバイス制御
@@ -322,6 +337,10 @@ namespace Player
             //死体撃ちで、2回呼ばれないようにする
             if (!_isDead)
             {
+                //ヒットストップを止める
+                GameManager.Instance.TimeController.EmagencyStopHitStop();
+
+                //なってる音をすべて止める
                 GameManager.Instance.AudioManager.StopSE(_move.MoveSoundIndex);
 
                 //音を鳴らす
