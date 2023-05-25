@@ -315,6 +315,11 @@ namespace Player
 
         public void Update()
         {
+            if(_playerController.IsDead)
+            {
+                return;
+            }
+
             //ポーズ中、回避中、近接攻撃中、構え中、発砲中
             //に移動不可
             if (IsPause || _playerController.Avoidance.IsAvoidanceNow || _playerController.Proximity.IsProximityNow
