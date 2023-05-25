@@ -20,13 +20,13 @@ public class RubbleParticleController : MonoBehaviour, IDamageable
 
     void IDamageable.Damage()
     {
-        _particleSystem.Play();
+        RubblePlay();
     }
 
     public void RubblePlay()
     {
-        _particleSystem.Play();
         _renderer.sprite = _holeSprite;
+        _particleSystem.Play();
         GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Gimmick_BrokenCeiling");
     }
 
@@ -42,5 +42,12 @@ public class RubbleParticleController : MonoBehaviour, IDamageable
             temp.GetComponent<ParticleSystem>().Play();
             Destroy(temp, 2F);
         }
+
+        if (other.CompareTag("Enemy"))
+        {
+            other.GetComponent<IDamageable>().Damage();
+        }
+
+        Debug.Log(other.name);
     }
 }
