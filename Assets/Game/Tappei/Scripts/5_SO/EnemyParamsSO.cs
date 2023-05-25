@@ -18,7 +18,7 @@ public class EnemyParamsSO : ScriptableObject
     [SerializeField] private AnimationClip _attackAnimClip;
     [SerializeField] private string _walkSEName;
     [SerializeField] private string _runSEName;
-    [Range(0,1.0f)]
+    [Range(0,2.0f)]
     [SerializeField] private float _attackDelay;
 
     [Header("移動速度の設定")]

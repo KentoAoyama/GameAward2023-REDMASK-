@@ -8,10 +8,16 @@ public class StateTypeAttackExtend : StateTypeAttack
 {
     private ShieldEnemyController _shieldController;
 
-    /// <summary>
-    /// 間合いを詰めてくる動作中かどうかのフラグ
-    /// </summary>
-    private bool _isApproaching;
+    enum State
+    {
+        Idle,
+        Move,
+        Attack,
+    }
+
+    State _state = State.Idle;
+
+    private bool _animationPlay;
 
     public StateTypeAttackExtend(EnemyController controller, StateType stateType)
     : base(controller, stateType) 
@@ -25,12 +31,15 @@ public class StateTypeAttackExtend : StateTypeAttack
         if (TransitionReflection()) return;
         AttackAtInterval();
         Controller.DrawGuideline();
-        if (Transition()) return;
+        if (!_animationPlay)
+        {
+            if (Transition()) return;
+        }
     }
 
     protected override void Exit()
     {
-        _isApproaching = false;
+        _animationPlay = false;
     }
 
     /// <summary>
@@ -39,19 +48,30 @@ public class StateTypeAttackExtend : StateTypeAttack
     private void AttackAtInterval()
     {
         _time += Time.deltaTime * GameManager.Instance.TimeController.EnemyTime;
-        if (_time > Controller.Params.AttackRate && !_isApproaching)
+
+        switch (_state)
         {
-            _isApproaching = true;
-            _shieldController.MoveForward();
-            _shieldController.PlayAnimation(AnimationName.Move);
-        }
-        if (_time > Controller.Params.AttackRate + Controller.Params.AttackRange / Controller.Params.RunSpeed)
-        {
-            _time = 0;
-            _isApproaching = false;
-            _shieldController.CancelMoveToTarget();
-            _shieldController.Attack();
-            _shieldController.PlayAnimation(AnimationName.Attack);
+            case State.Idle when _time > Controller.Params.AttackRate:
+                _animationPlay = true;
+                _shieldController.MoveForward();
+                _shieldController.PlayAnimation(AnimationName.Move);
+                _state = State.Move;
+                break;
+
+            case State.Move when _time > Controller.Params.AttackRate + 
+            Controller.Params.AttackRange / Controller.Params.RunSpeed:
+                _shieldController.CancelMoveToTarget();
+                _shieldController.Attack();
+                _shieldController.PlayAnimation(AnimationName.Attack);
+                _state = State.Attack;
+                break;
+
+            case State.Attack when _time > Controller.Params.AttackRate +
+            Controller.Params.AttackRange / Controller.Params.RunSpeed + 1.1f:
+                _state = State.Idle;
+                _time = 0;
+                _animationPlay = false;
+                break;
         }
     }
 
