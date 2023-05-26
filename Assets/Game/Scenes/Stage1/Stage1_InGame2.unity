@@ -548,11 +548,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 361925564566498032, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.21
+      value: -4.21
       objectReference: {fileID: 0}
     - target: {fileID: 361925564566498032, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.3965895
+      value: 4.5565896
       objectReference: {fileID: 0}
     - target: {fileID: 361925564566498032, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -592,7 +592,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 361925564566498033, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
       propertyPath: field of view
-      value: 70
+      value: 56.39
       objectReference: {fileID: 0}
     - target: {fileID: 361925564566498039, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
       propertyPath: m_Name
@@ -1273,9 +1273,9 @@ GameObject:
   - component: {fileID: 574475179}
   - component: {fileID: 574475181}
   - component: {fileID: 574475180}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: middle floor
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2637,6 +2637,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 155635596, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+      propertyPath: m_BoundingShape2D
+      value: 
+      objectReference: {fileID: 1879711955}
     - target: {fileID: 328675651, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2

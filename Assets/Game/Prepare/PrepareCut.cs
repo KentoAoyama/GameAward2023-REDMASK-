@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using DG.Tweening;
 
 public class PrepareCut : MonoBehaviour
@@ -47,6 +49,11 @@ public class PrepareCut : MonoBehaviour
             index = _testIndex;
         }
 
+        if (index == 3)
+        {
+            index = 5;
+        }
+
         if (index < 0)
         {
             Debug.LogError("index が範囲外です。");
@@ -54,8 +61,12 @@ public class PrepareCut : MonoBehaviour
         }
         _iamge.gameObject.SetActive(true);
         var spriteData = Array.Find(_sprites, x => x.Key == index);
-        _iamge.sprite = spriteData.Sprite;
-        _iamge.color = spriteData.Color;
+
+        if (spriteData != null)
+        {
+            _iamge.sprite = spriteData.Sprite;
+            _iamge.color = spriteData.Color;
+        }
 
         _iamge.material.SetFloat(_amountId, -1F);
         _fadePanel.color = Color.black;

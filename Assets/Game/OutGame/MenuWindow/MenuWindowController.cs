@@ -121,7 +121,10 @@ public class MenuWindowController : MonoBehaviour
     private void Update()
     {
         // 操作デバイスを更新する
-        CurrentDevice = PrepareDeviceManager.MonitorInput();
+        if (PrepareDeviceManager.MonitorInput() != PrepareDevice.None)
+        {
+            CurrentDevice = PrepareDeviceManager.MonitorInput();
+        }
 
         if (EventSystem.current.currentSelectedGameObject == null)
         {

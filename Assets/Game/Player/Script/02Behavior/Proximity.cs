@@ -61,20 +61,12 @@ namespace Player
                 return;
             } //回避中はできない
 
-
-            if (_playerController.InputManager.IsPressed[InputType.Proximity]
-                &&!_playerController.InputManager.IsPressed[InputType.Jump])
+            if (_playerController.InputManager.IsPressed[InputType.Proximity])
             {
                 //現在攻撃中でない、攻撃可能である、地面についている
                 if (!_isAttackNow && _isCanAttack
                     && _playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX))
                 {
-                    //ジャンプ入力と同フレームで入力した際に、上昇しながら回避に入る問題を防ぐための処理
-                    if (_playerController.Rigidbody2D.velocity.y > 0f)
-                    {
-                        return;
-                    }
-
                     //攻撃中
                     _isAttackNow = true;
 
@@ -113,21 +105,21 @@ namespace Player
             //攻撃の音
             GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Attack_Knife");
 
-            Debug.Log("近接攻撃はじめ！");
+            //Debug.Log("近接攻撃はじめ！");
 
-            var targets = _playerController.ProximityHitChecker.GetCollider(_playerController.DirectionControler.MovementDirectionX) ;
-            Debug.Log(targets.Length);
+            var targets = _playerController.ProximityHitChecker.GetCollider(_playerController.Move.MoveHorizontalDir) ;
+            //Debug.Log(targets.Length);
 
             if (targets.Length > 0)
             {
-                Debug.Log("攻撃対象あり");
+                //Debug.Log("攻撃対象あり");
                 //Hitしたコライダーに対して、ダメージを与えていく
                 foreach (var target in targets)
                 {
                     // ダメージを加える
                     if (target.TryGetComponent(out IDamageable hit))
                     {
-                        Debug.Log("攻撃実行可能");
+                        //Debug.Log("攻撃実行可能");
                         hit.Damage();
                         return;
                     }
@@ -143,7 +135,7 @@ namespace Player
             //特定行動中に構えを解除していないかどうかを確認する
             _playerController.GunSetUp.CheckRelesedSetUp();
 
-            Debug.Log("近接攻撃終わり！");
+            //Debug.Log("近接攻撃終わり！");
 
             //攻撃中
             _isAttackNow = false;
