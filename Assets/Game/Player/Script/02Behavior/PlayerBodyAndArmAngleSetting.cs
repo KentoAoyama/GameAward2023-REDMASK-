@@ -88,10 +88,10 @@ namespace Player
         {
             _playerController = playerController;
 
-            Vector2ToAngle(_playerController.Move.MoveHorizontalDir, Vector2.right, false);
+            Vector2ToAngle(_playerController.Player.transform.localScale.x, Vector2.right, false);
 
             //真上を基準とした角度を取得
-            float angle = Vector2ToAngle(_playerController.Move.MoveHorizontalDir, Vector2.right, true);
+            float angle = Vector2ToAngle(_playerController.Player.transform.localScale.x, Vector2.right, true);
 
             var i = Mathf.Abs((int)Mathf.Floor(angle / 30));
 
@@ -153,7 +153,7 @@ namespace Player
             }
         }
 
-        public void Update()
+        public void AimingSet()
         {
             if (GameManager.Instance.PauseManager.PauseCounter > 0)
             {
@@ -166,16 +166,13 @@ namespace Player
                 return;
             }
 
-
-
-            Vector2 _aimingAngle = default;
+            Vector2 _aimingAngle = _playerController.Revolver.AimingAngle;
 
             // 撃つ方向を保存する
             if (_playerController.DeviceManager.CurrentDevice.Value == Input.Device.GamePad) // ゲームパッド操作の場合
             {
                 if ((_playerController.InputManager.GetValue<Vector2>(InputType.LookingAngleGamePad)).magnitude > 0.5f)
                 {
-                    _aimingAngle = _playerController.InputManager.GetValue<Vector2>(InputType.LookingAngleGamePad);
                     _playerController.RevolverOperator.StopRevolverReLoad();
                     _playerController.Revolver.OffDrawAimingLine(true);
                 }
@@ -186,8 +183,6 @@ namespace Player
                 Vector3 mouseDir = _playerController.InputManager.GetValue<Vector2>(InputType.LookingMausePos);
                 mouseDir.z = 10f;
                 var mouseWorldPos = Camera.main.ScreenToWorldPoint(mouseDir);
-                _aimingAngle = mouseWorldPos - _arm.transform.position;
-
 
                 float distance = Vector2.Distance(mouseDir, _currentMousePos);
                 _currentMousePos = mouseDir;
@@ -198,7 +193,7 @@ namespace Player
                 }
             }
 
-            if(_aimingAngle.x>=0)
+            if (_aimingAngle.x >= 0)
             {
                 _animationScaleX = 1;
             }
@@ -208,7 +203,7 @@ namespace Player
             }
 
             //360度の角度を取得
-            float armAngle = Vector2ToAngle(_playerController.Move.MoveHorizontalDir, _aimingAngle, false);
+            float armAngle = Vector2ToAngle(_playerController.Player.transform.localScale.x, _aimingAngle, false);
 
             if (!_playerController.Avoidance.IsAvoidanceNow)
             {
@@ -216,7 +211,7 @@ namespace Player
                 _arm.transform.rotation = Quaternion.Euler(0f, 0f, armAngle);
 
                 //真上を基準とした角度を取得
-                float angle = Vector2ToAngle(_playerController.Move.MoveHorizontalDir, _aimingAngle, true);
+                float angle = Vector2ToAngle(_playerController.Player.transform.localScale.x, _aimingAngle, true);
                 var i = Mathf.Abs((int)Mathf.Floor(angle / 30));
 
                 //頭のSpriteを変更        
@@ -228,7 +223,7 @@ namespace Player
                 _nowMuzzleNum = i;
 
 
-                if (_playerController.Move.MoveHorizontalDir > 0)
+                if (_playerController.Player.transform.localScale.x > 0)
                 {
                     if (0 <= angle && angle < 180)
                     {
@@ -245,11 +240,17 @@ namespace Player
                 {
                     if (0 <= angle && angle < 180)
                     {
+
+
+
                         _upperBodySpriteRenderer.sprite = _upperBodyBackSprite;
                         _downBodySpriteRenderer.sprite = _downBodyBackSprite;
                     }
                     else
                     {
+
+
+
                         _upperBodySpriteRenderer.sprite = _upperBodySprite;
                         _downBodySpriteRenderer.sprite = _downBodySprite;
                     }
@@ -258,13 +259,13 @@ namespace Player
             else
             {
                 //360度の角度を取得
-                armAngle = Vector2ToAngle(_playerController.Move.MoveHorizontalDir, _aimingAngle, false);
+                armAngle = Vector2ToAngle(_playerController.Player.transform.localScale.x, _aimingAngle, false);
 
                 //腕の角度を変更
                 _arm.transform.rotation = Quaternion.Euler(0f, 0f, armAngle);
 
                 //真上を基準とした角度を取得
-                float angle = Vector2ToAngle(_playerController.Move.MoveHorizontalDir, _aimingAngle, true);
+                float angle = Vector2ToAngle(_playerController.Player.transform.localScale.x, _aimingAngle, true);
 
 
 
@@ -290,5 +291,11 @@ namespace Player
                 _nowMuzzleNum = i;
             }
         }
+
+        public void Update()
+        {
+            AimingSet();
+        }
+
     }
 }

@@ -206,7 +206,7 @@ namespace Player
         private void OnDrawGizmosSelected()
         {
             _groungChecker.OnDrawGizmos(transform, DirectionControler.MovementDirectionX);
-            _proximityHitChecker.OnDrawGizmos(transform, DirectionControler.MovementDirectionX);
+            _proximityHitChecker.OnDrawGizmos(transform, Move.MoveHorizontalDir);
         }
 
 
@@ -296,7 +296,11 @@ namespace Player
         {
             GameManager.Instance.PauseManager.Lift(this);
 
+            //移動の音を止める
             _move.StopMoveSE();
+
+            // 時間の速度をもとの状態に戻す。
+            GameManager.Instance.TimeController.ChangeTimeSpeed(false);
         }
 
         public async void Pause()
