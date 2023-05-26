@@ -43,10 +43,14 @@ namespace Player
         private int _currentChamber = 0;
         /// <summary> 撃つ方向 </summary>
         private Vector2 _aimingAngle = Vector2.right;
+
         /// <summary> 攻撃可能かどうかを表す値 </summary>
         private bool _canFire = true;
 
         private bool _offLineRendrer = false;
+
+
+        public Vector3 AimingAngle => _aimingAngle;
 
         /// <summary> 現在のチェンバーの位置 </summary>
         public int CurrentChamber => _currentChamber;
@@ -66,7 +70,11 @@ namespace Player
         }
         public void Update()
         {
+            //if (IsPause || !_playerController.GunSetUp.IsGunSetUp || _playerController.Proximity.IsProximityNow) return;
+
+
             if (IsPause) return;
+
             // 撃つ方向を保存する
             if (_playerController.DeviceManager.CurrentDevice.Value == Input.Device.GamePad) // ゲームパッド操作の場合
             {

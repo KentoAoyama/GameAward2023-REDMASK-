@@ -269,9 +269,8 @@ namespace Player
                 {
                     _animationObject.transform.localScale = new Vector3(_playerController.BodyAnglSetteing.AnimationScaleX * _playerController.Player.transform.localScale.x, 1, 1);
                 }
-                _playerController.PlayerAnim.Play(_animAvoid);
+                _playerController.PlayerAnim.Play(_animAvoid,0,0);
                 _playerController.PlayerAnim.SetBool("IsAvoid", true);
-                _isFire = true;
             }
             else if (animationKind == AnimaKind.AvoidFire)
             {

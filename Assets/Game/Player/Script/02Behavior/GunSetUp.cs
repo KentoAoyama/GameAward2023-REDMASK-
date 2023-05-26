@@ -29,16 +29,9 @@ namespace Player
         /// <summary>構えているかどうか</summary>
         private bool _isGunSetUp = false;
 
-        private bool _isGunSetUping = false;
-
-        private bool _isNoGage = false;
-
         private bool _isReserveSetUpAvoid = false;
 
         public bool IsGunSetUp => _isGunSetUp;
-
-        public bool IsGunSetUpping => _isGunSetUping;
-
 
         public bool IsPause { get; private set; } = false;
 
@@ -91,22 +84,30 @@ namespace Player
                 Debug.Log("check");
                 if (!_playerController.PlayerAnimatorControl.IsAnimationNow)
                 {
-                    Debug.Log("cc");
-                    _isReserveSetUpAvoid = false;
-
-                    //重力を戻す
-                    _playerController.Rigidbody2D.gravityScale = 1f;
-
-                    _isGunSetUp = true;
-                    _isGunSetUping = false;
-
-                    if (!_isSlowTimeNow)
+                    if (_playerController.InputManager.IsExist[InputType.GunSetUp])
                     {
-                        DoSlow();
-                    }
 
-                    _playerController.PlayerAnimatorControl.GunSet(true);
+                        Debug.Log("cc");
+                        _isReserveSetUpAvoid = false;
+
+                        //重力を戻す
+                        _playerController.Rigidbody2D.gravityScale = 1f;
+
+                        _isGunSetUp = true;
+
+                        if (!_isSlowTimeNow)
+                        {
+                            DoSlow();
+                        }
+
+                        _playerController.PlayerAnimatorControl.GunSet(true);
+                    }
+                    else
+                    {
+                        _isReserveSetUpAvoid = false;
+                    }
                 }
+                return;
             }
 
 
@@ -125,9 +126,6 @@ namespace Player
                 //構え、状態を解除
                 _isGunSetUp = false;
 
-                //構え中、の状態を解除
-                _isGunSetUping = false;
-
                 //緊急で解除する、をFalseに
                 _isEmergencyStopSlowTime = false;
 
@@ -135,59 +133,22 @@ namespace Player
             }
 
             //構えのボタンを押したら
-            if (_playerController.InputManager.IsPressed[InputType.GunSetUp] )
+            if (_playerController.InputManager.IsPressed[InputType.GunSetUp])
             {
-                //構えてる最中
-                //_isGunSetUping = true;
-
                 //リロードを中断する
                 _playerController.RevolverOperator.StopRevolverReLoad();
 
-                _isGunSetUp = true;
+                _playerController.BodyAnglSetteing.AimingSet();
 
                 //重力を戻す
                 _playerController.Rigidbody2D.gravityScale = 1f;
 
                 _isGunSetUp = true;
-                _isGunSetUping = false;
 
                 DoSlow();
                 _playerController.PlayerAnimatorControl.GunSet(false);
 
-                _isNoGage = false;
-
             }
-
-
-            //構えてはじめている間の処理。一定時間構えボタンを押していたら構える
-            //if (_isGunSetUping)
-            //{
-            //    if (_isGunSetUp || _isCanselSutUping)
-            //    {
-            //        return;
-            //    }
-
-            //    _setUpTimeCount += Time.deltaTime;
-
-            //    if (_setUpTimeCount >= _setUpTime)
-            //    {
-            //        //重力を戻す
-            //        _playerController.Rigidbody2D.gravityScale = 1f;
-
-            //        _isGunSetUp = true;
-            //        _isGunSetUping = false;
-
-            //        DoSlow();
-            //        _playerController.PlayerAnimatorControl.GunSet(false);
-
-            //        _isNoGage = false;
-            //    }
-
-            //    //速度の減速処理
-            //    _playerController.Move.VelocityDeceleration();
-
-            //}   //構えボタンを押したら構える
-
 
             //構えている最中の処理 
             //構えてる間、ゲージを減らす
@@ -210,8 +171,6 @@ namespace Player
                     _playerController.PlayerAnimatorControl.GunSetEnd();
 
                     _isGunSetUp = false;
-
-                    _isGunSetUping = false;
 
                     _setUpTimeCount = 0;
 
@@ -249,8 +208,6 @@ namespace Player
 
             _isSlowTimeNow = false;
 
-            _isNoGage = true;
-
             //遅くする時の音
             GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_SlowFinish");
 
@@ -264,9 +221,6 @@ namespace Player
         public void CanselSetUpping()
         {
             _playerController.PlayerAnimatorControl.GunSetEnd();
-
-
-            _isGunSetUping = false;
 
             _setUpTimeCount = 0;
 
