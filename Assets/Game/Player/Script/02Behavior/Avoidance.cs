@@ -90,16 +90,20 @@ namespace Player
             if (_playerController.Proximity.IsProximityNow || !_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX)) return;
 
 
+            //回避、時遅、の実行時間を計測
+            CountDoTime();
 
-            //入力を受けた
-            if (_playerController.InputManager.IsPressed[InputType.Avoidance])
+            //クールタイムを数える
+            CountCoolTime();
+
+            //速度の減速(急停止)
+            VelocityDeceleration();
+
+            //入力を受けた  &&   ( 回避が不可能　||　回避実行中 )には実行しない
+            if (_playerController.InputManager.IsPressed[InputType.Avoidance] && _isCanAvoidance && !_isAvoidacneNow)
             {
-                //( 回避が不可能　||　回避実行中 )には実行しない
-                if (!_isCanAvoidance || _isAvoidacneNow) return;
-
                 //空中では実行できない
                 if (!_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX)) return;
-
 
                 //リロードを中断する
                 _playerController.RevolverOperator.StopRevolverReLoad();
@@ -107,15 +111,6 @@ namespace Player
                 //回避実行
                 StartThereAvoidance();
             }
-
-            //クールタイムを数える
-            CountCoolTime();
-
-            //回避、時遅、の実行時間を計測
-            CountDoTime();
-
-            //速度の減速(急停止)
-            VelocityDeceleration();
         }
 
         /// <summary>回避、時遅の実行時間を計測する</summary>
@@ -167,10 +162,14 @@ namespace Player
             //TestTExT???????????????????///////////////////////////////////////
             _testAvoidText.SetActive(true);
 
+            //現在回避中
+            _isAvoidacneNow = true;
+
             //アニメーションを再生
             _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.Avoid);
 
             _playerController.RevolverOperator.IsFireNow = false;
+
 
             //重力を戻す
             _playerController.Rigidbody2D.gravityScale = 1f;
@@ -178,8 +177,7 @@ namespace Player
             //回避を実行不可に
             _isCanAvoidance = false;
 
-            //現在回避中
-            _isAvoidacneNow = true;
+
 
             //回避の音
             GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Evade");
@@ -188,7 +186,7 @@ namespace Player
             _playerController.Player.layer = LayerMask.NameToLayer(_avoidLayerName);
             _playerController.LifeController.IsAvoid = true;
         }
-        
+
 
         /// <summary>
         /// その場回避終了処理
@@ -198,16 +196,16 @@ namespace Player
             //TestTExT???????????????????///////////////////////////////////////
             _testAvoidText.SetActive(false);
 
+            _isAvoidacneNow = false;
+
             //アニメーターパラメーターの設定
             _playerController.PlayerAnimatorControl.SetBoolAvoid(false);
 
+
             //特定行動中に構えを解除していないかどうかを確認する
-            _playerController.GunSetUp.CheckRelesedSetUp();
+            // _playerController.GunSetUp.CheckRelesedSetUp();
 
-
-            _isAvoidacneNow = false;
-
-            if(_playerController.GunSetUp.IsGunSetUp)
+            if (_playerController.GunSetUp.IsGunSetUp)
             {
                 _playerController.PlayerAnimatorControl.GunSet(false);
             }
@@ -218,8 +216,6 @@ namespace Player
             _playerController.Player.layer = LayerMask.NameToLayer(_defultLayerName);
             ////回避が終了したことをMoveクラスに伝える
             _playerController.Move.EndOtherAction();
-
-            _isAvoidacneNow = false;
         }
     }
 }

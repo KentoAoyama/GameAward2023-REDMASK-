@@ -46,9 +46,7 @@ namespace Player
             // Updateを再開する
             IsPause = false;
 
-            CheckRelesedSetUp();
-
-
+            AnimEndSetUpCheck();
         }
 
         public void Init(PlayerController playerController)
@@ -57,74 +55,73 @@ namespace Player
         }
 
 
+        public void AnimEndSetUpCheck()
+        {     
+            _isEmergencyStopSlowTime = false;
+
+            if (_playerController.InputManager.IsExist[InputType.GunSetUp])
+            {
+
+                Debug.Log("ST");
+                _isGunSetUp = true;
+
+                //重力を戻す
+                _playerController.Rigidbody2D.gravityScale = 1f;
+
+                if (!_isSlowTimeNow)
+                {
+                    DoSlow();
+                }
+
+                //腕を出す
+                _playerController.PlayerAnimatorControl.GunSet(true);
+
+                //腕の角度を設定
+                _playerController.BodyAnglSetteing.AimingSet();
+
+                //照準を描写
+                _playerController.Revolver.OnDrawAimingLine();
+            }
+            else
+            {
+                EndSlowTime();
+
+                _isGunSetUp = false;
+
+                _playerController.PlayerAnimatorControl.GunSetEnd();
+
+                _setUpTimeCount = 0;
+            }
+
+        }
+
         public void UpData()
         {
-            if (GameManager.Instance.PauseManager.PauseCounter > 0)
-            {
-                return;
-            } // ポーズ中は何もできない
+            // ポーズ中は何もできない
+            if (GameManager.Instance.PauseManager.PauseCounter > 0) return;
 
-            if (!_playerController.GroungChecker.IsHit(_playerController.Move.MoveHorizontalDir))
-            {
-                return;
-            }   //空中では出来ない
+            //空中では出来ない
+            if (!_playerController.GroungChecker.IsHit(_playerController.Move.MoveHorizontalDir)) return;
 
-
-            // 近接攻撃中、
+            // 近接攻撃中、は出来ない
             if (_playerController.Proximity.IsProximityNow) return;
 
+            if (_playerController.PlayerAnimatorControl.IsAnimationNow) return;
+
             //回避中の構えの入力受付
-            //回避中 && 　構えていない　&& フラグがfalse　&& 回避アニメーション中
-            if (_playerController.Avoidance.IsAvoidanceNow && !_isGunSetUp && !_isReserveSetUpAvoid && _playerController.PlayerAnimatorControl.IsAnimationNow)
-            {
-                if (_playerController.InputManager.IsPressed[InputType.GunSetUp])
-                {
-                    _isReserveSetUpAvoid = true;
-                }
-            }
-
-            if (_isReserveSetUpAvoid)
-            {
-                if (_playerController.PlayerAnimatorControl.IsAnimationNow)
-                {
-                    return;
-                }
-
-                if (_playerController.InputManager.IsExist[InputType.GunSetUp])
-                {
-                    _isReserveSetUpAvoid = false;
-
-                    _isGunSetUp = true;
-
-                    //重力を戻す
-                    _playerController.Rigidbody2D.gravityScale = 1f;
-
-                    if (!_isSlowTimeNow)
-                    {
-                        DoSlow();
-                    }
-
-                    _playerController.PlayerAnimatorControl.GunSet(true);
-
-                    //腕の角度を設定
-                    _playerController.BodyAnglSetteing.AimingSet();
-
-                    //照準を描写
-                    _playerController.Revolver.OnDrawAimingLine();
-                }
-                else
-                {
-                    _isReserveSetUpAvoid = false;
-                }
-
-                return;
-            }
-
-
+            //if (_playerController.Avoidance.IsAvoidanceNow && )
+            //{
+            //    return;
+            //}
 
             //構えの入力を離した場合
-            if (_playerController.InputManager.IsReleased[InputType.GunSetUp])
+            if (_playerController.InputManager.IsReleased[InputType.GunSetUp] && _isGunSetUp)
             {
+                if (_playerController.Avoidance.IsAvoidanceNow)
+                {
+                    _playerController.Avoidance.EndThereAvoidance();
+                }
+
                 //時遅を解除
                 EndSlowTime();
 
@@ -140,16 +137,20 @@ namespace Player
                 //緊急で解除する、をFalseに
                 _isEmergencyStopSlowTime = false;
 
-
                 //回避を終了
                 _playerController.Avoidance.EndThereAvoidance();
             }
 
             //構えのボタンを押したら
-            if (_playerController.InputManager.IsPressed[InputType.GunSetUp])
+            if (_playerController.InputManager.IsPressed[InputType.GunSetUp] && !_isGunSetUp)
             {
+                _isGunSetUp = true;
+
                 //リロードを中断する
                 _playerController.RevolverOperator.StopRevolverReLoad();
+
+                //構え
+                _playerController.PlayerAnimatorControl.GunSet(false);
 
                 //腕の角度を設定
                 _playerController.BodyAnglSetteing.AimingSet();
@@ -160,10 +161,8 @@ namespace Player
                 //重力を戻す
                 _playerController.Rigidbody2D.gravityScale = 1f;
 
-                _isGunSetUp = true;
-
                 DoSlow();
-                _playerController.PlayerAnimatorControl.GunSet(false);
+
 
             }
 
@@ -178,16 +177,17 @@ namespace Player
         }
 
 
-        /// <summary>構えがボタンを話したかどうかを確認する</summary>
+        /// <summary>各行動終了後</summary>
+        /// 構えがボタンを話したかどうかを確認する
         public void CheckRelesedSetUp()
         {
             if (!_playerController.InputManager.IsExist[InputType.GunSetUp])
             {
                 if (_isGunSetUp)
                 {
-                    _playerController.PlayerAnimatorControl.GunSetEnd();
-
                     _isGunSetUp = false;
+
+                    _playerController.PlayerAnimatorControl.GunSetEnd();
 
                     _setUpTimeCount = 0;
 
@@ -264,7 +264,6 @@ namespace Player
             EndSlowTime();
 
             _isEmergencyStopSlowTime = true;
-
         }
 
     }
