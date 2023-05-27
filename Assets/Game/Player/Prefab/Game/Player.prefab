@@ -4984,8 +4984,8 @@ MonoBehaviour:
     _currentHorizontalSpeed: 0
     _jumpPower: 4
   _groungChecker:
-    _offset: {x: 0, y: -0.76}
-    _radius: 0.6
+    _offset: {x: 0, y: -0.8}
+    _radius: 0.54
     _targetLayer:
       serializedVersion: 2
       m_Bits: 128
@@ -5064,7 +5064,7 @@ MonoBehaviour:
     _targetLayer:
       serializedVersion: 2
       m_Bits: 8256
-    _isDrawGizmo: 1
+    _isDrawGizmo: 0
     _gizmoHitColor: {r: 0.93052006, g: 1, b: 0, a: 1}
     _gizmoNotHitColor: {r: 0.19245279, g: 1, b: 0.39164028, a: 1}
   _camraControl:
@@ -5077,7 +5077,7 @@ MonoBehaviour:
     _offsetMoveSpeedY: 0.1
     _camera1: {fileID: 328675650}
     _offsetStart: {x: 0, y: 4}
-  _isTestRevoler: 0
+  _isTestRevoler: 1
   _basicBullet: {fileID: 2726667904286695999, guid: f59ff749b13e7db4eae1029107ed6d1f, type: 3}
 --- !u!70 &4514520410212876858
 CapsuleCollider2D:
@@ -5088,7 +5088,7 @@ CapsuleCollider2D:
   m_GameObject: {fileID: 4514520410212876861}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 1c546f11337590a46920eda05bdeb807, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0

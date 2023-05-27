@@ -156,14 +156,6 @@ namespace Player
                                     _rayLong,
                                     _ground);
 
-
-            //前方向にRay
-            // Debug.DrawRay((Vector2)_playerController.Player.transform.position + _frontRayOffSetX, Vector2.right * _frontRayLong, Color.green);
-            //Debug.DrawRay((Vector2)_playerController.Player.transform.position + _frontRayOffSetX, Vector2.left * _frontRayLong, Color.green);
-
-            //Debug.DrawRay(new Vector2(_rayOffSetX + _playerController.Player.transform.position.x, _playerController.Player.transform.position.y), Vector2.down * _rayLong, Color.yellow);
-            // Debug.DrawRay(new Vector2(-_rayOffSetX + _playerController.Player.transform.position.x, _playerController.Player.transform.position.y), Vector2.down * _rayLong, Color.yellow);
-
             Vector2 moveDir = Vector2.right * inputH;
 
             float angle = 0;
@@ -171,6 +163,7 @@ namespace Player
 
             Vector2 dirR = (Vector2)_playerController.Player.transform.position + _crossRightRayOffSetX - (Vector2)_playerController.Player.transform.position;
             Vector2 dirL = (Vector2)_playerController.Player.transform.position + _crossLeftRayOffSetX - (Vector2)_playerController.Player.transform.position;
+
 
             RaycastHit2D hitCrossR = Physics2D.Raycast(_playerController.Player.transform.position,
                                dirR,
@@ -189,7 +182,7 @@ namespace Player
             {
                 //右側の坂を登り終えそうなとき
                 //"右側の法線が真上" && "左側のRayが当たってない"　|| "左側の法線が左向き"
-                if (hitCrossR.normal.x == 0 && (!hitCrossL || hitCrossL.normal.x < 0))
+                if (hitCrossR.collider != null && hitCrossR.normal.x == 0 && (!hitCrossL || hitCrossL.normal.x < 0))
                 {
                     Debug.Log($"右側の坂を登り終えそうなとき");
                     return false;
@@ -225,8 +218,6 @@ namespace Player
                     }   //左上に進む坂に対応させる
 
                     dir = Quaternion.AngleAxis(angle, Vector3.forward) * moveDir;
-
-                    Debug.Log($"左側の坂を下っている");
                     return true;
                 }
 
@@ -243,8 +234,6 @@ namespace Player
                     }   //左上に進む坂に対応させる
 
                     dir = Quaternion.AngleAxis(angle, Vector3.forward) * moveDir;
-
-                    Debug.Log($"左側の坂を下り終えそうなとき");
                     return true;
                 }
 
@@ -255,7 +244,7 @@ namespace Player
 
                 //左側の坂を登り終えそうなとき
                 //"左側の法線が真上" && "右側のRayが当たってない"　|| "右側の法線が左向き"
-                if (hitCrossL.normal.x == 0 && (!hitCrossR || hitCrossR.normal.x > 0))
+                if (hitCrossL.collider != null && hitCrossL.normal.x == 0 && (!hitCrossR || hitCrossR.normal.x > 0))
                 {
                     return false;
                 }
@@ -274,8 +263,6 @@ namespace Player
                     }   //左上に進む坂に対応させる
 
                     dir = Quaternion.AngleAxis(angle, Vector3.forward) * moveDir;
-
-                    Debug.Log($"左側の坂を登っている");
                     return true;
                 }
 
@@ -291,8 +278,6 @@ namespace Player
                     }   //左上に進む坂に対応させる
 
                     dir = Quaternion.AngleAxis(angle, Vector3.forward) * moveDir;
-
-                    Debug.Log($"右側を下っている");
                     return true;
                 }
 
@@ -309,8 +294,6 @@ namespace Player
                     }   //左上に進む坂に対応させる
 
                     dir = Quaternion.AngleAxis(angle, Vector3.forward) * moveDir;
-
-                    Debug.Log($"右側上り坂Hit");
                     return true;
                 }
 
@@ -453,6 +436,7 @@ namespace Player
                 }
                 else
                 {
+                    _playerController.Rigidbody2D.gravityScale = 1f;
                     _playerController.Rigidbody2D.velocity =
                             new Vector2(_currentHorizontalSpeed,
                            -1);
