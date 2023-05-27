@@ -15,7 +15,10 @@ public class MenuWindowStartUpButton : MonoBehaviour
             // Keyboardの Escape keyが押下された時か
             // XboxコントローラのOptionボタンが押された場合の処理
             if (!_menuWindow.IsFade)
-            _menuWindow.gameObject.SetActive(true);
+            {
+                GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Option");
+                _menuWindow.gameObject.SetActive(true);
+            }
         }
     }
 }
