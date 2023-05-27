@@ -20,6 +20,8 @@ namespace Player
 
         private bool _isSlowTimeNow = false;
 
+        private int _beatSoundIndex = -1;
+
         public bool IsSlowTimeNow => _isSlowTimeNow;
 
         private PlayerController _playerController = null;
@@ -56,7 +58,7 @@ namespace Player
 
 
         public void AnimEndSetUpCheck()
-        {     
+        {
             _isEmergencyStopSlowTime = false;
 
             if (_playerController.InputManager.IsExist[InputType.GunSetUp])
@@ -65,8 +67,8 @@ namespace Player
                 Debug.Log("ST");
                 _isGunSetUp = true;
 
-                //重力を戻す
-                _playerController.Rigidbody2D.gravityScale = 1f;
+                //重力を0
+                _playerController.Rigidbody2D.gravityScale = 0f;
 
                 if (!_isSlowTimeNow)
                 {
@@ -86,6 +88,9 @@ namespace Player
             {
                 EndSlowTime();
 
+                //重力を戻す
+                _playerController.Rigidbody2D.gravityScale = 1f;
+
                 _isGunSetUp = false;
 
                 _playerController.PlayerAnimatorControl.GunSetEnd();
@@ -99,6 +104,18 @@ namespace Player
         {
             // ポーズ中は何もできない
             if (GameManager.Instance.PauseManager.PauseCounter > 0) return;
+
+
+            //構えている最中の処理 
+            //構えてる間、ゲージを減らす
+            if (_isGunSetUp)
+            {
+                //速度の減速処理
+                _playerController.Move.VelocityDeceleration();
+
+            }       //構えてないときの処理。ゲージを回復する
+
+
 
             //空中では出来ない
             if (!_playerController.GroungChecker.IsHit(_playerController.Move.MoveHorizontalDir)) return;
@@ -122,7 +139,10 @@ namespace Player
                     _playerController.Avoidance.EndThereAvoidance();
                 }
 
-                //時遅を解除
+                //重力を戻す
+                _playerController.Rigidbody2D.gravityScale = 1f;
+
+                //時遅を解
                 EndSlowTime();
 
                 //アニメーションを設定
@@ -159,21 +179,13 @@ namespace Player
                 _playerController.Revolver.OnDrawAimingLine();
 
                 //重力を戻す
-                _playerController.Rigidbody2D.gravityScale = 1f;
-
+                _playerController.Rigidbody2D.gravityScale =0f;
                 DoSlow();
 
 
             }
 
-            //構えている最中の処理 
-            //構えてる間、ゲージを減らす
-            if (_isGunSetUp)
-            {
-                //速度の減速処理
-                _playerController.Move.VelocityDeceleration();
 
-            }       //構えてないときの処理。ゲージを回復する
         }
 
 
@@ -207,6 +219,7 @@ namespace Player
             _isSlowTimeNow = true;
 
             GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Slow");
+            _beatSoundIndex = GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_HeartBeat");
 
             GameManager.Instance.ShaderPropertyController.MonochromeController.SetMonoBlend(1, 0.2f);
 
@@ -227,12 +240,20 @@ namespace Player
 
             //遅くする時の音
             GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_SlowFinish");
+            GameManager.Instance.AudioManager.StopSE(_beatSoundIndex);
+            _beatSoundIndex = -1;
 
             GameManager.Instance.ShaderPropertyController.MonochromeController.SetMonoBlend(0, 0.2f);
 
             Debug.Log("時を戻す");
             // 時間の速度をもとの状態に戻す。
             GameManager.Instance.TimeController.ChangeTimeSpeed(false);
+        }
+
+        public void StopSlowSE()
+        {
+            GameManager.Instance.AudioManager.StopSE(_beatSoundIndex);
+            _beatSoundIndex = -1;
         }
 
         public void CanselSetUpping()

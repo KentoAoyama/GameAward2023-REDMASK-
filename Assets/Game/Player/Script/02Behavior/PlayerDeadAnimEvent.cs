@@ -19,7 +19,11 @@ public class PlayerDeadAnimEvent : MonoBehaviour
 
     public void Dead()
     {
-        //死亡パネルの非表示
-        _deadPanel.SetActive(true);
+        if (_deadPanel != null)
+        {
+            //死亡パネルの非表示
+            _deadPanel.SetActive(true);
+        }
+
     }
 }

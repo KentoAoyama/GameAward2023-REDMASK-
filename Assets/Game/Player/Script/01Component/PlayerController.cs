@@ -299,8 +299,11 @@ namespace Player
             //移動の音を止める
             _move.StopMoveSE();
 
+            _gunSetUp.StopSlowSE();
+
             // 時間の速度をもとの状態に戻す。
             GameManager.Instance.TimeController.ChangeTimeSpeed(false);
+
         }
 
         public async void Pause()

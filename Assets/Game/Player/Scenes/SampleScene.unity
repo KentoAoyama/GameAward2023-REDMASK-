@@ -1396,7 +1396,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1168248606}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.12, y: 2.87, z: -10}
+  m_LocalPosition: {x: -13.169996, y: -0.2299993, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1945,6 +1945,11 @@ MonoBehaviour:
   dspBusSetting: 
   dontDestroyOnLoad: 0
   dontRemoveExistsCueSheet: 0
+--- !u!1 &1628663852 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 432904051, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+  m_PrefabInstance: {fileID: 1909928270}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1731596936
 GameObject:
   m_ObjectHideFlags: 0
@@ -2309,6 +2314,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 432904051, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1454180938, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+      propertyPath: _deadPanel
+      value: 
+      objectReference: {fileID: 1628663852}
+    - target: {fileID: 2026994623, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4514520410212876857, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: m_RootOrder
       value: 1
