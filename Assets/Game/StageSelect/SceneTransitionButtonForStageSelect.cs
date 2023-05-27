@@ -44,8 +44,11 @@ public class SceneTransitionButtonForStageSelect : MonoBehaviour
     /// ボタンを押下したときに呼び出すことを想定して作成したメソッド。<br/>
     /// シーンを変更する。
     /// </summary>
+    bool isPlaying = false;
     public async void OnSceneChange()
     {
+        if (isPlaying) return;
+        isPlaying = true;
         GameManager.Instance.PauseManager.ClearCount();
         _disableClicksImage.gameObject.SetActive(true);
         _eventSystem.SetSelectedGameObject(null);
