@@ -1145,11 +1145,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &778203672 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3862156600913465844, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
-  m_PrefabInstance: {fileID: 1909928270}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &887594071
 GameObject:
   m_ObjectHideFlags: 0
@@ -1950,6 +1945,11 @@ MonoBehaviour:
   dspBusSetting: 
   dontDestroyOnLoad: 0
   dontRemoveExistsCueSheet: 0
+--- !u!1 &1628663852 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 432904051, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+  m_PrefabInstance: {fileID: 1909928270}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1731596936
 GameObject:
   m_ObjectHideFlags: 0
@@ -2314,10 +2314,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 328675651, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -4.0499964
-      objectReference: {fileID: 0}
     - target: {fileID: 432904051, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -2325,7 +2321,7 @@ PrefabInstance:
     - target: {fileID: 1454180938, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: _deadPanel
       value: 
-      objectReference: {fileID: 778203672}
+      objectReference: {fileID: 1628663852}
     - target: {fileID: 2026994623, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -2374,29 +2370,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4514520410212876858, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 6200000, guid: 1c546f11337590a46920eda05bdeb807, type: 2}
     - target: {fileID: 4514520410212876861, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 4514520410212876862, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
-      propertyPath: _isTestRevoler
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4514520410212876862, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
-      propertyPath: _groungChecker._radius
-      value: 0.54
-      objectReference: {fileID: 0}
-    - target: {fileID: 4514520410212876862, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
-      propertyPath: _groungChecker._offset.y
-      value: -0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 4514520410212876862, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
-      propertyPath: _proximityHitChecker._isDrawGizmo
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
