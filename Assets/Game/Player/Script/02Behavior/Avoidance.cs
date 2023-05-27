@@ -96,8 +96,7 @@ namespace Player
             {
                 //( 回避が不可能　||　回避実行中 )には実行しない
                 if (!_isCanAvoidance || _isAvoidacneNow) return;
-                //ジャンプ入力と同フレームで入力した際に、上昇しながら回避に入る問題を防ぐための処理
-                if (_playerController.Rigidbody2D.velocity.y > 0f) return;
+
                 //空中では実行できない
                 if (!_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX)) return;
 
@@ -168,6 +167,7 @@ namespace Player
             //TestTExT???????????????????///////////////////////////////////////
             _testAvoidText.SetActive(true);
 
+            //アニメーションを再生
             _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.Avoid);
 
             _playerController.RevolverOperator.IsFireNow = false;
