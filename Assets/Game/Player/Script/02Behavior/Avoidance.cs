@@ -86,9 +86,6 @@ namespace Player
             //Pause中は実行しない
             if (IsPause) return;
 
-            Debug.Log($"現在回避:{_isAvoidacneNow}");
-            Debug.Log($"可能:{_isCanAvoidance}");
-
             //近接攻撃中は出来ない
             if (_playerController.Proximity.IsProximityNow || !_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX)) return;
 

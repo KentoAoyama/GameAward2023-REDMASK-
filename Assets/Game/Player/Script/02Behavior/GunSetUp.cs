@@ -56,9 +56,13 @@ namespace Player
 
 
         public void AnimEndSetUpCheck()
-        {
+        {     
+            _isEmergencyStopSlowTime = false;
+
             if (_playerController.InputManager.IsExist[InputType.GunSetUp])
             {
+
+                Debug.Log("ST");
                 _isGunSetUp = true;
 
                 //èdóÕÇñﬂÇ∑
@@ -87,11 +91,8 @@ namespace Player
                 _playerController.PlayerAnimatorControl.GunSetEnd();
 
                 _setUpTimeCount = 0;
-
-
-
-                _isEmergencyStopSlowTime = false;
             }
+
         }
 
         public void UpData()

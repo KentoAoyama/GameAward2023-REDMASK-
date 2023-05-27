@@ -28,5 +28,10 @@ namespace Player
             _playerController.RevolverOperator.IsFireNow = false;
         }
 
+        public void EndProirity()
+        {
+            _playerController.Proximity.AttackEnd();
+        }
+
     }
 }
