@@ -26,6 +26,8 @@ public class Bullet2 : MonoBehaviour, IPausable, IStoreableInChamber
     private Sprite _cylinderUISprite = default;
     [SerializeField]
     private LayerMask _targetLayer = default;
+    [SerializeField, TagName]
+    private string _enemyBulletTag = default;
 
     private int _currentHitCount = 0;
     private List<Vector2> _targetPositions = null;
@@ -86,7 +88,11 @@ public class Bullet2 : MonoBehaviour, IPausable, IStoreableInChamber
                 {
                     _damaged.Add(damageable);
                     damageable.Damage();
-                    _currentHitCount++;
+
+                    if (hits[i].collider.tag != _enemyBulletTag)
+                    {
+                        _currentHitCount++;
+                    }
                 }
 
                 // シールドを貫通しないオブジェクトはシールドに接触した時点で消滅する。
@@ -104,7 +110,7 @@ public class Bullet2 : MonoBehaviour, IPausable, IStoreableInChamber
                     return;
                 }
 
-                
+
             }
         }
         // 設定された全ての目的地に到達したとき、このオブジェクトを非アクティブにする。
