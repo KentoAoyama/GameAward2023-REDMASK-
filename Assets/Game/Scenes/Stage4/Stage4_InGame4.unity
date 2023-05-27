@@ -430,7 +430,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 00000000717c38bcfd9a942d
+  m_ApplyToSortingLayers: 00000000717c38bcfd9a942d5517434d9d068a23
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -1428,6 +1428,10 @@ PrefabInstance:
       propertyPath: m_BoundingShape2D
       value: 
       objectReference: {fileID: 1757064135}
+    - target: {fileID: 328675651, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 364362234, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: m_FollowOffset.y
       value: 5.14
@@ -1436,10 +1440,22 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 5.14
       objectReference: {fileID: 0}
+    - target: {fileID: 1454180938, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+      propertyPath: _deadPanel
+      value: 
+      objectReference: {fileID: 1274211642}
     - target: {fileID: 1551494174, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: _stageController2
       value: 
       objectReference: {fileID: 5524505501810550007}
+    - target: {fileID: 2109781610, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+      propertyPath: m_FollowOffset.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 230241036519822583, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+      propertyPath: _menuWindow
+      value: 
+      objectReference: {fileID: 1274211641}
     - target: {fileID: 4514520410212876857, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -1490,6 +1506,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+--- !u!1 &574392061 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1414620987, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+  m_PrefabInstance: {fileID: 574392060}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &618139116
 GameObject:
   m_ObjectHideFlags: 0
@@ -2372,17 +2393,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 146595785778409123, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
+      propertyPath: _stageController2
+      value: 
+      objectReference: {fileID: 5524505501810550007}
     - target: {fileID: 361925564566498032, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 361925564566498032, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 41.9913
+      value: 37.941303
       objectReference: {fileID: 0}
     - target: {fileID: 361925564566498032, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.49
+      value: 0.49
       objectReference: {fileID: 0}
     - target: {fileID: 361925564566498032, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2428,8 +2453,54 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Camera for stage
       objectReference: {fileID: 0}
+    - target: {fileID: 2403189586978981763, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
+      propertyPath: _playerUIObject
+      value: 
+      objectReference: {fileID: 574392061}
+    - target: {fileID: 7664654827998946765, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
+      propertyPath: _playerUIObject
+      value: 
+      objectReference: {fileID: 574392061}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
+--- !u!114 &1274211641 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2403189586978981763, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
+  m_PrefabInstance: {fileID: 1274211640}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afea636483ef3e54b85cf82377d66f5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &1274211642 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2736046579655650068, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
+  m_PrefabInstance: {fileID: 1274211640}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1274211643 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5368302756549709496, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
+  m_PrefabInstance: {fileID: 1274211640}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3f8083af2d6891459aac73caf61de6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1274211644 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5015557665879375865, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
+  m_PrefabInstance: {fileID: 1274211640}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81e9314cb03a65b46afb64232cc3d4fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1358843237
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3210,6 +3281,7 @@ MonoBehaviour:
   _nextSceneName: Stage4_CompletePerformance
   _isFinal: 1
   _currentStageNumberForFinal: 4
+  _stageFadeOut: {fileID: 0}
 --- !u!212 &5524505501461790102
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3309,6 +3381,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerTag: Player
   _firstStageSceneName: Stage4_InGame1
+  _stageFadeIn: {fileID: 1274211644}
+  _stageFadeOut: {fileID: 1274211643}
 --- !u!61 &7628587786987774613
 BoxCollider2D:
   m_ObjectHideFlags: 0
