@@ -63,12 +63,7 @@ namespace Player
 
             if (_playerController.InputManager.IsExist[InputType.GunSetUp])
             {
-
-                Debug.Log("ST");
                 _isGunSetUp = true;
-
-                //èdóÕÇ0
-                _playerController.Rigidbody2D.gravityScale = 0f;
 
                 if (!_isSlowTimeNow)
                 {
@@ -178,14 +173,8 @@ namespace Player
                 //è∆èÄÇï`é 
                 _playerController.Revolver.OnDrawAimingLine();
 
-                //èdóÕÇñﬂÇ∑
-                _playerController.Rigidbody2D.gravityScale =0f;
                 DoSlow();
-
-
             }
-
-
         }
 
 

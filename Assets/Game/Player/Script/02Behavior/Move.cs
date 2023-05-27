@@ -182,7 +182,7 @@ namespace Player
             {
                 //右側の坂を登り終えそうなとき
                 //"右側の法線が真上" && "左側のRayが当たってない"　|| "左側の法線が左向き"
-                if (hitCrossR.collider != null && hitCrossR.normal.x == 0 && (!hitCrossL || hitCrossL.normal.x < 0))
+                if (hitCrossR.normal.x == 0 && (!hitCrossL || hitCrossL.normal.x < 0))
                 {
                     Debug.Log($"右側の坂を登り終えそうなとき");
                     return false;
@@ -244,7 +244,7 @@ namespace Player
 
                 //左側の坂を登り終えそうなとき
                 //"左側の法線が真上" && "右側のRayが当たってない"　|| "右側の法線が左向き"
-                if (hitCrossL.collider != null && hitCrossL.normal.x == 0 && (!hitCrossR || hitCrossR.normal.x > 0))
+                if (hitCrossL.normal.x == 0 && (!hitCrossR || hitCrossR.normal.x > 0))
                 {
                     return false;
                 }
@@ -305,6 +305,8 @@ namespace Player
 
         public void Update()
         {
+
+            Debug.Log(_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX));
             if (_playerController.IsDead)
             {
                 return;
@@ -432,6 +434,7 @@ namespace Player
                 if (CheckMoveDir(_moveHorizontalDir))
                 {
                     _playerController.Rigidbody2D.gravityScale = 0f;
+
                     _playerController.Rigidbody2D.velocity = Mathf.Abs(_currentHorizontalSpeed) * dir;
                 }
                 else
@@ -474,6 +477,7 @@ namespace Player
             if (_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX))
             {
                 _currentHorizontalSpeed -= Time.deltaTime * _landDeceleration * _playerController.Player.transform.localScale.x * GameManager.Instance.TimeController.PlayerTime;
+
             } // 地上移動中の減速処理
 
             if (_playerController.Player.transform.localScale.x > 0f && _currentHorizontalSpeed < 0f ||
@@ -495,6 +499,22 @@ namespace Player
                         new Vector2(_currentHorizontalSpeed,
                        -1);
             }
+
+            if (_playerController.GunSetUp.IsGunSetUp)
+            {
+                if (_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX))
+                {
+                    Vector2 velo = new Vector2(_playerController.Rigidbody2D.velocity.x, 0);
+                    _playerController.Rigidbody2D.velocity = velo;
+                }
+                else
+                {
+                    Vector2 velo = new Vector2(_playerController.Rigidbody2D.velocity.x, -1);
+                    _playerController.Rigidbody2D.velocity = velo;
+                }
+
+            }
+
         }
 
 
