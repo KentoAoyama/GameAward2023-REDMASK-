@@ -48,6 +48,7 @@ public class PerformanceCutEvent : MonoBehaviour
         _image.sprite = _sprites[index];
         _image.material.SetFloat(_amountId, -1F);
         _fadePanel.color = Color.black;
+        int noise = GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Noise");
 
         await _fadePanel.DOColor(new Color(0.9622642F, 0.8783826F, 0.7571022F, 1), _colorChangeInterval);
         await _fadePanel.DOFade(0F, 0.1F);
@@ -60,6 +61,8 @@ public class PerformanceCutEvent : MonoBehaviour
         _image.gameObject.SetActive(false);
         _cutSceneEnded = true;
 
-        GameManager.Instance.GalleryManager.SetOpenedID(true, index);
+        GameManager.Instance.AudioManager.StopSE(noise);
+
+        GameManager.Instance.GalleryManager.SetOpenedID(true, index + 4);
     }
 }

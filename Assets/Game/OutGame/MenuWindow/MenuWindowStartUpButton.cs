@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 public class MenuWindowStartUpButton : MonoBehaviour
 {
     [SerializeField]
-    private GameObject _menuWindow = default;
+    private MenuWindowController _menuWindow = default;
 
     private void Update()
     {
@@ -14,7 +14,11 @@ public class MenuWindowStartUpButton : MonoBehaviour
         {
             // Keyboardの Escape keyが押下された時か
             // XboxコントローラのOptionボタンが押された場合の処理
-            _menuWindow.SetActive(true);
+            if (!_menuWindow.IsFade)
+            {
+                GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Option");
+                _menuWindow.gameObject.SetActive(true);
+            }
         }
     }
 }

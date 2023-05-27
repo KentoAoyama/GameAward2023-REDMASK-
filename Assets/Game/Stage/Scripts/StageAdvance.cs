@@ -24,11 +24,17 @@ public class StageAdvance : MonoBehaviour
     [SerializeField]
     private int _currentStageNumberForFinal = 0;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    [SerializeField]
+    private StageFadeOut _stageFadeOut = default;
+
+    bool isPlaying = false;
+    private async void OnTriggerEnter2D(Collider2D collision)
     {
         // プレイヤーと接触したとき実行する。
         if (collision.tag == _playerTag)
         {
+            if (isPlaying) return;
+            isPlaying = true;
             GameManager.Instance.StageManager.StageStartMode = StageStartMode.JustBefore;
             // 弾の残り数を保存する。
             // （敗北時に直前からやり直すボタンを選択した場合にその値を使用する。）
@@ -37,6 +43,8 @@ public class StageAdvance : MonoBehaviour
             GameManager.Instance.StageManager.SetCheckPointBulletsCount(
                 playerController.Revolver.Cylinder, playerController.BulletCountManager.BulletCounts);
             GameManager.Instance.StageManager.CylinderIndex = playerController.Revolver.CurrentChamber;
+
+            await _stageFadeOut.FadeOut();
 
             // シーンを更新する。
             SceneManager.LoadScene(_nextSceneName);

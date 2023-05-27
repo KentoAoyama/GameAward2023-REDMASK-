@@ -542,6 +542,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerTag: Player
   _firstStageSceneName: Stage4_InGame1
+  _stageFadeIn: {fileID: 1600148554}
+  _stageFadeOut: {fileID: 1600148553}
 --- !u!1 &492954874
 GameObject:
   m_ObjectHideFlags: 0
@@ -1223,7 +1225,7 @@ MonoBehaviour:
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 00000000717c38bcfd9a942d
+  m_ApplyToSortingLayers: 00000000717c38bcfd9a942d5517434d9d068a23
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -1977,6 +1979,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1454180938, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+      propertyPath: _deadPanel
+      value: 
+      objectReference: {fileID: 1600148555}
     - target: {fileID: 1551494174, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: _stageController2
       value: 
@@ -2005,6 +2011,10 @@ PrefabInstance:
       propertyPath: m_FollowOffset.y
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 230241036519822583, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+      propertyPath: _menuWindow
+      value: 
+      objectReference: {fileID: 1600148556}
     - target: {fileID: 335550142993283820, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -2067,6 +2077,11 @@ PrefabInstance:
       objectReference: {fileID: 5265649433146915775, guid: 015cb33e94855db448e75fc98caf6aa5, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+--- !u!1 &1553967337 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1414620987, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+  m_PrefabInstance: {fileID: 1553967336}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1578989524
 GameObject:
   m_ObjectHideFlags: 0
@@ -2158,6 +2173,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 146595785778409123, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
+      propertyPath: _stageController2
+      value: 
+      objectReference: {fileID: 491379047}
     - target: {fileID: 361925564566498032, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -2218,8 +2237,54 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Camera for stage
       objectReference: {fileID: 0}
+    - target: {fileID: 2403189586978981763, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
+      propertyPath: _playerUIObject
+      value: 
+      objectReference: {fileID: 1553967337}
+    - target: {fileID: 7664654827998946765, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
+      propertyPath: _playerUIObject
+      value: 
+      objectReference: {fileID: 1553967337}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
+--- !u!114 &1600148553 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5368302756549709496, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
+  m_PrefabInstance: {fileID: 1600148552}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3f8083af2d6891459aac73caf61de6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1600148554 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5015557665879375865, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
+  m_PrefabInstance: {fileID: 1600148552}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81e9314cb03a65b46afb64232cc3d4fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &1600148555 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2736046579655650068, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
+  m_PrefabInstance: {fileID: 1600148552}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1600148556 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2403189586978981763, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
+  m_PrefabInstance: {fileID: 1600148552}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afea636483ef3e54b85cf82377d66f5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1621031986 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3436230310146658811, guid: 66119d22ea1178a4181cb1ab974d4e57, type: 3}
@@ -2276,6 +2341,7 @@ MonoBehaviour:
   _nextSceneName: Stage4_InGame2
   _isFinal: 0
   _currentStageNumberForFinal: 0
+  _stageFadeOut: {fileID: 1600148553}
 --- !u!1 &1783345923
 GameObject:
   m_ObjectHideFlags: 0

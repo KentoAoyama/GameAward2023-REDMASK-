@@ -548,9 +548,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a5740c686bcf934da23455a04e21c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _outlineShader: {fileID: 4800000, guid: 50a4459097178914e85b07f5519a6715, type: 3}
-  _outlineRange: 0.05
-  _outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _outlineShader: {fileID: 4800000, guid: 93537d20a037c7a43892b5897ba181f3, type: 3}
+  _outlineRange: 2
+  _outlineColor: {r: 2.8705883, g: 0, b: 0.09411765, a: 1}
+  _dissolveTex: {fileID: 2800000, guid: ab035c3d154570543966dbeda999a651, type: 3}
+  _dissolveAmount: 0.35
+  _dissolveRange: 0.5
+  _dissolveColor: {r: 16.941177, g: 0, b: 0, a: 1}
+  _scroll: {x: 2, y: 0}
+  _scrollStrength: 1
 --- !u!114 &24407109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2420,9 +2426,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a5740c686bcf934da23455a04e21c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _outlineShader: {fileID: 4800000, guid: 2dfacaeb47d303940bba79bb5cc6235a, type: 3}
-  _outlineRange: 7
-  _outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  _outlineShader: {fileID: 4800000, guid: 93537d20a037c7a43892b5897ba181f3, type: 3}
+  _outlineRange: 2
+  _outlineColor: {r: 2.8705883, g: 0, b: 0.09411765, a: 1}
+  _dissolveTex: {fileID: 2800000, guid: ab035c3d154570543966dbeda999a651, type: 3}
+  _dissolveAmount: 0.35
+  _dissolveRange: 0.5
+  _dissolveColor: {r: 16.941177, g: 0, b: 0, a: 1}
+  _scroll: {x: 2, y: 0}
+  _scrollStrength: 1
 --- !u!114 &241645609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3034,7 +3046,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 3840, y: 1080}
+  m_SizeDelta: {x: 9429, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &305402010
 MonoBehaviour:
@@ -3056,7 +3068,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 8cc3f3a2f978e874cb565098edc10a32, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8fae1ae6670c747419be25db2b21ed1b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4118,9 +4130,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a5740c686bcf934da23455a04e21c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _outlineShader: {fileID: 4800000, guid: 50a4459097178914e85b07f5519a6715, type: 3}
-  _outlineRange: 0.05
-  _outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _outlineShader: {fileID: 4800000, guid: 93537d20a037c7a43892b5897ba181f3, type: 3}
+  _outlineRange: 2
+  _outlineColor: {r: 2.8705883, g: 0, b: 0.09411765, a: 1}
+  _dissolveTex: {fileID: 2800000, guid: ab035c3d154570543966dbeda999a651, type: 3}
+  _dissolveAmount: 0.35
+  _dissolveRange: 0.5
+  _dissolveColor: {r: 16.941177, g: 0, b: 0, a: 1}
+  _scroll: {x: 2, y: 0}
+  _scrollStrength: 1
 --- !u!114 &453166497
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4136,6 +4154,82 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
+--- !u!1 &469949550
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 469949551}
+  - component: {fileID: 469949553}
+  - component: {fileID: 469949552}
+  m_Layer: 5
+  m_Name: Fade Image
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &469949551
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 469949550}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 549135813}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 1080}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &469949552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 469949550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &469949553
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 469949550}
+  m_CullTransparentMesh: 1
 --- !u!1 &477571705
 GameObject:
   m_ObjectHideFlags: 0
@@ -4793,6 +4887,130 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 549003549}
   m_CullTransparentMesh: 1
+--- !u!1 &549135809
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 549135813}
+  - component: {fileID: 549135812}
+  - component: {fileID: 549135811}
+  - component: {fileID: 549135810}
+  - component: {fileID: 549135814}
+  m_Layer: 5
+  m_Name: SetMaskScroll Canvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &549135810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 549135809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &549135811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 549135809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
+--- !u!223 &549135812
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 549135809}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 63
+  m_TargetDisplay: 0
+--- !u!224 &549135813
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 549135809}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 469949551}
+  m_Father: {fileID: 0}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
+--- !u!114 &549135814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 549135809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23966af3800c9a444ae56e3d4257173a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetImage: {fileID: 469949552}
+  _endPos: {x: 0, y: 0}
+  _time: 0.2
+  _ease: 0
+  _startEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  _onComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &552227021
 GameObject:
   m_ObjectHideFlags: 0
@@ -7181,9 +7399,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a5740c686bcf934da23455a04e21c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _outlineShader: {fileID: 4800000, guid: 50a4459097178914e85b07f5519a6715, type: 3}
-  _outlineRange: 0.05
-  _outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _outlineShader: {fileID: 4800000, guid: 93537d20a037c7a43892b5897ba181f3, type: 3}
+  _outlineRange: 2
+  _outlineColor: {r: 2.8705883, g: 0, b: 0.09411765, a: 1}
+  _dissolveTex: {fileID: 2800000, guid: ab035c3d154570543966dbeda999a651, type: 3}
+  _dissolveAmount: 0.35
+  _dissolveRange: 0.5
+  _dissolveColor: {r: 16.941177, g: 0, b: 0, a: 1}
+  _scroll: {x: 2, y: 0}
+  _scrollStrength: 1
 --- !u!114 &759998128
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7769,7 +7993,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.9056604, g: 0.652759, b: 0.652759, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -7852,9 +8076,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a5740c686bcf934da23455a04e21c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _outlineShader: {fileID: 4800000, guid: 2dfacaeb47d303940bba79bb5cc6235a, type: 3}
-  _outlineRange: 7
-  _outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _outlineShader: {fileID: 4800000, guid: 93537d20a037c7a43892b5897ba181f3, type: 3}
+  _outlineRange: 2
+  _outlineColor: {r: 2.8705883, g: 0, b: 0.09411765, a: 1}
+  _dissolveTex: {fileID: 2800000, guid: ab035c3d154570543966dbeda999a651, type: 3}
+  _dissolveAmount: 0.35
+  _dissolveRange: 0.5
+  _dissolveColor: {r: 16.941177, g: 0, b: 0, a: 1}
+  _scroll: {x: 2, y: 0}
+  _scrollStrength: 1
 --- !u!114 &865138536
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8916,9 +9146,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a5740c686bcf934da23455a04e21c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _outlineShader: {fileID: 4800000, guid: 2dfacaeb47d303940bba79bb5cc6235a, type: 3}
-  _outlineRange: 7
-  _outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _outlineShader: {fileID: 4800000, guid: 93537d20a037c7a43892b5897ba181f3, type: 3}
+  _outlineRange: 2
+  _outlineColor: {r: 2.8705883, g: 0, b: 0.09411765, a: 1}
+  _dissolveTex: {fileID: 2800000, guid: ab035c3d154570543966dbeda999a651, type: 3}
+  _dissolveAmount: 0.35
+  _dissolveRange: 0.5
+  _dissolveColor: {r: 16.941177, g: 0, b: 0, a: 1}
+  _scroll: {x: 2, y: 0}
+  _scrollStrength: 1
 --- !u!114 &980038299
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9146,15 +9382,15 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 0a773ceeb3522ab458fa6bb8356e8bd4, type: 3}
     color: {r: 0.8039216, g: 0.8039216, b: 0.8039216, a: 1}
   - key: 1
-    sprite: {fileID: 21300000, guid: 42f020c5e7110534abf0974281f4b042, type: 3}
+    sprite: {fileID: 21300000, guid: d98f4dfbc1024a44e93c38ee4e3ba45d, type: 3}
     color: {r: 1, g: 1, b: 1, a: 1}
   - key: 2
-    sprite: {fileID: 21300000, guid: c0a3d6a1b52a8df478e49a1f3d3ddc44, type: 3}
+    sprite: {fileID: 21300000, guid: d7c54ec68ec2bfe46b0e438116c03299, type: 3}
     color: {r: 1, g: 1, b: 1, a: 1}
   - key: 5
     sprite: {fileID: 21300000, guid: a72e796f88d52144e88277717a489ff3, type: 3}
     color: {r: 1, g: 1, b: 1, a: 1}
-  _firstFadeDelay: 5
+  _firstFadeDelay: 2
   _inputDelay: 0
   _text: {fileID: 741316139}
   _testIndex: -1
@@ -9691,9 +9927,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a5740c686bcf934da23455a04e21c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _outlineShader: {fileID: 4800000, guid: 2dfacaeb47d303940bba79bb5cc6235a, type: 3}
-  _outlineRange: 7
-  _outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _outlineShader: {fileID: 4800000, guid: 93537d20a037c7a43892b5897ba181f3, type: 3}
+  _outlineRange: 2
+  _outlineColor: {r: 2.8705883, g: 0, b: 0.09411765, a: 1}
+  _dissolveTex: {fileID: 2800000, guid: ab035c3d154570543966dbeda999a651, type: 3}
+  _dissolveAmount: 0.35
+  _dissolveRange: 0.5
+  _dissolveColor: {r: 16.941177, g: 0, b: 0, a: 1}
+  _scroll: {x: 2, y: 0}
+  _scrollStrength: 1
 --- !u!114 &1027196395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9842,7 +10084,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
-  m_Color: {r: 0.8679245, g: 0.8679245, b: 0.8679245, a: 1}
+  m_Color: {r: 0.8773585, g: 0.82273054, b: 0.82273054, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -10049,9 +10291,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a5740c686bcf934da23455a04e21c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _outlineShader: {fileID: 4800000, guid: 2dfacaeb47d303940bba79bb5cc6235a, type: 3}
-  _outlineRange: 7
-  _outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _outlineShader: {fileID: 4800000, guid: 93537d20a037c7a43892b5897ba181f3, type: 3}
+  _outlineRange: 2
+  _outlineColor: {r: 2.8705883, g: 0, b: 0.09411765, a: 1}
+  _dissolveTex: {fileID: 2800000, guid: ab035c3d154570543966dbeda999a651, type: 3}
+  _dissolveAmount: 0.35
+  _dissolveRange: 0.5
+  _dissolveColor: {r: 16.941177, g: 0, b: 0, a: 1}
+  _scroll: {x: 2, y: 0}
+  _scrollStrength: 1
 --- !u!114 &1046985980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15785,9 +16033,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a5740c686bcf934da23455a04e21c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _outlineShader: {fileID: 4800000, guid: 2dfacaeb47d303940bba79bb5cc6235a, type: 3}
-  _outlineRange: 7
-  _outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _outlineShader: {fileID: 4800000, guid: 93537d20a037c7a43892b5897ba181f3, type: 3}
+  _outlineRange: 2
+  _outlineColor: {r: 2.8705883, g: 0, b: 0.09411765, a: 1}
+  _dissolveTex: {fileID: 2800000, guid: ab035c3d154570543966dbeda999a651, type: 3}
+  _dissolveAmount: 0.35
+  _dissolveRange: 0.5
+  _dissolveColor: {r: 16.941177, g: 0, b: 0, a: 1}
+  _scroll: {x: 2, y: 0}
+  _scrollStrength: 1
 --- !u!114 &1661138029
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16283,9 +16537,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a5740c686bcf934da23455a04e21c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _outlineShader: {fileID: 4800000, guid: 2dfacaeb47d303940bba79bb5cc6235a, type: 3}
-  _outlineRange: 7
-  _outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _outlineShader: {fileID: 4800000, guid: 93537d20a037c7a43892b5897ba181f3, type: 3}
+  _outlineRange: 2
+  _outlineColor: {r: 2.8705883, g: 0, b: 0.09411765, a: 1}
+  _dissolveTex: {fileID: 2800000, guid: ab035c3d154570543966dbeda999a651, type: 3}
+  _dissolveAmount: 0.35
+  _dissolveRange: 0.5
+  _dissolveColor: {r: 16.941177, g: 0, b: 0, a: 1}
+  _scroll: {x: 2, y: 0}
+  _scrollStrength: 1
 --- !u!114 &1705324389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16565,9 +16825,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a5740c686bcf934da23455a04e21c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _outlineShader: {fileID: 4800000, guid: 50a4459097178914e85b07f5519a6715, type: 3}
-  _outlineRange: 0.05
-  _outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _outlineShader: {fileID: 4800000, guid: 93537d20a037c7a43892b5897ba181f3, type: 3}
+  _outlineRange: 2
+  _outlineColor: {r: 2.8705883, g: 0, b: 0.09411765, a: 1}
+  _dissolveTex: {fileID: 2800000, guid: ab035c3d154570543966dbeda999a651, type: 3}
+  _dissolveAmount: 0.35
+  _dissolveRange: 0.5
+  _dissolveColor: {r: 16.941177, g: 0, b: 0, a: 1}
+  _scroll: {x: 2, y: 0}
+  _scrollStrength: 1
 --- !u!114 &1728857295
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17025,9 +17291,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a5740c686bcf934da23455a04e21c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _outlineShader: {fileID: 4800000, guid: 2dfacaeb47d303940bba79bb5cc6235a, type: 3}
-  _outlineRange: 7
-  _outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _outlineShader: {fileID: 4800000, guid: 93537d20a037c7a43892b5897ba181f3, type: 3}
+  _outlineRange: 2
+  _outlineColor: {r: 2.8705883, g: 0, b: 0.09411765, a: 1}
+  _dissolveTex: {fileID: 2800000, guid: ab035c3d154570543966dbeda999a651, type: 3}
+  _dissolveAmount: 0.35
+  _dissolveRange: 0.5
+  _dissolveColor: {r: 16.941177, g: 0, b: 0, a: 1}
+  _scroll: {x: 2, y: 0}
+  _scrollStrength: 1
 --- !u!114 &1756380096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17300,9 +17572,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a5740c686bcf934da23455a04e21c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _outlineShader: {fileID: 4800000, guid: 2dfacaeb47d303940bba79bb5cc6235a, type: 3}
-  _outlineRange: 7
-  _outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _outlineShader: {fileID: 4800000, guid: 93537d20a037c7a43892b5897ba181f3, type: 3}
+  _outlineRange: 2
+  _outlineColor: {r: 2.8705883, g: 0, b: 0.09411765, a: 1}
+  _dissolveTex: {fileID: 2800000, guid: ab035c3d154570543966dbeda999a651, type: 3}
+  _dissolveAmount: 0.35
+  _dissolveRange: 0.5
+  _dissolveColor: {r: 16.941177, g: 0, b: 0, a: 1}
+  _scroll: {x: 2, y: 0}
+  _scrollStrength: 1
 --- !u!114 &1771986365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17505,9 +17783,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a5740c686bcf934da23455a04e21c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _outlineShader: {fileID: 4800000, guid: 2dfacaeb47d303940bba79bb5cc6235a, type: 3}
-  _outlineRange: 7
-  _outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _outlineShader: {fileID: 4800000, guid: 93537d20a037c7a43892b5897ba181f3, type: 3}
+  _outlineRange: 2
+  _outlineColor: {r: 2.8705883, g: 0, b: 0.09411765, a: 1}
+  _dissolveTex: {fileID: 2800000, guid: ab035c3d154570543966dbeda999a651, type: 3}
+  _dissolveAmount: 0.35
+  _dissolveRange: 0.5
+  _dissolveColor: {r: 16.941177, g: 0, b: 0, a: 1}
+  _scroll: {x: 2, y: 0}
+  _scrollStrength: 1
 --- !u!114 &1779063900
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18217,9 +18501,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a5740c686bcf934da23455a04e21c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _outlineShader: {fileID: 4800000, guid: 50a4459097178914e85b07f5519a6715, type: 3}
-  _outlineRange: 0.05
-  _outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _outlineShader: {fileID: 4800000, guid: 93537d20a037c7a43892b5897ba181f3, type: 3}
+  _outlineRange: 2
+  _outlineColor: {r: 2.8705883, g: 0, b: 0.09411765, a: 1}
+  _dissolveTex: {fileID: 2800000, guid: ab035c3d154570543966dbeda999a651, type: 3}
+  _dissolveAmount: 0.35
+  _dissolveRange: 0.5
+  _dissolveColor: {r: 16.941177, g: 0, b: 0, a: 1}
+  _scroll: {x: 2, y: 0}
+  _scrollStrength: 1
 --- !u!114 &1835416240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18514,7 +18804,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.6264151, b: 0.6264151, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -20590,9 +20880,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a5740c686bcf934da23455a04e21c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _outlineShader: {fileID: 4800000, guid: 50a4459097178914e85b07f5519a6715, type: 3}
-  _outlineRange: 0.05
-  _outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _outlineShader: {fileID: 4800000, guid: 93537d20a037c7a43892b5897ba181f3, type: 3}
+  _outlineRange: 2
+  _outlineColor: {r: 2.8705883, g: 0, b: 0.09411765, a: 1}
+  _dissolveTex: {fileID: 2800000, guid: ab035c3d154570543966dbeda999a651, type: 3}
+  _dissolveAmount: 0.35
+  _dissolveRange: 0.5
+  _dissolveColor: {r: 16.941177, g: 0, b: 0, a: 1}
+  _scroll: {x: 2, y: 0}
+  _scrollStrength: 1
 --- !u!114 &2032651130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21374,9 +21670,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a5740c686bcf934da23455a04e21c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _outlineShader: {fileID: 4800000, guid: 2dfacaeb47d303940bba79bb5cc6235a, type: 3}
-  _outlineRange: 7
-  _outlineColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  _outlineShader: {fileID: 4800000, guid: 93537d20a037c7a43892b5897ba181f3, type: 3}
+  _outlineRange: 2
+  _outlineColor: {r: 2.8705883, g: 0, b: 0.09411765, a: 1}
+  _dissolveTex: {fileID: 2800000, guid: ab035c3d154570543966dbeda999a651, type: 3}
+  _dissolveAmount: 0.35
+  _dissolveRange: 0.5
+  _dissolveColor: {r: 16.941177, g: 0, b: 0, a: 1}
+  _scroll: {x: 2, y: 0}
+  _scrollStrength: 1
 --- !u!114 &2093902932
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21407,6 +21709,7 @@ GameObject:
   - component: {fileID: 2097749761}
   - component: {fileID: 2097749763}
   - component: {fileID: 2097749764}
+  - component: {fileID: 2097749765}
   m_Layer: 5
   m_Name: Go to Stage Button
   m_TagString: Untagged
@@ -21541,6 +21844,7 @@ MonoBehaviour:
   _maskSwitch: {fileID: 865138533}
   _disableColor: {r: 0.6415094, g: 0.6415094, b: 0.6415094, a: 0.56078434}
   _bulletPrepareControl: {fileID: 722698913}
+  _prepareFadeOut: {fileID: 549135814}
 --- !u!114 &2097749763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21553,9 +21857,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a5740c686bcf934da23455a04e21c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _outlineShader: {fileID: 4800000, guid: 2dfacaeb47d303940bba79bb5cc6235a, type: 3}
-  _outlineRange: 7
-  _outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  _outlineShader: {fileID: 4800000, guid: 93537d20a037c7a43892b5897ba181f3, type: 3}
+  _outlineRange: 2
+  _outlineColor: {r: 2.8705883, g: 0, b: 0.09411765, a: 1}
+  _dissolveTex: {fileID: 2800000, guid: ab035c3d154570543966dbeda999a651, type: 3}
+  _dissolveAmount: 0.35
+  _dissolveRange: 0.5
+  _dissolveColor: {r: 16.941177, g: 0, b: 0, a: 1}
+  _scroll: {x: 2, y: 0}
+  _scrollStrength: 1
 --- !u!114 &2097749764
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21573,6 +21883,18 @@ MonoBehaviour:
   _rightButtons:
   - {fileID: 241645605}
   _leftButtons: []
+--- !u!114 &2097749765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2097749756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e33c6f2bd322bed489f73064264f0db7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2102130707
 GameObject:
   m_ObjectHideFlags: 0

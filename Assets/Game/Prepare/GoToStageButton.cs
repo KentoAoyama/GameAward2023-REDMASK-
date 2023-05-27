@@ -29,9 +29,16 @@ public class GoToStageButton : MonoBehaviour
         });
         button.onClick.AddListener(GoToStage);
     }
-
-    public void GoToStage()
+    [SerializeField]
+    private PrepareFadeOut _prepareFadeOut = default;
+    private bool _isPlaying = false;
+    public async void GoToStage()
     {
+        if (_isPlaying) return;
+        _isPlaying = true;
+
+        await _prepareFadeOut.FadeOut();
+
         GameManager.Instance.StageManager.StageStartMode = StageStartMode.FromTheBeginning;
 
         for (int i = 0; i < _stageTypeStageNamePair.Length; i++)
