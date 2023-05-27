@@ -13,6 +13,9 @@ public class RubbleParticleController : MonoBehaviour, IDamageable
     [SerializeField]
     private Sprite _holeSprite;
 
+    private bool _isFallen = false;
+
+
     private void Awake()
     {
         _particleSystem = GetComponent<ParticleSystem>();
@@ -25,9 +28,12 @@ public class RubbleParticleController : MonoBehaviour, IDamageable
 
     public void RubblePlay()
     {
+        if (_isFallen) return;
+
         _renderer.sprite = _holeSprite;
         _particleSystem.Play();
         GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Gimmick_BrokenCeiling");
+        _isFallen = true;
     }
 
     private void OnParticleCollision(GameObject other)
