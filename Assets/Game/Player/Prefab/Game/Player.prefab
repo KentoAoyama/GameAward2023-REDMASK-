@@ -775,7 +775,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 328675649}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.0499954, y: 0.9000007, z: -10}
+  m_LocalPosition: {x: 2.1999998, y: 1.100001, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2645,7 +2645,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: -4.049997, y: 0.9000007, z: -10}
+  m_FollowOffset: {x: 2.2, y: 1.100001, z: -10}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -5034,7 +5034,7 @@ MonoBehaviour:
       m_Bits: 131200
     _gameZoneForRefrect: GameZoneReflection
   _bulletCountManager:
-    _isTestPlay: 0
+    _isTestPlay: 1
     _standardBulletCountInitialValue: 50
     _penetrateBulletCountInitialValue: 50
     _reflectBulletCountInitialValue: 50
@@ -5079,7 +5079,7 @@ MonoBehaviour:
     _offsetMoveSpeedY: 0.1
     _camera1: {fileID: 328675650}
     _offsetStart: {x: 0, y: 4}
-  _isTestRevoler: 0
+  _isTestRevoler: 1
   _basicBullet: {fileID: 2726667904286695999, guid: f59ff749b13e7db4eae1029107ed6d1f, type: 3}
 --- !u!70 &4514520410212876858
 CapsuleCollider2D:
@@ -8101,6 +8101,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1641247530}
     m_Modifications:
+    - target: {fileID: 5442172742235930241, guid: c3ff062f3bf39bf49844418a1c46d2e0, type: 3}
+      propertyPath: ShapeModule.m_Scale.x
+      value: 0.22
+      objectReference: {fileID: 0}
+    - target: {fileID: 5442172742235930241, guid: c3ff062f3bf39bf49844418a1c46d2e0, type: 3}
+      propertyPath: ShapeModule.m_Scale.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5442172742235930243, guid: c3ff062f3bf39bf49844418a1c46d2e0, type: 3}
       propertyPath: m_Name
       value: Cartridge
@@ -8111,7 +8119,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5442172742235930270, guid: c3ff062f3bf39bf49844418a1c46d2e0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.238
+      value: 0.662
       objectReference: {fileID: 0}
     - target: {fileID: 5442172742235930270, guid: c3ff062f3bf39bf49844418a1c46d2e0, type: 3}
       propertyPath: m_LocalPosition.y
@@ -8119,7 +8127,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5442172742235930270, guid: c3ff062f3bf39bf49844418a1c46d2e0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.042
+      value: -0.017
       objectReference: {fileID: 0}
     - target: {fileID: 5442172742235930270, guid: c3ff062f3bf39bf49844418a1c46d2e0, type: 3}
       propertyPath: m_LocalRotation.w
