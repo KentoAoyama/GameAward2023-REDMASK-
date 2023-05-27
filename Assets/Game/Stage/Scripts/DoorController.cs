@@ -12,9 +12,10 @@ public class DoorController : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log(other.gameObject.tag);
-        if(other.gameObject.CompareTag("Player"))
+        if(other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Enemy"))
         {
             _doorRenderer.sprite = _openSprite;
+            GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Gimmick_DoorOpen");
         }    
     }
 }
