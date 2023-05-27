@@ -145,7 +145,7 @@ namespace Player
 
         public bool IsSetUp { get; private set; } = false;
 
-       
+
 
         private void Start()
         {
