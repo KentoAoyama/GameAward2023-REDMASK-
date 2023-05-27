@@ -83,6 +83,8 @@ public class PrepareImageSlideController : MonoBehaviour
         // 現在既に右の場合も無視。
         if (_currentScreenArea.Value == ScreenArea.Right) return;
 
+        GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Menu_Move");
+
         RightScrollAnimStart();
         _currentScreenArea.Value = ScreenArea.Right;
         _slidingAnim = _rectTransform.DOLocalMoveX(_rightAreaPos, _duration).
@@ -95,6 +97,8 @@ public class PrepareImageSlideController : MonoBehaviour
         if (!_canScroll) return;
         // 現在既に左の場合も無視。
         if (_currentScreenArea.Value == ScreenArea.Left) return;
+
+        GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Menu_Move");
 
         LeftScrollAnimStart();
         _currentScreenArea.Value = ScreenArea.Left;
