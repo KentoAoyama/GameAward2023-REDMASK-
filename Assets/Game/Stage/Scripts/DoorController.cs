@@ -17,6 +17,7 @@ public class DoorController : MonoBehaviour
         {
             _doorRenderer.sprite = _openSprite;
             GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Gimmick_DoorOpen");
+            _isClosed = false;
         }    
     }
 }
