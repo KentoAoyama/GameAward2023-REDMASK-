@@ -32,6 +32,8 @@ public class PrepareCut : MonoBehaviour
     private InputAction _allButtons = new InputAction(binding: "*/<Button>");
 
     public bool CutSceneEnded => _cutSceneEnded;
+
+    private int _noiseSEIndex = -1;
     
 
     private void Awake()
@@ -71,6 +73,8 @@ public class PrepareCut : MonoBehaviour
         _iamge.material.SetFloat(_amountId, -1F);
         _fadePanel.color = Color.black;
 
+        _noiseSEIndex = GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Noise");
+
         await _fadePanel.DOColor(new Color(0.9622642F, 0.8783826F, 0.7571022F, 1), 2F);
         await _fadePanel.DOFade(0F, 0.1F);
         await DOTween.To(() => -1F, x => _iamge.material.SetFloat(_amountId, x), 1f, _firstFadeDelay);
@@ -84,6 +88,8 @@ public class PrepareCut : MonoBehaviour
         var temp = DOTween.To(() => 1F, x => _iamge.material.SetFloat(_amountId, x), -1f, _firstFadeDelay);
         var temp2 = _iamge.DOFade(0f, _firstFadeDelay);
         await UniTask.WhenAll(temp.AsyncWaitForCompletion().AsUniTask(), temp2.AsyncWaitForCompletion().AsUniTask(), textFade.AsyncWaitForCompletion().AsUniTask());
+
+        GameManager.Instance.AudioManager.StopSE(_noiseSEIndex);
 
         _text.gameObject.SetActive(false);
         _iamge.sprite = null;
