@@ -14,8 +14,11 @@ public class StageSelectKnifeSound : MonoBehaviour
     {
         GetComponent<Button>().onClick.AddListener(OnClick);
     }
+    bool isPlaying = false;
     private async void OnClick()
     {
+        if (isPlaying) return;
+        isPlaying = true;
         await UniTask.Delay((int)(_delayTime * 1000f));
         GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Knife");
     }
