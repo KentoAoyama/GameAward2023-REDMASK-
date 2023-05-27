@@ -10,6 +10,9 @@ public class SceneTransitionButton : MonoBehaviour
     [SceneName, SerializeField]
     private string _nextSceneName = default;
 
+    [SerializeField]
+    private StageFadeOut _stageFadeOut = default;
+
     private void Awake()
     {
         GetComponent<Button>()?.onClick.AddListener(OnSceneChange);
@@ -18,8 +21,12 @@ public class SceneTransitionButton : MonoBehaviour
     /// ボタンを押下したときに呼び出すことを想定して作成したメソッド。<br/>
     /// シーンを変更する。
     /// </summary>
-    public void OnSceneChange()
+    public async void OnSceneChange()
     {
+        if (_stageFadeOut != null)
+        {
+            await _stageFadeOut.FadeOut();
+        }
         GameManager.Instance.PauseManager.ClearCount();
         DOTween.KillAll();
         SceneManager.LoadScene(_nextSceneName);
