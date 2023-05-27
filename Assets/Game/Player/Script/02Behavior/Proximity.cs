@@ -10,14 +10,6 @@ namespace Player
     [System.Serializable]
     public class Proximity
     {
-        [Header("Test用、攻撃のText")]
-        [SerializeField]
-        private GameObject _testAttackText;
-
-        [Header("近接攻撃の実行時間")]
-        [Tooltip("近接攻撃の実行時間"), SerializeField]
-        private float _attackDoTime = 4f;
-
         [Header("近接攻撃のクールタイム")]
         [Tooltip("近接攻撃のクールタイム"), SerializeField]
         private float _attackCoolTime = 4f;
@@ -26,8 +18,6 @@ namespace Player
         [Tooltip("近接攻撃の威力"), SerializeField]
         private float _attackPower = 10f;
 
-        /// <summary>攻撃実行時間の計測用</summary>
-        private float _attackDoTimeCount = 0;
         /// <summaryクールタイムの計測用</summary>
         private float _attackCoolTimeCount = 0;
         /// <summary>攻撃可能かどうか</summary>
@@ -56,6 +46,9 @@ namespace Player
                 return;
             } // ポーズ中は何もできない
 
+            //クールタイムの計測
+            CountCoolTime();
+
             if (_playerController.Avoidance.IsAvoidanceNow || _playerController.RevolverOperator.IsFireNow)
             {
                 return;
@@ -77,11 +70,6 @@ namespace Player
                 }
             }
 
-            //クールタイムの計測
-            CountCoolTime();
-            //攻撃実行時間の計測
-            CountDoAttackTime();
-
             if (_isAttackNow)
             {
                 _playerController.Move.VelocityDeceleration();
@@ -100,8 +88,6 @@ namespace Player
             //時遅を強制解除
             _playerController.GunSetUp.EmergencyStopSlowTime();
             
-            _testAttackText.SetActive(true);
-
             //攻撃の音
             GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Attack_Knife");
 
@@ -130,12 +116,7 @@ namespace Player
 
         public void AttackEnd()
         {
-            _testAttackText.SetActive(false);
-
-            //特定行動中に構えを解除していないかどうかを確認する
-            _playerController.GunSetUp.CheckRelesedSetUp();
-
-            //Debug.Log("近接攻撃終わり！");
+            Debug.Log("End");
 
             //攻撃中
             _isAttackNow = false;
@@ -144,21 +125,6 @@ namespace Player
             _isCanAttack = false;
 
             _playerController.Move.EndOtherAction();
-        }
-
-        /// <summary>攻撃の実行時間を計測</summary>
-        private void CountDoAttackTime()
-        {
-            if (_isAttackNow)
-            {
-                _attackDoTimeCount += Time.deltaTime;
-
-                if (_attackDoTimeCount >= _attackDoTime)
-                {
-                    AttackEnd();
-                    _attackDoTimeCount = 0;
-                }
-            }
         }
 
         /// <summary>クールタイムを計測</summary>

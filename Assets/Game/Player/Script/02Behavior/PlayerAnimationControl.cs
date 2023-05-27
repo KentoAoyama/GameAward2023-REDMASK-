@@ -27,6 +27,8 @@ namespace Player
         [Header("通常のオブジェクト")]
         [SerializeField] private GameObject _animationObject;
 
+        public GameObject AnimObject => _animationObject;
+
         [Header("=====Animation名======")]
         [Header("ジャンプ")]
         [SerializeField] private string _animJump = "Player_JumpStart";
@@ -78,7 +80,7 @@ namespace Player
         public float MoveDir { get => _moveHorizontalDir; set => _moveHorizontalDir = value; }
         public bool IsPause { get; private set; } = false;
 
-    /// <summary>再生させるアニメーションの種類</summary>
+        /// <summary>再生させるアニメーションの種類</summary>
         public enum AnimaKind
         {
             /// <summary>発砲</summary>
@@ -138,6 +140,7 @@ namespace Player
             _playerController.PlayerAnim.SetFloat(_yVelocityParameta, y);
 
             _playerController.PlayerAnim.SetBool(_isGroundParameta, _playerController.GroungChecker.IsHit(_playerController.Move.MoveHorizontalDir));
+            _playerController.PlayerAnim.SetBool("IsGunSetUp", _playerController.GunSetUp.IsGunSetUp);
         }
 
         /// <summary>構えのObjectを表示し、アニメーション用のObjectを非表示にする</summary>
@@ -173,14 +176,10 @@ namespace Player
             }    //通常の構えを表示
             else
             {
-
-                if (_playerController.GunSetUp.IsGunSetUp)
-                {
-                    //回避の構えのオブジェクトを非表示
-                    _avoidGunSetUpObjects.ForEach(i => i.SetActive(false));
-                    //通常の構えのオブジェクトを表示
-                    _nomalGunSetUpObjects.ForEach(i => i.SetActive(true));
-                }
+                //回避の構えのオブジェクトを非表示
+                _avoidGunSetUpObjects.ForEach(i => i.SetActive(false));
+                //通常の構えのオブジェクトを表示
+                _nomalGunSetUpObjects.ForEach(i => i.SetActive(true));
             }
         }
 
@@ -238,11 +237,6 @@ namespace Player
 
                 _playerController.PlayerAnim.Play(_animProximity);
             }
-            else if (animationKind == AnimaKind.Jump)
-            {
-                _playerController.PlayerAnim.Play(_animJump);
-                _isAnimationNow = false;
-            }
             else if (animationKind == AnimaKind.ReLoadStart)
             {
                 _playerController.PlayerAnim.Play(_animReLoadStart);
@@ -269,7 +263,7 @@ namespace Player
                 {
                     _animationObject.transform.localScale = new Vector3(_playerController.BodyAnglSetteing.AnimationScaleX * _playerController.Player.transform.localScale.x, 1, 1);
                 }
-                _playerController.PlayerAnim.Play(_animAvoid,0,0);
+                _playerController.PlayerAnim.Play(_animAvoid, 0, 0);
                 _playerController.PlayerAnim.SetBool("IsAvoid", true);
             }
             else if (animationKind == AnimaKind.AvoidFire)
@@ -285,7 +279,7 @@ namespace Player
                 _playerController.PlayerAnim.Play(_animAvoidFire);
                 _isFire = true;
             }
-            else if(animationKind == AnimaKind.Dead)
+            else if (animationKind == AnimaKind.Dead)
             {
                 //現在アニメーション再生中
                 _isAnimationNow = true;
@@ -297,30 +291,17 @@ namespace Player
         /// <summary>アニメーションが終わったことを通知</summary>
         public void EndAnimation()
         {
-
-            //構えていたらそれに対応したオブジェクト非表示
-            if (_playerController.GunSetUp.IsGunSetUp)
-            {
-                if (_playerController.Avoidance.IsAvoidanceNow)
-                {
-                    _avoidGunSetUpObjects.ForEach(i => i.SetActive(true));
-                    _nomalGunSetUpObjects.ForEach(i => i.SetActive(false));
-                }
-                else
-                {
-                    _avoidGunSetUpObjects.ForEach(i => i.SetActive(false));
-                    _nomalGunSetUpObjects.ForEach(i => i.SetActive(true));
-                }
-            }
-
-            //アニメーション用のオブジェクトを元に戻す
-            _animationObject.transform.localScale = new Vector3(1, 1, 1);
-
             //現在アニメーション再生中ではない
             _isAnimationNow = false;
 
             //発砲中ではない
             _isFire = false;
+
+            //アニメーション終わり時に構えてるかどうかを確認
+            _playerController.GunSetUp.AnimEndSetUpCheck();
+
+            //アニメーション用のオブジェクトを元に戻す
+            _animationObject.transform.localScale = new Vector3(1, 1, 1);
         }
 
 

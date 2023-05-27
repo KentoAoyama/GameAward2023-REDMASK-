@@ -346,6 +346,8 @@ namespace Player
             if (!_isDead)
             {
 
+                _rigidbody2D.velocity = Vector2.zero;
+
                 //なってる音をすべて止める
                 GameManager.Instance.AudioManager.StopSE(_move.MoveSoundIndex);
 
