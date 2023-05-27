@@ -74,9 +74,8 @@ namespace Player
                 {
                     // 撃てる状態かつ、撃つ入力が発生したとき 銃を撃つ
                     if (_playerController.InputManager.GetValue<float>(InputType.Fire1) > 0.49f &&
-                    _playerController.Revolver.CanFire)
+                    _playerController.Revolver.CanFire && !_playerController.PlayerAnimatorControl.IsAnimationNow)
                     {
-
                         //打てる球があるかどうかの確認
                         int count = 0;
 
@@ -229,7 +228,7 @@ namespace Player
                     Debug.Log("N");
 
                     //特定行動中に構えを解除していないかどうかを確認する
-                    _playerController.GunSetUp.CheckRelesedSetUp();
+                    _playerController.GunSetUp.AnimEndSetUpCheck();
 
                     //音を鳴らす
                     GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Reroad");

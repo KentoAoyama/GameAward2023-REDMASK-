@@ -133,7 +133,7 @@ namespace Player
             _testAttackText.SetActive(false);
 
             //特定行動中に構えを解除していないかどうかを確認する
-            _playerController.GunSetUp.CheckRelesedSetUp();
+            _playerController.GunSetUp.AnimEndSetUpCheck();
 
             //Debug.Log("近接攻撃終わり！");
 

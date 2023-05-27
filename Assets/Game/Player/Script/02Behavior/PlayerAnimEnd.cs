@@ -12,11 +12,11 @@ namespace Player
         /// <summary>アニメーション再生が終了したことを通達</summary>
         public void AnimEnd()
         {
-            //もともと構え状態であったなら、アニメーション用のオブジェクトは非表示にする
-            if (_playerController.GunSetUp.IsGunSetUp)
-            {
-                gameObject.SetActive(false);
-            }
+            ////もともと構え状態であったなら、アニメーション用のオブジェクトは非表示にする
+            //if (_playerController.GunSetUp.IsGunSetUp)
+            //{
+            //    gameObject.SetActive(false);
+            //}
 
             //アニメーション再生が終わった
             _playerController.PlayerAnimatorControl.EndAnimation();
