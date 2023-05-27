@@ -93,6 +93,10 @@ public class Bullet2 : MonoBehaviour, IPausable, IStoreableInChamber
                     {
                         _currentHitCount++;
                     }
+                    else
+                    {
+                        GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Bullets_HitBullet_Slow");
+                    }
                 }
 
                 // シールドを貫通しないオブジェクトはシールドに接触した時点で消滅する。
