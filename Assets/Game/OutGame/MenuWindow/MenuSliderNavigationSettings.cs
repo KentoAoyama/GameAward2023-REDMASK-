@@ -25,11 +25,11 @@ public class MenuSliderNavigationSettings : MonoBehaviour
     private void Update()
     {
         // 決定ボタンを押したらCloseButtonに遷移する
-        if ((Keyboard.current != null && Keyboard.current.enterKey.wasPressedThisFrame) ||
-            (Gamepad.current != null && Gamepad.current.aButton.wasPressedThisFrame))
-        {
-            EventSystem.current.SetSelectedGameObject(_closeButton.gameObject);
-        }
+        //if ((Keyboard.current != null && Keyboard.current.enterKey.wasPressedThisFrame) ||
+        //    (Gamepad.current != null && Gamepad.current.aButton.wasPressedThisFrame))
+        //{
+        //    EventSystem.current.SetSelectedGameObject(_closeButton.gameObject);
+        //}
     }
     public void Setting()
     {

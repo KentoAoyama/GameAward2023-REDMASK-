@@ -4,6 +4,10 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UniRx;
+using System.Collections;
+using UnityEngine.Rendering;
+using DG.Tweening;
+using UnityEngine.InputSystem;
 
 public class MenuWindowController : MonoBehaviour
 {
@@ -12,6 +16,17 @@ public class MenuWindowController : MonoBehaviour
 
     [SerializeField]
     private GameObject _playerUIObject = default;
+
+    [Header("MainUI")]
+
+    [SerializeField]
+    private GameObject _mainUIObject = default;
+
+    [SerializeField]
+    private float _fadeMoveTime = 0.2f;
+
+    [SerializeField]
+    private float _fadeColorTime = 0.05f;
 
     [Header("Buttons")]
 
@@ -51,6 +66,10 @@ public class MenuWindowController : MonoBehaviour
 
     public static PrepareDevice CurrentDevice { get; private set; } = PrepareDevice.GamePad;
 
+    private Graphic[] _graphics;
+
+    private bool _isFade = false;
+    public bool IsFade => _isFade;
 
     private void Start()
     {
@@ -66,37 +85,48 @@ public class MenuWindowController : MonoBehaviour
         _mainButtons.Add(_goToTitleButton);
         _mainButtons.Add(_applicationQuitButton);
 
-
+        _resumeButton.OnClickAsObservable()
+            .Subscribe(_ =>
+            {
+                StartCoroutine(WindowClose());
+            });
         _manualButton.OnClickAsObservable()
-            .Subscribe(_ => 
+            .Subscribe(_ =>
             {
                 _manualWindow.gameObject.SetActive(true);
                 _manualWindow.Active();
+                Inactive();
             });
         _audioSettingButton.OnClickAsObservable()
             .Subscribe(_ =>
             {
                 _audioWindow.gameObject.SetActive(true);
                 _audioWindow.Active();
+                Inactive();
             });
         _goToTitleButton.OnClickAsObservable()
-            .Subscribe(_ => 
+            .Subscribe(_ =>
             {
                 _goToTitleWindow.gameObject.SetActive(true);
                 _goToTitleWindow.Active();
+                Inactive();
             });
         _applicationQuitButton.OnClickAsObservable()
-            .Subscribe(_ => 
+            .Subscribe(_ =>
             {
-                _goToTitleWindow.gameObject.SetActive(true);
-                _goToTitleWindow.Active();
+                _applicationQuitWindow.gameObject.SetActive(true);
+                _applicationQuitWindow.Active();
+                Inactive();
             });
     }
 
     private void OnEnable()
     {
+        Active();
+
         //インゲームののUIを非表示にする
-        _playerUIObject.SetActive(false);
+        if (_playerUIObject != null)
+            _playerUIObject.SetActive(false);
 
         EventSystem.current.SetSelectedGameObject(_firstSelectedObject);
         _previousSelectedObject = _firstSelectedObject;
@@ -116,8 +146,66 @@ public class MenuWindowController : MonoBehaviour
         }
 
         //インゲームののUIを表示する
-        _playerUIObject.SetActive(true);
+        if (_playerUIObject != null)
+            _playerUIObject.SetActive(true);
     }
+
+    public void Active()
+    {
+        StartCoroutine(ActiveCoroutine());
+    }
+
+    private IEnumerator ActiveCoroutine()
+    {
+        if (_isFade) yield break;
+
+        _isFade = true;
+        if (_graphics == null)
+        {
+            _graphics = _mainUIObject.GetComponentsInChildren<Graphic>();
+            foreach (var graphic in _graphics)
+            {
+                graphic.color =
+                    new Color(
+                        graphic.color.r,
+                        graphic.color.g,
+                        graphic.color.b,
+                        0f);
+            }
+            _mainUIObject.transform.localPosition = new Vector3(-800f, 0f, 0f);
+        }
+
+        foreach (var graphic in _graphics)
+        {
+            if (graphic.gameObject.name != "Behind obj dont touch image")
+
+                graphic.DOFade(1f, _fadeMoveTime);
+
+        }
+        _mainUIObject.transform.DOLocalMoveX(0f, _fadeColorTime);
+        yield return new WaitForSeconds(_fadeMoveTime);
+        _isFade = false;
+    }
+
+    private void Inactive()
+    {
+        StartCoroutine(InactiveCoroutine());
+    }
+
+    private IEnumerator InactiveCoroutine()
+    {
+        if (_isFade) yield break;
+
+        _isFade = true;
+        foreach (var graphic in _graphics)
+        {
+            graphic.DOFade(0f, _fadeMoveTime);
+        }
+        _mainUIObject.transform.DOLocalMoveX(-800f, _fadeColorTime);
+        yield return new WaitForSeconds(_fadeMoveTime);
+        _isFade = false;
+    }
+
     private void Update()
     {
         // 操作デバイスを更新する
@@ -142,20 +230,21 @@ public class MenuWindowController : MonoBehaviour
             }
         }
         _previousSelectedObject = EventSystem.current.currentSelectedGameObject;
+
+        //Windowを閉じる入力判定
+        if ((Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame) ||
+            (Gamepad.current != null && (Gamepad.current.startButton.wasPressedThisFrame || Gamepad.current.bButton.wasPressedThisFrame)))
+        {
+            StartCoroutine(WindowClose());
+        }
     }
 
-    public void EnableMainButtons()
+    private IEnumerator WindowClose()
     {
-        for (int i = 0; i < _mainButtons.Count; i++)
-        {
-            _mainButtons[i].interactable = true;
-        }
-    }
-    public void DisableMainButtons()
-    {
-        for (int i = 0; i < _mainButtons.Count; i++)
-        {
-            _mainButtons[i].interactable = false;
-        }
+        if (_isFade) yield break;
+
+        GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Back");
+        yield return InactiveCoroutine();
+        gameObject.SetActive(false);
     }
 }

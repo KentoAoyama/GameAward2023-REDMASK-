@@ -2449,6 +2449,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerTag: Player
   _firstStageSceneName: Stage1_InGame1
+  _stageFadeIn: {fileID: 1606294237}
+  _stageFadeOut: {fileID: 1484764179}
 --- !u!4 &491929613 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 497431026440097303, guid: 93262e76ffd8a5340835eae2e6d10a42, type: 3}
@@ -3563,25 +3565,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1581703120}
     - target: {fileID: 328675651, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 3.449997
-      objectReference: {fileID: 0}
-    - target: {fileID: 328675651, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.9000007
+      value: 0.9000009
       objectReference: {fileID: 0}
-    - target: {fileID: 1551494174, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
-      propertyPath: _stageController2
+    - target: {fileID: 1454180938, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+      propertyPath: _deadPanel
       value: 
-      objectReference: {fileID: 491379047}
-    - target: {fileID: 2109781610, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
-      propertyPath: m_FollowOffset.x
-      value: 3.45
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1600148555}
     - target: {fileID: 2109781610, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: m_FollowOffset.y
-      value: 0.9000007
+      value: 0.9000009
       objectReference: {fileID: 0}
+    - target: {fileID: 230241036519822583, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+      propertyPath: _menuWindow
+      value: 
+      objectReference: {fileID: 1600148554}
     - target: {fileID: 4514520410212876857, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -3630,16 +3628,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 4514520410212876862, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
-      propertyPath: _isTestRevoler
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4514520410212876862, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
-      propertyPath: _bulletCountManager._isTestPlay
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+--- !u!1 &681904071 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1414620987, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+  m_PrefabInstance: {fileID: 681904070}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &707471916
 GameObject:
   m_ObjectHideFlags: 0
@@ -7134,6 +7129,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1476827668}
   m_CullTransparentMesh: 1
+--- !u!114 &1484764179 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5368302756549709496, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
+  m_PrefabInstance: {fileID: 1600148552}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3f8083af2d6891459aac73caf61de6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1496862757
 GameObject:
   m_ObjectHideFlags: 0
@@ -7627,17 +7633,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 146595785778409123, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
+      propertyPath: _stageController2
+      value: 
+      objectReference: {fileID: 491379047}
     - target: {fileID: 361925564566498032, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 361925564566498032, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -100.913246
+      value: -108.413025
       objectReference: {fileID: 0}
     - target: {fileID: 361925564566498032, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.3937297
+      value: 2.37143
       objectReference: {fileID: 0}
     - target: {fileID: 361925564566498032, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7671,22 +7681,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 361925564566498033, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
-      propertyPath: orthographic
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 361925564566498033, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
-      propertyPath: field of view
-      value: 56.39
-      objectReference: {fileID: 0}
-    - target: {fileID: 361925564566498035, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
-      propertyPath: m_RenderPostProcessing
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 361925564566498039, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
       propertyPath: m_Name
       value: Main Camera for stage
       objectReference: {fileID: 0}
+    - target: {fileID: 2403189586978981763, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
+      propertyPath: _playerUIObject
+      value: 
+      objectReference: {fileID: 681904071}
+    - target: {fileID: 7664654827998946765, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
+      propertyPath: _playerUIObject
+      value: 
+      objectReference: {fileID: 681904071}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
 --- !u!20 &1600148553 stripped
@@ -7694,6 +7700,33 @@ Camera:
   m_CorrespondingSourceObject: {fileID: 361925564566498033, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
   m_PrefabInstance: {fileID: 1600148552}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1600148554 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2403189586978981763, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
+  m_PrefabInstance: {fileID: 1600148552}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afea636483ef3e54b85cf82377d66f5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &1600148555 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2736046579655650068, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
+  m_PrefabInstance: {fileID: 1600148552}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1606294237 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5015557665879375865, guid: 58addc975731c5e4fa3d505649de331c, type: 3}
+  m_PrefabInstance: {fileID: 1600148552}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81e9314cb03a65b46afb64232cc3d4fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1618053002
 GameObject:
   m_ObjectHideFlags: 0
@@ -8434,6 +8467,7 @@ MonoBehaviour:
   _nextSceneName: Stage1_InGame1.5
   _isFinal: 0
   _currentStageNumberForFinal: 0
+  _stageFadeOut: {fileID: 0}
 --- !u!1 &1696696087
 GameObject:
   m_ObjectHideFlags: 0
