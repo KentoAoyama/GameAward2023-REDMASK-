@@ -181,6 +181,7 @@ namespace Player
                 DeviceManager.Update();       // デバイス制御
                 DirectionControler.Update();  // 方向制御
 
+
                 _move.Update();               // 移動処理
                 _revolverOperator.Update();   // リボルバー操作の更新
                 _revolver.Update();           // リボルバーの更新処理

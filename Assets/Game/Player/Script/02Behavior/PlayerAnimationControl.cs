@@ -30,8 +30,6 @@ namespace Player
         public GameObject AnimObject => _animationObject;
 
         [Header("=====Animation–¼======")]
-        [Header("ƒWƒƒƒ“ƒv")]
-        [SerializeField] private string _animJump = "Player_JumpStart";
         [Header("‹ßÚUŒ‚")]
         [SerializeField] private string _animProximity = "Player_Proximity";
         [Header("”­–C")]
