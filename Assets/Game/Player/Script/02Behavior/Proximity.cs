@@ -13,12 +13,6 @@ namespace Player
         [Header("近接攻撃のクールタイム")]
         [Tooltip("近接攻撃のクールタイム"), SerializeField]
         private float _attackCoolTime = 4f;
-
-        [Header("近接攻撃の威力")]
-        [Tooltip("近接攻撃の威力"), SerializeField]
-        private float _attackPower = 10f;
-
-        /// <summaryクールタイムの計測用</summary>
         private float _attackCoolTimeCount = 0;
         /// <summary>攻撃可能かどうか</summary>
         private bool _isCanAttack = true;
@@ -39,7 +33,7 @@ namespace Player
         }
 
 
-       public void Update()
+        public void Update()
         {
             if (GameManager.Instance.PauseManager.PauseCounter > 0)
             {
@@ -87,15 +81,15 @@ namespace Player
 
             //時遅を強制解除
             _playerController.GunSetUp.EmergencyStopSlowTime();
-            
+
             //攻撃の音
             GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Attack_Knife");
         }
-        
+
         /// <summary>攻撃が当たったかどうかの判定をとる。アニメーションから呼ぶ</summary>
         public void AttackHitChck()
         {
-            var targets = _playerController.ProximityHitChecker.GetCollider(_playerController.Move.MoveHorizontalDir) ;
+            var targets = _playerController.ProximityHitChecker.GetCollider(_playerController.Move.MoveHorizontalDir);
             //Debug.Log(targets.Length);
 
             if (targets.Length > 0)

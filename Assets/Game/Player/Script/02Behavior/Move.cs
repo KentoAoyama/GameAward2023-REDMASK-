@@ -21,15 +21,6 @@ namespace Player
         [SerializeField] private LayerMask _ground;
         [Header("地面を検知するRayの長さ")]
         [SerializeField] private float _rayLong = 1.2f;
-        [Header("前後、真下のRayのOffSet")]
-        [SerializeField] private float _rayOffSetX = 0.2f;
-        [Header("足元化から前方向のRayの長さ")]
-        [SerializeField] private float _frontRayLong = 1.2f;
-        [Header("足元化から前方向のRayのOffSet")]
-        [SerializeField] private Vector2 _frontRayOffSetX = default;
-
-        [Header("前後、真下のRayのOffSet")]
-        [SerializeField] private float _midleRayOffSetX = 0.1f;
 
         [Header("右側斜めのRayのOffSet")]
         [SerializeField] private Vector2 _crossRightRayOffSetX = default;
@@ -446,6 +437,12 @@ namespace Player
             }
             else
             {
+
+                if (_isSound)
+                {
+                    StopMoveSE();
+                }
+
                 _playerController.Rigidbody2D.gravityScale = 1f;
                 _playerController.Rigidbody2D.velocity =
                         new Vector2(_currentHorizontalSpeed,
