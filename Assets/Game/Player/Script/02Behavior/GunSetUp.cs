@@ -113,7 +113,38 @@ namespace Player
 
 
             //空中では出来ない
-            if (!_playerController.GroungChecker.IsHit(_playerController.Move.MoveHorizontalDir)) return;
+            if (!_playerController.GroungChecker.IsHit(_playerController.Move.MoveHorizontalDir))
+            {
+                if(_isGunSetUp)
+                {
+                    if (_playerController.Avoidance.IsAvoidanceNow)
+                    {
+                        _playerController.Avoidance.EndThereAvoidance();
+                    }
+
+                    //重力を戻す
+                    _playerController.Rigidbody2D.gravityScale = 1f;
+
+                    //時遅を解
+                    EndSlowTime();
+
+                    //アニメーションを設定
+                    _playerController.PlayerAnimatorControl.GunSetEnd();
+
+                    //構えにかかる時間の計測をリセット
+                    _setUpTimeCount = 0;
+
+                    //構え、状態を解除
+                    _isGunSetUp = false;
+
+                    //緊急で解除する、をFalseに
+                    _isEmergencyStopSlowTime = false;
+
+                    //回避を終了
+                    _playerController.Avoidance.EndThereAvoidance();
+                }
+                return;
+            }
 
             // 近接攻撃中、は出来ない
             if (_playerController.Proximity.IsProximityNow) return;

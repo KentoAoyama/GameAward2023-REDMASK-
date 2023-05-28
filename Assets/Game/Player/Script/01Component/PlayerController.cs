@@ -316,8 +316,9 @@ namespace Player
 
             //回避モーションの一時停止
             _avoidance.Pause();
+            //構え、の一時停止
             _gunSetUp.Pause();
-
+            //アニメーションの速度を0に
             _playerAnim.speed = 0;
 
             //カメラの振動一時停止
@@ -348,7 +349,6 @@ namespace Player
             //死体撃ちで、2回呼ばれないようにする
             if (!_isDead)
             {
-
                 _rigidbody2D.velocity = Vector2.zero;
 
                 //なってる音をすべて止める
