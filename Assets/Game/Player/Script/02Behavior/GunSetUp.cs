@@ -12,12 +12,6 @@ namespace Player
         [Header("構えるまでの時間(秒)")]
         [SerializeField] private float _setUpTime = 0.2f;
 
-        [Header("Test用、時遅いのText")]
-        [SerializeField]
-        private GameObject _testSlowTimeText;
-
-        private float _setUpTimeCount = 0;
-
         private bool _isSlowTimeNow = false;
 
         private int _beatSoundIndex = -1;
@@ -30,8 +24,6 @@ namespace Player
 
         /// <summary>構えているかどうか</summary>
         private bool _isGunSetUp = false;
-
-        private bool _isReserveSetUpAvoid = false;
 
         public bool IsGunSetUp => _isGunSetUp;
 
@@ -89,8 +81,6 @@ namespace Player
                 _isGunSetUp = false;
 
                 _playerController.PlayerAnimatorControl.GunSetEnd();
-
-                _setUpTimeCount = 0;
             }
 
         }
@@ -131,9 +121,6 @@ namespace Player
                     //アニメーションを設定
                     _playerController.PlayerAnimatorControl.GunSetEnd();
 
-                    //構えにかかる時間の計測をリセット
-                    _setUpTimeCount = 0;
-
                     //構え、状態を解除
                     _isGunSetUp = false;
 
@@ -173,9 +160,6 @@ namespace Player
 
                 //アニメーションを設定
                 _playerController.PlayerAnimatorControl.GunSetEnd();
-
-                //構えにかかる時間の計測をリセット
-                _setUpTimeCount = 0;
 
                 //構え、状態を解除
                 _isGunSetUp = false;
@@ -221,8 +205,6 @@ namespace Player
 
                     _playerController.PlayerAnimatorControl.GunSetEnd();
 
-                    _setUpTimeCount = 0;
-
                     EndSlowTime();
 
                     _isEmergencyStopSlowTime = false;
@@ -233,8 +215,7 @@ namespace Player
 
         public void DoSlow()
         {
-            /////TEST用............
-            _testSlowTimeText.SetActive(true);
+            _playerController.Rigidbody2D.gravityScale = 0;
 
             _isSlowTimeNow = true;
 
@@ -253,8 +234,7 @@ namespace Player
         {
             if (_isEmergencyStopSlowTime || !_isGunSetUp) return;
 
-            /////TEST用............
-            _testSlowTimeText.SetActive(false);
+            _playerController.Rigidbody2D.gravityScale = 1;
 
             _isSlowTimeNow = false;
 
@@ -279,8 +259,6 @@ namespace Player
         public void CanselSetUpping()
         {
             _playerController.PlayerAnimatorControl.GunSetEnd();
-
-            _setUpTimeCount = 0;
 
             _isEmergencyStopSlowTime = false;
 
