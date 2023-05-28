@@ -11,7 +11,8 @@ public class ButtonSelectSoundPlay : MonoBehaviour
     {
         EventSystem.current
             .ObserveEveryValueChanged(_ => EventSystem.current.currentSelectedGameObject)
-            .Subscribe(_ => PlaySE());
+            .Subscribe(_ => PlaySE())
+            .AddTo(gameObject);
     }
 
     private void PlaySE()

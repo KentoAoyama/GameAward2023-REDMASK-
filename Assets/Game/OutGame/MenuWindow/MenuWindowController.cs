@@ -89,35 +89,39 @@ public class MenuWindowController : MonoBehaviour
             .Subscribe(_ =>
             {
                 StartCoroutine(WindowClose());
-            });
+            }).AddTo(gameObject);
+
         _manualButton.OnClickAsObservable()
             .Subscribe(_ =>
             {
                 _manualWindow.gameObject.SetActive(true);
                 _manualWindow.Active();
                 Inactive();
-            });
+            }).AddTo(gameObject); 
+
         _audioSettingButton.OnClickAsObservable()
             .Subscribe(_ =>
             {
                 _audioWindow.gameObject.SetActive(true);
                 _audioWindow.Active();
                 Inactive();
-            });
+            }).AddTo(gameObject); 
+
         _goToTitleButton.OnClickAsObservable()
             .Subscribe(_ =>
             {
                 _goToTitleWindow.gameObject.SetActive(true);
                 _goToTitleWindow.Active();
                 Inactive();
-            });
+            }).AddTo(gameObject); 
+
         _applicationQuitButton.OnClickAsObservable()
             .Subscribe(_ =>
             {
                 _applicationQuitWindow.gameObject.SetActive(true);
                 _applicationQuitWindow.Active();
                 Inactive();
-            });
+            }).AddTo(gameObject); ;
     }
 
     private void OnEnable()
