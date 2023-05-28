@@ -29,6 +29,8 @@ namespace Player
         [Header("マズルフラッシュ")]
         [SerializeField] private MuzzleFlashController _muzzleFlash;
 
+        [SerializeField] private UIController _uIController;
+
         [SerializeField] private CartridgeController _cartridgeController;
 
         /// <summary>空の弾を取り出す時間を計測する</summary>
@@ -123,10 +125,12 @@ namespace Player
                 return;
             } //回避中はできない
 
-            int numBullet = CheckBullet(BulletType.PenetrateBullet) + CheckBullet(BulletType.ReflectBullet) + CheckBullet(BulletType.StandardBullet + CheckBullet(BulletType.ShellCase));
+            int numBulletInRevolver = CheckBullet(BulletType.PenetrateBullet) + CheckBullet(BulletType.ReflectBullet) + CheckBullet(BulletType.StandardBullet + CheckBullet(BulletType.ShellCase));
+
+            int nowSelectBulletNum = SelectBulletPossession(_uIController.BulletSelectUIPresenter.CurrentSelectBulletType.Value);
 
             //薬室が、空か空薬莢のある場合のみリロード処理をする
-            if (CheckBullet(BulletType.ShellCase) > 0 || numBullet != 6)
+            if (CheckBullet(BulletType.ShellCase) > 0 || (numBulletInRevolver != 6 && nowSelectBulletNum > 0))
             {
                 if (_playerController.InputManager.IsPressed[InputType.LoadBullet])
                 {
@@ -208,7 +212,9 @@ namespace Player
                     var index = FindEmptyChamber();
                     if (index != -1) // 空いているチャンバーが見つかった場合の処理
                     {
-                        _isSetBullet = true;
+                        //弾を持っていたら弾籠めに以降
+                        if (nowSelectBulletNum > 0)
+                            _isSetBullet = true;
                     }
                 }
             }
@@ -271,6 +277,27 @@ namespace Player
 
             }
         }
+
+        public int SelectBulletPossession(BulletType bulletType)
+        {
+            if (bulletType == BulletType.StandardBullet)
+            {
+                return _playerController.BulletCountManager.StandardBulletCount.Value;
+            }
+            else if (bulletType == BulletType.ReflectBullet)
+            {
+                return _playerController.BulletCountManager.ReflectBulletCount.Value;
+            }
+            else if (bulletType == BulletType.PenetrateBullet)
+            {
+                return _playerController.BulletCountManager.PenetrateBulletCount.Value;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
 
         /// <summary>引数で与えた弾が何発あるかを確認する</summary>
         /// <param name="bulletType"></param>

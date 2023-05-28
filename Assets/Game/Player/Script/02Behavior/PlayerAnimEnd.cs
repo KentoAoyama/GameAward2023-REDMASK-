@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Player
@@ -28,7 +26,12 @@ namespace Player
             _playerController.RevolverOperator.IsFireNow = false;
         }
 
-        public void EndProirity()
+        public void ProximityHitCheck()
+        {
+            _playerController.Proximity.AttackHitChck();
+        }
+
+        public void EndProxmity()
         {
             _playerController.Proximity.AttackEnd();
         }

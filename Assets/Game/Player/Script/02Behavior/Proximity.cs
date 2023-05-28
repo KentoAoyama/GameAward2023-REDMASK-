@@ -90,9 +90,11 @@ namespace Player
             
             //攻撃の音
             GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Attack_Knife");
-
-            //Debug.Log("近接攻撃はじめ！");
-
+        }
+        
+        /// <summary>攻撃が当たったかどうかの判定をとる。アニメーションから呼ぶ</summary>
+        public void AttackHitChck()
+        {
             var targets = _playerController.ProximityHitChecker.GetCollider(_playerController.Move.MoveHorizontalDir) ;
             //Debug.Log(targets.Length);
 
@@ -112,7 +114,6 @@ namespace Player
                 }
             }
         }
-
 
         public void AttackEnd()
         {
