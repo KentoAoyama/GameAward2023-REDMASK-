@@ -64,6 +64,8 @@ public class PrepareImageSlideController : MonoBehaviour
 
         _prepareInputManager.PrepareInputController.Prepare.LeftScroll.started += LeftScroll;
         _prepareInputManager.PrepareInputController.Prepare.RightScroll.started += RightScroll;
+
+        LeftScrollAnimEnd();
     }
     private void OnDisable()
     {
@@ -134,8 +136,8 @@ public class PrepareImageSlideController : MonoBehaviour
         // 右側の矢印,テキストのアルファ値を1にする。
         _rightSideArrowAnim?.Kill();
         _rightSideManualTextAnim?.Kill();
-        _rightSideArrowAnim = _rightSideArrowIamge.DOFade(1f, _duration).OnComplete(() => _rightSideArrowAnim = null);
-        _rightSideManualTextAnim = _rightSideManualTextIamge.DOFade(1f, _duration).OnComplete(() => _rightSideManualTextAnim = null);
+        _rightSideArrowAnim = _rightSideArrowIamge.DOFade(0.8f, _duration).SetLoops(-1, LoopType.Yoyo);
+        _rightSideManualTextAnim = _rightSideManualTextIamge.DOFade(0.8f, _duration).SetLoops(-1, LoopType.Yoyo);
 
         _canScroll = true;
         _behindObjDontTouchiImage.gameObject.SetActive(false);
@@ -145,8 +147,8 @@ public class PrepareImageSlideController : MonoBehaviour
         // 左側の矢印,テキストのアルファ値を1にする。
         _leftSideArrowAnim?.Kill();
         _leftSideManualTextAnim?.Kill();
-        _leftSideArrowAnim = _leftSideArrowIamge.DOFade(1f, _duration).OnComplete(() => _leftSideArrowAnim = null);
-        _leftSideManualTextAnim = _leftSideManualTextIamge.DOFade(1f, _duration).OnComplete(() => _leftSideManualTextAnim = null);
+        _leftSideArrowAnim = _leftSideArrowIamge.DOFade(0.8f, _duration).SetLoops(-1, LoopType.Yoyo);
+        _leftSideManualTextAnim = _leftSideManualTextIamge.DOFade(0.8f, _duration).SetLoops(-1, LoopType.Yoyo);
 
         _canScroll = true;
         _behindObjDontTouchiImage.gameObject.SetActive(false);
