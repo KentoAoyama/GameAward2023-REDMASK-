@@ -10,6 +10,10 @@ namespace Player
     {
 
         [Header("===坂道検出の設定===")]
+
+        [Header("坂の許容値")]
+        [SerializeField] [Range(0, 0.2f)] private float _sakaYurusu = 0.1f;
+
         [Header("地面のレイヤー")]
         [SerializeField] private LayerMask _ground;
         [Header("地面を検知するRayの長さ")]
@@ -64,9 +68,9 @@ namespace Player
 
         Vector2 dir;
 
+        Vector2 groundDir;
+
         private bool _isJump;
-        private float _countTime = 0;
-        private float _time = 0.7f;
 
         private bool _isSound = false;
 
@@ -178,19 +182,34 @@ namespace Player
             Debug.DrawRay(_playerController.Player.transform.position, dirL * _rayLong, Color.red);
             Debug.DrawRay(_playerController.Player.transform.position, dirR * _rayLong, Color.red);
 
+
+            if ((hitCrossR.normal.x < _sakaYurusu && hitCrossR.normal.x > -_sakaYurusu) && (hitCrossL.normal.x < _sakaYurusu && hitCrossL.normal.x > -_sakaYurusu))
+            {
+                Debug.Log("ON");
+                //_playerController.Rigidbody2D.gravityScale = 1f;
+                return false;
+            }
+            else
+            {
+                Debug.Log("OFF");
+                // _playerController.Rigidbody2D.gravityScale = 0f;
+            }
+
+
             if (_playerController.Player.transform.localScale.x == 1)
             {
                 //右側の坂を登り終えそうなとき
                 //"右側の法線が真上" && "左側のRayが当たってない"　|| "左側の法線が左向き"
-                if (hitCrossR.normal.x == 0 && (!hitCrossL || hitCrossL.normal.x < 0))
+                if ((hitCrossR.normal.x < _sakaYurusu && hitCrossR.normal.x > -_sakaYurusu) && (!hitCrossL || hitCrossL.normal.x < -_sakaYurusu))
                 {
                     Debug.Log($"右側の坂を登り終えそうなとき");
                     return false;
                 }
 
 
-                //右側を登っている。
-                if (hitCrossR.normal.x < 0)
+
+                //右上向きの坂を登っている
+                if (hitCrossR.normal.x < -_sakaYurusu)
                 {
                     //真上と、法線の角度を求める
                     angle = Vector3.Angle(Vector2.up, hitCrossR.normal);
@@ -202,13 +221,14 @@ namespace Player
 
                     dir = Quaternion.AngleAxis(angle, Vector3.forward) * moveDir;
 
-                    Debug.Log($"右側を登っている");
+                    Debug.Log($"右上向きの坂を登っている");
                     return true;
                 }
 
-                //左側の坂を下っている。
-                if (hitCrossL.normal.x > 0)
+                //右下向きの坂を下っている。
+                if (hitCrossL.normal.x > _sakaYurusu)
                 {
+                    Debug.Log("右下向きの坂を下っている");
                     //真上と、法線の角度を求める
                     angle = Vector3.Angle(Vector2.up, hitCrossL.normal);
 
@@ -223,7 +243,7 @@ namespace Player
 
                 //左側の坂を下り終えそうなとき
                 //"右側の法線が真上" && "左側のRayが当たっている"
-                if (hitCrossR.normal.x == 0 && hitCrossL.normal.x > 0)
+                if ((hitCrossR.normal.x < _sakaYurusu && hitCrossR.normal.x > -_sakaYurusu) && hitCrossL.normal.x > _sakaYurusu)
                 {
                     //真上と、法線の角度を求める
                     angle = Vector3.Angle(Vector2.up, hitCrossL.normal);
@@ -244,7 +264,7 @@ namespace Player
 
                 //左側の坂を登り終えそうなとき
                 //"左側の法線が真上" && "右側のRayが当たってない"　|| "右側の法線が左向き"
-                if (hitCrossL.normal.x == 0 && (!hitCrossR || hitCrossR.normal.x > 0))
+                if (hitCrossL.normal.x == 0 && (!hitCrossR || hitCrossR.normal.x > _sakaYurusu))
                 {
                     return false;
                 }
@@ -252,7 +272,7 @@ namespace Player
 
 
                 //左側の坂を登っている
-                if (hitCrossL.normal.x > 0)
+                if (hitCrossL.normal.x > _sakaYurusu)
                 {
                     //真上と、法線の角度を求める
                     angle = Vector3.Angle(Vector2.up, hitCrossL.normal);
@@ -267,7 +287,7 @@ namespace Player
                 }
 
                 //右側を下っている
-                if (hitCrossR.normal.x < 0)
+                if (hitCrossR.normal.x < -_sakaYurusu)
                 {
                     //真上と、法線の角度を求める
                     angle = Vector3.Angle(Vector2.up, hitCrossR.normal);
@@ -283,7 +303,7 @@ namespace Player
 
                 //右側の坂を下り終えそうなとき
                 //"左側の法線が真上" && "右側のRayが当たっている"
-                if (hitCrossL.normal.x == 0 && hitCrossR.normal.x < 0)
+                if ((hitCrossL.normal.x < _sakaYurusu && hitCrossL.normal.x > -_sakaYurusu) && hitCrossR.normal.x < -_sakaYurusu)
                 {
                     //真上と、法線の角度を求める
                     angle = Vector3.Angle(Vector2.up, hitCrossL.normal);
@@ -305,8 +325,6 @@ namespace Player
 
         public void Update()
         {
-
-            Debug.Log(_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX));
             if (_playerController.IsDead)
             {
                 return;
@@ -431,15 +449,23 @@ namespace Player
             //地面についているときは、床との外積を考慮する
             if (_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX))
             {
-                if (CheckMoveDir(_moveHorizontalDir))
+                if (_playerController.InputManager.IsExist[InputType.MoveHorizontal])
+                {
+                    _playerController.Rigidbody2D.gravityScale = 1f;
+                }
+                else
                 {
                     _playerController.Rigidbody2D.gravityScale = 0f;
+                }
 
+                if (CheckMoveDir(_moveHorizontalDir))
+                {
                     _playerController.Rigidbody2D.velocity = Mathf.Abs(_currentHorizontalSpeed) * dir;
                 }
                 else
                 {
-                    _playerController.Rigidbody2D.gravityScale = 1f;
+                    dir = Vector2.right * _moveHorizontalDir;
+
                     _playerController.Rigidbody2D.velocity =
                             new Vector2(_currentHorizontalSpeed,
                            -1);
@@ -454,12 +480,8 @@ namespace Player
             }
 
 
-            //下方向に
-            if (!_isJump && _playerController.GroungChecker.IsHit(_moveHorizontalDir))
-            {
-                //  _playerController.Rigidbody2D.AddForce(Vector2.down * 10);
-            }
 
+            Debug.DrawRay(_playerController.Player.transform.position, dir * _rayLong, Color.red);
         }
 
         public void EndOtherAction()

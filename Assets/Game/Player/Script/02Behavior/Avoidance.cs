@@ -87,8 +87,15 @@ namespace Player
             if (IsPause) return;
 
             //近接攻撃中は出来ない
-            if (_playerController.Proximity.IsProximityNow || !_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX)) return;
+            if (_playerController.Proximity.IsProximityNow) return;
 
+            if (!_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX))
+            {
+                if(_isAvoidacneNow)
+                {
+                    EndThereAvoidance();
+                }
+            }
 
             //回避、時遅、の実行時間を計測
             CountDoTime();

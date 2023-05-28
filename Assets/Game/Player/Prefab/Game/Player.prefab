@@ -4964,16 +4964,17 @@ MonoBehaviour:
     - {fileID: 2951797189723895206}
     - {fileID: 1075152272578002172}
   _move:
+    _sakaYurusu: 0.1
     _ground:
       serializedVersion: 2
       m_Bits: 128
-    _rayLong: 2
+    _rayLong: 3
     _rayOffSetX: 0.5
     _frontRayLong: 2
     _frontRayOffSetX: {x: 0, y: -1.185}
     _midleRayOffSetX: 1
-    _crossRightRayOffSetX: {x: 0.3, y: -1}
-    _crossLeftRayOffSetX: {x: -0.3, y: -1}
+    _crossRightRayOffSetX: {x: 0.28, y: -1}
+    _crossLeftRayOffSetX: {x: -0.28, y: -1}
     _startSpeed: 0.66
     _toMoveTime: 0.18
     _moveSpeed: 6
@@ -5044,7 +5045,7 @@ MonoBehaviour:
     _reflectBullet: {fileID: 5265649433146915775, guid: 015cb33e94855db448e75fc98caf6aa5, type: 3}
   _lifeController:
     _life: 2
-    _isGodMode: 0
+    _isGodMode: 1
   _avoidance:
     _testAvoidText: {fileID: 2442194064048610565}
     _timeScale: 0.1
