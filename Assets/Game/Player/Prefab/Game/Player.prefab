@@ -775,7 +775,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 328675649}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.049995, y: 0.9000019, z: -10}
+  m_LocalPosition: {x: -4.0499945, y: 0.9000019, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5151,7 +5151,8 @@ MonoBehaviour:
     - {fileID: 2951797189723895206}
     - {fileID: 1075152272578002172}
   _move:
-    _sakaYurusu: 0.1
+    _minNomalOgSlope: 0.1
+    _maxNomalOgSlope: 0.7
     _ground:
       serializedVersion: 2
       m_Bits: 128
@@ -5189,6 +5190,7 @@ MonoBehaviour:
     _excretedPodsTime: 1
     _setBulletTime: 0.3
     _muzzleFlash: {fileID: 7461231444391189599}
+    _uIController: {fileID: 231753012}
     _cartridgeController: {fileID: 5442172741585116206}
   _revolver:
     _shellCase: {fileID: 1549081298335962567, guid: bf319ad74bbd0744d9c1912c1077fec2, type: 3}
