@@ -1,6 +1,7 @@
 // 日本語対応
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ButtonNavigationController : MonoBehaviour
