@@ -179,14 +179,6 @@ public class AudioManager
 
                 return i;
             }
-            else if (_sePlayerData[i].Player.GetStatus() == CriAtomExPlayer.Status.Error)
-            {
-                _sePlayerData[i].Player.Stop();
-                _sePlayerData[i].Player.Dispose();
-                _sePlayerData.Remove(_sePlayerData[i]);
-
-                continue;
-            }
         }
 
         CriPlayerData newAtomPlayer  = default;
@@ -243,6 +235,15 @@ public class AudioManager
             if (_sePlayerData[i].CueInfo.length <= -1)
             {
                 _sePlayerData[i].Player.Stop();
+            }
+
+            if (_sePlayerData[i].Player.GetStatus() == CriAtomExPlayer.Status.PlayEnd ||
+                _sePlayerData[i].Player.GetStatus() == CriAtomExPlayer.Status.Stop ||
+                _sePlayerData[i].Player.GetStatus() == CriAtomExPlayer.Status.Error)
+            {
+                _sePlayerData[i].Player.Stop();
+                _sePlayerData[i].Player.Dispose();
+                _sePlayerData.Remove(_sePlayerData[i]);
             }
         }
     }

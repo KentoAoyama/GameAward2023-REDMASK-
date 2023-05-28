@@ -17,6 +17,8 @@ public class EnemyBullet : MonoBehaviour, IPausable, IDamageable
     [Header("弾の設定")]
     [SerializeField] private float _speed;
     [SerializeField] private Transform _sprite;
+    [Header("火花のParticle")]
+    [SerializeField] private BulletCollisonSparkController _sparkParticle;
 
     private Transform _transform;
     private Stack<EnemyBullet> _pool;
@@ -62,10 +64,16 @@ public class EnemyBullet : MonoBehaviour, IPausable, IDamageable
             {
                 damageable.Damage();
                 ReturnPool();
+
+                var particle = Instantiate(_sparkParticle, transform.position, Quaternion.identity);
+                particle.PlaySpark();
             }
             else if (c.CompareTag(WallTagName))
             {
                 ReturnPool();
+
+                var particle = Instantiate(_sparkParticle, transform.position, Quaternion.identity);
+                particle.PlaySpark();
             }
         });
     }
@@ -90,5 +98,12 @@ public class EnemyBullet : MonoBehaviour, IPausable, IDamageable
 
     public void Pause() => _isPause = true;
     public void Resume() => _isPause = false;
-    public void Damage() => ReturnPool();
+
+    public void Damage()
+    {
+        ReturnPool();
+
+        var particle = Instantiate(_sparkParticle, transform.position, Quaternion.identity);
+        particle.PlaySpark();
+    }
 }

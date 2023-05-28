@@ -233,7 +233,7 @@ public class MenuWindowController : MonoBehaviour
 
         //Windowを閉じる入力判定
         if ((Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame) ||
-            (Gamepad.current != null && (Gamepad.current.startButton.wasPressedThisFrame || Gamepad.current.bButton.wasPressedThisFrame)))
+            (Gamepad.current != null && Gamepad.current.startButton.wasPressedThisFrame))
         {
             StartCoroutine(WindowClose());
         }

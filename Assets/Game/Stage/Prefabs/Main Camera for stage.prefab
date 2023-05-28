@@ -1437,6 +1437,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1560733501753704143, guid: 84650c14ec54b9f4c8f62416b5a04306, type: 3}
   m_PrefabInstance: {fileID: 1520564044}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5368302756549709496 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5368302757982026228, guid: 84650c14ec54b9f4c8f62416b5a04306, type: 3}
+  m_PrefabInstance: {fileID: 1520564044}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1560733500858255487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3f8083af2d6891459aac73caf61de6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2403189585848413445
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2289,8 +2300,12 @@ PrefabInstance:
       value: 0.5764706
       objectReference: {fileID: 0}
     - target: {fileID: 7991671935274325094, guid: d5bf813a769a1644abbd4ff62bdbfe20, type: 3}
+      propertyPath: _stageFadeOut
+      value: 
+      objectReference: {fileID: 5368302756549709496}
+    - target: {fileID: 7991671935274325094, guid: d5bf813a769a1644abbd4ff62bdbfe20, type: 3}
       propertyPath: _nextSceneName
-      value: INVALID. SCENE WAS DELETED. OPEN BUILD SETTINGS
+      value: Title
       objectReference: {fileID: 0}
     - target: {fileID: 7991671935274643747, guid: d5bf813a769a1644abbd4ff62bdbfe20, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2843,6 +2858,10 @@ PrefabInstance:
     - target: {fileID: 7991671936787349563, guid: d5bf813a769a1644abbd4ff62bdbfe20, type: 3}
       propertyPath: m_Color.r
       value: 0.18867922
+      objectReference: {fileID: 0}
+    - target: {fileID: 7991671936866586125, guid: d5bf813a769a1644abbd4ff62bdbfe20, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7991671936866586126, guid: d5bf813a769a1644abbd4ff62bdbfe20, type: 3}
       propertyPath: m_AnchoredPosition.y

@@ -9,13 +9,15 @@ public class DoorController : MonoBehaviour
     [SerializeField]
     private Sprite _openSprite = default;
 
+    bool _isClosed = true;
+
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log(other.gameObject.tag);
-        if(other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Enemy"))
+        if((other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("Enemy")) && _isClosed)
         {
             _doorRenderer.sprite = _openSprite;
             GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Gimmick_DoorOpen");
+            _isClosed = false;
         }    
     }
 }

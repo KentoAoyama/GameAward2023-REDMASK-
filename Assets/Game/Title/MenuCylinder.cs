@@ -48,7 +48,7 @@ public class MenuCylinder : MonoBehaviour
 
         if (left && _sylinderEnabled && !_isRotating)
         {
-            GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Selection");
+            GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Roll");
 
             _currentButtonIndex += 7;
             _currentButtonIndex %= 6;
@@ -66,7 +66,7 @@ public class MenuCylinder : MonoBehaviour
         }
         else if (right && _sylinderEnabled && !_isRotating)
         {
-            GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Selection");
+            GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Roll");
 
             _currentButtonIndex += 5;
             _currentButtonIndex %= 6;
