@@ -63,6 +63,6 @@ public class PerformanceCutEvent : MonoBehaviour
 
         GameManager.Instance.AudioManager.StopSE(noise);
 
-        GameManager.Instance.GalleryManager.SetOpenedID(true, index + 4);
+        GameManager.Instance.GalleryManager.SetOpenedID(true, index + 3);
     }
 }

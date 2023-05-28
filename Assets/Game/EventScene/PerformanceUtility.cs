@@ -14,7 +14,9 @@ public class PerformanceUtility : MonoBehaviour
     [SerializeField]
     private CinemachineImpulseSource _impulse;
     [SerializeField]
-    private LineRenderer _line;
+    private ParticleSystem _particleSystem;
+    [SerializeField]
+    private GameObject _flash;
     [SerializeField]
     private Text _text;
     [SerializeField]
@@ -36,11 +38,11 @@ public class PerformanceUtility : MonoBehaviour
 
     private void Start()
     {
-        if (_line != null)
-        _line.enabled = false;
+        if (_flash != null)
+            _flash.SetActive(false);
 
         if (_fadePanel != null)
-        _fadePanel.gameObject.SetActive(true);
+            _fadePanel.gameObject.SetActive(true);
     }
 
     private void Update()
@@ -97,10 +99,11 @@ public class PerformanceUtility : MonoBehaviour
 
     private IEnumerator Shoot(float interval)
     {
-        if (_line == null) yield break;
-        _line.enabled = true;
+        if (_flash == null || _particleSystem == null) yield break;
+        _particleSystem.Play();
+        _flash.SetActive(true);
         yield return new WaitForSeconds(interval);
-        _line.enabled = false;
+        _flash.SetActive(false);
     }
 
     public void Impulse(float shakeTime)
@@ -126,5 +129,10 @@ public class PerformanceUtility : MonoBehaviour
     public void TrueEnding()
     {
         SceneManager.LoadScene(_sceneName);
+    }
+
+    public void SEPlay(string SE)
+    {
+        GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", SE);
     }
 }

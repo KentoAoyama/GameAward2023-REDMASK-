@@ -64,7 +64,7 @@ public class PerformanceEventController : MonoBehaviour
         }
         if (Gamepad.current != null)
         {
-            return Gamepad.current.rightShoulder.wasPressedThisFrame;
+            return Gamepad.current.rightTrigger.wasPressedThisFrame;
         }
         return false;
     }
