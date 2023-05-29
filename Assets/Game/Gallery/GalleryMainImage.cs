@@ -87,6 +87,11 @@ public class GalleryMainImage : MonoBehaviour
                     gameObject.SetActive(false); // このオブジェクトを非アクティブにする
                     _isCloseAnimPlaying = false; // アニメーションが完了したことを知らせる
                     _menuPanelController.Cansellable = true; // ギャラリーウィンドウから、メインウィンドウへ遷移可能にする
+
+                    for (int i = 0; i < _galleryController.GalleryImages.Length; i++)
+                    {
+                        _galleryController.GalleryImages[i].GetComponent<ButtonNavigationController>().Setting();
+                    }
                 });
         }
     }
