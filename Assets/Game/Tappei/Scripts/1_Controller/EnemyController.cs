@@ -40,6 +40,7 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     [SerializeField, TagName] private string _playerTagName;
     [SerializeField] private Text _debugStateViewText;
     [SerializeField] GameObject _exploParticle;
+    [SerializeField] Transform _exploParticleCenter;
 
     protected ReactiveProperty<StateTypeBase> _currentState = new();
     protected StateRegister _stateRegister = new();
@@ -66,6 +67,10 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
     /// 撃破された際にtrueになりDefeated状態に遷移する
     /// </summary>
     private bool _isDefeated;
+    /// <summary>
+    /// command用
+    /// </summary>
+    private bool _isCommand;
 
     public EnemyParamsSO Params => _enemyParamsSO;
     public bool IsDefeated => _isDefeated;
@@ -254,7 +259,12 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         _currentState.Value.OnDisable();
 
         _isDefeated = true;
-        _performanceBehavior.Defeated(_moveBehavior.SpriteDir);
+
+        if (!_isCommand)
+        {
+            _performanceBehavior.Defeated(_moveBehavior.SpriteDir);
+        }
+
         gameObject.layer = LayerMask.NameToLayer(DefeatedTransitionLayerName);
         _attackBehavior.enabled = false;
 
@@ -280,9 +290,10 @@ public class EnemyController : MonoBehaviour, IPausable, IDamageable
         _moveBehavior.Jump();
         DOVirtual.DelayedCall(1.0f, () => 
         {
+            _isCommand = true;
             Damage();
             transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>().color = Color.clear;
-            Instantiate(_exploParticle, transform.position, Quaternion.identity);
+            Instantiate(_exploParticle, _exploParticleCenter.position, Quaternion.identity);
         });
     }
 }
