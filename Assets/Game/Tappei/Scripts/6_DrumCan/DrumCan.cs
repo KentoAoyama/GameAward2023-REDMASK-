@@ -66,6 +66,8 @@ public class DrumCan : MonoBehaviour, IPausable, IDamageable
 
             collider.GetComponent<IDamageable>().Damage();
         }
+
+        var goac = GetComponent<GimmickOutlineAnimController>().WasPlayed = true;
     }
 
     public void OnDrawGizmos()
