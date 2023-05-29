@@ -5,6 +5,7 @@ using CriWare;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
+using System.Linq;
 
 [Serializable]
 public class AudioManager
@@ -230,7 +231,7 @@ public class AudioManager
     /// <summary>ループしているすべてのSEを止める</summary>
     public void StopLoopSE()
     {
-        for (int i = 0; i < _sePlayerData.Count; i++)
+        for (int i = _sePlayerData.Count - 1; i >= 0; i--)
         {
             if (_sePlayerData[i].CueInfo.length <= -1)
             {
@@ -243,7 +244,7 @@ public class AudioManager
             {
                 _sePlayerData[i].Player.Stop();
                 _sePlayerData[i].Player.Dispose();
-                _sePlayerData.Remove(_sePlayerData[i]);
+                _sePlayerData.RemoveAt(i);
             }
         }
     }
