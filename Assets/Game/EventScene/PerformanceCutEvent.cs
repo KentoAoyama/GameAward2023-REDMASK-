@@ -49,6 +49,7 @@ public class PerformanceCutEvent : MonoBehaviour
         _image.material.SetFloat(_amountId, -1F);
         _fadePanel.color = Color.black;
         int noise = GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Noise");
+        await _image.DOFade(1f, 0f);
 
         await _fadePanel.DOColor(new Color(0.9622642F, 0.8783826F, 0.7571022F, 1), _colorChangeInterval);
         await _fadePanel.DOFade(0F, 0.1F);
