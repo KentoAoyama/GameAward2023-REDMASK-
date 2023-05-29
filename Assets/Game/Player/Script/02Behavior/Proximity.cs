@@ -40,6 +40,9 @@ namespace Player
                 return;
             } // ポーズ中は何もできない
 
+            //死んだら何もしない
+            if (_playerController.IsDead) return;
+
             //クールタイムの計測
             CountCoolTime();
 
