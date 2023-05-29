@@ -29,15 +29,15 @@ public class GalleryButton : MonoBehaviour
     }
     public void Setup(bool isOpened)
     {
-        (_button ?? GetComponent<Button>()).interactable = isOpened;
+        (_button ??= _button = GetComponent<Button>()).interactable = isOpened;
 
         if (isOpened)
         {
-            (_image ?? GetComponent<Image>()).sprite = _sprite;
+            (_image ??= GetComponent<Image>()).sprite = _sprite;
         }
         else
         {
-            (_image ?? GetComponent<Image>()).sprite = _nonOpenedSprite;
+            (_image ??= GetComponent<Image>()).sprite = _nonOpenedSprite;
         }
     }
     private void OnButtonClick()
