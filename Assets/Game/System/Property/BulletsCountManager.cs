@@ -41,19 +41,24 @@ public class BulletsCountManager
     public Dictionary<BulletType, IntReactiveProperty> BulletCountHome => _bulletCountHome;
     public Dictionary<BulletType, IntReactiveProperty> BulletCountStage => _bulletCountStage;
 
+    //＝＝＝＝＝＝＝ここの値でゲームの総弾数を決定する＝＝＝＝＝＝＝＝
+    private int _standardBulletNum = 48;
+    private int _penetrateBulletNum = 8;
+    private int _refrectBulletNum = 5;
+
     public BulletsCountManager()
     {
         // 各弾の初期所持数を設定する
-        _bulletCountHome[BulletType.StandardBullet].Value = 20;
-        _bulletCountHome[BulletType.PenetrateBullet].Value = 8;
-        _bulletCountHome[BulletType.ReflectBullet].Value = 12;
+        _bulletCountHome[BulletType.StandardBullet].Value = _standardBulletNum;
+        _bulletCountHome[BulletType.PenetrateBullet].Value = _penetrateBulletNum;
+        _bulletCountHome[BulletType.ReflectBullet].Value = _refrectBulletNum;
     }
 
     public void Reset()
     {
-        _bulletCountHome[BulletType.StandardBullet].Value = 20;
-        _bulletCountHome[BulletType.PenetrateBullet].Value = 8;
-        _bulletCountHome[BulletType.ReflectBullet].Value = 12;
+        _bulletCountHome[BulletType.StandardBullet].Value = _standardBulletNum;
+        _bulletCountHome[BulletType.PenetrateBullet].Value = _penetrateBulletNum;
+        _bulletCountHome[BulletType.ReflectBullet].Value = _refrectBulletNum;
     }
     public BulletType[] Cylinder
     {
