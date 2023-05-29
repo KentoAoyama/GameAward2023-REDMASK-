@@ -29,7 +29,7 @@ public class GalleryButton : MonoBehaviour
     }
     public void Setup(bool isOpened)
     {
-        (_button ?? GetComponent<Button>()).enabled = isOpened;
+        (_button ?? GetComponent<Button>()).interactable = isOpened;
 
         if (isOpened)
         {
