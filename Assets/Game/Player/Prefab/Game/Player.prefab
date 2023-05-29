@@ -5086,7 +5086,6 @@ MonoBehaviour:
     _avoidLeftBody: {fileID: 4093174045776525452}
     _avoidRightBody: {fileID: 302205187}
     _animationObject: {fileID: 1641247526}
-    _animJump: Player_JumpStart
     _animProximity: Player_Proximity
     _animFire: Player_Fire
     _animAvoid: Player_Avoid
@@ -5157,10 +5156,6 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 128
     _rayLong: 3
-    _rayOffSetX: 0.5
-    _frontRayLong: 2
-    _frontRayOffSetX: {x: 0, y: -1.185}
-    _midleRayOffSetX: 1
     _crossRightRayOffSetX: {x: 0.28, y: -1}
     _crossLeftRayOffSetX: {x: -0.28, y: -1}
     _startSpeed: 0.66
@@ -5233,20 +5228,19 @@ MonoBehaviour:
     _reflectBullet: {fileID: 5265649433146915775, guid: 015cb33e94855db448e75fc98caf6aa5, type: 3}
   _lifeController:
     _life: 2
-    _isGodMode: 1
+    _isGodMode: 0
   _avoidance:
     _testAvoidText: {fileID: 2442194064048610565}
     _timeScale: 0.1
     _doAvoidanceTime: 0.4
     _avoidanceDoTime: 1.2
-    _avoidanceCoolTime: 0.8
+    _avoidanceCoolTime: 0.5
     _landDeceleration: 20
     _avoidLayerName: AvoidPlayer
     _defultLayerName: Player
     _currentHorizontalSpeed: 0
   _proximity:
     _attackCoolTime: 0.5
-    _attackPower: 10
   _proximityHitChecker:
     _offset: {x: 1.26, y: 0}
     _size: {x: 2.2, y: 1.88}
@@ -5266,7 +5260,7 @@ MonoBehaviour:
     _offsetMoveSpeedY: 0.1
     _camera1: {fileID: 328675650}
     _offsetStart: {x: 0, y: 4}
-  _isTestRevoler: 1
+  _isTestRevoler: 0
   _basicBullet: {fileID: 2726667904286695999, guid: f59ff749b13e7db4eae1029107ed6d1f, type: 3}
 --- !u!70 &4514520410212876858
 CapsuleCollider2D:
