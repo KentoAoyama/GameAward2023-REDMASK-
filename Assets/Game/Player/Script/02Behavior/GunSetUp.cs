@@ -51,6 +51,9 @@ namespace Player
 
         public void AnimEndSetUpCheck()
         {
+            //死んだら何もしない
+            if (_playerController.IsDead) return;
+
             _isEmergencyStopSlowTime = false;
 
             if (_playerController.InputManager.IsExist[InputType.GunSetUp])
@@ -90,6 +93,8 @@ namespace Player
             // ポーズ中は何もできない
             if (GameManager.Instance.PauseManager.PauseCounter > 0) return;
 
+            //死んだら何もしない
+            if (_playerController.IsDead) return;
 
             //構えている最中の処理 
             //構えてる間、ゲージを減らす
@@ -197,6 +202,9 @@ namespace Player
         /// 構えがボタンを話したかどうかを確認する
         public void CheckRelesedSetUp()
         {
+            //死んだら何もしない
+            if (_playerController.IsDead) return;
+
             if (!_playerController.InputManager.IsExist[InputType.GunSetUp])
             {
                 if (_isGunSetUp)

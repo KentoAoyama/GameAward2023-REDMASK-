@@ -180,8 +180,6 @@ namespace Player
             {
                 DeviceManager.Update();       // デバイス制御
                 DirectionControler.Update();  // 方向制御
-
-
                 _move.Update();               // 移動処理
                 _revolverOperator.Update();   // リボルバー操作の更新
                 _revolver.Update();           // リボルバーの更新処理
@@ -196,7 +194,6 @@ namespace Player
                 _camraLookControl.CameraLook();//カメラの位置の制御
 
                 _bodyAngleSetting.Update();  　//構えの腕の角度の制御
-
 
                 //アニメーターパラメータの設定
                 _playerAnimatorControl.SetAnimatorParameters();
@@ -350,6 +347,9 @@ namespace Player
             //死体撃ちで、2回呼ばれないようにする
             if (!_isDead)
             {
+                //死亡した
+                _isDead = true;
+
                 _rigidbody2D.velocity = Vector2.zero;
 
                 //なってる音をすべて止める
@@ -361,8 +361,7 @@ namespace Player
                 //重力を戻す
                 _rigidbody2D.gravityScale = 1f;
 
-                //死亡した
-                _isDead = true;
+
 
                 //近接攻撃中に当たったら、近接攻撃を強制終了させる
                 _proximity.AttackEnd();
