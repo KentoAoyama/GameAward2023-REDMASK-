@@ -231,6 +231,8 @@ public class AudioManager
     /// <summary>ループしているすべてのSEを止める</summary>
     public void StopLoopSE()
     {
+        var remove = new List<int>();
+
         for (int i = _sePlayerData.Count - 1; i >= 0; i--)
         {
             if (_sePlayerData[i].CueInfo.length <= -1)
@@ -244,8 +246,13 @@ public class AudioManager
             {
                 _sePlayerData[i].Player.Stop();
                 _sePlayerData[i].Player.Dispose();
-                _sePlayerData.RemoveAt(i);
+                remove.Add(i);
             }
+        }
+
+        foreach (int i in remove)
+        {
+            _sePlayerData.RemoveAt(i);
         }
     }
 }
