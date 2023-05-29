@@ -14,6 +14,8 @@ public class RubbleParticleController : MonoBehaviour, IDamageable
     private Sprite _holeSprite;
 
     private bool _isFallen = false;
+    [SerializeField]
+    private GimmickOutlineAnimController _outline = default;
 
 
     private void Awake()
@@ -33,6 +35,7 @@ public class RubbleParticleController : MonoBehaviour, IDamageable
         _renderer.sprite = _holeSprite;
         _particleSystem.Play();
         GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Gimmick_BrokenCeiling");
+        _outline.WasPlayed = true;
         _isFallen = true;
     }
 

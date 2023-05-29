@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3892719385589939974}
   - component: {fileID: 1671600999046741261}
+  - component: {fileID: 1876950335400855341}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -84,6 +85,55 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1876950335400855341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4550184922657600426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c6ffa5c96ceb9846b6614090fec4ec4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.0020810212
+      value: 0.00061315816
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _loopSeconds: 1
+  _outlineShader: {fileID: 4800000, guid: 98d4f78959b3c2c4981153047e542d05, type: 3}
+  _outlineRange: 1.5
+  _outlineColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &7999320380149700395
 GameObject:
   m_ObjectHideFlags: 0
@@ -4919,6 +4969,7 @@ MonoBehaviour:
   _breakEffect: {fileID: 7285314338030414833, guid: acbf5049fcecf784c94f0e2ab97afbd2, type: 3}
   _renderer: {fileID: 1671600999046741261}
   _holeSprite: {fileID: 3683840045696901521, guid: f126e55831b16de49a477342b75ed0f3, type: 3}
+  _outline: {fileID: 1876950335400855341}
 --- !u!61 &4969935789533248143
 BoxCollider2D:
   m_ObjectHideFlags: 0
