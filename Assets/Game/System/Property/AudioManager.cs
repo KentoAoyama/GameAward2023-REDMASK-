@@ -19,7 +19,9 @@ public class AudioManager
 
     private CriAtomExPlayer _bgmPlayer = new CriAtomExPlayer();
     private CriAtomExPlayback _bgmPlayback;
-    private List<CriPlayerData> _sePlayerData = new List<CriPlayerData>();
+    private CriAtomExPlayer _sePlayer = new CriAtomExPlayer();
+    private CriAtomExPlayer _loopSEPlayer = new CriAtomExPlayer();
+    private List<CriPlayerData> _seData = new List<CriPlayerData>();
     private string _currentBGMCueName = "";
     private CriAtomExAcb _currentBGMAcb = null;
 
@@ -29,30 +31,27 @@ public class AudioManager
 
     private const string SaveFileName = "AudioVolume";
 
+    /// <summary>SEのPlayerとPlaback</summary>
     struct CriPlayerData
     {
-        private CriAtomExPlayer _player;
         private CriAtomExPlayback _playback;
         private CriAtomEx.CueInfo _cueInfo;
 
-        public CriAtomExPlayer Player
+
+        public CriAtomExPlayback Playback
         {
-            get => _player;
-            set => _player = value;
+            get => _playback;
+            set => _playback = value;
+        }
+        public CriAtomEx.CueInfo CueInfo
+        {
+            get => _cueInfo;
+            set => _cueInfo = value;
         }
 
-        public CriAtomExPlayback Playback => _playback;
-        public CriAtomEx.CueInfo CueInfo => _cueInfo;
-
-        public void Start()
+        public bool IsLoop
         {
-            _playback = _player.Start();
-        }
-
-        public void SetCue(CriAtomExAcb acb, string cueName)
-        {
-            _player.SetCue(acb, cueName);
-            acb.GetCueInfo(cueName, out _cueInfo);
+            get => _cueInfo.length < 0;
         }
     }
 
@@ -92,10 +91,18 @@ public class AudioManager
             _bgmPlayer.SetVolume(_masterVolume.Value * _bgmVolume.Value);
             _bgmPlayer.Update(_bgmPlayback);
 
-            for (int i = 0; i < _sePlayerData.Count; i++)
+            for (int i = 0; i < _seData.Count; i++)
             {
-                _sePlayerData[i].Player.SetVolume(_masterVolume.Value * _seVolume.Value);
-                _sePlayerData[i].Player.Update(_sePlayerData[i].Playback);
+                if (_seData[i].IsLoop)
+                {
+                    _loopSEPlayer.SetVolume(_masterVolume.Value * _seVolume.Value);
+                    _loopSEPlayer.Update(_seData[i].Playback);
+                }
+                else
+                {
+                    _sePlayer.SetVolume(_masterVolume.Value * _seVolume.Value);
+                    _sePlayer.Update(_seData[i].Playback);
+                }
             }
         });
 
@@ -107,10 +114,18 @@ public class AudioManager
 
         SEVolume.Subscribe(_ =>
         {
-            for (int i = 0; i < _sePlayerData.Count; i++)
+            for (int i = 0; i < _seData.Count; i++)
             {
-                _sePlayerData[i].Player.SetVolume(_masterVolume.Value * _seVolume.Value);
-                _sePlayerData[i].Player.Update(_sePlayerData[i].Playback);
+                if (_seData[i].IsLoop)
+                {
+                    _loopSEPlayer.SetVolume(_masterVolume.Value * _seVolume.Value);
+                    _loopSEPlayer.Update(_seData[i].Playback);
+                }
+                else
+                {
+                    _sePlayer.SetVolume(_masterVolume.Value * _seVolume.Value);
+                    _sePlayer.Update(_seData[i].Playback);
+                }
             }
         });
 
@@ -166,33 +181,33 @@ public class AudioManager
     /// <returns>停止する際に必要なIndex</returns>
     public int PlaySE(string cueSheetName, string cueName, float volume = 1f)
     {
-        for (int i = 0; i < _sePlayerData.Count; i++)
+        CriAtomEx.CueInfo cueInfo;
+        CriPlayerData newAtomPlayer = new CriPlayerData();
+        
+        var tempAcb = CriAtom.GetCueSheet(cueSheetName).acb;
+        tempAcb.GetCueInfo(cueName, out cueInfo);
+
+        newAtomPlayer.CueInfo = cueInfo;
+        
+        if (newAtomPlayer.IsLoop)
         {
-            // PlayerのStatusがPrepかPlayingじゃないときにならす
-            if (_sePlayerData[i].Player.GetStatus() == CriAtomExPlayer.Status.PlayEnd ||
-                _sePlayerData[i].Player.GetStatus() == CriAtomExPlayer.Status.Stop)
-            {
-                var temp = CriAtom.GetCueSheet(cueSheetName).acb;
-
-                _sePlayerData[i].Player.SetVolume(volume * _seVolume.Value * _masterVolume.Value);
-                _sePlayerData[i].SetCue(temp, cueName);
-                _sePlayerData[i].Start();
-
-                return i;
-            }
+            _loopSEPlayer.SetCue(tempAcb, cueName);
+            _loopSEPlayer.SetVolume(volume * _seVolume.Value * _masterVolume.Value);
+            newAtomPlayer.Playback = _loopSEPlayer.Start();
+            
+            Debug.Log($"new {volume * _seVolume.Value * _masterVolume.Value} {cueName} {_loopSEPlayer.GetStatus()}");
+        }
+        else
+        {
+            _sePlayer.SetCue(tempAcb, cueName);
+            _sePlayer.SetVolume(volume * _seVolume.Value * _masterVolume.Value);
+            newAtomPlayer.Playback = _sePlayer.Start();
+            
+            Debug.Log($"new {volume * _seVolume.Value * _masterVolume.Value} {cueName} {_sePlayer.GetStatus()}");
         }
 
-        CriPlayerData newAtomPlayer  = default;
-        newAtomPlayer.Player = new CriAtomExPlayer();
-
-        var tempAcb = CriAtom.GetCueSheet(cueSheetName).acb;
-
-        newAtomPlayer.Player.SetVolume(volume * _seVolume.Value * _masterVolume.Value);
-        newAtomPlayer.SetCue(tempAcb, cueName);
-        newAtomPlayer.Start();
-
-        _sePlayerData.Add(newAtomPlayer);
-        return _sePlayerData.Count - 1;
+        _seData.Add(newAtomPlayer);
+        return _seData.Count - 1;
     }
 
     /// <summary>SEをPauseさせる </summary>
@@ -201,10 +216,7 @@ public class AudioManager
     {
         if (index < 0) return;
 
-        if (_sePlayerData[index].Player.GetStatus() == CriAtomExPlayer.Status.Playing || _sePlayerData[index].Player.GetStatus() == CriAtomExPlayer.Status.Prep)
-        {
-            _sePlayerData[index].Player.Pause();
-        }
+        _seData[index].Playback.Pause();
     }
 
     /// <summary>PauseさせたSEを再開させる</summary>
@@ -213,7 +225,7 @@ public class AudioManager
     {
         if (index < 0) return; 
 
-        _sePlayerData[index].Player.Resume(CriAtomEx.ResumeMode.AllPlayback);
+        _seData[index].Playback.Resume(CriAtomEx.ResumeMode.AllPlayback);
     }
 
     /// <summary>SEを停止させる </summary>
@@ -222,37 +234,12 @@ public class AudioManager
     {
         if (index < 0) return;
 
-        if (_sePlayerData[index].Player.GetStatus() == CriAtomExPlayer.Status.Playing || _sePlayerData[index].Player.GetStatus() == CriAtomExPlayer.Status.Prep)
-        {
-            _sePlayerData[index].Player.Stop();
-        }
+        _seData[index].Playback.Stop();
     }
 
     /// <summary>ループしているすべてのSEを止める</summary>
     public void StopLoopSE()
     {
-        var remove = new List<int>();
-
-        for (int i = _sePlayerData.Count - 1; i >= 0; i--)
-        {
-            if (_sePlayerData[i].CueInfo.length <= -1)
-            {
-                _sePlayerData[i].Player.Stop();
-            }
-
-            if (_sePlayerData[i].Player.GetStatus() == CriAtomExPlayer.Status.PlayEnd ||
-                _sePlayerData[i].Player.GetStatus() == CriAtomExPlayer.Status.Stop ||
-                _sePlayerData[i].Player.GetStatus() == CriAtomExPlayer.Status.Error)
-            {
-                _sePlayerData[i].Player.Stop();
-                _sePlayerData[i].Player.Dispose();
-                remove.Add(i);
-            }
-        }
-
-        foreach (int i in remove)
-        {
-            _sePlayerData.RemoveAt(i);
-        }
+        _loopSEPlayer.Stop();
     }
 }
