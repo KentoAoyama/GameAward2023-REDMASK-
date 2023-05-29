@@ -118,7 +118,7 @@ public class PerformanceEvent
                 {
                     return true;
                 }
-                else if (Gamepad.current != null && Gamepad.current.rightShoulder.wasPressedThisFrame || // 発砲入力が発生した時
+                else if (Gamepad.current != null && Gamepad.current.rightTrigger.ReadValue() > 0.2f || // 発砲入力が発生した時
                     Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
                 {
                     _isFire = true;
@@ -157,7 +157,7 @@ public class PerformanceEvent
         _timer += Time.deltaTime;
 
         if (_messageText.Length < 3 || _cueName == "" || _talkSE == TalkSE.None) return;
-        
+
         if (_currentText != _text.text)
         {
             //GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", _cueName);
