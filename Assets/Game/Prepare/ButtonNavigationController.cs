@@ -49,7 +49,7 @@ public class ButtonNavigationController : MonoBehaviour
     {
         for (int i = 0; i < buttons.Length; i++)
         {
-            if (buttons[i].interactable)
+            if (buttons[i].interactable && buttons[i].enabled)
             {
                 return buttons[i];
             }
