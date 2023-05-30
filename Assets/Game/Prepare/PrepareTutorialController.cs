@@ -42,17 +42,22 @@ public class PrepareTutorialController : MonoBehaviour
 
     public void FadeOut()
     {
-        // ガンベルトの状態を保存
-        GameManager.Instance.BulletsCountManager.BulletCountStage[BulletType.StandardBullet].Value = 4;
-        GameManager.Instance.BulletsCountManager.BulletCountStage[BulletType.PenetrateBullet].Value = 2;
+        //// ガンベルトの状態を保存
+        //GameManager.Instance.BulletsCountManager.BulletCountStage[BulletType.StandardBullet].Value = 4;
+        //GameManager.Instance.BulletsCountManager.BulletCountStage[BulletType.PenetrateBullet].Value = 2;
+        //GameManager.Instance.BulletsCountManager.BulletCountStage[BulletType.ReflectBullet].Value = 0;
 
-        // シリンダーの状態を保存
-        BulletType[] bullets = new BulletType[6];
-        for (int i = 0; i < bullets.Length; i++)
-        {
-            bullets[i] = BulletType.StandardBullet;
-        }
-        GameManager.Instance.BulletsCountManager.Cylinder = bullets;
+        //// シリンダーの状態を保存
+        //BulletType[] bullets = new BulletType[6];
+        //for (int i = 0; i < bullets.Length; i++)
+        //{
+        //    bullets[i] = BulletType.StandardBullet;
+        //}
+        //GameManager.Instance.BulletsCountManager.Cylinder = bullets;
+
+        //GameManager.Instance.BulletsCountManager.BulletCountHome[BulletType.StandardBullet].Value -= 10;
+        //GameManager.Instance.BulletsCountManager.BulletCountHome[BulletType.PenetrateBullet].Value -= 2;
+
         _fadeOut.FadeOut().Forget();
     }
 
