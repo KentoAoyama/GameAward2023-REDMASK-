@@ -71,6 +71,7 @@ public class PrepareTutorialController : MonoBehaviour
 
     public void ManualTextTween()
     {
+        _manualText.enabled = true;
         _manualText.DOFade(0.2f, 1.5f).SetLoops(-1, LoopType.Yoyo);
     }
 }
