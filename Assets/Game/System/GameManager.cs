@@ -33,6 +33,7 @@ public class GameManager
     private AudioManager _audioManager = new AudioManager();
     private ShaderPropertyController _shaderPropertyController = new ShaderPropertyController();
     private GalleryManager _galleryManager = new GalleryManager();
+    private CursorController _cursorController = new CursorController();
 
     /// <summary>
     /// ゲームの状態を表現するクラス
