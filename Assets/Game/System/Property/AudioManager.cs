@@ -129,7 +129,12 @@ public class AudioManager
             }
         });
 
-        SceneManager.sceneUnloaded += _ => StopLoopSE();
+        SceneManager.sceneUnloaded += Unload;
+    }
+
+    ~AudioManager()
+    {
+        SceneManager.sceneUnloaded -= Unload;
     }
     // ここに音を鳴らす関数を書いてください
 
@@ -241,5 +246,24 @@ public class AudioManager
     public void StopLoopSE()
     {
         _loopSEPlayer.Stop();
+    }
+
+    private void Unload(Scene scene)
+    {
+        StopLoopSE();
+
+        var removeIndex = new List<int>();
+        for (int i = _seData.Count - 1; i >= 0; i--)
+        {
+            if (_seData[i].Playback.GetStatus() == CriAtomExPlayback.Status.Removed)
+            {
+                removeIndex.Add(i);
+            }
+        }
+
+        foreach (var i in removeIndex)
+        {
+            _seData.RemoveAt(i);
+        }
     }
 }
