@@ -10,6 +10,8 @@ using UniRx;
 
 public class PrepareImageSlideController : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject _confirmationWindow = default;
     [Tooltip("入力管理クラス"), SerializeField]
     private PrepareInputManager _prepareInputManager = default;
     [Tooltip("どのようにイージングするか"), SerializeField]
@@ -84,6 +86,8 @@ public class PrepareImageSlideController : MonoBehaviour
         if (!_canScroll) return;
         // 現在既に右の場合も無視。
         if (_currentScreenArea.Value == ScreenArea.Right) return;
+        // 確認ウィンドウ表示中も無視
+        if (_confirmationWindow.activeSelf) return;
 
         GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Menu_Move");
 
@@ -99,6 +103,8 @@ public class PrepareImageSlideController : MonoBehaviour
         if (!_canScroll) return;
         // 現在既に左の場合も無視。
         if (_currentScreenArea.Value == ScreenArea.Left) return;
+        // 確認ウィンドウ表示中も無視
+        if (_confirmationWindow.activeSelf) return;
 
         GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Menu_Move");
 
