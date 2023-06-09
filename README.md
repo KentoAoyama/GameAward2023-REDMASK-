@@ -1,4 +1,4 @@
-<h1> タイトル「 未定 」 </h1>
+<h1> タイトル「 REDMASK 」 </h1>
 <h2>ゲーム大賞向け制作　テーマ「 こだわり 」</h2>
 <tr>
 <table border="1" width="300">
@@ -29,8 +29,6 @@
 <h1> その他細かいルール </h1>
 ・インスペクターに表示する変数には[Tooltip]、そうでないものにはsummaryを使用する<br>
 
-<h1> 導入済みアセット </h1>
-DOTween : https://assetstore.unity.com/packages/tools/animation/dotween-hotween-v2-27676 <br>
 <br>
 <h1> 制作人数 </h1>
 プログラマー 4名<br>
