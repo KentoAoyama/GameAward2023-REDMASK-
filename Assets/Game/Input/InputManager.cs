@@ -19,6 +19,7 @@ namespace Player
             SetAction<float>(_inputActionCollection.Player.LoadBullet, InputType.LoadBullet);
             SetAction<float>(_inputActionCollection.Player.Proximity, InputType.Proximity);
             SetAction<float>(_inputActionCollection.Player.SetUp, InputType.GunSetUp);
+            SetAction<float>(_inputActionCollection.Player.ChangeChamber, InputType.ChangeSilinder);
         }
     }
     public enum InputType
@@ -44,6 +45,15 @@ namespace Player
         /// <summary>近接攻撃入力 </summary>
         Proximity,
 
+        /// <summary>
+        /// 銃の構えの入力
+        /// </summary>
         GunSetUp,
+
+        /// <summary>
+        /// シリンダーの回転の変更
+        /// </summary>
+        ChangeSilinder,
+
     }
 }

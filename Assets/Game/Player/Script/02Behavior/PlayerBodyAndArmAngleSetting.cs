@@ -100,6 +100,8 @@ namespace Player
             _nowMuzzleNum = i;
 
             _currentMousePos = _playerController.InputManager.GetValue<Vector2>(InputType.LookingMausePos);
+
+            _playerController.Revolver.OffDrawAimingLine(true);
         }
 
         /// <summary>ベクトルから角度を求める</summary>
@@ -168,30 +170,30 @@ namespace Player
 
             Vector2 _aimingAngle = _playerController.Revolver.AimingAngle;
 
-            // 撃つ方向を保存する
-            if (_playerController.DeviceManager.CurrentDevice.Value == Input.Device.GamePad) // ゲームパッド操作の場合
-            {
-                if ((_playerController.InputManager.GetValue<Vector2>(InputType.LookingAngleGamePad)).magnitude > 0.5f)
-                {
-                    _playerController.RevolverOperator.StopRevolverReLoad();
-                    _playerController.Revolver.OffDrawAimingLine(true);
-                }
-            }
-            else // マウス操作の場合
-            {
-                // マウスの座標をワールド座標に変換する
-                Vector3 mouseDir = _playerController.InputManager.GetValue<Vector2>(InputType.LookingMausePos);
-                mouseDir.z = 10f;
-                var mouseWorldPos = Camera.main.ScreenToWorldPoint(mouseDir);
+            //// 撃つ方向を保存する
+            //if (_playerController.DeviceManager.CurrentDevice.Value == Input.Device.GamePad) // ゲームパッド操作の場合
+            //{
+            //    if ((_playerController.InputManager.GetValue<Vector2>(InputType.LookingAngleGamePad)).magnitude > 0.5)
+            //    {
+            //        _playerController.RevolverOperator.StopRevolverReLoad(false);
+            //        _playerController.Revolver.OffDrawAimingLine(true);
+            //    }
+            //}
+            //else // マウス操作の場合
+            //{
+            //    // マウスの座標をワールド座標に変換する
+            //    Vector3 mouseDir = _playerController.InputManager.GetValue<Vector2>(InputType.LookingMausePos);
+            //    mouseDir.z = 10f;
+            //    var mouseWorldPos = Camera.main.ScreenToWorldPoint(mouseDir);
 
-                float distance = Vector2.Distance(mouseDir, _currentMousePos);
-                _currentMousePos = mouseDir;
-                if (distance > 3f)
-                {
-                    _playerController.RevolverOperator.StopRevolverReLoad();
-                    _playerController.Revolver.OffDrawAimingLine(true);
-                }
-            }
+            //    float distance = Vector2.Distance(mouseDir, _currentMousePos);
+            //    _currentMousePos = mouseDir;
+            //    if (distance > 3f)
+            //    {
+            //        _playerController.RevolverOperator.StopRevolverReLoad(false);
+            //        _playerController.Revolver.OffDrawAimingLine(true);
+            //    }
+            //}
 
             if (_aimingAngle.x >= 0)
             {

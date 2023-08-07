@@ -125,6 +125,15 @@ public partial class @GameController : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ChangeChamber"",
+                    ""type"": ""Button"",
+                    ""id"": ""f5d9c848-9e81-4c3b-981a-01531545e16b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -479,6 +488,72 @@ public partial class @GameController : IInputActionCollection2, IDisposable
                     ""action"": ""SetUp"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""37356b85-4b42-40a3-ac10-f65308d5119c"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeChamber"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""123cb3fb-c271-4e89-958d-2566b18116a5"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""ChangeChamber"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""f910beaa-8db8-41b4-b1ab-7c59bf8a327e"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""ChangeChamber"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""9d6f66c9-317d-45b4-bd72-7e0b81eca4c9"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeChamber"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""50e8cb8d-a36b-4a65-84ca-24e1aa1a3a18"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeChamber"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""99eb80a6-d664-4ab4-9d03-4a280e0aa5b5"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeChamber"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -1075,6 +1150,7 @@ public partial class @GameController : IInputActionCollection2, IDisposable
         m_Player_LoadBullet = m_Player.FindAction("LoadBullet", throwIfNotFound: true);
         m_Player_Proximity = m_Player.FindAction("Proximity", throwIfNotFound: true);
         m_Player_SetUp = m_Player.FindAction("SetUp", throwIfNotFound: true);
+        m_Player_ChangeChamber = m_Player.FindAction("ChangeChamber", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1157,6 +1233,7 @@ public partial class @GameController : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_LoadBullet;
     private readonly InputAction m_Player_Proximity;
     private readonly InputAction m_Player_SetUp;
+    private readonly InputAction m_Player_ChangeChamber;
     public struct PlayerActions
     {
         private @GameController m_Wrapper;
@@ -1172,6 +1249,7 @@ public partial class @GameController : IInputActionCollection2, IDisposable
         public InputAction @LoadBullet => m_Wrapper.m_Player_LoadBullet;
         public InputAction @Proximity => m_Wrapper.m_Player_Proximity;
         public InputAction @SetUp => m_Wrapper.m_Player_SetUp;
+        public InputAction @ChangeChamber => m_Wrapper.m_Player_ChangeChamber;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1214,6 +1292,9 @@ public partial class @GameController : IInputActionCollection2, IDisposable
                 @SetUp.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSetUp;
                 @SetUp.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSetUp;
                 @SetUp.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSetUp;
+                @ChangeChamber.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnChangeChamber;
+                @ChangeChamber.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnChangeChamber;
+                @ChangeChamber.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnChangeChamber;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1251,6 +1332,9 @@ public partial class @GameController : IInputActionCollection2, IDisposable
                 @SetUp.started += instance.OnSetUp;
                 @SetUp.performed += instance.OnSetUp;
                 @SetUp.canceled += instance.OnSetUp;
+                @ChangeChamber.started += instance.OnChangeChamber;
+                @ChangeChamber.performed += instance.OnChangeChamber;
+                @ChangeChamber.canceled += instance.OnChangeChamber;
             }
         }
     }
@@ -1418,6 +1502,7 @@ public partial class @GameController : IInputActionCollection2, IDisposable
         void OnLoadBullet(InputAction.CallbackContext context);
         void OnProximity(InputAction.CallbackContext context);
         void OnSetUp(InputAction.CallbackContext context);
+        void OnChangeChamber(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

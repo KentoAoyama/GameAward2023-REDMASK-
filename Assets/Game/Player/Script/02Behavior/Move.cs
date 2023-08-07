@@ -326,7 +326,7 @@ namespace Player
                 //止まっている状態から動き始めたら、リロード中断処理を実行
                 if (_previousDir == 0 || _moveHorizontalDir != 0)
                 {
-                    _playerController.RevolverOperator.StopRevolverReLoad();
+                    _playerController.RevolverOperator.StopRevolverReLoad(true);
                 }
 
                 _playerController.PlayerAnimatorControl.SetPlayerDir(_moveHorizontalDir);

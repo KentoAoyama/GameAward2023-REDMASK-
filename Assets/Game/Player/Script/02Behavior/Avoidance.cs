@@ -113,7 +113,7 @@ namespace Player
                 if (!_playerController.GroungChecker.IsHit(_playerController.DirectionControler.MovementDirectionX)) return;
 
                 //リロードを中断する
-                _playerController.RevolverOperator.StopRevolverReLoad();
+                _playerController.RevolverOperator.StopRevolverReLoad(false);
 
                 //回避実行
                 StartThereAvoidance();
