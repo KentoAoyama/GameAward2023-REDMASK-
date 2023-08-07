@@ -49,6 +49,7 @@ namespace Player
 
         private bool _offLineRendrer = false;
 
+        private Vector2 _currentMousePos;
 
         public Vector3 AimingAngle => _aimingAngle;
 
@@ -62,6 +63,7 @@ namespace Player
         public event Action<int> OnSetCylinderIndex = default;
         public event Action<int> OnFire = default;
         public Action<int, BulletType> OnChamberStateChanged = default;
+        public event Action<int> OnChangeChember = default;
         public bool IsPause { get; set; } = false;
 
         public void Init(PlayerController playerController)
@@ -91,6 +93,8 @@ namespace Player
                 var mouseWorldPos = Camera.main.ScreenToWorldPoint(a);
                 _aimingAngle = mouseWorldPos - _playerController.BodyAnglSetteing.ArmCenterPos.position; ;
             }
+
+            CheckCurseMove();
         }
 
         public void SetCylinderIndex(int index)
@@ -238,6 +242,32 @@ namespace Player
             await UniTask.Delay((int)(_interval * 1000f));
             _canFire = true;
         }
+
+
+        /// <summary>
+        /// チェンバーを変える
+        /// </summary>
+        public void ChangeChamber(float num)
+        {
+            if (num > 0)
+            {
+                _currentChamber++;
+                _currentChamber %= _cylinder.Length;
+
+                OnChangeChember.Invoke(_currentChamber);
+            }
+            else
+            {
+                _currentChamber--;
+
+                if (_currentChamber < 0)
+                {
+                    _currentChamber = _cylinder.Length - 1;
+                }
+            }
+            OnChangeChember?.Invoke(_currentChamber);
+        }
+
         /// <summary>
         /// 照準を描画する
         /// </summary>
@@ -249,7 +279,7 @@ namespace Player
                 _aimingLineRenderer.positionCount = 0;
                 return;
             }
-
+            OffDrawAimingLine(true);
             // 位置リストを取得
             var potisitons = GetPositions2ForGuideline(_cylinder[_currentChamber] as Bullet2);
             // ラインレンダラーにいくつの位置があるか教える
@@ -269,6 +299,55 @@ namespace Player
         }
 
 
+        /// <summary>
+        /// リロード処理中にカーソルを動かしたかどうかを確認する関数
+        /// </summary>
+        public void CheckCurseMove()
+        {
+            Vector2 _aimingAngle = _playerController.Revolver.AimingAngle;
+
+            // 撃つ方向を保存する
+            if (_playerController.DeviceManager.CurrentDevice.Value == Input.Device.GamePad) // ゲームパッド操作の場合
+            {
+                if (GameManager.Instance.PauseManager.PauseCounter > 0 || !_playerController.RevolverOperator.IsNoneSetUp || _playerController.PlayerAnimatorControl.IsAnimationNow)
+                {
+                    return;
+                } // ポーズ中は何もできない
+
+                if ((_playerController.InputManager.GetValue<Vector2>(InputType.LookingAngleGamePad)).magnitude > 0.5 && _playerController.RevolverOperator.IsNoneSetUp)
+                {
+                    _playerController.RevolverOperator.StopRevolverReLoad(false);
+                    _playerController.GunSetUp.AnimEndSetUpCheck();
+                    _playerController.Revolver.OffDrawAimingLine(true);
+                }
+            }
+            else // マウス操作の場合
+            {
+                // マウスの座標をワールド座標に変換する
+                Vector3 mouseDir = _playerController.InputManager.GetValue<Vector2>(InputType.LookingMausePos);
+                mouseDir.z = 10f;
+                var mouseWorldPos = Camera.main.ScreenToWorldPoint(mouseDir);
+                float distance = Vector2.Distance(mouseDir, _currentMousePos);
+                _currentMousePos = mouseDir;
+
+
+                if (GameManager.Instance.PauseManager.PauseCounter > 0 || !_playerController.RevolverOperator.IsNoneSetUp || _playerController.PlayerAnimatorControl.IsAnimationNow)
+                {
+                    return;
+                } // ポーズ中は何もできない
+
+                Debug.Log($"===Dis:{distance}===IsNone:{_playerController.RevolverOperator.IsNoneSetUp}");
+
+                if (distance > 3f)
+                {
+                    _playerController.RevolverOperator.StopRevolverReLoad(false);
+                    _playerController.GunSetUp.AnimEndSetUpCheck();
+                    _playerController.Revolver.OffDrawAimingLine(true);
+                }
+            }
+
+
+        }
 
         /// <summary> ガイドライン用のポジションをまとめて持つリスト </summary>
         private List<Vector2> _potisions = new List<Vector2>();

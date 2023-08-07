@@ -49,6 +49,9 @@ namespace Player
         }
 
 
+        /// <summary>
+        /// 各行動終了時に、構えを話しているかどうかを確認する
+        /// </summary>
         public void AnimEndSetUpCheck()
         {
             //死んだら何もしない
@@ -73,6 +76,7 @@ namespace Player
 
                 //照準を描写
                 _playerController.Revolver.OnDrawAimingLine();
+
             }
             else
             {
@@ -110,7 +114,7 @@ namespace Player
             //空中では出来ない
             if (!_playerController.GroungChecker.IsHit(_playerController.Move.MoveHorizontalDir))
             {
-                if(_isGunSetUp)
+                if (_isGunSetUp)
                 {
                     if (_playerController.Avoidance.IsAvoidanceNow)
                     {
@@ -182,7 +186,7 @@ namespace Player
                 _isGunSetUp = true;
 
                 //リロードを中断する
-                _playerController.RevolverOperator.StopRevolverReLoad();
+                _playerController.RevolverOperator.StopRevolverReLoad(false);
 
                 //構え
                 _playerController.PlayerAnimatorControl.GunSet(false);
@@ -198,28 +202,28 @@ namespace Player
         }
 
 
-        /// <summary>各行動終了後</summary>
-        /// 構えがボタンを話したかどうかを確認する
-        public void CheckRelesedSetUp()
-        {
-            //死んだら何もしない
-            if (_playerController.IsDead) return;
+        ///// <summary>各行動終了後</summary>
+        ///// 構えがボタンを話したかどうかを確認する
+        //public void CheckRelesedSetUp()
+        //{
+        //    //死んだら何もしない
+        //    if (_playerController.IsDead) return;
 
-            if (!_playerController.InputManager.IsExist[InputType.GunSetUp])
-            {
-                if (_isGunSetUp)
-                {
-                    _isGunSetUp = false;
+        //    if (!_playerController.InputManager.IsExist[InputType.GunSetUp])
+        //    {
+        //        if (_isGunSetUp)
+        //        {
+        //            _isGunSetUp = false;
 
-                    _playerController.PlayerAnimatorControl.GunSetEnd();
+        //            _playerController.PlayerAnimatorControl.GunSetEnd();
 
-                    EndSlowTime();
+        //            EndSlowTime();
 
-                    _isEmergencyStopSlowTime = false;
-                }
+        //            _isEmergencyStopSlowTime = false;
+        //        }
 
-            }     //構えボタンを離したら構えを解除
-        }
+        //    }     //構えボタンを離したら構えを解除
+        //}
 
         public void DoSlow()
         {

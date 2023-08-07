@@ -2,6 +2,7 @@
 using Bullet;
 using UI;
 using UnityEngine;
+using System;
 
 
 namespace Player
@@ -23,8 +24,11 @@ namespace Player
         [Header("排莢にかかる時間")]
         [SerializeField] private float _excretedPodsTime = 1;
 
-        [Header("排莢にかかる時間")]
+        [Header("弾を込めるのにかかる時間")]
         [SerializeField] private float _setBulletTime = 1;
+
+        [Header("シリンダーの回転を変えるのにかかる時間")]
+        [SerializeField] private float _changeChamberTime = 1;
 
         [Header("マズルフラッシュ")]
         [SerializeField] private MuzzleFlashController _muzzleFlash;
@@ -39,6 +43,10 @@ namespace Player
         /// <summary>弾を籠める時間を計測する</summary>
         private float _countSetBulletTime = 0;
 
+        private float _chanberChangeNum = 0;
+
+        private float _countChangeChamberTime = 0;
+
         private bool _isExcretedPods = false;
 
 
@@ -50,6 +58,18 @@ namespace Player
         /// <summary>現在、リロード中かどうか</summary>
         private bool _isReLoadNow = false;
 
+        /// <summary>シリンダーを開いているかどうか</summary>
+        private bool _isOpenCilinder = false;
+
+        /// <summary>チェンバーを回転中かどうか</summary>
+        private bool _isChangeCillinderPos;
+
+        /// <summary>現在リロード等によって銃を構えていないかどうか</summary>
+        private bool _isNoneSetUp = false;
+
+
+        public bool IsNoneSetUp => _isNoneSetUp;
+        
         public bool IsFireNow { get => _isFireNow; set => _isFireNow = value; }
 
         public void Init(PlayerController playerController)
@@ -113,7 +133,7 @@ namespace Player
                         _playerController.Revolver.Fire();
 
                         //リロードの中断処理
-                        StopRevolverReLoad();
+                        StopRevolverReLoad(false);
 
                         return;
                     }
@@ -129,8 +149,37 @@ namespace Player
 
             int nowSelectBulletNum = SelectBulletPossession(_uIController.BulletSelectUIPresenter.CurrentSelectBulletType.Value);
 
+
+
             //薬室が、空か空薬莢のある場合のみリロード処理をする
-            if (CheckBullet(BulletType.ShellCase) > 0 || (numBulletInRevolver != 6 && nowSelectBulletNum > 0))
+
+            if (_playerController.InputManager.IsPressed[InputType.ChangeSilinder])
+            {
+                //排出、弾を籠めている最中に押して何度も呼ばれないようにする
+                if (_isExcretedPods || _isChangeCillinderPos || _isSetBullet) return;
+
+                if(!_isOpenCilinder)
+                {
+                    _isExcretedPods = true;
+                }
+
+                _isNoneSetUp = true;
+
+                _chanberChangeNum = _playerController.InputManager.GetValue<float>(InputType.ChangeSilinder) > 0f ? 1f : -1f;
+
+                _isChangeCillinderPos = true;
+
+                _playerController.Revolver.OffDrawAimingLine(false);
+
+                _isReLoadNow = true;
+
+                //特定行動中に構えを解除していないかどうかを確認する
+                _playerController.GunSetUp.CanselSetUpping();
+
+
+
+            }
+            else if (CheckBullet(BulletType.ShellCase) > 0 || (numBulletInRevolver != 6 && nowSelectBulletNum > 0))
             {
                 if (_playerController.InputManager.IsPressed[InputType.LoadBullet])
                 {
@@ -140,6 +189,8 @@ namespace Player
                     _playerController.Revolver.OffDrawAimingLine(false);
 
                     _isReLoadNow = true;
+
+                    _isNoneSetUp = true;
 
                     //特定行動中に構えを解除していないかどうかを確認する
                     _playerController.GunSetUp.CanselSetUpping();
@@ -183,6 +234,9 @@ namespace Player
                 }
             }
 
+
+
+
             //排莢の処理
             if (_isExcretedPods)
             {
@@ -198,25 +252,47 @@ namespace Player
                     /////////////////////////////////TEST用!!!!!!!!!!!!!!!!//////////////////////////
                     _excretedText.SetActive(false);
 
-                    //薬莢排出の処理
-                    _cartridgeController.CartridgePlay(CheckBullet(BulletType.ShellCase));
-
-                    // 排莢する
-                    var cylinder = _playerController.Revolver.EjectShellsAll();
-                    _countExcretedPodsTime = 0;
-
-
+                    _isOpenCilinder = true;
                     _isExcretedPods = false;
 
-                    // 空いているチャンバーを検索する。
-                    var index = FindEmptyChamber();
-                    if (index != -1) // 空いているチャンバーが見つかった場合の処理
+                    if (!_isChangeCillinderPos)
                     {
-                        //弾を持っていたら弾籠めに以降
-                        if (nowSelectBulletNum > 0)
-                            _isSetBullet = true;
+                        //薬莢排出の処理
+                        _cartridgeController.CartridgePlay(CheckBullet(BulletType.ShellCase));
+
+                        // 排莢する
+                        var cylinder = _playerController.Revolver.EjectShellsAll();
+                        _countExcretedPodsTime = 0;
+
+
+
+
+                        // 空いているチャンバーを検索する。
+                        var index = FindEmptyChamber();
+                        if (index != -1) // 空いているチャンバーが見つかった場合の処理
+                        {
+                            //弾を持っていたら弾籠めに以降
+                            if (nowSelectBulletNum > 0)
+                                _isSetBullet = true;
+                        }
                     }
                 }
+            }
+            else if (_isChangeCillinderPos)
+            {
+
+                _countChangeChamberTime += Time.deltaTime;
+
+                if (_changeChamberTime < _countChangeChamberTime)
+                {
+                    //弾を籠めるアニメーション
+                    _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.ReLoad);
+
+                    _playerController.Revolver.ChangeChamber(_chanberChangeNum);
+                    _isChangeCillinderPos = false;
+                    _countChangeChamberTime = 0;
+                }
+
             }
             else if (_isSetBullet)   //弾を籠める処理
             {
@@ -234,7 +310,7 @@ namespace Player
                     Debug.Log("N");
 
                     //特定行動中に構えを解除していないかどうかを確認する
-                    _playerController.GunSetUp.AnimEndSetUpCheck();
+                    //_playerController.GunSetUp.AnimEndSetUpCheck();
 
                     //音を鳴らす
                     GameManager.Instance.AudioManager.PlaySE("CueSheet_Gun", "SE_Player_Reroad");
@@ -277,6 +353,7 @@ namespace Player
 
             }
         }
+
 
         public int SelectBulletPossession(BulletType bulletType)
         {
@@ -326,17 +403,27 @@ namespace Player
 
 
         /// <summary>他の行動をしたことによるリロードの中断</summary>
-        public void StopRevolverReLoad()
+        public void StopRevolverReLoad(bool isAnim)
         {
             /////////////////////////////////TEST用!!!!!!!!!!!!!!!!//////////////////////////
             _excretedText.SetActive(false);
             _setBulletText.SetActive(false);
+            Debug.Log("D");
 
-            if (_isReLoadNow)
+            _isNoneSetUp = false;
+
+            if (_isReLoadNow && isAnim)
             {
                 //弾を籠めるアニメーション
                 _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.ReLoadEnd);
             }
+
+            //チェンバー変更の中断
+            _isOpenCilinder = false;
+            _isChangeCillinderPos = false;
+            _countChangeChamberTime = 0;
+
+            //リロードの中断
             _isReLoadNow = false;
             _isExcretedPods = false;
             _isSetBullet = false;

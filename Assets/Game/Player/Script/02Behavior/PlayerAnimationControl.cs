@@ -296,7 +296,10 @@ namespace Player
             _isFire = false;
 
             //アニメーション終わり時に構えてるかどうかを確認
-            _playerController.GunSetUp.AnimEndSetUpCheck();
+            if (!_playerController.RevolverOperator.IsNoneSetUp)
+            {
+                _playerController.GunSetUp.AnimEndSetUpCheck();
+            }
 
             //アニメーション用のオブジェクトを元に戻す
             _animationObject.transform.localScale = new Vector3(1, 1, 1);

@@ -149,6 +149,7 @@ namespace Player
 
         private void Start()
         {
+            Cursor.lockState = CursorLockMode.None;
             _rigidbody2D = GetComponent<Rigidbody2D>();
             InputManager.Init();
             _move.Init(this);
