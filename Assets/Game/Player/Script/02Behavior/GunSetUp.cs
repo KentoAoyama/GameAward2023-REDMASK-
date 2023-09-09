@@ -76,7 +76,6 @@ namespace Player
 
                 //照準を描写
                 _playerController.Revolver.OnDrawAimingLine();
-
             }
             else
             {
@@ -84,10 +83,9 @@ namespace Player
 
                 //重力を戻す
                 _playerController.Rigidbody2D.gravityScale = 1f;
-
-                _isGunSetUp = false;
-
+  
                 _playerController.PlayerAnimatorControl.GunSetEnd();
+                _isGunSetUp = false;
             }
 
         }
@@ -95,7 +93,7 @@ namespace Player
         public void UpData()
         {
             // ポーズ中は何もできない
-            if (GameManager.Instance.PauseManager.PauseCounter > 0) return;
+            if (IsPause) return;
 
             //死んだら何もしない
             if (_playerController.IsDead) return;
@@ -125,6 +123,7 @@ namespace Player
                     _playerController.Rigidbody2D.gravityScale = 1f;
 
                     //時遅を解
+                    Debug.Log("End2");
                     EndSlowTime();
 
                     //アニメーションを設定
@@ -156,6 +155,7 @@ namespace Player
             //構えの入力を離した場合
             if (_playerController.InputManager.IsReleased[InputType.GunSetUp] && _isGunSetUp)
             {
+                Debug.Log("構えを離した");
                 if (_playerController.Avoidance.IsAvoidanceNow)
                 {
                     _playerController.Avoidance.EndThereAvoidance();
@@ -165,6 +165,7 @@ namespace Player
                 _playerController.Rigidbody2D.gravityScale = 1f;
 
                 //時遅を解
+                Debug.Log("End3");
                 EndSlowTime();
 
                 //アニメーションを設定
@@ -270,10 +271,12 @@ namespace Player
 
         public void CanselSetUpping()
         {
+            Debug.Log("構えをキャンセル");
             _playerController.PlayerAnimatorControl.GunSetEnd();
 
             _isEmergencyStopSlowTime = false;
 
+            Debug.Log("End4");
             EndSlowTime();
 
             _isGunSetUp = false;
@@ -281,6 +284,8 @@ namespace Player
 
         public void EmergencyStopSlowTime()
         {
+            Debug.Log("構えをストップ");
+
             //構えている状態じゃなかったら呼ばない
             if (!_isGunSetUp) return;
 
@@ -291,7 +296,7 @@ namespace Player
             if (_isEmergencyStopSlowTime) return;
 
 
-
+            Debug.Log("End5");
             EndSlowTime();
 
             _isEmergencyStopSlowTime = true;

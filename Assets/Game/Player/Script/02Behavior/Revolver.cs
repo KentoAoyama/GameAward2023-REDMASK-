@@ -47,7 +47,7 @@ namespace Player
         /// <summary> 攻撃可能かどうかを表す値 </summary>
         private bool _canFire = true;
 
-        private bool _offLineRendrer = false;
+        private bool _offLineRendrer = true;
 
         private Vector2 _currentMousePos;
 
@@ -279,6 +279,7 @@ namespace Player
                 _aimingLineRenderer.positionCount = 0;
                 return;
             }
+
             OffDrawAimingLine(true);
             // 位置リストを取得
             var potisitons = GetPositions2ForGuideline(_cylinder[_currentChamber] as Bullet2);

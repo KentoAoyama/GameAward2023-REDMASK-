@@ -408,7 +408,6 @@ namespace Player
             /////////////////////////////////TEST用!!!!!!!!!!!!!!!!//////////////////////////
             _excretedText.SetActive(false);
             _setBulletText.SetActive(false);
-            Debug.Log("D");
 
             _isNoneSetUp = false;
 
