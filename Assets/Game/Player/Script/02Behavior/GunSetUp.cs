@@ -74,6 +74,9 @@ namespace Player
                 //˜r‚ÌŠp“x‚ğİ’è
                 _playerController.BodyAnglSetteing.AimingSet();
 
+                //Æ€‚ğ‰f‚·
+                _playerController.Revolver.OffDrawAimingLine(true);
+
                 //Æ€‚ğ•`Ê
                 _playerController.Revolver.OnDrawAimingLine();
             }
@@ -192,11 +195,14 @@ namespace Player
                 //\‚¦
                 _playerController.PlayerAnimatorControl.GunSet(false);
 
+                //Æ€‚ğ‰f‚·
+                _playerController.Revolver.OffDrawAimingLine(true);
+
                 //˜r‚ÌŠp“x‚ğİ’è
                 _playerController.BodyAnglSetteing.AimingSet();
 
                 //Æ€‚ğ•`Ê
-                _playerController.Revolver.OnDrawAimingLine();
+             //   _playerController.Revolver.OnDrawAimingLine();
 
                 DoSlow();
             }
