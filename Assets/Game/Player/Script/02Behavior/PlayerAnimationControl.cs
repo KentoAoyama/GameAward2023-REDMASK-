@@ -128,6 +128,14 @@ namespace Player
             }
         }
 
+        public void SetAnimationSpeed()
+        {
+            if (IsPause) return;
+           _playerController.PlayerAnim.speed = GameManager.Instance.TimeController.PlayerTime;
+        }
+
+
+
         /// <summary>アニメーターのパラメータを設定</summary>
         public void SetAnimatorParameters()
         {
@@ -289,6 +297,7 @@ namespace Player
         /// <summary>アニメーションが終わったことを通知</summary>
         public void EndAnimation()
         {
+            Debug.Log("EndAni");
             //現在アニメーション再生中ではない
             _isAnimationNow = false;
 

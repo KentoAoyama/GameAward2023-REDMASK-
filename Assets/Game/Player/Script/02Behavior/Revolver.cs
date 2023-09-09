@@ -47,7 +47,7 @@ namespace Player
         /// <summary> 攻撃可能かどうかを表す値 </summary>
         private bool _canFire = true;
 
-        private bool _offLineRendrer = false;
+        private bool _offLineRendrer = true;
 
         private Vector2 _currentMousePos;
 
@@ -273,20 +273,40 @@ namespace Player
         /// </summary>
         public void OnDrawAimingLine()
         {
-            //構えてないときは描画しない
-            if (!_playerController.GunSetUp.IsGunSetUp || _playerController.PlayerAnimatorControl.IsAnimationNow || !_offLineRendrer)
+            if (_playerController.GunSetUp.IsGunSetUp)
+            {
+                _playerController.Revolver.OffDrawAimingLine(true);
+            }
+
+            if (_cylinder[_currentChamber] == null)
             {
                 _aimingLineRenderer.positionCount = 0;
                 return;
             }
-            OffDrawAimingLine(true);
+
+            //構えてないときは描画しない
+            if (!_playerController.GunSetUp.IsGunSetUp
+                || _playerController.PlayerAnimatorControl.IsAnimationNow
+                || !_offLineRendrer
+                || _cylinder[_currentChamber].Type == BulletType.Empty
+                || _cylinder[_currentChamber].Type == BulletType.ShellCase
+                || _cylinder[_currentChamber].Type == BulletType.NotSet)
+            {
+                _aimingLineRenderer.positionCount = 0;
+                return;
+            }
+            _playerController.Revolver.OffDrawAimingLine(true);
+
             // 位置リストを取得
             var potisitons = GetPositions2ForGuideline(_cylinder[_currentChamber] as Bullet2);
+
             // ラインレンダラーにいくつの位置があるか教える
             _aimingLineRenderer.positionCount = potisitons.Count;
+
             // ラインレンダラーに各座標を教える
             for (int i = 0; i < potisitons.Count; i++)
             {
+                Debug.Log("Position:" + i);
                 _aimingLineRenderer.SetPosition(i, potisitons[i]);
             }
         }
@@ -318,7 +338,6 @@ namespace Player
                 {
                     _playerController.RevolverOperator.StopRevolverReLoad(false);
                     _playerController.GunSetUp.AnimEndSetUpCheck();
-                    _playerController.Revolver.OffDrawAimingLine(true);
                 }
             }
             else // マウス操作の場合
@@ -342,7 +361,6 @@ namespace Player
                 {
                     _playerController.RevolverOperator.StopRevolverReLoad(false);
                     _playerController.GunSetUp.AnimEndSetUpCheck();
-                    _playerController.Revolver.OffDrawAimingLine(true);
                 }
             }
 

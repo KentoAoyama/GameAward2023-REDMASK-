@@ -175,8 +175,6 @@ namespace Player
         }
         private void Update()
         {
-            _playerAnim.speed = GameManager.Instance.TimeController.PlayerTime;
-
             if (!_isDead)
             {
                 DeviceManager.Update();       // デバイス制御
@@ -184,12 +182,12 @@ namespace Player
                 _move.Update();               // 移動処理
                 _revolverOperator.Update();   // リボルバー操作の更新
                 _revolver.Update();           // リボルバーの更新処理
-                _revolver.OnDrawAimingLine(); // 照準描画処理（カメラの更新タイミングと合わせる必要有り）
+
                 _avoidance.Update();          // 回避制御
                 _proximity.Update();          //近接攻撃
 
                 _gunSetUp.UpData();           //構えの制御
-
+                _revolver.OnDrawAimingLine(); // 照準描画処理（カメラの更新タイミングと合わせる必要有り）
                 //_camraControl.CameraShakeSpeed(); //カメラの再生速度
 
                 _camraLookControl.CameraLook();//カメラの位置の制御
@@ -198,7 +196,9 @@ namespace Player
 
                 //アニメーターパラメータの設定
                 _playerAnimatorControl.SetAnimatorParameters();
+                _playerAnimatorControl.SetAnimationSpeed();
             }
+
         }
 
 
@@ -310,34 +310,38 @@ namespace Player
             // 物理演算の停止、入力の停止、
             _move.Pause();
             await UniTask.WaitUntil(() => InputManager.InputActionCollection != null);
-            InputManager.InputActionCollection.Disable();
+           // InputManager.InputActionCollection.Disable();
             _revolver.IsPause = true;
 
             //回避モーションの一時停止
             _avoidance.Pause();
             //構え、の一時停止
             _gunSetUp.Pause();
-            //アニメーションの速度を0に
-            _playerAnim.speed = 0;
 
+            Debug.Log("AnimationSpeed:" + _playerAnim.speed);
             //カメラの振動一時停止
             _camraControl.Pause();
+
+            //アニメーションのPause
+            _playerAnimatorControl.Pause();
         }
 
         public void Resume()
         {
             _move.Resume();
-            InputManager.InputActionCollection.Enable();
+           // InputManager.InputActionCollection.Enable();
             _revolver.IsPause = false;
 
             //回避モーションの再開
             _avoidance.Resume();
+
             _gunSetUp.Resume();
 
-            _playerAnim.speed = 1;
-
             //カメラの振動の再開
-            _camraControl.Pause();
+            _camraControl.Resume();
+
+            //アニメーションのResume
+            _playerAnimatorControl.Resume();
         }
 
         /// <summary>ダメージを受けた時の処理</summary>

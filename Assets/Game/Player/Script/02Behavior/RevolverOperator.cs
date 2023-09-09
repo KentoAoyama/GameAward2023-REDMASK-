@@ -262,10 +262,9 @@ namespace Player
 
                         // 排莢する
                         var cylinder = _playerController.Revolver.EjectShellsAll();
+
+
                         _countExcretedPodsTime = 0;
-
-
-
 
                         // 空いているチャンバーを検索する。
                         var index = FindEmptyChamber();
@@ -280,11 +279,11 @@ namespace Player
             }
             else if (_isChangeCillinderPos)
             {
-
                 _countChangeChamberTime += Time.deltaTime;
 
                 if (_changeChamberTime < _countChangeChamberTime)
                 {
+                    Debug.Log("ChangeBullet");
                     //弾を籠めるアニメーション
                     _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.ReLoad);
 
@@ -307,7 +306,6 @@ namespace Player
 
                     //弾を籠めるアニメーション
                     _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.ReLoad);
-                    Debug.Log("N");
 
                     //特定行動中に構えを解除していないかどうかを確認する
                     //_playerController.GunSetUp.AnimEndSetUpCheck();
@@ -408,7 +406,6 @@ namespace Player
             /////////////////////////////////TEST用!!!!!!!!!!!!!!!!//////////////////////////
             _excretedText.SetActive(false);
             _setBulletText.SetActive(false);
-            Debug.Log("D");
 
             _isNoneSetUp = false;
 
