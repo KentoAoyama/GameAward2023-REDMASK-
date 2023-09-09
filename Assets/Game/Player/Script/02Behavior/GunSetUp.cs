@@ -243,7 +243,6 @@ namespace Player
 
             GameManager.Instance.ShaderPropertyController.MonochromeController.SetMonoBlend(1, 0.2f);
 
-            Debug.Log("時を遅くする");
             // 時間の速度をゆっくりにする。
             GameManager.Instance.TimeController.ChangeTimeSpeed(true);
         }
@@ -264,7 +263,6 @@ namespace Player
 
             GameManager.Instance.ShaderPropertyController.MonochromeController.SetMonoBlend(0, 0.2f);
 
-            Debug.Log("時を戻す");
             // 時間の速度をもとの状態に戻す。
             GameManager.Instance.TimeController.ChangeTimeSpeed(false);
         }
@@ -277,12 +275,10 @@ namespace Player
 
         public void CanselSetUpping()
         {
-            Debug.Log("構えをキャンセル");
             _playerController.PlayerAnimatorControl.GunSetEnd();
 
             _isEmergencyStopSlowTime = false;
 
-            Debug.Log("End4");
             EndSlowTime();
 
             _isGunSetUp = false;
@@ -290,8 +286,6 @@ namespace Player
 
         public void EmergencyStopSlowTime()
         {
-            Debug.Log("構えをストップ");
-
             //構えている状態じゃなかったら呼ばない
             if (!_isGunSetUp) return;
 
@@ -301,8 +295,6 @@ namespace Player
             //既にこの関数を読んでいたら呼ばない
             if (_isEmergencyStopSlowTime) return;
 
-
-            Debug.Log("End5");
             EndSlowTime();
 
             _isEmergencyStopSlowTime = true;
