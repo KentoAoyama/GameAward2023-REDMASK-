@@ -1855,7 +1855,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerTag: Player
-  _firstStageSceneName: Stage3_InGame1
+  _firstStageSceneName: TGS_InGame1
   _stageFadeIn: {fileID: 1600148554}
   _stageFadeOut: {fileID: 1600148553}
 --- !u!1001 &582664764
@@ -4055,6 +4055,10 @@ PrefabInstance:
     - target: {fileID: 4514520410212876862, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: _bulletCountManager._isTestPlay
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4514520410212876862, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+      propertyPath: _revolverOperator._changeChamberTime
+      value: 0.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}

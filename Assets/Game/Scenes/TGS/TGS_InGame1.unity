@@ -550,6 +550,10 @@ PrefabInstance:
       value: Enemy_MeleeAttack_Left (4)
       objectReference: {fileID: 0}
     - target: {fileID: 4631331079718261062, guid: 3fff90f2e04efde4e9d2d1815dbf7825, type: 3}
+      propertyPath: _sightRadius
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4631331079718261062, guid: 3fff90f2e04efde4e9d2d1815dbf7825, type: 3}
       propertyPath: _idleWhenUndiscover
       value: 1
       objectReference: {fileID: 0}
@@ -567,7 +571,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4631331079718261117, guid: 3fff90f2e04efde4e9d2d1815dbf7825, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -30.43
+      value: -49.71
       objectReference: {fileID: 0}
     - target: {fileID: 4631331079718261117, guid: 3fff90f2e04efde4e9d2d1815dbf7825, type: 3}
       propertyPath: m_LocalPosition.y
@@ -880,7 +884,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -971.87, y: -537.48}
+  m_AnchoredPosition: {x: -966.92, y: -537.39}
   m_SizeDelta: {x: 470.9, y: 209.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &121847332
@@ -1964,7 +1968,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 343087747}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.75, y: 3.9299998, z: 0}
+  m_LocalPosition: {x: 0.18, y: 3.9299998, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2391,7 +2395,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerTag: Player
-  _firstStageSceneName: Stage1_InGame1
+  _firstStageSceneName: TGS_InGame1
   _stageFadeIn: {fileID: 432653895}
   _stageFadeOut: {fileID: 1351531656}
 --- !u!4 &491929613 stripped
@@ -2681,6 +2685,7 @@ Transform:
   - {fileID: 244083068}
   - {fileID: 776581206}
   - {fileID: 1859792821}
+  - {fileID: 947408634}
   m_Father: {fileID: 841400919}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3532,7 +3537,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4514520410212876862, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: _bulletCountManager._isTestPlay
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4514520410212876862, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+      propertyPath: _revolverOperator._changeChamberTime
+      value: 0.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
@@ -4295,6 +4304,90 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 497431026440097303, guid: 93262e76ffd8a5340835eae2e6d10a42, type: 3}
   m_PrefabInstance: {fileID: 295130192}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &947408633
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 947408634}
+  - component: {fileID: 947408635}
+  m_Layer: 0
+  m_Name: fensu (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &947408634
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 947408633}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -14.07, y: -0.9775914, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 556029942}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &947408635
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 947408633}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: -342
+  m_Sprite: {fileID: 21300000, guid: 5b1769e504e8b9a47af88a1928452524, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 6, y: 6}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1001 &953408149
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7997,7 +8090,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1692831126}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 74.35, y: 0.72, z: 0}
+  m_LocalPosition: {x: 52.41, y: -0.14, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8018,7 +8111,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _stageController2: {fileID: 491379047}
   _playerTag: Player
-  _nextSceneName: Stage1_InGame2
+  _nextSceneName: TGS_InGame2
   _isFinal: 0
   _currentStageNumberForFinal: 0
   _stageFadeOut: {fileID: 1351531656}
