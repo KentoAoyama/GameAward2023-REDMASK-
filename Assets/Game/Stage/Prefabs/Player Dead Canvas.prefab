@@ -271,6 +271,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _firstSelectedButton: {fileID: 57530024224936576}
   _playerUIObject: {fileID: 0}
+  _fadeTime: 0.2
 --- !u!1 &57530024436533923
 GameObject:
   m_ObjectHideFlags: 0
@@ -875,7 +876,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7f250ff34c88b547bb96a7595058bad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextSceneName: Prepare
+  _nextSceneName: TGS_Prepare
+  _stageFadeOut: {fileID: 0}
 --- !u!114 &3905131938290371092
 MonoBehaviour:
   m_ObjectHideFlags: 0
