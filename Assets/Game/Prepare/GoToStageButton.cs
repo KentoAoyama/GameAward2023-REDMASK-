@@ -16,10 +16,15 @@ public class GoToStageButton : MonoBehaviour
     [SerializeField]
     private BulletPrepareControl _bulletPrepareControl = default;
 
+    [SerializeField] private SpriteRenderer _spriteRenderer;
+
     private Image _image = null;
 
     private void Start()
     {
+        Debug.Log(_spriteRenderer is null);
+        Debug.Log(_spriteRenderer);
+        
         _image = GetComponent<Image>();
         var button = GetComponent<Button>();
         _maskSwitch.IsSet.Subscribe(value =>
