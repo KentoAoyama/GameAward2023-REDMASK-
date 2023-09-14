@@ -28,7 +28,7 @@ public class StageComplete : MonoBehaviour
         // 未使用の弾を返却
         _playerController.BulletCountManager.HomeBulletAddEndStage();
         // GameManagerが持つステージ用弾数,シリンダーの状態をリセット。
-        GameManager.Instance.BulletsCountManager.Clear();
+        GameManager.Instance.BulletsCountManager.Reset();
         // GameManager.BulletsCountManagerの情報を保存。
         GameManager.Instance.BulletsCountManager.Save();
 

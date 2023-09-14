@@ -215,7 +215,7 @@ namespace Player
             // ホームに弾を返す。
             _bulletCountManager.HomeBulletAddEndStage();
             // GameManagerが持つステージ用弾数,シリンダーの状態をリセット。
-            GameManager.Instance.BulletsCountManager.Clear();
+            GameManager.Instance.BulletsCountManager.Reset();
             // GameManager.BulletsCountManagerの情報を保存。
             GameManager.Instance.BulletsCountManager.Save();
         }

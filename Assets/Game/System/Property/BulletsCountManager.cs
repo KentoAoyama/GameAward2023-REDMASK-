@@ -69,31 +69,31 @@ public class BulletsCountManager
 
     public void Save()
     {
-        _bulletCountHomeSaveData = new int[3];
-        _bulletCountHomeSaveData[0] = _bulletCountHome[BulletType.StandardBullet].Value;
-        _bulletCountHomeSaveData[1] = _bulletCountHome[BulletType.PenetrateBullet].Value;
-        _bulletCountHomeSaveData[2] = _bulletCountHome[BulletType.ReflectBullet].Value;
-        SaveLoadManager.Save<BulletsCountManager>(this, _saveFileName);
+        //_bulletCountHomeSaveData = new int[3];
+        //_bulletCountHomeSaveData[0] = _bulletCountHome[BulletType.StandardBullet].Value;
+        //_bulletCountHomeSaveData[1] = _bulletCountHome[BulletType.PenetrateBullet].Value;
+        //_bulletCountHomeSaveData[2] = _bulletCountHome[BulletType.ReflectBullet].Value;
+        //SaveLoadManager.Save<BulletsCountManager>(this, _saveFileName);
     }
     public void Load()
     {
-        var temp = SaveLoadManager.Load<BulletsCountManager>(_saveFileName);
-        if (temp == null || temp._bulletCountHomeSaveData == null) return; // 読み込みに失敗した場合は処理しない。
-        // Debug.Log(temp._bulletCountHomeSaveData == null);
-        _bulletCountHome[BulletType.StandardBullet].Value = temp._bulletCountHomeSaveData[0];
-        _bulletCountHome[BulletType.PenetrateBullet].Value = temp._bulletCountHomeSaveData[1];
-        _bulletCountHome[BulletType.ReflectBullet].Value = temp._bulletCountHomeSaveData[2];
+        //var temp = SaveLoadManager.Load<BulletsCountManager>(_saveFileName);
+        //if (temp == null || temp._bulletCountHomeSaveData == null) return; // 読み込みに失敗した場合は処理しない。
+        //// Debug.Log(temp._bulletCountHomeSaveData == null);
+        //_bulletCountHome[BulletType.StandardBullet].Value = temp._bulletCountHomeSaveData[0];
+        //_bulletCountHome[BulletType.PenetrateBullet].Value = temp._bulletCountHomeSaveData[1];
+        //_bulletCountHome[BulletType.ReflectBullet].Value = temp._bulletCountHomeSaveData[2];
     }
     public void Clear()
     {
         // ステージの弾の数を初期値に戻す
-        _bulletCountStage[BulletType.StandardBullet].Value = 0;
-        _bulletCountStage[BulletType.PenetrateBullet].Value = 0;
-        _bulletCountStage[BulletType.ReflectBullet].Value = 0;
-        // シリンダーの状態を初期値に戻す
-        for (int i = 0; i < _cylinder.Length; i++)
-        {
-            _cylinder[i] = BulletType.NotSet;
-        }
+        //_bulletCountStage[BulletType.StandardBullet].Value = 0;
+        //_bulletCountStage[BulletType.PenetrateBullet].Value = 0;
+        //_bulletCountStage[BulletType.ReflectBullet].Value = 0;
+        //// シリンダーの状態を初期値に戻す
+        //for (int i = 0; i < _cylinder.Length; i++)
+        //{
+        //    _cylinder[i] = BulletType.NotSet;
+        //}
     }
 }
