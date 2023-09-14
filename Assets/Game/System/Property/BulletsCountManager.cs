@@ -42,9 +42,9 @@ public class BulletsCountManager
     public Dictionary<BulletType, IntReactiveProperty> BulletCountStage => _bulletCountStage;
 
     //＝＝＝＝＝＝＝ここの値でゲームの総弾数を決定する＝＝＝＝＝＝＝＝
-    private int _standardBulletNum = 48;
-    private int _penetrateBulletNum = 8;
-    private int _refrectBulletNum = 5;
+    private int _standardBulletNum = 50;
+    private int _penetrateBulletNum = 3;
+    private int _refrectBulletNum = 2;
 
     public BulletsCountManager()
     {
