@@ -74,9 +74,11 @@ namespace Player
                 //腕の角度を設定
                 _playerController.BodyAnglSetteing.AimingSet();
 
+                //照準を映す
+                _playerController.Revolver.OffDrawAimingLine(true);
+
                 //照準を描写
                 _playerController.Revolver.OnDrawAimingLine();
-
             }
             else
             {
@@ -84,10 +86,9 @@ namespace Player
 
                 //重力を戻す
                 _playerController.Rigidbody2D.gravityScale = 1f;
-
-                _isGunSetUp = false;
-
+  
                 _playerController.PlayerAnimatorControl.GunSetEnd();
+                _isGunSetUp = false;
             }
 
         }
@@ -95,7 +96,7 @@ namespace Player
         public void UpData()
         {
             // ポーズ中は何もできない
-            if (GameManager.Instance.PauseManager.PauseCounter > 0) return;
+            if (IsPause) return;
 
             //死んだら何もしない
             if (_playerController.IsDead) return;
@@ -125,6 +126,7 @@ namespace Player
                     _playerController.Rigidbody2D.gravityScale = 1f;
 
                     //時遅を解
+                    Debug.Log("End2");
                     EndSlowTime();
 
                     //アニメーションを設定
@@ -156,6 +158,7 @@ namespace Player
             //構えの入力を離した場合
             if (_playerController.InputManager.IsReleased[InputType.GunSetUp] && _isGunSetUp)
             {
+                Debug.Log("構えを離した");
                 if (_playerController.Avoidance.IsAvoidanceNow)
                 {
                     _playerController.Avoidance.EndThereAvoidance();
@@ -165,6 +168,7 @@ namespace Player
                 _playerController.Rigidbody2D.gravityScale = 1f;
 
                 //時遅を解
+                Debug.Log("End3");
                 EndSlowTime();
 
                 //アニメーションを設定
@@ -191,11 +195,14 @@ namespace Player
                 //構え
                 _playerController.PlayerAnimatorControl.GunSet(false);
 
+                //照準を映す
+                _playerController.Revolver.OffDrawAimingLine(true);
+
                 //腕の角度を設定
                 _playerController.BodyAnglSetteing.AimingSet();
 
                 //照準を描写
-                _playerController.Revolver.OnDrawAimingLine();
+             //   _playerController.Revolver.OnDrawAimingLine();
 
                 DoSlow();
             }
@@ -236,7 +243,6 @@ namespace Player
 
             GameManager.Instance.ShaderPropertyController.MonochromeController.SetMonoBlend(1, 0.2f);
 
-            Debug.Log("時を遅くする");
             // 時間の速度をゆっくりにする。
             GameManager.Instance.TimeController.ChangeTimeSpeed(true);
         }
@@ -257,7 +263,6 @@ namespace Player
 
             GameManager.Instance.ShaderPropertyController.MonochromeController.SetMonoBlend(0, 0.2f);
 
-            Debug.Log("時を戻す");
             // 時間の速度をもとの状態に戻す。
             GameManager.Instance.TimeController.ChangeTimeSpeed(false);
         }
@@ -289,8 +294,6 @@ namespace Player
 
             //既にこの関数を読んでいたら呼ばない
             if (_isEmergencyStopSlowTime) return;
-
-
 
             EndSlowTime();
 
