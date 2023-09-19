@@ -2317,7 +2317,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerTag: Player
-  _firstStageSceneName: TGS_InGame1
+  _firstStageSceneName: TGS_InGame1.5
   _stageFadeIn: {fileID: 432653895}
   _stageFadeOut: {fileID: 1351531656}
 --- !u!4 &491929613 stripped
@@ -3444,6 +3444,10 @@ PrefabInstance:
     - target: {fileID: 4514520410212876861, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 4514520410212876862, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
+      propertyPath: _isTestRevoler
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4514520410212876862, guid: b74ea213bbe58524e88cec0218f7638b, type: 3}
       propertyPath: _lifeController._isGodMode
