@@ -15,6 +15,10 @@ public class CylinderAnimationCallback : MonoBehaviour
     private UnityEvent _GallaryInAnimCallback;
     [SerializeField]
     private UnityEvent _GallaryOutAnimCallback;
+    [SerializeField]
+    private UnityEvent _dataInAnimCallback;
+    [SerializeField]
+    private UnityEvent _dataOutAnimCallback;
 
     public void SylinderAnimCallback(CallbackType type)
     {
@@ -38,9 +42,17 @@ public class CylinderAnimationCallback : MonoBehaviour
         {
             _GallaryInAnimCallback.Invoke();
         }
-        else
+        else if (type == CallbackType.GallaryOut)
         {
             _GallaryOutAnimCallback.Invoke();
+        }
+        else if (type == CallbackType.DataIn) 
+        {
+            _dataInAnimCallback.Invoke();
+        }
+        else if (type != CallbackType.DataOut)
+        {
+            _dataOutAnimCallback.Invoke();
         }
     }
 }
@@ -53,5 +65,7 @@ public enum CallbackType
     ManualIn,
     ManualOut,
     GallaryIn,
-    GallaryOut
+    GallaryOut,
+    DataIn,
+    DataOut
 }

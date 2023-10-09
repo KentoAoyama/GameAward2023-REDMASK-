@@ -277,22 +277,22 @@ namespace Player
                     }
                 }
             }
-            else if (_isChangeCillinderPos)
-            {
-                _countChangeChamberTime += Time.deltaTime;
+            //else if (_isChangeCillinderPos)
+            //{
+            //    _countChangeChamberTime += Time.deltaTime;
 
-                if (_changeChamberTime < _countChangeChamberTime)
-                {
-                    Debug.Log("ChangeBullet");
-                    //弾を籠めるアニメーション
-                    _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.ReLoad);
+            //    if (_changeChamberTime < _countChangeChamberTime)
+            //    {
+            //        Debug.Log("ChangeBullet");
+            //        //弾を籠めるアニメーション
+            //        _playerController.PlayerAnimatorControl.PlayAnimation(PlayerAnimationControl.AnimaKind.ReLoad);
 
-                    _playerController.Revolver.ChangeChamber(_chanberChangeNum);
-                    _isChangeCillinderPos = false;
-                    _countChangeChamberTime = 0;
-                }
+            //        _playerController.Revolver.ChangeChamber(_chanberChangeNum);
+            //        _isChangeCillinderPos = false;
+            //        _countChangeChamberTime = 0;
+            //    }
 
-            }
+            //}
             else if (_isSetBullet)   //弾を籠める処理
             {
                 /////////////////////////////////TEST用!!!!!!!!!!!!!!!!//////////////////////////
