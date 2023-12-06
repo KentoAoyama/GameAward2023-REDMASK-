@@ -1,5 +1,11 @@
 <h1> タイトル「 REDMASK 」 </h1>
 <h2>ゲーム大賞向け制作　テーマ「 こだわり 」</h2>
+
+Steamストアページ
+https://store.steampowered.com/app/1957660/REDMASK/
+
+[![image](https://github.com/KentoAoyama/GameAward2023-REDMASK-/assets/106291245/b21a5023-31ca-4eb6-8ceb-d07d29d5e8ab)](https://www.youtube.com/watch?v=D-sdJcDz--U&list=TLGGN_h7eKcQWnwwNjEyMjAyMw)
+
 <tr>
 <table border="1" width="300">
 </tr>
