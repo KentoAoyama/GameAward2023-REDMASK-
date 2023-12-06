@@ -1,7 +1,11 @@
 <h1> タイトル「 REDMASK 」 </h1>
 <h2>ゲーム大賞向け制作　テーマ「 こだわり 」</h2>
 <tr>
+[![](https://img.youtube.com/vi/D-sdJcDz--U&list=TLGGN_h7eKcQWnwwNjEyMjAyMw&t=7s/0.jpg)](https://www.youtube.com/watch?v=D-sdJcDz--U&list=TLGGN_h7eKcQWnwwNjEyMjAyMw&t=7s)
+</tr>
+<tr>
 <table border="1" width="300">
+</tr>
 <tr>
 <th bgcolor="#FFFFFF"><font color="#FFFFFF">エンジン</font></th>
 <th bgcolor="#FFFFFF"><font color="#FFFFFF">バージョン</font></th>
