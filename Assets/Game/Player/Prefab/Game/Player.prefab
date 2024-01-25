@@ -5163,7 +5163,7 @@ MonoBehaviour:
     _moveSpeed: 6
     _midairMoveAcceleration: 4
     _maxMidairMoveSpeed: 4
-    _landDeceleration: 15
+    _landDeceleration: 10
     _midairDeceleration: 6
     _currentHorizontalSpeed: 0
     _jumpPower: 4
@@ -5219,7 +5219,7 @@ MonoBehaviour:
       m_Bits: 131200
     _gameZoneForRefrect: GameZoneReflection
   _bulletCountManager:
-    _isTestPlay: 1
+    _isTestPlay: 0
     _standardBulletCountInitialValue: 50
     _penetrateBulletCountInitialValue: 50
     _reflectBulletCountInitialValue: 50
@@ -5235,7 +5235,7 @@ MonoBehaviour:
     _timeScale: 0.1
     _doAvoidanceTime: 0.4
     _avoidanceDoTime: 0.5
-    _avoidanceCoolTime: 0.3
+    _avoidanceCoolTime: 0.8
     _landDeceleration: 20
     _avoidLayerName: AvoidPlayer
     _defultLayerName: Player
@@ -5261,7 +5261,7 @@ MonoBehaviour:
     _offsetMoveSpeedY: 0.1
     _camera1: {fileID: 328675650}
     _offsetStart: {x: 0, y: 4}
-  _isTestRevoler: 1
+  _isTestRevoler: 0
   _basicBullet: {fileID: 2726667904286695999, guid: f59ff749b13e7db4eae1029107ed6d1f, type: 3}
 --- !u!70 &4514520410212876858
 CapsuleCollider2D:
